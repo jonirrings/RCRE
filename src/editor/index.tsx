@@ -1,26 +1,16 @@
 import * as React from 'react';
 import * as CodeMirror from 'react-codemirror';
-
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
 
-interface JSONEditorStateInterface {
+interface JSONEditorPropsInterface {
     code: string;
+    onChange: (code: string) => void;
 }
 
-class JSONEditor extends React.Component<{}, JSONEditorStateInterface> {
+class JSONEditor extends React.Component<JSONEditorPropsInterface, {}> {
     constructor() {
         super();
-
-        this.state = {
-            code: ''
-        };
-    }
-
-    updateCode(newCode: string) {
-        this.setState({
-            code: newCode
-        });
     }
 
     render() {
@@ -31,8 +21,8 @@ class JSONEditor extends React.Component<{}, JSONEditorStateInterface> {
 
         return (
             <CodeMirror
-                value={this.state.code}
-                onChange={(newCode: string) => this.updateCode(newCode)}
+                value={this.props.code}
+                onChange={(code: string) => this.props.onChange(code)}
                 options={options}
             />
         );
