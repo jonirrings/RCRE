@@ -1,29 +1,39 @@
 import * as React from 'react';
 import Page from './core/Page';
+import { PageInterface } from './provider/page';
 
 interface RenderPropsInterface {
     code: string;    
+}
+
+function parseWrapper(code: string): PageInterface {
+    return JSON.parse(code);
 }
 
 class Render extends React.Component<RenderPropsInterface, {}> {
     constructor() {
         super();
     }
-    
-    recursionRende(json: {}) {
+
+    shouldComponentUpdate(nextProps: RenderPropsInterface, nextState: {}) {
+        try {
+            JSON.parse(nextProps.code);
+            return true;
+        } catch (e) {
+            // TODO Error Report
+            return false;
+        }
     }
     
     render() {
-        let json = JSON.parse(this.props.code);
-        
-        if (json.type === 'page') {
-            return <Page title={json.title}>
-                {this.recursionRende(json.body)}
-            </Page>
-        }
+        let json = parseWrapper(this.props.code);
         
         return (
-            <div>this is render</div>
+            <div className="render">
+                <Page title={json.title}>
+                    1234
+                </Page>
+            </div>
         );
     }
 }

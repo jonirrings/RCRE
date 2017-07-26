@@ -1,0 +1,13 @@
+.App {
+    display: flex;
+}
+
+.CodeMirror {
+    border: 1px solid #eee;
+    height: auto !important;
+    width: 700px;
+}
+
+.render {
+    padding: 0 10px;
+}
