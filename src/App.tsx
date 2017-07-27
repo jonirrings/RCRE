@@ -20,15 +20,8 @@ class App extends React.Component<{}, AppStateInterface> {
       "title": "test form",
       "controls": [
         {
-          "type": "text",
-          "name": "name",
-          "label": "Name",
-          "required": true,
-          "placeholder": "enter your name"
-        },
-        {
-          "type": "email",
-          "name": "name"
+            "type": "button",
+            "label": "helloworld"
         }
       ]
     }
