@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Page, { PageProps } from './core/Page';
+import Page, {PageProps} from './core/Page';
 
 interface RenderPropsInterface {
-    code: string;    
+    code: string;
 }
 
 class Render extends React.Component<RenderPropsInterface, {}> {
@@ -19,13 +19,13 @@ class Render extends React.Component<RenderPropsInterface, {}> {
             return false;
         }
     }
-    
+
     render() {
         let info: PageProps = JSON.parse(this.props.code);
-        
+
         return (
             <div className="render">
-                <Page 
+                <Page
                     title={info.title}
                     body={info.body}
                 />

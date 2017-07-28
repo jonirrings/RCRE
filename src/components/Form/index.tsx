@@ -1,5 +1,6 @@
 import * as React from 'react';
-import getComponent from '../../render/util/componentLoader'
+import componentLoader from '../../render/util/componentLoader';
+import { Map } from 'immutable';
 
 export interface FormPropsInterface {
     title: string;
@@ -13,24 +14,45 @@ interface FormItemPropsInterface {
     required?: boolean;
 }
 
-class Form extends React.Component<FormPropsInterface, {}> {
+interface FormItemStateInterface {
+    data: Map<string, any>;
+}
+
+class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
     constructor() {
         super();
+
+        this.state = {
+            data: Map<string, any>()
+        };
+        
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(type: string, newValue: any) {
+        this.setState({
+            data: this.state.data.set(type, newValue)
+        });
     }
 
     render() {
-        let controlComponents = this.props.controls.map(info => {
-            let instance = getComponent<any>(info.type);
-            
+        let controlComponents = this.props.controls.map((info, index) => {
+            let instance = componentLoader.getComponent<FormItemPropsInterface>(info.type);
+
             if (!instance) {
                 return null;
             }
-            
+
             let childProps = Object.assign(info, {
-                key: info.type
+                onChange: this.handleChange,
+                value: this.state.data.get(info.name) || ''
             });
-            
-            return React.createElement<FormItemPropsInterface>(instance, childProps);
+
+            return (
+                <div className="form-group" key={index}>
+                    {React.createElement<FormItemPropsInterface>(instance, childProps)} 
+                </div>
+            );
         });
 
         return (

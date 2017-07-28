@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Container, ContainerProps } from './Container';
+import { CreateContainer, ContainerProps } from './Container';
 
 export class PageProps {
     title?: string;
@@ -18,10 +18,10 @@ class Page extends React.Component<PageProps, {}> {
             body = this.props.body;
         } else if (Array.isArray(this.props.body)) {
             body = this.props.body.map(item => {
-                return Container(item);
+                return CreateContainer(item);
             });
         } else {
-            body = Container(this.props.body);
+            body = CreateContainer(this.props.body);
         }
         
         return (

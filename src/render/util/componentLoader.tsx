@@ -1,19 +1,31 @@
-import Form from '../../components/Form/index';
-import Button from '../../components/Button/index';
 import * as React from 'react';
+import Form from '../../components/Form/index';
+import Button from '../../components/Form/FormItem/Button';
+import Text from '../../components/Form/FormItem/TextField';
 
-let componentMap = new Map<string, React.ComponentClass<any>>();
+type componentType = React.ComponentClass<any>;
 
-componentMap.set('form', Form);
-componentMap.set('button', Button);
-
-export default function getComponent<T>(type: string): React.ComponentClass<T> | null {
-    let component = componentMap.get(type);
-    
-    if (!component) {
-        console.warn('could not find component of type');
-        return null;
+class ComponentLoader {
+    private cache: Map<string, componentType>;
+    constructor() {
+        this.cache = new Map();
     }
     
-    return component;
+    getComponent<T>(type: string): React.ComponentClass<T> | undefined {
+        return this.cache.get(type);
+    }
+    
+    addComponent<T>(type: string, component: React.ComponentClass<T>) {
+        this.cache.set(type, component);        
+    }
 }
+
+const loader = new ComponentLoader();
+loader.addComponent('form', Form);
+loader.addComponent('button', Button);
+loader.addComponent('text', Text);
+loader.addComponent('number', Text);
+loader.addComponent('password', Text);
+loader.addComponent('email', Text);
+
+export default loader;

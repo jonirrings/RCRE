@@ -1,16 +1,18 @@
 import * as React from 'react';
-import getComponent from '../util/componentLoader';
+import componentLoader from '../util/componentLoader';
 
 export class ContainerProps {
     type: string;
 }
 
-export function Container(info: ContainerProps) {
-    let component = getComponent<ContainerProps>(info.type);
+export function CreateContainer(info: ContainerProps) {
+    let component = componentLoader.getComponent<ContainerProps>(info.type);
     
     if (!component) {
         return null;
     }
     
-    return React.createElement<ContainerProps>(component, info);
+    return React.createElement<ContainerProps>(component, Object.assign(info, {
+        key: Date.now()
+    }));
 }

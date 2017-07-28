@@ -1,7 +1,9 @@
 import * as React from 'react';
-import './App.css';
 import JSONEditor from './editor/index';
 import Render from './render/index';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap-theme.css';
+import './App.css';
 
 interface AppStateInterface {
     code: string;
@@ -20,8 +22,19 @@ class App extends React.Component<{}, AppStateInterface> {
       "title": "test form",
       "controls": [
         {
-            "type": "button",
-            "label": "helloworld"
+            "type": "text",
+            "name": "name",
+            "label": "Text"
+        },
+        {
+            "type": "password",
+            "name": "password",
+            "label": "Password"
+        },
+        {
+            "type": "email",
+            "name": "email",
+            "label": "Email"
         }
       ]
     }
