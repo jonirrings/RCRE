@@ -5,6 +5,7 @@ import { Map } from 'immutable';
 export interface FormPropsInterface {
     title: string;
     controls: FormItemPropsInterface[];
+    actions?: FormActionItemPropsInterface[];
 }
 
 interface FormItemPropsInterface {
@@ -12,6 +13,11 @@ interface FormItemPropsInterface {
     name: string;
     label: string;
     required?: boolean;
+}
+
+interface FormActionItemPropsInterface {
+    type: string;
+    actionType: string;
 }
 
 interface FormItemStateInterface {
@@ -34,6 +40,10 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
             data: this.state.data.set(type, newValue)
         });
     }
+    
+    handleAction() {
+        
+    }
 
     render() {
         let controlComponents = this.props.controls.map((info, index) => {
@@ -54,6 +64,28 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
                 </div>
             );
         });
+        
+        let actionComponent;
+        
+        if (this.props.actions) {
+            actionComponent = this.props.actions.map((item, index) => {
+                let instance = componentLoader.getComponent<FormActionItemPropsInterface>(item.type);
+                
+                if (!instance) {
+                    return null;
+                }
+                
+                let childProps = Object.assign(item, {
+                    onAction: this.handleAction
+                });
+                
+                return (
+                    <div className="form-group" key={index}>
+                        {React.createElement<FormActionItemPropsInterface>(instance, childProps)}
+                    </div>
+                );
+            });
+        }
 
         return (
             <div className="gaea-form">
@@ -62,6 +94,7 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
                 </div>
                 <div className="form-body">
                     {controlComponents}
+                    {actionComponent}
                 </div>
             </div>
         );

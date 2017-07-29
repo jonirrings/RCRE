@@ -36,6 +36,8 @@ class App extends React.Component<{}, AppStateInterface> {
             "name": "email",
             "label": "Email"
         }
+      ],
+      "actions": [
       ]
     }
   ]

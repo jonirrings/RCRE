@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Form from '../../components/Form/index';
-import Button from '../../components/Form/FormItem/Button';
-import Text from '../../components/Form/FormItem/TextField';
+import Button from '../../components/Form/FormItem/Button/Button';
+import Text from '../../components/Form/FormItem/TextField/TextField';
 
 type componentType = React.ComponentClass<any>;
 

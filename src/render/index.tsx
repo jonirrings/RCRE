@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Page, {PageProps} from './core/Page';
+import Page, { PageProps } from './core/Page';
 
 interface RenderPropsInterface {
     code: string;
