@@ -1,45 +1,62 @@
 import * as React from 'react';
+import { IsBoolean, IsDefined, IsString } from 'class-validator';
 
 import './style.css';
 
-interface TextFieldPropsInterface {
-    className: string;
-    defaultValue: string;
-    disabled: boolean;
-    value: string;
-    onChange: (type: string, newValue: string) => void;
-    placeholder: string;
+export class TextFieldPropsInterface {
+    @IsString()
+    className?: string;
+    
+    @IsString()
+    defaultValue?: string;
+    
+    @IsBoolean()
+    disabled?: boolean;
+    
+    @IsString()
+    placeholder?: string;
+    
+    @IsString()
+    @IsDefined()
     type: string;
+    
+    @IsString()
+    @IsDefined()
     name: string;
-    label: string;
+    
+    @IsString()
+    label?: string;
+    
+    _value: string;
+    _onChange: (type: string, newValue: string) => void;
 }
 
 class Text extends React.Component<TextFieldPropsInterface, {}> {
     constructor() {
         super();
-        
+
         this.onChange = this.onChange.bind(this);
     }
-    
+
     onChange(event: React.FormEvent<HTMLInputElement>) {
-        this.props.onChange(this.props.name, event.currentTarget.value);
+        this.props._onChange(this.props.name, event.currentTarget.value);
     }
-    
+
     render() {
         const {
             type,
             name,
-            value,
+            _value,
             label,
             placeholder
         } = this.props;
-        
+
         let labelComponent;
-        
+
         if (!!label) {
             labelComponent = <label className="col-md-3 form-control-static">{label}</label>;
         }
-        
+
         return (
             <div className="form-group gaea-text-field clearfix">
                 {labelComponent}
@@ -49,10 +66,10 @@ class Text extends React.Component<TextFieldPropsInterface, {}> {
                             className="form-control"
                             type={type}
                             name={name}
-                            value={value}
+                            value={_value}
                             placeholder={placeholder}
                             onChange={this.onChange}
-                        />  
+                        />
                     </div>
                 </div>
             </div>

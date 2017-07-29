@@ -1,8 +1,12 @@
 import * as React from 'react';
+import { IsString, IsDefined } from 'class-validator';
 
-interface ButtonPropsInterface {
+export class ButtonPropsInterface {
+    @IsString()
+    @IsDefined()
     label: string;
-    onClick: React.MouseEventHandler<HTMLButtonElement>;
+    
+    _onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 class Button extends React.Component<ButtonPropsInterface, {}> {
@@ -14,7 +18,7 @@ class Button extends React.Component<ButtonPropsInterface, {}> {
         return (
             <button
                 className="btn"
-                onClick={this.props.onClick}
+                onClick={this.props._onClick}
             >
                 {this.props.label}
             </button>

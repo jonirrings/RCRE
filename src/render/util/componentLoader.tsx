@@ -1,31 +1,37 @@
 import * as React from 'react';
-import Form from '../../components/Form/index';
-import Button from '../../components/Form/FormItem/Button/Button';
-import Text from '../../components/Form/FormItem/TextField/TextField';
+import Form, { FormPropsInterface } from '../../components/Form/index';
+import Button, { ButtonPropsInterface } from '../../components/Form/FormItem/Button/Button';
+import Text, { TextFieldPropsInterface } from '../../components/Form/FormItem/TextField/TextField';
 
-type componentType = React.ComponentClass<any>;
+export type ComponentLoaderMapVal = {
+    component: React.ComponentClass<any>,
+    componentInterface: any
+};
 
 class ComponentLoader {
-    private cache: Map<string, componentType>;
+    private cache: Map<string, ComponentLoaderMapVal>;
     constructor() {
         this.cache = new Map();
     }
     
-    getComponent<T>(type: string): React.ComponentClass<T> | undefined {
+    getComponent(type: string): ComponentLoaderMapVal | undefined {
         return this.cache.get(type);
     }
     
-    addComponent<T>(type: string, component: React.ComponentClass<T>) {
-        this.cache.set(type, component);        
+    addComponent<T>(type: string, component: React.ComponentClass<T>, componentInterface: any) {
+        this.cache.set(type, {
+            component,
+            componentInterface
+        });        
     }
 }
 
 const loader = new ComponentLoader();
-loader.addComponent('form', Form);
-loader.addComponent('button', Button);
-loader.addComponent('text', Text);
-loader.addComponent('number', Text);
-loader.addComponent('password', Text);
-loader.addComponent('email', Text);
+loader.addComponent('form', Form, FormPropsInterface);
+loader.addComponent('button', Button, ButtonPropsInterface);
+loader.addComponent('text', Text, TextFieldPropsInterface);
+loader.addComponent('number', Text, TextFieldPropsInterface);
+loader.addComponent('password', Text, TextFieldPropsInterface);
+loader.addComponent('email', Text, TextFieldPropsInterface);
 
 export default loader;

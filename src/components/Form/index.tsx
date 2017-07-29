@@ -1,23 +1,34 @@
 import * as React from 'react';
 import componentLoader from '../../render/util/componentLoader';
 import { Map } from 'immutable';
+import { IsString, IsDefined, IsArray, IsBoolean } from 'class-validator';
+import createElement from '../../render/util/createElement';
 
-export interface FormPropsInterface {
+export class FormPropsInterface {
+    @IsString()
+    @IsDefined()
     title: string;
+
+    @IsArray()
+    @IsDefined()
     controls: FormItemPropsInterface[];
-    actions?: FormActionItemPropsInterface[];
 }
 
-interface FormItemPropsInterface {
+class FormItemPropsInterface {
+    @IsString()
+    @IsDefined()
     type: string;
+
+    @IsString()
+    @IsDefined()
     name: string;
-    label: string;
-    required?: boolean;
-}
 
-interface FormActionItemPropsInterface {
-    type: string;
-    actionType: string;
+    @IsString()
+    @IsDefined()
+    label: string;
+
+    @IsBoolean()
+    required: boolean;
 }
 
 interface FormItemStateInterface {
@@ -31,7 +42,7 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
         this.state = {
             data: Map<string, any>()
         };
-        
+
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -40,52 +51,59 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
             data: this.state.data.set(type, newValue)
         });
     }
-    
-    handleAction() {
-        
-    }
+
+    // handleAction() {
+    //    
+    // }
 
     render() {
-        let controlComponents = this.props.controls.map((info, index) => {
-            let instance = componentLoader.getComponent<FormItemPropsInterface>(info.type);
 
-            if (!instance) {
+        let controlComponents = this.props.controls.map((info, index) => {
+            let instanceInfo = componentLoader.getComponent(info.type);
+
+            if (!instanceInfo) {
                 return null;
             }
 
             let childProps = Object.assign(info, {
-                onChange: this.handleChange,
-                value: this.state.data.get(info.name) || ''
+                _onChange: this.handleChange,
+                _value: this.state.data.get(info.name) || ''
             });
+
+            let child = createElement<FormItemPropsInterface>(
+                instanceInfo.component,
+                instanceInfo.componentInterface,
+                childProps
+            );
 
             return (
                 <div className="form-group" key={index}>
-                    {React.createElement<FormItemPropsInterface>(instance, childProps)} 
+                    {child}
                 </div>
             );
         });
-        
-        let actionComponent;
-        
-        if (this.props.actions) {
-            actionComponent = this.props.actions.map((item, index) => {
-                let instance = componentLoader.getComponent<FormActionItemPropsInterface>(item.type);
-                
-                if (!instance) {
-                    return null;
-                }
-                
-                let childProps = Object.assign(item, {
-                    onAction: this.handleAction
-                });
-                
-                return (
-                    <div className="form-group" key={index}>
-                        {React.createElement<FormActionItemPropsInterface>(instance, childProps)}
-                    </div>
-                );
-            });
-        }
+
+        // let actionComponent;
+        //
+        // if (this.props.actions) {
+        //     actionComponent = this.props.actions.map((item, index) => {
+        //         let instance = componentLoader.getComponent<FormActionItemPropsInterface>(item.type);
+        //        
+        //         if (!instance) {
+        //             return null;
+        //         }
+        //        
+        //         let childProps = Object.assign(item, {
+        //             onAction: this.handleAction
+        //         });
+        //        
+        //         return (
+        //             <div className="form-group" key={index}>
+        //                 {React.createElement<FormActionItemPropsInterface>(instance, childProps)}
+        //             </div>
+        //         );
+        //     });
+        // }
 
         return (
             <div className="gaea-form">
@@ -94,7 +112,6 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
                 </div>
                 <div className="form-body">
                     {controlComponents}
-                    {actionComponent}
                 </div>
             </div>
         );

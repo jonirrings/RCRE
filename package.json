@@ -12,6 +12,7 @@
     "@types/react-codemirror": "^0.2.7",
     "@types/react-dom": "^15.5.1",
     "bootstrap": "^3.3.7",
+    "class-validator": "^0.7.2",
     "codemirror": "^5.28.0",
     "hoist-non-react-statics": "^2.2.1",
     "immutable": "^3.8.1",

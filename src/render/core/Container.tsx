@@ -1,16 +1,23 @@
 import * as React from 'react';
 import componentLoader from '../util/componentLoader';
+import createElement from '../util/createElement';
 
 export class ContainerProps {
     type: string;
+    [s: string]: any
 }
 
-export function CreateContainer<T extends ContainerProps>(info: ContainerProps) {
-    let component = componentLoader.getComponent<T>(info.type);
-
-    if (!component) {
+export function CreateContainer(info: ContainerProps) {
+    let componentInfo = componentLoader.getComponent(info.type);
+    
+    if (!componentInfo) {
         return null;
     }
+    
+    let {
+        component,
+        componentInterface
+    } = componentInfo;
     
     const wrappedComponentName = component.displayName || component.name || 'ContainerComponent';
     const displayName = `Container(${wrappedComponentName})`;
@@ -35,5 +42,5 @@ export function CreateContainer<T extends ContainerProps>(info: ContainerProps) 
     Container.WrappedComponent = wrappedComponentName;
     Container.displayName = displayName;
     
-    return React.createElement<ContainerProps>(Container, info);
+    return createElement<ContainerProps>(Container, componentInterface, info);
 }
