@@ -17,8 +17,10 @@ class Page extends React.Component<PageProps, {}> {
         if (typeof this.props.body === 'string') {
             body = this.props.body;
         } else if (Array.isArray(this.props.body)) {
-            body = this.props.body.map(item => {
-                return CreateContainer(item);
+            body = this.props.body.map((item, index) => {
+                return CreateContainer(Object.assign(item, {
+                    key: index
+                }));
             });
         } else {
             body = CreateContainer(this.props.body);

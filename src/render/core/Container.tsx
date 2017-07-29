@@ -35,12 +35,14 @@ export function CreateContainer(info: ContainerProps) {
                 return null;
             }
             
-            return React.createElement<ContainerProps>(component, info);
+            return createElement<ContainerProps>(component, componentInterface, info);
         }
     }
 
     Container.WrappedComponent = wrappedComponentName;
     Container.displayName = displayName;
     
-    return createElement<ContainerProps>(Container, componentInterface, info);
+    return React.createElement<ContainerProps>(Container, Object.assign(info, {
+        key: info.key
+    }));
 }
