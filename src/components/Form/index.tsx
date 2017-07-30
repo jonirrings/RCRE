@@ -69,7 +69,6 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
     }
 
     render() {
-
         let controlComponents = this.props.controls.map((info, index) => {
             let instanceInfo = componentLoader.getComponent(info.type);
 

@@ -2,6 +2,8 @@ import * as React from 'react';
 import Form, { FormPropsInterface } from '../../components/Form/index';
 import Button, { ButtonPropsInterface } from '../../components/Form/FormItem/Button/Button';
 import Text, { TextFieldPropsInterface } from '../../components/Form/FormItem/TextField/TextField';
+import Html, { HtmlPropsInterface } from '../../components/Plain/Html';
+import Plain, { PlainPropsInterface } from '../../components/Plain/Text';
 
 export type ComponentLoaderMapVal = {
     component: React.ComponentClass<any>,
@@ -34,5 +36,7 @@ loader.addComponent('number', Text, TextFieldPropsInterface);
 loader.addComponent('password', Text, TextFieldPropsInterface);
 loader.addComponent('email', Text, TextFieldPropsInterface);
 loader.addComponent('submit', Text, TextFieldPropsInterface);
+loader.addComponent('html', Html, HtmlPropsInterface);
+loader.addComponent('plain', Plain, PlainPropsInterface);
 
 export default loader;
