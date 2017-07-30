@@ -23,6 +23,7 @@ class Render extends React.Component<RenderPropsInterface, {}> {
     render() {
         let info: PageProps = JSON.parse(this.props.code);
 
+        // TODO: 每次JSON更新都会整体重渲染, 性能很烂
         return (
             <div className="render">
                 <Page

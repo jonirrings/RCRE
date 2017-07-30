@@ -33,5 +33,6 @@ loader.addComponent('text', Text, TextFieldPropsInterface);
 loader.addComponent('number', Text, TextFieldPropsInterface);
 loader.addComponent('password', Text, TextFieldPropsInterface);
 loader.addComponent('email', Text, TextFieldPropsInterface);
+loader.addComponent('submit', Text, TextFieldPropsInterface);
 
 export default loader;

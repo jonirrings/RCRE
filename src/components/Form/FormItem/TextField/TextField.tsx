@@ -27,6 +27,12 @@ export class TextFieldPropsInterface {
     @IsString()
     label?: string;
     
+    @IsString()
+    value: string;
+    
+    @IsBoolean()
+    required: boolean;
+    
     _value: string;
     _onChange: (type: string, newValue: string) => void;
 }
@@ -39,6 +45,11 @@ class Text extends React.Component<TextFieldPropsInterface, {}> {
     }
 
     onChange(event: React.FormEvent<HTMLInputElement>) {
+        // 如果强制设置value, 则说明是写死的值, 不需要触发onChange
+        if (this.props.value) {
+            return;
+        }
+        
         this.props._onChange(this.props.name, event.currentTarget.value);
     }
 
@@ -47,8 +58,10 @@ class Text extends React.Component<TextFieldPropsInterface, {}> {
             type,
             name,
             _value,
+            value,
             label,
-            placeholder
+            placeholder,
+            required
         } = this.props;
 
         let labelComponent;
@@ -66,9 +79,10 @@ class Text extends React.Component<TextFieldPropsInterface, {}> {
                             className="form-control"
                             type={type}
                             name={name}
-                            value={_value}
+                            value={!!value ? value : _value}
                             placeholder={placeholder}
                             onChange={this.onChange}
+                            required={required}
                         />
                     </div>
                 </div>

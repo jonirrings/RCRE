@@ -3,6 +3,7 @@ import componentLoader from '../../render/util/componentLoader';
 import { Map } from 'immutable';
 import { IsString, IsDefined, IsArray, IsBoolean } from 'class-validator';
 import createElement from '../../render/util/createElement';
+import apiRequest from '../../render/services/api';
 
 export class FormPropsInterface {
     @IsString()
@@ -12,6 +13,10 @@ export class FormPropsInterface {
     @IsArray()
     @IsDefined()
     controls: FormItemPropsInterface[];
+    
+    @IsString()
+    @IsDefined()
+    api: string;
 }
 
 class FormItemPropsInterface {
@@ -44,6 +49,7 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(type: string, newValue: any) {
@@ -52,9 +58,15 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
         });
     }
 
-    // handleAction() {
-    //    
-    // }
+    async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        let data = this.state.data.toObject();
+        
+        await apiRequest(this.props.api, {
+            method: 'POST',
+            data: data
+        });
+    }
 
     render() {
 
@@ -88,15 +100,15 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
         // if (this.props.actions) {
         //     actionComponent = this.props.actions.map((item, index) => {
         //         let instance = componentLoader.getComponent<FormActionItemPropsInterface>(item.type);
-        //        
+        //
         //         if (!instance) {
         //             return null;
         //         }
-        //        
+        //
         //         let childProps = Object.assign(item, {
         //             onAction: this.handleAction
         //         });
-        //        
+        //
         //         return (
         //             <div className="form-group" key={index}>
         //                 {React.createElement<FormActionItemPropsInterface>(instance, childProps)}
@@ -107,12 +119,14 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
 
         return (
             <div className="gaea-form">
-                <div className="form-heading">
-                    <h3>{this.props.title}</h3>
-                </div>
-                <div className="form-body">
-                    {controlComponents}
-                </div>
+                <form onSubmit={this.handleSubmit}>
+                    <div className="form-heading">
+                        <h3>{this.props.title}</h3>
+                    </div>
+                    <div className="form-body">
+                        {controlComponents}
+                    </div>
+                </form>
             </div>
         );
     }

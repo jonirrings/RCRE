@@ -15,32 +15,36 @@ class App extends React.Component<{}, AppStateInterface> {
         
         this.state = {
             code: `{
-  "title": "helloworld",
-  "body": [
-    {
-      "type": "form",
-      "title": "test form",
-      "controls": [
+    "title": "helloworld",
+    "body": [
         {
-            "type": "text",
-            "name": "name",
-            "label": "Text"
-        },
-        {
-            "type": "password",
-            "name": "password",
-            "label": "Password"
-        },
-        {
-            "type": "email",
-            "name": "email",
-            "label": "Email"
+            "type": "form",
+            "title": "test form",
+            "api": "/test/submitAPI",
+            "controls": [
+                {
+                    "type": "text",
+                    "name": "name",
+                    "label": "Text"
+                },
+                {
+                    "type": "password",
+                    "name": "password",
+                    "label": "Password"
+                },
+                {
+                    "type": "email",
+                    "name": "email",
+                    "label": "Email"
+                },
+                {
+                    "type": "submit",
+                    "name": "submit",
+                    "value": "submit"
+                }
+            ]
         }
-      ],
-      "actions": [
-      ]
-    }
-  ]
+    ]
 }`
         };
         

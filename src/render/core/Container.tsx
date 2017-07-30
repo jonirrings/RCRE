@@ -11,6 +11,7 @@ export function CreateContainer(info: ContainerProps) {
     let componentInfo = componentLoader.getComponent(info.type);
     
     if (!componentInfo) {
+        console.error(`can not find component of type: ${info.type}`);
         return null;
     }
     
