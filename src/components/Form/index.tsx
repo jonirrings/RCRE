@@ -41,6 +41,8 @@ interface FormItemStateInterface {
 }
 
 class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
+    childInstance: React.ComponentClass<FormItemPropsInterface>[];
+    
     constructor() {
         super();
 
@@ -50,6 +52,7 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.childInstance = [];
     }
 
     handleChange(type: string, newValue: any) {
@@ -60,12 +63,23 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
 
     async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        
+        let isValidate = await this.checkFormItem();
+        
+        if (!isValidate) {
+            return;
+        }
+        
         let data = this.state.data.toObject();
         
         await apiRequest(this.props.api, {
             method: 'POST',
             data: data
         });
+    }
+    
+    async checkFormItem() {
+        console.log(this.childInstance);
     }
 
     render() {
@@ -78,7 +92,10 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
 
             let childProps = Object.assign(info, {
                 _onChange: this.handleChange,
-                _value: this.state.data.get(info.name) || ''
+                _value: this.state.data.get(info.name) || '',
+                ref: (ref: React.ComponentClass<FormItemPropsInterface>) => {
+                    this.childInstance.push(ref);
+                }
             });
 
             let child = createElement<FormItemPropsInterface>(
@@ -118,7 +135,7 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
 
         return (
             <div className="gaea-form">
-                <form onSubmit={this.handleSubmit}>
+                <form className="form" onSubmit={this.handleSubmit}>
                     <div className="form-heading">
                         <h3>{this.props.title}</h3>
                     </div>

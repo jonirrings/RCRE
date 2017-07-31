@@ -33,31 +33,55 @@ export class TextFieldPropsInterface {
     @IsBoolean()
     required: boolean;
     
+    @IsString()
+    regexp: string;
+    
     _value: string;
     _onChange: (type: string, newValue: string) => void;
 }
 
-class Text extends React.Component<TextFieldPropsInterface, {}> {
+interface TextFieldStateInterface {
+    value: string;
+}
+
+class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterface> {
     constructor() {
         super();
-
+        
+        this.state = {
+            value: ''  
+        };
+        
         this.onChange = this.onChange.bind(this);
     }
 
     onChange(event: React.FormEvent<HTMLInputElement>) {
+        event.persist();
         // 如果强制设置value, 则说明是写死的值, 不需要触发onChange
         if (this.props.value) {
             return;
         }
-        
-        this.props._onChange(this.props.name, event.currentTarget.value);
+        let newValue = event.currentTarget.value;
+
+        this.setState({
+            value: newValue
+        }, () => {
+            this.props._onChange(this.props.name, newValue); 
+        });
+    }
+    
+    componentWillReceiveProps(nextProps: TextFieldPropsInterface) {
+        if (this.state.value !== nextProps._value) {
+            this.setState({
+                value: nextProps.value
+            });
+        }
     }
 
     render() {
         const {
             type,
             name,
-            _value,
             value,
             label,
             placeholder,
@@ -79,7 +103,7 @@ class Text extends React.Component<TextFieldPropsInterface, {}> {
                             className="form-control"
                             type={type}
                             name={name}
-                            value={!!value ? value : _value}
+                            value={!!value ? value : this.state.value}
                             placeholder={placeholder}
                             onChange={this.onChange}
                             required={required}
