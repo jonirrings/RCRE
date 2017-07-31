@@ -4,9 +4,6 @@ import Render from './render/index';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import './App.css';
-import {
-    Link
-} from 'react-router-dom';
 
 interface AppStateInterface {
     code: string;
@@ -70,7 +67,6 @@ class App extends React.Component<{}, AppStateInterface> {
                     onChange={this.onJSONEditorChange}
                 />
                 <Render code={this.state.code} />
-                <Link to="/doc">Doc</Link>
             </div>
         );
     }

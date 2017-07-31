@@ -42,6 +42,7 @@ export class TextFieldPropsInterface {
 
 interface TextFieldStateInterface {
     value: string;
+    hasError: boolean;
 }
 
 class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterface> {
@@ -49,7 +50,8 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
         super();
 
         this.state = {
-            value: ''
+            value: '',
+            hasError: false
         };
 
         this.onChange = this.onChange.bind(this);
