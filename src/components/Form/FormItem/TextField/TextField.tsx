@@ -1,41 +1,41 @@
 import * as React from 'react';
-import { IsBoolean, IsDefined, IsString } from 'class-validator';
+import {IsBoolean, IsDefined, IsString, IsEmail, validateSync, MinLength} from 'class-validator';
 
 import './style.css';
 
 export class TextFieldPropsInterface {
     @IsString()
     className?: string;
-    
+
     @IsString()
     defaultValue?: string;
-    
+
     @IsBoolean()
     disabled?: boolean;
-    
+
     @IsString()
     placeholder?: string;
-    
+
     @IsString()
     @IsDefined()
     type: string;
-    
+
     @IsString()
     @IsDefined()
     name: string;
-    
+
     @IsString()
     label?: string;
-    
+
     @IsString()
     value: string;
-    
+
     @IsBoolean()
     required: boolean;
-    
+
     @IsString()
     regexp: string;
-    
+
     _value: string;
     _onChange: (type: string, newValue: string) => void;
 }
@@ -47,11 +47,11 @@ interface TextFieldStateInterface {
 class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterface> {
     constructor() {
         super();
-        
+
         this.state = {
-            value: ''  
+            value: ''
         };
-        
+
         this.onChange = this.onChange.bind(this);
     }
 
@@ -66,10 +66,10 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
         this.setState({
             value: newValue
         }, () => {
-            this.props._onChange(this.props.name, newValue); 
+            this.props._onChange(this.props.name, newValue);
         });
     }
-    
+
     componentWillReceiveProps(nextProps: TextFieldPropsInterface) {
         if (this.state.value !== nextProps._value) {
             this.setState({
@@ -78,14 +78,40 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
         }
     }
 
+    isValid(): boolean {
+        if (!this.props.required && this.state.value === '') {
+            return true;
+        }
+
+        let type = this.props.type;
+        let validateObj: {
+            text: string;
+        } = {
+            text: ''
+        };
+
+        switch (type) {
+            case 'email':
+                IsEmail()(validateObj, 'text');
+                break;
+            case 'text':
+                IsString()(validateObj, 'text');
+                MinLength(1)(validateObj, 'text');
+                break;
+            default:
+        }
+        validateObj.text = this.state.value;
+        
+        return validateSync(validateObj).length === 0;
+    }
+
     render() {
         const {
             type,
             name,
             value,
             label,
-            placeholder,
-            required
+            placeholder
         } = this.props;
 
         let labelComponent;
@@ -106,7 +132,6 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
                             value={!!value ? value : this.state.value}
                             placeholder={placeholder}
                             onChange={this.onChange}
-                            required={required}
                         />
                     </div>
                 </div>

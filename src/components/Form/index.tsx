@@ -41,7 +41,7 @@ interface FormItemStateInterface {
 }
 
 class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
-    childInstance: React.ComponentClass<FormItemPropsInterface>[];
+    childInstance: any[];
     
     constructor() {
         super();
@@ -64,11 +64,11 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
     async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         
-        let isValidate = await this.checkFormItem();
+        // let isValidate = await this.checkFormItem();
         
-        if (!isValidate) {
-            return;
-        }
+        // if (!isValidate) {
+        //     return;
+        // }
         
         let data = this.state.data.toObject();
         
@@ -79,7 +79,9 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
     }
     
     async checkFormItem() {
-        console.log(this.childInstance);
+        this.childInstance.forEach(child => {
+            // console.log(child.isValid());
+        });
     }
 
     render() {
@@ -93,11 +95,11 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
             let childProps = Object.assign(info, {
                 _onChange: this.handleChange,
                 _value: this.state.data.get(info.name) || '',
-                ref: (ref: React.ComponentClass<FormItemPropsInterface>) => {
+                ref: (ref: any) => {
                     this.childInstance.push(ref);
                 }
             });
-
+            
             let child = createElement<FormItemPropsInterface>(
                 instanceInfo.component,
                 instanceInfo.componentInterface,
