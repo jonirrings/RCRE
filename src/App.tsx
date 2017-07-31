@@ -26,6 +26,7 @@ class App extends React.Component<{}, AppStateInterface> {
                     "type": "text",
                     "name": "name",
                     "label": "Text",
+                    "errorMsg": "名字不能为空",
                     "required": true
                 },
                 {

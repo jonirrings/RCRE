@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Page, { PageProps } from './core/Page';
 
+import './index.css';
+
 interface RenderPropsInterface {
     code: string;
 }

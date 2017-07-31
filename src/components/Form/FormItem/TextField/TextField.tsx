@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {IsBoolean, IsDefined, IsString, IsEmail, validateSync, MinLength} from 'class-validator';
+import * as classNames from 'classnames';
 
 import './style.css';
 
@@ -36,6 +37,9 @@ export class TextFieldPropsInterface {
     @IsString()
     regexp: string;
 
+    @IsString()
+    errorMsg: string;
+
     _value: string;
     _onChange: (type: string, newValue: string) => void;
 }
@@ -55,6 +59,7 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
         };
 
         this.onChange = this.onChange.bind(this);
+        this.validateForm = this.validateForm.bind(this);
     }
 
     onChange(event: React.FormEvent<HTMLInputElement>) {
@@ -80,8 +85,25 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
         }
     }
 
-    isValid(): boolean {
-        if (!this.props.required && this.state.value === '') {
+    validateForm(e: React.FormEvent<HTMLInputElement>) {
+        let target = e.currentTarget;
+        let val = target.value;
+        
+        let isValid = this._checkFormValid(this.props.required, val);
+        
+        if (!isValid) {
+            this.setState({
+                hasError: true
+            });
+        } else {
+            this.setState({
+                hasError: false
+            });
+        }
+    }
+    
+    _checkFormValid(required: boolean, value: string) {
+        if (!required && value === '') {
             return true;
         }
 
@@ -97,14 +119,19 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
                 IsEmail()(validateObj, 'text');
                 break;
             case 'text':
+            case 'password':
                 IsString()(validateObj, 'text');
                 MinLength(1)(validateObj, 'text');
                 break;
             default:
         }
-        validateObj.text = this.state.value;
-        
+        validateObj.text = value;
+
         return validateSync(validateObj).length === 0;
+    }
+    
+    isValid(): boolean {
+        return this._checkFormValid(this.props.required, this.state.value);
     }
 
     render() {
@@ -119,13 +146,26 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
         let labelComponent;
 
         if (!!label) {
-            labelComponent = <label className="col-md-3 form-control-static control-label">{label}</label>;
+            labelComponent = <label className="col-xs-3 form-control-static control-label">{label}</label>;
         }
 
+        let wrapperClass = classNames({
+            'form-group': true,
+            'gaea-text-field': true,
+            'clearfix': true,
+            'has-error': this.state.hasError
+        });
+        
+        let tipTextElement = this.state.hasError && (
+            <div className="col-xs-3">
+                <span className="text-danger">{this.props.errorMsg}</span>
+            </div>
+        );
+        
         return (
-            <div className="form-group gaea-text-field clearfix">
+            <div className={wrapperClass}>
                 {labelComponent}
-                <div className="col-md-9">
+                <div className="col-xs-5">
                     <div className="input-group">
                         <input
                             className="form-control"
@@ -133,10 +173,12 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
                             name={name}
                             value={!!value ? value : this.state.value}
                             placeholder={placeholder}
+                            onBlur={this.validateForm}
                             onChange={this.onChange}
                         />
                     </div>
                 </div>
+                {tipTextElement}
             </div>
         );
     }
