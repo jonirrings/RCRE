@@ -117,7 +117,7 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
         let labelComponent;
 
         if (!!label) {
-            labelComponent = <label className="col-md-3 form-control-static">{label}</label>;
+            labelComponent = <label className="col-md-3 form-control-static control-label">{label}</label>;
         }
 
         return (

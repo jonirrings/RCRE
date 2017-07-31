@@ -18,7 +18,7 @@ class App extends React.Component<{}, AppStateInterface> {
         
         this.state = {
             code: `{
-    "title": "helloworld",
+    "title": "实验平台",
     "body": [
         {
             "type": "form",

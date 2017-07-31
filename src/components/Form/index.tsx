@@ -41,7 +41,7 @@ interface FormItemStateInterface {
 }
 
 class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
-    childInstance: any[];
+    childInstance: Map<string, any>;
     
     constructor() {
         super();
@@ -52,7 +52,7 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.childInstance = [];
+        this.childInstance = Map();
     }
 
     handleChange(type: string, newValue: any) {
@@ -64,11 +64,11 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
     async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         
-        // let isValidate = await this.checkFormItem();
+        let isValidate = this.checkFormItem();
         
-        // if (!isValidate) {
-        //     return;
-        // }
+        if (!isValidate) {
+            return;
+        }
         
         let data = this.state.data.toObject();
         
@@ -79,8 +79,10 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
     }
     
     async checkFormItem() {
-        this.childInstance.forEach(child => {
-            // console.log(child.isValid());
+        let instanceArr = this.childInstance.toArray();
+        
+        return instanceArr.every(child => {
+            return child.isValid();
         });
     }
 
@@ -96,7 +98,9 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
                 _onChange: this.handleChange,
                 _value: this.state.data.get(info.name) || '',
                 ref: (ref: any) => {
-                    this.childInstance.push(ref);
+                    if (ref) {
+                        this.childInstance = this.childInstance.set(info.name, ref);   
+                    }
                 }
             });
             
