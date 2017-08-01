@@ -1,10 +1,11 @@
 import * as React from 'react';
-import {IsBoolean, IsDefined, IsString, IsEmail, validateSync, MinLength} from 'class-validator';
+import {IsBoolean, IsString, IsEmail, validateSync, MinLength} from 'class-validator';
 import * as classNames from 'classnames';
+import { FormItem, FormItemBasicPropsInterface } from '../../types';
 
 import './style.css';
 
-export class TextFieldPropsInterface {
+export class TextFieldPropsInterface extends FormItemBasicPropsInterface {
     @IsString()
     className?: string;
 
@@ -16,14 +17,6 @@ export class TextFieldPropsInterface {
 
     @IsString()
     placeholder?: string;
-
-    @IsString()
-    @IsDefined()
-    type: string;
-
-    @IsString()
-    @IsDefined()
-    name: string;
 
     @IsString()
     label?: string;
@@ -45,9 +38,11 @@ export class TextFieldPropsInterface {
     
     @IsString()
     afterAddon: string;
+    
+    @IsBoolean()
+    readonly: boolean;
 
-    _value: string;
-    _onChange: (type: string, newValue: string) => void;
+    onChange: (type: string, newValue: string) => void;
 }
 
 interface TextFieldStateInterface {
@@ -55,7 +50,15 @@ interface TextFieldStateInterface {
     hasError: boolean;
 }
 
-class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterface> {
+class Text extends FormItem<TextFieldPropsInterface, TextFieldStateInterface> {
+    static defaultProps = {
+        value: '',
+        
+        onChange() {
+            console.error('onChange 方法没有实现');
+        }
+    };
+    
     constructor() {
         super();
 
@@ -64,46 +67,50 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
             hasError: false
         };
 
-        this._onChange = this._onChange.bind(this);
-        this._validateForm = this._validateForm.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.validateForm = this.validateForm.bind(this);
     }
 
-    _onChange(event: React.FormEvent<HTMLInputElement>) {
-        event.persist();
-        // 如果强制设置value, 则说明是写死的值, 不需要触发onChange
-        if (this.props.value) {
+    private onChange(event: React.FormEvent<HTMLInputElement>) {
+        if (this.props.readonly) {
             return;
         }
+        
+        event.persist();
         let newValue = event.currentTarget.value;
 
         this.setState({
             value: newValue
         }, () => {
-            this.props._onChange(this.props.name, newValue);
+            this.props.onChange(this.props.name, newValue);
         });
     }
 
     componentWillReceiveProps(nextProps: TextFieldPropsInterface) {
-        if (this.state.value !== nextProps._value) {
+        if (this.state.value !== nextProps.value) {
             this.setState({
                 value: nextProps.value
             });
         }
     }
 
-    _validateForm(e: React.FormEvent<HTMLInputElement>) {
+    private validateForm(e: React.FormEvent<HTMLInputElement>) {
         let target = e.currentTarget;
         let val = target.value;
         
-        let isValid = this._checkFormValid(this.props.required, val);
+        let isValid = this.checkFormValid(this.props.required, val);
         
         this.setState({
             hasError: !isValid
         });
     }
     
-    _checkFormValid(required: boolean, value: string) {
+    private checkFormValid(required: boolean, value: string) {
         if (!required && value === '') {
+            return true;
+        }
+        
+        if (this.props.readonly) {
             return true;
         }
 
@@ -131,7 +138,7 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
         return validateSync(obj).length === 0;
     }
     
-    _renderAddon(text: string) {
+    private renderAddonText(text: string) {
         if (!text) {
             return '';
         }
@@ -139,8 +146,8 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
         return <span className="input-group-addon">{text}</span>;
     }
     
-    isValid(): boolean {
-        let valid = this._checkFormValid(this.props.required, this.state.value);
+    public isValid(): boolean {
+        let valid = this.checkFormValid(this.props.required, this.state.value);
         
         this.setState({
             hasError: !valid
@@ -182,17 +189,18 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
                 {labelComponent}
                 <div className="col-xs-5">
                     <div className="input-group">
-                        {this._renderAddon(this.props.preAddon)}
+                        {this.renderAddonText(this.props.preAddon)}
                         <input
                             className="form-control"
                             type={type}
                             name={name}
                             value={!!value ? value : this.state.value}
                             placeholder={placeholder}
-                            onBlur={this._validateForm}
-                            onChange={this._onChange}
+                            onBlur={this.validateForm}
+                            onChange={this.onChange}
+                            readOnly={this.props.readonly}
                         />
-                        {this._renderAddon(this.props.afterAddon)}
+                        {this.renderAddonText(this.props.afterAddon)}
                     </div>
                 </div>
                 {tipTextElement}

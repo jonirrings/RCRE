@@ -1,9 +1,10 @@
 import * as React from 'react';
 import componentLoader from '../../render/util/componentLoader';
 import { Map } from 'immutable';
-import { IsString, IsDefined, IsArray, IsBoolean } from 'class-validator';
+import { IsString, IsDefined, IsArray} from 'class-validator';
 import createElement from '../../render/util/createElement';
 import apiRequest from '../../render/services/api';
+import { FormItem, FormItemBasicPropsInterface} from './types';
 
 export class FormPropsInterface {
     @IsString()
@@ -12,28 +13,11 @@ export class FormPropsInterface {
 
     @IsArray()
     @IsDefined()
-    controls: FormItemPropsInterface[];
+    controls: FormItemBasicPropsInterface[];
     
     @IsString()
     @IsDefined()
     api: string;
-}
-
-class FormItemPropsInterface {
-    @IsString()
-    @IsDefined()
-    type: string;
-
-    @IsString()
-    @IsDefined()
-    name: string;
-
-    @IsString()
-    @IsDefined()
-    label: string;
-
-    @IsBoolean()
-    required: boolean;
 }
 
 interface FormItemStateInterface {
@@ -41,7 +25,7 @@ interface FormItemStateInterface {
 }
 
 class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
-    childInstance: Map<string, any>;
+    private childInstance: Map<string, FormItem<FormItemBasicPropsInterface, {}>>;
     
     constructor() {
         super();
@@ -60,7 +44,7 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
             data: this.state.data.set(type, newValue)
         });
     }
-
+    
     async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         
@@ -95,8 +79,8 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
             }
 
             let childProps = Object.assign(info, {
-                _onChange: this.handleChange,
-                _value: this.state.data.get(info.name) || '',
+                onChange: this.handleChange,
+                value: this.state.data.get(info.name) || info.value,
                 ref: (ref: any) => {
                     if (ref) {
                         this.childInstance = this.childInstance.set(info.name, ref);   
@@ -104,7 +88,7 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
                 }
             });
             
-            let child = createElement<FormItemPropsInterface>(
+            let child = createElement<FormItemBasicPropsInterface>(
                 instanceInfo.component,
                 instanceInfo.componentInterface,
                 childProps
@@ -116,28 +100,6 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
                 </div>
             );
         });
-
-        // let actionComponent;
-        //
-        // if (this.props.actions) {
-        //     actionComponent = this.props.actions.map((item, index) => {
-        //         let instance = componentLoader.getComponent<FormActionItemPropsInterface>(item.type);
-        //
-        //         if (!instance) {
-        //             return null;
-        //         }
-        //
-        //         let childProps = Object.assign(item, {
-        //             onAction: this.handleAction
-        //         });
-        //
-        //         return (
-        //             <div className="form-group" key={index}>
-        //                 {React.createElement<FormActionItemPropsInterface>(instance, childProps)}
-        //             </div>
-        //         );
-        //     });
-        // }
 
         return (
             <div className="gaea-form">

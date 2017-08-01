@@ -7,7 +7,7 @@ import Plain, { PlainPropsInterface } from '../../components/Plain/Text';
 
 export type ComponentLoaderMapVal = {
     component: React.ComponentClass<any>,
-    componentInterface: any
+    componentInterface: Object
 };
 
 class ComponentLoader {
