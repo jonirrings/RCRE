@@ -39,6 +39,12 @@ export class TextFieldPropsInterface {
 
     @IsString()
     errorMsg: string;
+    
+    @IsString()
+    preAddon: string;
+    
+    @IsString()
+    afterAddon: string;
 
     _value: string;
     _onChange: (type: string, newValue: string) => void;
@@ -58,11 +64,11 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
             hasError: false
         };
 
-        this.onChange = this.onChange.bind(this);
-        this.validateForm = this.validateForm.bind(this);
+        this._onChange = this._onChange.bind(this);
+        this._validateForm = this._validateForm.bind(this);
     }
 
-    onChange(event: React.FormEvent<HTMLInputElement>) {
+    _onChange(event: React.FormEvent<HTMLInputElement>) {
         event.persist();
         // 如果强制设置value, 则说明是写死的值, 不需要触发onChange
         if (this.props.value) {
@@ -85,7 +91,7 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
         }
     }
 
-    validateForm(e: React.FormEvent<HTMLInputElement>) {
+    _validateForm(e: React.FormEvent<HTMLInputElement>) {
         let target = e.currentTarget;
         let val = target.value;
         
@@ -130,6 +136,14 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
         return validateSync(validateObj).length === 0;
     }
     
+    _renderAddon(text: string) {
+        if (!text) {
+            return '';
+        }
+        
+        return <span className="input-group-addon">{text}</span>;
+    }
+    
     isValid(): boolean {
         return this._checkFormValid(this.props.required, this.state.value);
     }
@@ -167,15 +181,17 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
                 {labelComponent}
                 <div className="col-xs-5">
                     <div className="input-group">
+                        {this._renderAddon(this.props.preAddon)}
                         <input
                             className="form-control"
                             type={type}
                             name={name}
                             value={!!value ? value : this.state.value}
                             placeholder={placeholder}
-                            onBlur={this.validateForm}
-                            onChange={this.onChange}
+                            onBlur={this._validateForm}
+                            onChange={this._onChange}
                         />
+                        {this._renderAddon(this.props.afterAddon)}
                     </div>
                 </div>
                 {tipTextElement}

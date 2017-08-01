@@ -3,6 +3,7 @@ import JSONEditor from './editor/index';
 import Render from './render/index';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
+import 'font-awesome/css/font-awesome.css';
 import './App.css';
 
 interface AppStateInterface {
@@ -27,7 +28,8 @@ class App extends React.Component<{}, AppStateInterface> {
                     "name": "name",
                     "label": "Text",
                     "errorMsg": "名字不能为空",
-                    "required": true
+                    "required": true,
+                    "preAddon": "姓名"
                 },
                 {
                     "type": "password",
