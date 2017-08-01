@@ -5,6 +5,7 @@ import './index.css';
 
 let plan = require('../doc/plan.md');
 let developerGuide = require('../doc/developer_guide.md');
+let formItem = require('../doc/formItem.md');
 
 interface GaeaDocStateInterface {
     html: string;
@@ -53,6 +54,7 @@ class GaeaDoc extends React.Component<{}, GaeaDocStateInterface> {
                 <ul>
                     <li><a onClick={this.switchDoc(plan)}>Plan</a></li>
                     <li><a onClick={this.switchDoc(developerGuide)}>DeveloperGuide</a></li>
+                    <li><a onClick={this.switchDoc(formItem)}>formItem</a></li>
                 </ul>
                 
                 <div dangerouslySetInnerHTML={{__html: this.state.html}} />    
