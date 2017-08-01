@@ -78,7 +78,7 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
         });
     }
     
-    async checkFormItem() {
+    checkFormItem() {
         let instanceArr = this.childInstance.toArray();
         
         return instanceArr.every(child => {

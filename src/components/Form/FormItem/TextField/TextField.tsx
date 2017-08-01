@@ -97,15 +97,9 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
         
         let isValid = this._checkFormValid(this.props.required, val);
         
-        if (!isValid) {
-            this.setState({
-                hasError: true
-            });
-        } else {
-            this.setState({
-                hasError: false
-            });
-        }
+        this.setState({
+            hasError: !isValid
+        });
     }
     
     _checkFormValid(required: boolean, value: string) {
@@ -114,26 +108,27 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
         }
 
         let type = this.props.type;
-        let validateObj: {
+        
+        class ValidateObj {
             text: string;
-        } = {
-            text: ''
-        };
-
+        }
+        
         switch (type) {
             case 'email':
-                IsEmail()(validateObj, 'text');
+                IsEmail()(ValidateObj.prototype, 'text');
                 break;
             case 'text':
             case 'password':
-                IsString()(validateObj, 'text');
-                MinLength(1)(validateObj, 'text');
+                IsString()(ValidateObj.prototype, 'text');
+                MinLength(1)(ValidateObj.prototype, 'text');
                 break;
             default:
         }
-        validateObj.text = value;
-
-        return validateSync(validateObj).length === 0;
+        
+        let obj = new ValidateObj();
+        obj.text = value;
+        
+        return validateSync(obj).length === 0;
     }
     
     _renderAddon(text: string) {
@@ -145,7 +140,13 @@ class Text extends React.Component<TextFieldPropsInterface, TextFieldStateInterf
     }
     
     isValid(): boolean {
-        return this._checkFormValid(this.props.required, this.state.value);
+        let valid = this._checkFormValid(this.props.required, this.state.value);
+        
+        this.setState({
+            hasError: !valid
+        });
+        
+        return valid;
     }
 
     render() {

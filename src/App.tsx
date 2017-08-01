@@ -13,7 +13,7 @@ interface AppStateInterface {
 class App extends React.Component<{}, AppStateInterface> {
     constructor() {
         super();
-        
+
         this.state = {
             code: `{
     "title": "实验平台",
@@ -26,7 +26,6 @@ class App extends React.Component<{}, AppStateInterface> {
                 {
                     "type": "text",
                     "name": "name",
-                    "label": "Text",
                     "errorMsg": "名字不能为空",
                     "required": true,
                     "preAddon": "姓名"
@@ -34,13 +33,16 @@ class App extends React.Component<{}, AppStateInterface> {
                 {
                     "type": "password",
                     "name": "password",
-                    "label": "Password"
+                    "preAddon": "密码",
+                    "required": true,
+                    "errorMsg": "密码不能为空"
                 },
                 {
                     "type": "email",
                     "name": "email",
-                    "label": "Email",
-                    "required": true
+                    "preAddon": "邮箱",
+                    "required": true,
+                    "errorMsg": "邮箱格式不正确"
                 },
                 {
                     "type": "submit",
@@ -52,10 +54,10 @@ class App extends React.Component<{}, AppStateInterface> {
     ]
 }`
         };
-        
+
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
     }
-    
+
     onJSONEditorChange(code: string) {
         this.setState({
             code
@@ -69,7 +71,7 @@ class App extends React.Component<{}, AppStateInterface> {
                     code={this.state.code}
                     onChange={this.onJSONEditorChange}
                 />
-                <Render code={this.state.code} />
+                <Render code={this.state.code}/>
             </div>
         );
     }
