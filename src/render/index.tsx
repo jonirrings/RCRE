@@ -1,5 +1,7 @@
 import * as React from 'react';
 import Page, { PageProps } from './core/Page';
+// import { Provider } from 'react-redux';
+// import { createStore } from 'redux';
 
 import './index.css';
 

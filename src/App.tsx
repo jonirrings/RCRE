@@ -1,3 +1,5 @@
+/// <reference path="./global.d.ts" />
+
 import * as React from 'react';
 import JSONEditor from './editor/index';
 import Render from './render/index';

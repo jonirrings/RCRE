@@ -5,6 +5,10 @@ import { IsString, IsDefined, IsArray} from 'class-validator';
 import createElement from '../../render/util/createElement';
 import apiRequest from '../../render/services/api';
 import { FormItem, FormItemBasicPropsInterface} from './types';
+import { connect } from 'react-redux';
+import { Dispatch, bindActionCreators } from 'redux';
+import {actionCreators, IAction, SET_DATA_PAYLOAD} from './action';
+import {RootState} from '../../render/data/reducers';
 
 export class FormPropsInterface {
     @IsString()
@@ -18,21 +22,17 @@ export class FormPropsInterface {
     @IsString()
     @IsDefined()
     api: string;
-}
 
-interface FormItemStateInterface {
     data: Map<string, any>;
+
+    setData: (payload: SET_DATA_PAYLOAD) => any;
 }
 
-class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
+class Form extends React.Component<FormPropsInterface, {}> {
     private childInstance: Map<string, FormItem<FormItemBasicPropsInterface, {}>>;
     
     constructor() {
         super();
-
-        this.state = {
-            data: Map<string, any>()
-        };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -41,7 +41,8 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
 
     handleChange(type: string, newValue: any) {
         this.setState({
-            data: this.state.data.set(type, newValue)
+            type,
+            newValue
         });
     }
     
@@ -54,7 +55,7 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
             return;
         }
         
-        let data = this.state.data.toObject();
+        let data = this.props.data.toObject();
         
         await apiRequest(this.props.api, {
             method: 'POST',
@@ -80,7 +81,7 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
 
             let childProps = Object.assign(info, {
                 onChange: this.handleChange,
-                value: this.state.data.get(info.name) || info.value,
+                value: this.props.data.get(info.name) || info.value,
                 ref: (ref: any) => {
                     if (ref) {
                         this.childInstance = this.childInstance.set(info.name, ref);   
@@ -116,4 +117,14 @@ class Form extends React.Component<FormPropsInterface, FormItemStateInterface> {
     }
 }
 
-export default Form;
+const mapStateToProps = (state: RootState, ownProps: FormPropsInterface) => {
+    return {
+        data: state.form.data
+    };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
+    setData: actionCreators.setData,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form);

@@ -1,12 +1,18 @@
 import * as React from 'react';
 import { CreateContainer, ContainerProps } from './Container';
+import { Provider } from 'react-redux';
+import store from '../data/store';
 
 export class PageProps {
     title?: string;
     body: ContainerProps[] | ContainerProps | string;
 }
 
-class Page extends React.Component<PageProps, {}> {
+export class PageStates {
+    helloworld: string;
+}
+
+class Page extends React.Component<PageProps, PageStates> {
     constructor() {
         super();
     }
@@ -27,14 +33,16 @@ class Page extends React.Component<PageProps, {}> {
         }
         
         return (
-            <div>
-                <div className="page-header">
-                    <h1>{this.props.title}</h1>
+            <Provider store={store}>
+                <div className="page-container">
+                    <div className="page-header">
+                        <h1>{this.props.title}</h1>
+                    </div>
+                    <div className="page-body">
+                        {body}
+                    </div>
                 </div>
-                <div className="page-body">
-                    {body}
-                </div>
-            </div>
+            </Provider>
         );
     }
 }
