@@ -1,6 +1,6 @@
 import { Map } from 'immutable';
 import { Reducer } from 'redux';
-import { IRootAction } from '../../render/data/actions';
+import { IRootAction } from '../../data/actions';
 import { SET_DATA } from './action';
 
 export type IState = {

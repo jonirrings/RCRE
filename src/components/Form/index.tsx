@@ -5,12 +5,9 @@ import { IsString, IsDefined, IsArray} from 'class-validator';
 import createElement from '../../render/util/createElement';
 import apiRequest from '../../render/services/api';
 import { FormItem, FormItemBasicPropsInterface} from './types';
-import { connect } from 'react-redux';
-import { Dispatch, bindActionCreators } from 'redux';
-import {actionCreators, IAction, SET_DATA_PAYLOAD} from './action';
-import {RootState} from '../../render/data/reducers';
+import { BasicContainer, ContainerProps} from '../../render/core/Container/types';
 
-export class FormPropsInterface {
+export class FormPropsInterface extends ContainerProps {
     @IsString()
     @IsDefined()
     title: string;
@@ -22,13 +19,9 @@ export class FormPropsInterface {
     @IsString()
     @IsDefined()
     api: string;
-
-    data: Map<string, any>;
-
-    setData: (payload: SET_DATA_PAYLOAD) => any;
 }
 
-class Form extends React.Component<FormPropsInterface, {}> {
+class Form extends BasicContainer<FormPropsInterface , {}> {
     private childInstance: Map<string, FormItem<FormItemBasicPropsInterface, {}>>;
     
     constructor() {
@@ -40,7 +33,7 @@ class Form extends React.Component<FormPropsInterface, {}> {
     }
 
     handleChange(type: string, newValue: any) {
-        this.setState({
+        this.props.setData({
             type,
             newValue
         });
@@ -117,14 +110,4 @@ class Form extends React.Component<FormPropsInterface, {}> {
     }
 }
 
-const mapStateToProps = (state: RootState, ownProps: FormPropsInterface) => {
-    return {
-        data: state.form.data
-    };
-};
-
-const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
-    setData: actionCreators.setData,
-}, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Form);
+export default Form;

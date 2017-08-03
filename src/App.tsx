@@ -23,6 +23,10 @@ class App extends React.Component<{}, AppStateInterface> {
         {
             "type": "form",
             "title": "test form",
+            "data": {
+                "name": "andycall",
+                "age": "21"
+            },
             "api": "/test/submitAPI",
             "controls": [
                 {

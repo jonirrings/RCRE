@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { reducer as form, IState as IFormState } from '../../components/Form/reducer';
+import { reducer as form, IState as IFormState } from '../core/Container/reducer';
 
 export interface RootState {
     form: IFormState;

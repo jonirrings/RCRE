@@ -1,3 +1,3 @@
-import { IAction as IFormAction } from '../../components/Form/action';
+import { IAction as IFormAction } from '../core/Container/action';
 
 export type IRootAction = IFormAction;
