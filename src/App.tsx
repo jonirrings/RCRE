@@ -25,9 +25,13 @@ class App extends React.Component<{}, AppStateInterface> {
             "title": "test form",
             "data": {
                 "name": "andycall",
-                "age": "21"
+                "age": "21",
+                "mixed": {
+                    "foo": "1234"
+                },
+                "remoteErrno": "$response.errno"
             },
-            "api": "/test/submitAPI",
+            "api": "http://localhost:8888",
             "controls": [
                 {
                     "type": "text",

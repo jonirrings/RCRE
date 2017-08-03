@@ -48,7 +48,7 @@ class Form extends BasicContainer<FormPropsInterface , {}> {
             return;
         }
         
-        let data = this.props.data.toObject();
+        let data = this.props.$data.toObject();
         
         await apiRequest(this.props.api, {
             method: 'POST',
@@ -71,11 +71,11 @@ class Form extends BasicContainer<FormPropsInterface , {}> {
             if (!instanceInfo) {
                 return null;
             }
-
+            
             let childProps = Object.assign(info, {
                 onChange: this.handleChange,
-                value: this.props.data.get(info.name) || info.value,
-                ref: (ref: any) => {
+                value: this.props.$data.get(info.name) || info.value,
+                ref: (ref: FormItem<FormItemBasicPropsInterface, {}>) => {
                     if (ref) {
                         this.childInstance = this.childInstance.set(info.name, ref);   
                     }

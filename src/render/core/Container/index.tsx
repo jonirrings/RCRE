@@ -1,11 +1,12 @@
 import * as React from 'react';
 import componentLoader from '../../util/componentLoader';
 import createElement from '../../util/createElement';
-import {BasicContainer, ContainerBasicPropsInterface, ContainerProps } from './types';
+import {BasicContainer, ContainerBasicPropsInterface, ContainerProps, defaultData} from './types';
 import {connect} from 'react-redux';
 import {Dispatch, bindActionCreators} from 'redux';
 import {actionCreators, IAction, SET_DATA_PAYLOAD} from './action';
 import {RootState} from '../../data/reducers';
+import ParamsInjector from '../../util/injector';
 
 export function CreateContainer(info: ContainerBasicPropsInterface) {
     let componentInfo = componentLoader.getComponent(info.type);
@@ -33,18 +34,62 @@ export function CreateContainer(info: ContainerBasicPropsInterface) {
             this.emitChange = this.emitChange.bind(this);
         }
 
-        emitChange(payload: SET_DATA_PAYLOAD) {
+        public emitChange(payload: SET_DATA_PAYLOAD) {
             this.props.setData(payload);
+        }
+        
+        private emitAPIRequest() {
+            if (!this.props.api) {
+                console.error('You can not get data through api request if you did\' provide api address');
+                return;
+            }
+        }
+        
+        loadData() {
+            return new Promise<any>((resolve, reject) => {
+                setTimeout(function() {
+                    resolve({
+                        errno: 1,
+                        errmsg: 'ok',
+                        data: []
+                    });
+                }, 100);
+            });
+        }
+        
+        private mergeOriginData(data: defaultData) {
+            let injector = new ParamsInjector(data);
+            injector.setResourceProvider(this.loadData());
+            
+            for (let key in data) {
+                if (data.hasOwnProperty(key)) {
+                    if (!ParamsInjector.isInjector(data[key])) {
+                        this.props.setData({
+                            type: key,
+                            newValue: data[key]
+                        });   
+                    }
+                }
+            }
+            
+            injector.finished(() => {
+                 console.log('finished');
+            });
         }
 
         render() {
             if (!component) {
                 return null;
             }
+            
+            if (info.data) {
+                this.mergeOriginData(info.data);
+            }
 
             return createElement<ContainerProps>(component, componentInterface, Object.assign(info, {
-                data: this.props.data,
-                setData: this.emitChange
+                $data: this.props.$data,
+                setData: this.emitChange,
+                requestAPI: this.emitAPIRequest
             }));
         }
     }
@@ -54,7 +99,7 @@ export function CreateContainer(info: ContainerBasicPropsInterface) {
 
     const mapStateToProps = (state: RootState, ownProps: any) => {
         return {
-            data: state.form.data
+            $data: state.form.data
         };
     };
 
