@@ -1,11 +1,7 @@
-import * as React from 'react';
 import { IsString, IsDefined } from 'class-validator';
+import { BasicContainer, ContainerBasicPropsInterface} from '../../render/core/Container/types';
 
-export class FormItemBasicPropsInterface {
-    @IsString()
-    @IsDefined()
-    type: string;
-
+export class FormItemBasicPropsInterface extends ContainerBasicPropsInterface {
     @IsString()
     @IsDefined()
     name: string;
@@ -14,7 +10,7 @@ export class FormItemBasicPropsInterface {
     value: string;
 }
 
-export class FormItem<T extends FormItemBasicPropsInterface, P> extends React.Component<T, P> {
+export class FormItem<T extends FormItemBasicPropsInterface, P> extends BasicContainer<T, P> {
     constructor() {
         super();
     }

@@ -1,13 +1,9 @@
 import * as React from 'react';
-import componentLoader from '../util/componentLoader';
-import createElement from '../util/createElement';
+import componentLoader from '../../util/componentLoader';
+import createElement from '../../util/createElement';
+import { BasicContainer, ContainerBasicPropsInterface } from './types';
 
-export class ContainerProps {
-    type: string;
-    [s: string]: any
-}
-
-export function CreateContainer(info: ContainerProps) {
+export function CreateContainer(info: ContainerBasicPropsInterface) {
     let componentInfo = componentLoader.getComponent(info.type);
     
     if (!componentInfo) {
@@ -23,7 +19,7 @@ export function CreateContainer(info: ContainerProps) {
     const wrappedComponentName = component.displayName || component.name || 'ContainerComponent';
     const displayName = `Container(${wrappedComponentName})`;
 
-    class Container extends React.Component<ContainerProps, {}> {
+    class Container extends BasicContainer<ContainerBasicPropsInterface, {}> {
         static WrappedComponent: string;
         static displayName: string;
 
@@ -36,14 +32,16 @@ export function CreateContainer(info: ContainerProps) {
                 return null;
             }
             
-            return createElement<ContainerProps>(component, componentInterface, info);
+            console.log(info);
+            
+            return createElement<ContainerBasicPropsInterface>(component, componentInterface, info);
         }
     }
 
     Container.WrappedComponent = wrappedComponentName;
     Container.displayName = displayName;
     
-    return React.createElement<ContainerProps>(Container, Object.assign(info, {
-        key: info.key
+    return React.createElement<ContainerBasicPropsInterface>(Container, Object.assign(info, {
+        key: displayName
     }));
 }

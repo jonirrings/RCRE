@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { CreateContainer, ContainerProps } from './Container';
+import { CreateContainer } from './Container/index';
+import { ContainerBasicPropsInterface } from './Container/types';
 import { Provider } from 'react-redux';
 import store from '../data/store';
 
 export class PageProps {
     title?: string;
-    body: ContainerProps[] | ContainerProps | string;
+    body: ContainerBasicPropsInterface[] | ContainerBasicPropsInterface | string;
 }
 
 export class PageStates {
