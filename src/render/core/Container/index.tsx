@@ -7,6 +7,7 @@ import {Dispatch, bindActionCreators} from 'redux';
 import {actionCreators, IAction, SET_DATA_PAYLOAD} from './action';
 import {RootState} from '../../data/reducers';
 import ParamsInjector from '../../util/injector';
+import { each } from 'lodash';
 
 export function CreateContainer(info: ContainerBasicPropsInterface) {
     let componentInfo = componentLoader.getComponent(info.type);
@@ -46,31 +47,20 @@ export function CreateContainer(info: ContainerBasicPropsInterface) {
         }
         
         loadData() {
-            return new Promise<any>((resolve, reject) => {
-                setTimeout(function() {
-                    resolve({
-                        errno: 1,
-                        errmsg: 'ok',
-                        data: []
-                    });
-                }, 100);
-            });
+            return fetch('http://localhost:8000').then(ret => ret.json());
         }
         
         private mergeOriginData(data: defaultData) {
-            let injector = new ParamsInjector(data);
-            injector.setResourceProvider(this.loadData());
+            let injector = new ParamsInjector(data, this.loadData);
             
-            for (let key in data) {
-                if (data.hasOwnProperty(key)) {
-                    if (!ParamsInjector.isInjector(data[key])) {
-                        this.props.setData({
-                            type: key,
-                            newValue: data[key]
-                        });   
-                    }
+            each(data, (item, key) => {
+                if (!ParamsInjector.isInjector(item)) {
+                    this.props.setData({
+                        type: key,
+                        newValue: item
+                    });
                 }
-            }
+            });
             
             injector.finished(() => {
                  console.log('finished');

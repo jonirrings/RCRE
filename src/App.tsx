@@ -31,7 +31,7 @@ class App extends React.Component<{}, AppStateInterface> {
                 },
                 "remoteErrno": "$response.errno"
             },
-            "api": "http://localhost:8888",
+            "api": "http://localhost:8000/",
             "controls": [
                 {
                     "type": "text",
