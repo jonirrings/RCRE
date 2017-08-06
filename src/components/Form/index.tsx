@@ -72,9 +72,11 @@ class Form extends BasicContainer<FormPropsInterface , {}> {
                 return null;
             }
             
+            let propsValue = this.props.$data.get(info.name);
+            
             let childProps = Object.assign(info, {
                 onChange: this.handleChange,
-                value: this.props.$data.get(info.name) || info.value,
+                value: typeof propsValue === 'undefined' ? info.value : propsValue,
                 ref: (ref: FormItem<FormItemBasicPropsInterface, {}>) => {
                     if (ref) {
                         this.childInstance = this.childInstance.set(info.name, ref);   

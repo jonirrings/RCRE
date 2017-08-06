@@ -33,6 +33,12 @@ export function CreateContainer(info: ContainerBasicPropsInterface) {
             
             this.emitChange = this.emitChange.bind(this);
         }
+        
+        componentWillMount() {
+            if (info.data) {
+                this.mergeOriginData(info.data);
+            }
+        }
 
         public emitChange(payload: SET_DATA_PAYLOAD) {
             this.props.setData(payload);
@@ -81,10 +87,6 @@ export function CreateContainer(info: ContainerBasicPropsInterface) {
             if (!component) {
                 return null;
             }
-            
-            if (info.data) {
-                this.mergeOriginData(info.data);
-            }
 
             return createElement<ContainerProps>(component, componentInterface, Object.assign(info, {
                 $data: this.props.$data,
@@ -99,7 +101,7 @@ export function CreateContainer(info: ContainerBasicPropsInterface) {
 
     const mapStateToProps = (state: RootState, ownProps: any) => {
         return {
-            $data: state.form.data
+            $data: state.form.get('data')
         };
     };
 
