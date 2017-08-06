@@ -46,7 +46,6 @@ export class TextFieldPropsInterface extends FormItemBasicPropsInterface {
 }
 
 interface TextFieldStateInterface {
-    value: string;
     hasError: boolean;
 }
 
@@ -63,7 +62,6 @@ class Text extends FormItem<TextFieldPropsInterface, TextFieldStateInterface> {
         super();
 
         this.state = {
-            value: '',
             hasError: false
         };
 
@@ -79,19 +77,7 @@ class Text extends FormItem<TextFieldPropsInterface, TextFieldStateInterface> {
         event.persist();
         let newValue = event.currentTarget.value;
 
-        this.setState({
-            value: newValue
-        }, () => {
-            this.props.onChange(this.props.name, newValue);
-        });
-    }
-
-    componentWillReceiveProps(nextProps: TextFieldPropsInterface) {
-        if (this.state.value !== nextProps.value) {
-            this.setState({
-                value: nextProps.value
-            });
-        }
+        this.props.onChange(this.props.name, newValue);
     }
 
     private validateForm(e: React.FormEvent<HTMLInputElement>) {
@@ -147,7 +133,7 @@ class Text extends FormItem<TextFieldPropsInterface, TextFieldStateInterface> {
     }
     
     public isValid(): boolean {
-        let valid = this.checkFormValid(this.props.required, this.state.value);
+        let valid = this.checkFormValid(this.props.required, this.props.value);
         
         this.setState({
             hasError: !valid
@@ -194,7 +180,7 @@ class Text extends FormItem<TextFieldPropsInterface, TextFieldStateInterface> {
                             className="form-control"
                             type={type}
                             name={name}
-                            value={!!value ? value : this.state.value}
+                            value={value}
                             placeholder={placeholder}
                             onBlur={this.validateForm}
                             onChange={this.onChange}
