@@ -68,8 +68,8 @@ export function CreateContainer(info: ContainerBasicPropsInterface) {
                 }
             });
             
-            injector.finished(() => {
-                 console.log('finished');
+            injector.finished((payloads: SET_DATA_PAYLOAD[]) => {
+                payloads.forEach(this.props.setData);
             });
         }
 

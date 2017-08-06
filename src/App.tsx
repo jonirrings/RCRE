@@ -29,7 +29,7 @@ class App extends React.Component<{}, AppStateInterface> {
                 "mixed": {
                     "foo": "1234"
                 },
-                "remoteErrno": "$response.errno"
+                "remoteErrno": "$response.data.data_list[0].plan_id"
             },
             "api": "http://localhost:8000/",
             "controls": [
