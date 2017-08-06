@@ -31,7 +31,8 @@ class App extends React.Component<{}, AppStateInterface> {
                 },
                 "remoteErrno": "$response.data.data_list[0].plan_id"
             },
-            "api": "http://localhost:8000/",
+            "initialLoad": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/",
+            "submitUrl": "/",
             "controls": [
                 {
                     "type": "text",

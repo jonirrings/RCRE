@@ -16,14 +16,14 @@ export class ContainerBasicPropsInterface {
     type: string;
     
     @IsString()
-    api?: string;
+    initialLoad?: string;
     
     @IsNotEmpty()
     data?: defaultData;
 }
 
 export class ContainerProps extends ContainerBasicPropsInterface {
-    '$data': Map<string, any>;
+    $data: Map<string, any>;
     setData: (payload: SET_DATA_PAYLOAD) => void;
 }
 

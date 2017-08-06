@@ -33,6 +33,7 @@ export function CreateContainer(info: ContainerBasicPropsInterface) {
             super();
             
             this.emitChange = this.emitChange.bind(this);
+            this.loadData = this.loadData.bind(this);
         }
         
         componentWillMount() {
@@ -46,14 +47,18 @@ export function CreateContainer(info: ContainerBasicPropsInterface) {
         }
         
         private emitAPIRequest() {
-            if (!this.props.api) {
+            if (!this.props.initialLoad) {
                 console.error('You can not get data through api request if you did\' provide api address');
                 return;
             }
         }
         
         loadData() {
-            return fetch('http://localhost:8000').then(ret => ret.json());
+            if (this.props.initialLoad) {
+                return fetch(this.props.initialLoad).then(ret => ret.json());
+            }
+            
+            return Promise.resolve({});
         }
         
         private mergeOriginData(data: defaultData) {

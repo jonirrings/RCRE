@@ -11,3 +11,5 @@
 + 后端服务
 + SDK build tools
 + JSON编辑器
+
+## 环境安装

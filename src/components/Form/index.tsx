@@ -18,7 +18,7 @@ export class FormPropsInterface extends ContainerProps {
     
     @IsString()
     @IsDefined()
-    api: string;
+    submitUrl: string;
 }
 
 class Form extends BasicContainer<FormPropsInterface , {}> {
@@ -50,7 +50,7 @@ class Form extends BasicContainer<FormPropsInterface , {}> {
         
         let data = this.props.$data.toObject();
         
-        await apiRequest(this.props.api, {
+        await apiRequest(this.props.submitUrl, {
             method: 'POST',
             data: data
         });
