@@ -14,8 +14,10 @@ export const initialState: IState = {
 export const reducer: Reducer<IState> = (state: IState = initialState, actions: IRootAction): IState => {
     switch (actions.type) {
         case SET_DATA:
-            state.data = state.data.set(actions.payload.type, actions.payload.newValue);
-            return state;
+            // state.data = state.data.set(actions.payload.type, actions.payload.newValue);
+            return {
+                data: state.data.set(actions.payload.type, actions.payload.newValue)
+            };
             
         default:
             return state;

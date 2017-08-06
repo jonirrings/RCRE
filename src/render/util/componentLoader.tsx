@@ -2,6 +2,7 @@ import * as React from 'react';
 import Form, { FormPropsInterface } from '../../components/Form/index';
 import Button, { ButtonPropsInterface } from '../../components/Form/FormItem/Button/Button';
 import Text, { TextFieldPropsInterface } from '../../components/Form/FormItem/TextField/TextField';
+import Select, { SelectPropsInterface } from '../../components/Form/FormItem/Select/Select';
 import Html, { HtmlPropsInterface } from '../../components/Plain/Html';
 import Plain, { PlainPropsInterface } from '../../components/Plain/Text';
 
@@ -38,5 +39,6 @@ loader.addComponent('email', Text, TextFieldPropsInterface);
 loader.addComponent('submit', Text, TextFieldPropsInterface);
 loader.addComponent('html', Html, HtmlPropsInterface);
 loader.addComponent('plain', Plain, PlainPropsInterface);
+loader.addComponent('select', Select, SelectPropsInterface);
 
 export default loader;

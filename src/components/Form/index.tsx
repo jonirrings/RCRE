@@ -33,6 +33,7 @@ class Form extends BasicContainer<FormPropsInterface , {}> {
     }
 
     handleChange(type: string, newValue: any) {
+        console.log(type, newValue);
         this.props.setData({
             type,
             newValue
@@ -49,6 +50,8 @@ class Form extends BasicContainer<FormPropsInterface , {}> {
         }
         
         let data = this.props.data.toObject();
+
+        console.log(data);
         
         await apiRequest(this.props.api, {
             method: 'POST',

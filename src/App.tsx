@@ -51,6 +51,19 @@ class App extends React.Component<{}, AppStateInterface> {
                     "errorMsg": "邮箱格式不正确"
                 },
                 {
+                    "type": "select",
+                    "name": "select",
+                    "preAddon": "性别",
+                    "options": ["男", "女", "不知道"]
+                },
+                {
+                    "type": "select",
+                    "name": "select",
+                    "preAddon": "省份",
+                    "value": "002",
+                    "options": [{"label":"北京","value":"001"},{"label":"上海","value":"002"}]
+                },
+                {
                     "type": "submit",
                     "name": "submit",
                     "value": "submit"
