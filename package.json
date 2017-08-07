@@ -83,9 +83,8 @@
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "start": "node scripts/bin/react-scripts-ts start",
+    "build": "node scripts/bin/react-scripts-ts build",
+    "test": "node scripts/bin/react-scripts-ts test --env=jsdom"
   }
 }
