@@ -3,8 +3,11 @@ import {IsDefined, IsNotEmpty, IsString} from 'class-validator';
 import { Map } from 'immutable';
 import { SET_DATA_PAYLOAD } from './action';
 
-type defaultData = {
-    [s: string]: any
+export type rawJSONType = string | number | null | boolean | Object;
+export type originJSONType = rawJSONType | rawJSONType[];
+
+export type defaultData = {
+    [s: string]: originJSONType
 };
 
 export class ContainerBasicPropsInterface {
@@ -13,14 +16,14 @@ export class ContainerBasicPropsInterface {
     type: string;
     
     @IsString()
-    api?: string;
+    initialLoad?: string;
     
     @IsNotEmpty()
     data?: defaultData;
 }
 
 export class ContainerProps extends ContainerBasicPropsInterface {
-    data: Map<string, any>;
+    $data: Map<string, any>;
     setData: (payload: SET_DATA_PAYLOAD) => void;
 }
 

@@ -25,9 +25,14 @@ class App extends React.Component<{}, AppStateInterface> {
             "title": "test form",
             "data": {
                 "name": "andycall",
-                "age": "21"
+                "age": "21",
+                "mixed": {
+                    "foo": "1234"
+                },
+                "remoteErrno": "$response.data.data_list[0].plan_id"
             },
-            "api": "/test/submitAPI",
+            "initialLoad": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/",
+            "submitUrl": "/",
             "controls": [
                 {
                     "type": "text",
@@ -52,13 +57,13 @@ class App extends React.Component<{}, AppStateInterface> {
                 },
                 {
                     "type": "select",
-                    "name": "select",
+                    "name": "sex",
                     "preAddon": "性别",
                     "options": ["男", "女", "不知道"]
                 },
                 {
                     "type": "select",
-                    "name": "select",
+                    "name": "region",
                     "preAddon": "省份",
                     "value": "002",
                     "options": [{"label":"北京","value":"001"},{"label":"上海","value":"002"}]

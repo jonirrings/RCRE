@@ -18,7 +18,7 @@ export class FormPropsInterface extends ContainerProps {
     
     @IsString()
     @IsDefined()
-    api: string;
+    submitUrl: string;
 }
 
 class Form extends BasicContainer<FormPropsInterface , {}> {
@@ -49,11 +49,9 @@ class Form extends BasicContainer<FormPropsInterface , {}> {
             return;
         }
         
-        let data = this.props.data.toObject();
-
-        console.log(data);
+        let data = this.props.$data.toObject();
         
-        await apiRequest(this.props.api, {
+        await apiRequest(this.props.submitUrl, {
             method: 'POST',
             data: data
         });
@@ -74,11 +72,13 @@ class Form extends BasicContainer<FormPropsInterface , {}> {
             if (!instanceInfo) {
                 return null;
             }
-
+            
+            let propsValue = this.props.$data.get(info.name);
+            
             let childProps = Object.assign(info, {
                 onChange: this.handleChange,
-                value: this.props.data.get(info.name) || info.value,
-                ref: (ref: any) => {
+                value: typeof propsValue === 'undefined' ? info.value : propsValue,
+                ref: (ref: FormItem<FormItemBasicPropsInterface, {}>) => {
                     if (ref) {
                         this.childInstance = this.childInstance.set(info.name, ref);   
                     }

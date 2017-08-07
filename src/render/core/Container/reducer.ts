@@ -3,21 +3,17 @@ import { Reducer } from 'redux';
 import { IRootAction } from '../../data/actions';
 import { SET_DATA } from './action';
 
-export type IState = {
-    data: Map<string, any>,
-};
+type stateItem = Map<string, any>;
+export type IState = Map<string, stateItem>;
 
-export const initialState: IState = {
+export const initialState: IState = Map<string, stateItem>({
     data: Map<string, any>()
-};
+});
 
 export const reducer: Reducer<IState> = (state: IState = initialState, actions: IRootAction): IState => {
     switch (actions.type) {
         case SET_DATA:
-            // state.data = state.data.set(actions.payload.type, actions.payload.newValue);
-            return {
-                data: state.data.set(actions.payload.type, actions.payload.newValue)
-            };
+            return state.set('data', state.get('data').set(actions.payload.type, actions.payload.newValue));
             
         default:
             return state;

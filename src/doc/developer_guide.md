@@ -7,7 +7,9 @@
 
 + Render
 + 控制组件
-+ 单元组件
++ 组件库兼容中间件
 + 后端服务
 + SDK build tools
 + JSON编辑器
+
+## 环境安装
