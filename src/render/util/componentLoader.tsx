@@ -1,16 +1,16 @@
 import * as React from 'react';
-import Form, { FormPropsInterface } from '../../components/Form/index';
-import Button, { ButtonPropsInterface } from '../../components/Form/FormItem/Button/Button';
-import Text, { TextFieldPropsInterface } from '../../components/Form/FormItem/TextField/TextField';
-import Html, { HtmlPropsInterface } from '../../components/Plain/Html';
-import Plain, { PlainPropsInterface } from '../../components/Plain/Text';
+import Form, { FormPropsInterface } from '../../abstractComponents/Form/index';
+import Button, { ButtonPropsInterface } from '../../abstractComponents/Form/FormItem/Button/Button';
+import Text, { TextFieldPropsInterface } from '../../abstractComponents/Form/FormItem/TextField/TextField';
+import Html, { HtmlPropsInterface } from '../../abstractComponents/Plain/Html';
+import Plain, { PlainPropsInterface } from '../../abstractComponents/Plain/Text';
 
 export type ComponentLoaderMapVal = {
     component: React.ComponentClass<any>,
     componentInterface: Object
 };
 
-class ComponentLoader {
+export class ComponentLoader {
     private cache: Map<string, ComponentLoaderMapVal>;
     constructor() {
         this.cache = new Map();

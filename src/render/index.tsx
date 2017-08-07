@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Page, { PageProps } from './core/Page';
-// import { Provider } from 'react-redux';
-// import { createStore } from 'redux';
+import paramCheck from './util/paramCheck';
 
 import './index.css';
 
@@ -26,13 +25,19 @@ class Render extends React.Component<RenderPropsInterface, {}> {
 
     render() {
         let info: PageProps = JSON.parse(this.props.code);
-
+        let ret = paramCheck(info, PageProps);
+        if (ret.length > 0) {
+            console.error(ret);
+            // TODO json property error log
+        }
+        
         // TODO: 每次JSON更新都会整体重渲染, 性能很烂
         return (
             <div className="render">
                 <Page
                     title={info.title}
                     body={info.body}
+                    theme={info.theme}
                 />
             </div>
         );

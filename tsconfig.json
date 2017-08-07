@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
         "outDir": "build/dist",
-        "module": "commonjs",
-        "target": "es5",
+        "module": "es6",
+        "target": "es6",
         "lib": [
             "es6",
             "dom",
@@ -10,17 +10,18 @@
         ],
         "sourceMap": true,
         "allowJs": true,
-        "jsx": "react",
         "moduleResolution": "node",
         "rootDir": "src",
-        "forceConsistentCasingInFileNames": true,
+        "forceConsistentCasingInFileNames": false,
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
         "suppressImplicitAnyIndexErrors": true,
         "noUnusedLocals": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "jsx": "react",
+        "allowSyntheticDefaultImports": true
     },
     "exclude": [
         "node_modules",

@@ -8,6 +8,7 @@ import {actionCreators, IAction, SET_DATA_PAYLOAD} from './action';
 import {RootState} from '../../data/reducers';
 import ParamsInjector from '../../util/injector';
 import { each } from 'lodash';
+import * as PropTypes from 'prop-types';
 
 export function CreateContainer(info: ContainerBasicPropsInterface) {
     let componentInfo = componentLoader.getComponent(info.type);
@@ -29,6 +30,10 @@ export function CreateContainer(info: ContainerBasicPropsInterface) {
         static WrappedComponent: string;
         static displayName: string;
 
+        static contextTypes = {
+            driver: PropTypes.object
+        };
+        
         constructor() {
             super();
             
