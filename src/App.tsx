@@ -37,7 +37,7 @@ class App extends React.Component<{}, AppStateInterface> {
                 },
                 "remoteErrno": "$response.data.data_list[0].plan_id"
             },
-            "initialLoad": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/",
+            "initialLoad": "http://127.0.0.1:8080/package.json",
             "submitUrl": "/",
             "controls": [
                 {
@@ -45,7 +45,8 @@ class App extends React.Component<{}, AppStateInterface> {
                     "name": "name",
                     "errorMsg": "名字不能为空",
                     "required": true,
-                    "preAddon": "姓名"
+                    "preAddon": "姓名",
+                    "initValue": "$data.age"
                 },
                 {
                     "type": "password",

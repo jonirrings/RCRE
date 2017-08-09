@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as CodeMirror from 'react-codemirror';
+import * as keycode from 'keycode';
+import * as ReactDOM from 'react-dom';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
 
@@ -10,9 +12,38 @@ interface JSONEditorPropsInterface {
     onChange: (code: string) => void;
 }
 
-class JSONEditor extends React.Component<JSONEditorPropsInterface, {}> {
+interface JSONEditorStateInterface {
+    code: string;
+}
+
+class JSONEditor extends React.Component<JSONEditorPropsInterface, JSONEditorStateInterface> {
     constructor() {
         super();
+
+        this.state = {
+            code: ''
+        };
+        
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(code: string) {
+        this.setState({
+            code
+        });
+    }
+    
+    componentDidMount() {
+        ReactDOM.findDOMNode(this).addEventListener('keydown', (e: KeyboardEvent) => {
+            let code = e.keyCode;
+            let command = keycode(code);
+            
+            // TODO windows control support
+            if ((e.metaKey && command === 's') || (e.ctrlKey && command === 's')) {
+                e.preventDefault();
+                this.props.onChange(this.state.code);
+            }
+        }, true);
     }
 
     render() {
@@ -26,7 +57,7 @@ class JSONEditor extends React.Component<JSONEditorPropsInterface, {}> {
             <div className="editor-wrapper">
                 <CodeMirror
                     value={this.props.code}
-                    onChange={(code: string) => this.props.onChange(code)}
+                    onChange={this.handleChange}
                     options={options}
                 />
             </div>

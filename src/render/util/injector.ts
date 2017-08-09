@@ -38,7 +38,7 @@ class ParamsInjector {
             if (val.indexOf('$response') === 0) {
                 this.changePayloads.push({
                     type: key,
-                    newValue: parseObjectPropertyExpress(val, mirror)
+                    newValue: parseObjectPropertyExpress('$response', val, mirror)
                 });
             }
         });

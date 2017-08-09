@@ -31,6 +31,7 @@
     "hoist-non-react-statics": "^2.2.1",
     "immutable": "^3.8.1",
     "invariant": "^2.2.2",
+    "keycode": "^2.1.9",
     "lodash": "^4.17.4",
     "marked": "^0.3.6",
     "react": "^15.6.1",
