@@ -1,8 +1,8 @@
-import AntButton, {AntButtonProps} from './components/Button/index';
+import AntButton from './components/Button/index';
+import { ButtonPropsInterface } from '../../abstractComponents/Button/Button';
 import {ComponentLoader} from '../../render/util/componentLoader';
 
 let loader = new ComponentLoader();
-
-loader.addComponent('button', AntButton, AntButtonProps);
+loader.addComponent<ButtonPropsInterface>('button', AntButton, ButtonPropsInterface);
 
 export default loader;

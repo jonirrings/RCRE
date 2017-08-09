@@ -21,6 +21,12 @@ class App extends React.Component<{}, AppStateInterface> {
     "title": "实验平台",
     "body": [
         {
+            "type": "button",
+            "label": "click me",
+          	"icon": "cloud",
+          	"buttonType": "primary"
+        },
+        {
             "type": "form",
             "title": "test form",
             "data": {

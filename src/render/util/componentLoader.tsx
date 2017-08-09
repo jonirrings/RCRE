@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Form, { FormPropsInterface } from '../../abstractComponents/Form/index';
-import Button, { ButtonPropsInterface } from '../../abstractComponents/Form/FormItem/Button/Button';
+import Button, { ButtonPropsInterface } from '../../abstractComponents/Button/Button';
 import Text, { TextFieldPropsInterface } from '../../abstractComponents/Form/FormItem/TextField/TextField';
 import Html, { HtmlPropsInterface } from '../../abstractComponents/Plain/Html';
 import Plain, { PlainPropsInterface } from '../../abstractComponents/Plain/Text';
