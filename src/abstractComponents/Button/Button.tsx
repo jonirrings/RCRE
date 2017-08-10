@@ -86,17 +86,17 @@ class Button extends BasicContainer<ButtonPropsInterface, {}> {
 
         this.handleClick = this.handleClick.bind(this);
     }
-
+    
+    private handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+        e.preventDefault();
+        this.props.onClick(e);
+    }
+    
     render() {
         let driver = this.context.driver;
         let componentInfo = driver.getComponent('button');
         let Component = componentInfo.component;
         return React.createElement(Component, this.props);
-    }
-
-    private handleClick(e: React.MouseEvent<HTMLButtonElement>) {
-        e.preventDefault();
-        this.props.onClick(e);
     }
 }
 

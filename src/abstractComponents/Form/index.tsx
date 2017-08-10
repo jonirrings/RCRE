@@ -66,7 +66,11 @@ class Form extends BasicContainer<FormPropsInterface , {}> {
 
     render() {
         let controlComponents = this.props.controls.map((info, index) => {
-            return createControl(info, index);
+            return createControl(info, {
+                index: info.name,
+                $data: this.props.$data,
+                $handleChange: this.handleChange
+            });
         });
 
         return (

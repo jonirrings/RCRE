@@ -1,6 +1,7 @@
 export function parseObjectPropertyExpress(preDefine: string, code: string, mirror: Object): any {
     // TODO safe run context;
     try {
+        // TODO too dangerous
         let f = new Function(preDefine, `return ${code}`);
         return f(mirror);
     } catch (e) {

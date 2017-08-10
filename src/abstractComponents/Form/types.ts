@@ -1,7 +1,7 @@
 import { IsString, IsDefined } from 'class-validator';
-import { BasicContainer, ContainerBasicPropsInterface} from '../../render/core/Container/types';
+import { BasicControlPropsInterface, BasicControl } from '../../render/core/Control/types';
 
-export class FormItemBasicPropsInterface extends ContainerBasicPropsInterface {
+export class FormItemBasicPropsInterface extends BasicControlPropsInterface {
     @IsString()
     @IsDefined()
     name: string;
@@ -13,7 +13,7 @@ export class FormItemBasicPropsInterface extends ContainerBasicPropsInterface {
     initValue?: string;
 }
 
-export class FormItem<T extends FormItemBasicPropsInterface, P> extends BasicContainer<T, P> {
+export class FormItem<T extends FormItemBasicPropsInterface, P> extends BasicControl<T, P> {
     constructor() {
         super();
     }
