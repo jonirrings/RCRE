@@ -1,19 +1,41 @@
 import * as React from 'react';
 import { CreateContainer } from './Container/index';
 import { ContainerBasicPropsInterface } from './Container/types';
+import {IsString, IsDefined} from 'class-validator';
 import { Provider } from 'react-redux';
+import themeDriver from '../../drivers/index';
+import * as PropsTypes from 'prop-types';
 import store from '../data/store';
 
 export class PageProps {
+    @IsString()
     title?: string;
+    
+    @IsString()
+    theme: string;
+    
+    @IsDefined()
     body: ContainerBasicPropsInterface[] | ContainerBasicPropsInterface | string;
 }
 
-export class PageStates {
-    helloworld: string;
-}
+class Page extends React.Component<PageProps, {}> {
+    static defaultProps = {
+        title: '标题',
+        theme: 'antd'
+    };
+    
+    static childContextTypes = {
+        driver: PropsTypes.object
+    };
 
-class Page extends React.Component<PageProps, PageStates> {
+    getChildContext() {
+        let driver = themeDriver.getTheme(this.props.theme);
+        
+        return {
+            driver: driver
+        };
+    }
+    
     constructor() {
         super();
     }

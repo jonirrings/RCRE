@@ -7,7 +7,10 @@ export class FormItemBasicPropsInterface extends ContainerBasicPropsInterface {
     name: string;
     
     @IsString()
-    value: string;
+    value?: string;
+
+    @IsString()
+    initValue?: string;
 }
 
 export class FormItem<T extends FormItemBasicPropsInterface, P> extends BasicContainer<T, P> {
