@@ -21,14 +21,33 @@ export class ContainerBasicPropsInterface {
     
     @IsNotEmpty()
     data?: defaultData;
-    
+
+    /**
+     * 组件驱动加载器
+     * @private
+     */
     $driver: DriverController;
+
+    /**
+     * 组件唯一ID
+     * @private
+     */
+    $uuid: string;
+
+    /**
+     * Container组件深度
+     * @private
+     */
+    $depth: number;
 }
 
 export class ContainerProps extends ContainerBasicPropsInterface {
-    $data: Map<string, any>;
-    setData: (payload: SET_DATA_PAYLOAD) => void;
-    initData: (payload: INIT_DATA_PAYLOAD) => void; 
+    public $data: Map<string, any>;
+    public setData: (payload: SET_DATA_PAYLOAD) => void;
+    public initData: (payload: INIT_DATA_PAYLOAD) => void;
+    public component?: React.ComponentClass<any>;
+    public componentInterface?: Object;
+    public info?: ContainerBasicPropsInterface;
 }
 
 export class BasicContainer <T extends ContainerBasicPropsInterface, P> extends React.Component<T, P> {

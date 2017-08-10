@@ -5,9 +5,16 @@ import { SET_DATA, INIT_DATA } from './action';
 
 type stateItem = Map<string, any>;
 export type IState = Map<string, stateItem>;
+export type relativeItems = {
+    // container 标识ID
+    uuid: string;
+    // container数据存储获取路径
+    entrance: string;
+};
 
 export const initialState: IState = Map<string, stateItem>({
-    data: Map<string, any>()
+    data: Map<string, any>(),
+    relative: Map<string, any>()
 });
 
 export const reducer: Reducer<IState> = (state: IState = initialState, actions: IRootAction): IState => {
@@ -17,7 +24,6 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
             
         case INIT_DATA:
             return state.set('data', Map(actions.payload));
-            
         default:
             return state;
     }

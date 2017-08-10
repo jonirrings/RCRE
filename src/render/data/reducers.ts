@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import { reducer as form, IState as IFormState } from '../core/Container/reducer';
+import { reducer as container, IState as IContainerState } from '../core/Container/reducer';
 
 export interface RootState {
-    form: IFormState;
+    container: IContainerState;
 }
 
 export const rootReducer = combineReducers<RootState>({
-    form
+    container
 });

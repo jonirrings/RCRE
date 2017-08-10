@@ -48,11 +48,16 @@ class Page extends React.Component<PageProps, {}> {
         } else if (Array.isArray(this.props.body)) {
             body = this.props.body.map((item, index) => {
                 return CreateContainer(Object.assign(item, {
-                    key: index
+                    key: index,
+                    $depth: 0,
+                    $uuid: `0_${index}`
                 }));
             });
         } else {
-            body = CreateContainer(this.props.body);
+            body = CreateContainer(Object.assign(this.props.body, {
+                $uuid: `0_0`,
+                $depth: 0
+            }));
         }
         
         return (

@@ -32,7 +32,6 @@ class Form extends BasicContainer<FormPropsInterface , {}> {
     }
 
     handleChange(type: string, newValue: any) {
-        console.log(type, newValue);
         this.props.setData({
             type,
             newValue
