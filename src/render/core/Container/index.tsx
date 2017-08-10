@@ -7,7 +7,6 @@ import {Dispatch, bindActionCreators} from 'redux';
 import {actionCreators, IAction, SET_DATA_PAYLOAD} from './action';
 import {RootState} from '../../data/reducers';
 import ParamsInjector from '../../util/injector';
-import { each } from 'lodash';
 
 export function CreateContainer(info: ContainerBasicPropsInterface) {
     let componentInfo = componentLoader.getComponent(info.type);
@@ -38,6 +37,7 @@ export function CreateContainer(info: ContainerBasicPropsInterface) {
         
         componentWillMount() {
             if (info.data) {
+                this.props.initData(info.data);
                 this.mergeOriginData(info.data);
             }
         }
@@ -64,15 +64,6 @@ export function CreateContainer(info: ContainerBasicPropsInterface) {
         private mergeOriginData(data: defaultData) {
             let injector = new ParamsInjector(data, this.loadData);
             
-            each(data, (item, key) => {
-                if (!ParamsInjector.isInjector(item)) {
-                    this.props.setData({
-                        type: key,
-                        newValue: item
-                    });
-                }
-            });
-            
             injector.finished((payloads: SET_DATA_PAYLOAD[]) => {
                 payloads.forEach(this.props.setData);
             });
@@ -86,6 +77,7 @@ export function CreateContainer(info: ContainerBasicPropsInterface) {
             return createElement<ContainerProps>(component, componentInterface, Object.assign(info, {
                 $data: this.props.$data,
                 setData: this.emitChange,
+                initData: this.props.initData,
                 requestAPI: this.emitAPIRequest
             }));
         }
@@ -102,6 +94,7 @@ export function CreateContainer(info: ContainerBasicPropsInterface) {
 
     const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
         setData: actionCreators.setData,
+        initData: actionCreators.initData
     }, dispatch);
 
     let wrappedComponent = connect(mapStateToProps, mapDispatchToProps)(Container);

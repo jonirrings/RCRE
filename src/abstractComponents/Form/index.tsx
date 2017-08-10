@@ -1,11 +1,10 @@
 import * as React from 'react';
-import componentLoader from '../../render/util/componentLoader';
 import { Map } from 'immutable';
 import { IsString, IsDefined, IsArray} from 'class-validator';
-import createElement from '../../render/util/createElement';
 import apiRequest from '../../render/services/api';
 import { FormItem, FormItemBasicPropsInterface} from './types';
 import { BasicContainer, ContainerProps} from '../../render/core/Container/types';
+import { createControl } from '../../render/core/Control/index';
 
 export class FormPropsInterface extends ContainerProps {
     @IsString()
@@ -33,6 +32,7 @@ class Form extends BasicContainer<FormPropsInterface , {}> {
     }
 
     handleChange(type: string, newValue: any) {
+        console.log(type, newValue);
         this.props.setData({
             type,
             newValue
@@ -66,35 +66,7 @@ class Form extends BasicContainer<FormPropsInterface , {}> {
 
     render() {
         let controlComponents = this.props.controls.map((info, index) => {
-            let instanceInfo = componentLoader.getComponent(info.type);
-
-            if (!instanceInfo) {
-                return null;
-            }
-            
-            let propsValue = this.props.$data.get(info.name);
-            
-            let childProps = Object.assign(info, {
-                onChange: this.handleChange,
-                value: typeof propsValue === 'undefined' ? info.value : propsValue,
-                ref: (ref: FormItem<FormItemBasicPropsInterface, {}>) => {
-                    if (ref) {
-                        this.childInstance = this.childInstance.set(info.name, ref);   
-                    }
-                }
-            });
-            
-            let child = createElement<FormItemBasicPropsInterface>(
-                instanceInfo.component,
-                instanceInfo.componentInterface,
-                childProps
-            );
-
-            return (
-                <div className="form-group" key={index}>
-                    {child}
-                </div>
-            );
+            return createControl(info, index);
         });
 
         return (

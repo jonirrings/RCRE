@@ -4,6 +4,7 @@ import Button, { ButtonPropsInterface } from '../../abstractComponents/Button/Bu
 import Text, { TextFieldPropsInterface } from '../../abstractComponents/Form/FormItem/TextField/TextField';
 import Html, { HtmlPropsInterface } from '../../abstractComponents/Plain/Html';
 import Plain, { PlainPropsInterface } from '../../abstractComponents/Plain/Text';
+// import Select, { SelectPropsInterface } from '../../components/Form/FormItem/Select/Select';
 
 export type ComponentLoaderMapVal = {
     component: React.ComponentClass<any>,
@@ -38,5 +39,6 @@ loader.addComponent('email', Text, TextFieldPropsInterface);
 loader.addComponent('submit', Text, TextFieldPropsInterface);
 loader.addComponent('html', Html, HtmlPropsInterface);
 loader.addComponent('plain', Plain, PlainPropsInterface);
+// loader.addComponent('select', Select, SelectPropsInterface);
 
 export default loader;
