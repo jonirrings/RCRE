@@ -16,6 +16,8 @@ class AbstractTreeNode extends BasicContainer<TreeNodePropsInterface, {}> {
     static contextTypes = {
         driver: PropTypes.object
     };
+
+    static isTreeNode: boolean;
     
     constructor() {
         super();
@@ -25,15 +27,17 @@ class AbstractTreeNode extends BasicContainer<TreeNodePropsInterface, {}> {
         let driver = this.context.driver;
         let componentInfo = driver.getComponent('treeNode');
         
-        console.log(this.props.children, this.props);
-        
         return createElement(
             componentInfo.component, 
             componentInfo.componentInterface,
             this.props,
             this.props.children
-        );    
+        );
     }
 }
+
+// 为了兼容rc-tree非常恶心的实现方式
+// https://github.com/react-component/tree/blob/master/src/TreeNode.jsx#L187
+AbstractTreeNode.isTreeNode = true;
 
 export default AbstractTreeNode;

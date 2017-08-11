@@ -10,7 +10,8 @@ export class AntTree extends React.Component<TreePropsInterface, {}> {
 
     private mapTreeOptions(props: TreePropsInterface): TreeProps {
         return Object.assign({}, props, {
-            showLine: props.showLine
+            showLine: props.showLine,
+            defaultExpandAll: true
         });
     }
     

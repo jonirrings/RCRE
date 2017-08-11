@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ContainerBasicPropsInterface, BasicContainer} from '../../render/core/Container/types';
+import {BasicContainer, ContainerBasicPropsInterface} from '../../render/core/Container/types';
 import createElement from '../../render/util/createElement';
 import * as PropTypes from 'prop-types';
 import {IsBoolean} from 'class-validator';
@@ -35,12 +35,13 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
             });
 
             if (item.childNodes && item.childNodes.length > 0) {
-                // let children = loop(item.childNodes);
+                let children = loop(item.childNodes);
 
                 return createElement(
                     TreeNode,
                     TreeNodePropsInterface,
-                    item
+                    item,
+                    children
                 );
             }
 

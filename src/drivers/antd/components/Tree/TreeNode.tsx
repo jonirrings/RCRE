@@ -22,7 +22,7 @@ export default class AntTreeNode extends React.Component<TreeNodePropsInterface,
 
     render() {
         let mergeProps = mapTreeOptions(this.props);
-        console.log(this.props.children);
+
         return React.createElement(
             TreeNode,
             mergeProps,
