@@ -21,14 +21,19 @@ const pageConfig = {
         },
         {
             'type': 'tree',
+            'checkable': true,
+            'defaultExpandAll': false,
+            // 'defaultExpandedKeys': ['b'],
             'childNodes': [
                 {
                     'type': 'treeNode',
                     'title': 'xxx',
+                    'key': 'a',
                     'childNodes': [
                         {
                             'type': 'treeNode',
-                            'title': 'test'
+                            'title': 'test',
+                            'key': 'b'
                         }
                     ]
                 }

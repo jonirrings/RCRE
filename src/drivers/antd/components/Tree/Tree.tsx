@@ -16,12 +16,6 @@ export class AntTree extends React.Component<TreePropsInterface, {}> {
     }
     
     render() {
-        // const TreeNode = Tree.TreeNode;
-        // return React.createElement(Tree, this.mapTreeOptions(this.props), <TreeNode title="1">
-        //     <TreeNode title="2"></TreeNode>
-        //     <TreeNode title="3"></TreeNode>
-        //     <TreeNode title="4"></TreeNode>
-        // </TreeNode>);
         return React.createElement(Tree, this.mapTreeOptions(this.props), this.props.children);
     }
 }
