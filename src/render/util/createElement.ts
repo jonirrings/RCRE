@@ -3,7 +3,7 @@ import paramsCheck from './paramCheck';
 
 export default function createElement<T>(component: React.ComponentClass<T>,
                                          componentInterFace: Object,
-                                         props?: React.Attributes & T) {
+                                         props?: React.Attributes & T, children?: React.ReactNode) {
     let validateResults = paramsCheck(props, componentInterFace);
 
     if (validateResults.length > 0) {
@@ -12,5 +12,5 @@ export default function createElement<T>(component: React.ComponentClass<T>,
         });
     }
 
-    return React.createElement<T>(component, props);
+    return React.createElement<T>(component, props, children);
 }

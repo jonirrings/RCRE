@@ -1,7 +1,7 @@
 import * as React from 'react';
 import componentLoader from '../../util/componentLoader';
 import createElement from '../../util/createElement';
-import {BasicContainer, ContainerBasicPropsInterface, ContainerProps, defaultData} from './types';
+import {BasicContainer, ContainerProps, defaultData} from './types';
 import {connect} from 'react-redux';
 import {Dispatch, bindActionCreators} from 'redux';
 import {actionCreators, IAction, SET_DATA_PAYLOAD} from './action';
@@ -20,9 +20,9 @@ class Container extends BasicContainer<ContainerProps, {}> {
     }
 
     componentWillMount() {
-        if (this.props.info!.data) {
-            this.props.initData(this.props.info!.data);
-            let infoData = this.props.info!.data;
+        if (this.props!.data) {
+            this.props.initData(this.props!.data);
+            let infoData = this.props!.data;
             if (infoData) {
                 this.mergeOriginData(infoData);
             }
@@ -58,16 +58,21 @@ class Container extends BasicContainer<ContainerProps, {}> {
 
     render() {
         let {
-            component,
-            componentInterface,
-            info
+            type
         } = this.props;
         
-        if (!component) {
-            return null;
+        let componentInfo = componentLoader.getComponent(type);
+        
+        if (!componentInfo) {
+            return <div />;
         }
-
-        return createElement<ContainerProps>(component, componentInterface!, Object.assign(info, {
+        
+        let {
+            component,
+            componentInterface
+        } = componentInfo;
+        
+        return createElement<{}>(component, componentInterface!, Object.assign({}, this.props, {
             $data: this.props.$data,
             setData: this.emitChange,
             initData: this.props.initData,
@@ -76,42 +81,15 @@ class Container extends BasicContainer<ContainerProps, {}> {
     }
 }
 
-export function CreateContainer(info: ContainerBasicPropsInterface) {
-    let componentInfo = componentLoader.getComponent(info.type);
-    
-    if (!componentInfo) {
-        console.error(`can not find component of type: ${info.type}`);
-        return null;
-    }
-
-    let {
-        component,
-        componentInterface
-    } = componentInfo;
-    
-    const wrappedComponentName = component!.displayName || component!.name || 'ContainerComponent';
-    const displayName = `Container(${wrappedComponentName})`;
-
-    Container.WrappedComponent = wrappedComponentName;
-    Container.displayName = displayName;
-
-    const mapStateToProps = (state: RootState, ownProps: any) => {
-        return {
-            $data: state.container.get('data'),
-            component: component,
-            componentInterface: componentInterface,
-            info: info
-        };
+const mapStateToProps = (state: RootState, ownProps: any) => {
+    return {
+        $data: state.container.get('data')
     };
+};
 
-    const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
-        setData: actionCreators.setData,
-        initData: actionCreators.initData
-    }, dispatch);
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
+    setData: actionCreators.setData,
+    initData: actionCreators.initData
+}, dispatch);
 
-    let wrappedComponent = connect(mapStateToProps, mapDispatchToProps)(Container);
-
-    return React.createElement<ContainerBasicPropsInterface>(wrappedComponent, Object.assign(info, {
-        key: displayName
-    }));
-}
+export default connect(mapStateToProps, mapDispatchToProps)(Container);

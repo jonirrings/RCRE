@@ -19,6 +19,7 @@
     "@types/react-redux": "^4.4.47",
     "@types/react-router-dom": "^4.0.7",
     "@types/redux": "^3.6.0",
+    "@types/stringify-object": "^3.1.1",
     "acorn": "^5.1.1",
     "antd": "^2.12.4",
     "axios": "^0.16.2",
@@ -31,6 +32,7 @@
     "hoist-non-react-statics": "^2.2.1",
     "immutable": "^3.8.1",
     "invariant": "^2.2.2",
+    "json-format": "^1.0.1",
     "keycode": "^2.1.9",
     "lodash": "^4.17.4",
     "marked": "^0.3.6",
@@ -40,6 +42,7 @@
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.2",
     "redux": "^3.7.2",
+    "stringify-object": "^3.2.0",
     "text-loader": "0.0.1"
   },
   "devDependencies": {

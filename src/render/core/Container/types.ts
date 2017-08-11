@@ -26,28 +26,26 @@ export class ContainerBasicPropsInterface {
      * 组件驱动加载器
      * @private
      */
-    $driver: DriverController;
+    $driver?: DriverController;
 
     /**
      * 组件唯一ID
      * @private
      */
-    $uuid: string;
+    $uuid?: string;
 
     /**
      * Container组件深度
      * @private
      */
-    $depth: number;
+    $depth?: number;
 }
 
 export class ContainerProps extends ContainerBasicPropsInterface {
     public $data: Map<string, any>;
     public setData: (payload: SET_DATA_PAYLOAD) => void;
     public initData: (payload: INIT_DATA_PAYLOAD) => void;
-    public component?: React.ComponentClass<any>;
-    public componentInterface?: Object;
-    public info?: ContainerBasicPropsInterface;
+    public info: ContainerBasicPropsInterface;
 }
 
 export class BasicContainer <T extends ContainerBasicPropsInterface, P> extends React.Component<T, P> {

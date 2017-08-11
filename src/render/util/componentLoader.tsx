@@ -5,6 +5,8 @@ import Text, { TextFieldPropsInterface } from '../../abstractComponents/Form/For
 import Html, { HtmlPropsInterface } from '../../abstractComponents/Plain/Html';
 import Plain, { PlainPropsInterface } from '../../abstractComponents/Plain/Text';
 import Select, { SelectPropsInterface } from '../../abstractComponents/Form/FormItem/Select/Select';
+import Tree, { TreePropsInterface } from '../../abstractComponents/Tree/Tree';
+import TreeNode, { TreeNodePropsInterface } from '../../abstractComponents/Tree/TreeNode';
 
 export type ComponentLoaderMapVal = {
     component: React.ComponentClass<any>,
@@ -40,5 +42,7 @@ loader.addComponent('submit', Text, TextFieldPropsInterface);
 loader.addComponent('html', Html, HtmlPropsInterface);
 loader.addComponent('plain', Plain, PlainPropsInterface);
 loader.addComponent('select', Select, SelectPropsInterface);
+loader.addComponent('tree', Tree, TreePropsInterface);
+loader.addComponent('treeNode', TreeNode, TreeNodePropsInterface);
 
 export default loader;
