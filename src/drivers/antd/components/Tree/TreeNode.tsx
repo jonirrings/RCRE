@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Tree} from 'antd';
 import {TreeNodeConfig, TreeNodePropsInterface} from '../../../../abstractComponents/Tree/TreeNode';
 import {AntTreeNodeProps} from 'antd/lib/tree';
-//
+
 const TreeNode = Tree.TreeNode;
 
 function mapTreeOptions(props: TreeNodePropsInterface): AntTreeNodeProps {

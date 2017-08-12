@@ -1,15 +1,15 @@
 import * as React from 'react';
 import componentLoader from '../../util/componentLoader';
 import createElement from '../../util/createElement';
-import {BasicContainer, ContainerProps} from './types';
+import {BasicConfig, BasicContainer, ContainerProps} from './types';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {actionCreators, IAction, SET_DATA_PAYLOAD} from './action';
 import {RootState} from '../../data/reducers';
-// import { Map } from 'immutable';
+import {Map} from 'immutable';
 import ParamsInjector from '../../util/injector';
-// import { each, isString } from 'lodash';
-// import {parseObjectPropertyExpress} from '../../util/vm';
+import {each, isString} from 'lodash';
+import {parseObjectPropertyExpress} from '../../util/vm';
 
 class Container extends BasicContainer<ContainerProps, {}> {
     static WrappedComponent: string;
@@ -40,19 +40,17 @@ class Container extends BasicContainer<ContainerProps, {}> {
         }
     }
 
-    // private compileValueExpress(props: ContainerProps, $data: Map<string, any>) {
-    //     let retProps = {};
-    //    
-    //     each(props, (item, key) => {
-    //         if (isString(item) && item.indexOf('$data') === 0) {
-    //            
-    //         }
-    //        
-    //         retProps[key] = item;
-    //     });
-    //    
-    //     return retProps;
-    // }
+    private compileValueExpress(props: BasicConfig, $data: Map<string, any>): BasicConfig {
+        each(props, (item, key) => {
+            if (isString(item) && item.indexOf('$data') === 0) {
+                props[key] = parseObjectPropertyExpress('$data', item, this.props.$data.toObject());
+            } else {
+                props[key] = item;
+            }
+        });
+
+        return props;
+    }
 
     loadData() {
         if (this.props.info.initialLoad) {
@@ -81,7 +79,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
             return <div />;
         }
 
-        // let compiledProps = this.compileValueExpress(this.props, this.props.$data);
+        let compiledInfo = this.compileValueExpress(this.props.info, this.props.$data);
         
         let {
             component,
@@ -89,7 +87,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
         } = componentInfo;
 
         return createElement<ContainerProps>(component, componentInterface, {
-            info: this.props.info,
+            info: compiledInfo,
             $data: this.props.$data,
             setData: this.emitChange,
             initData: this.props.initData,

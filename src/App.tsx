@@ -26,7 +26,6 @@ const pageConfig = {
                 'tree': '$response.tree',
                 'show': '$response.show'
             },
-            'xxx': '$data.show',
             'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/tree',
             'defaultExpandAll': false,
             'defaultExpandedKeys': [],
