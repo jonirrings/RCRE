@@ -29,26 +29,7 @@ const pageConfig = {
             'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/tree',
             'defaultExpandAll': false,
             'defaultExpandedKeys': [],
-            // 'checkedKeys': ['a-b'],
-            'children': [
-                {
-                    'type': 'treeNode',
-                    'title': 'xxx',
-                    'key': 'a',
-                    'children': [
-                        {
-                            'type': 'treeNode',
-                            'title': 'test',
-                            'key': 'a-b'
-                        },
-                        {
-                            'type': 'treeNode',
-                            'title': 'xxxxx',
-                            'key': 'a-o'
-                        }
-                    ]
-                }
-            ]
+            'children': '$data.tree'
         }
         // {
         //     'type': 'form',

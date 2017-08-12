@@ -128,12 +128,15 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
     render() {
         let driver = this.context.driver;
         let treeInfo = driver.getComponent('tree');
-
+        let children;
+        
         const loop = (data: TreeNodeConfig[]): React.ReactElement<TreeNodePropsInterface>[] =>
             data.map((item, index) => {
+                if (!item.type) {
+                    item.type = 'treeNode';
+                }
+                
                 if (item.children && item.children.length > 0) {
-                    let children = loop(item.children);
-
                     return createElement(
                         TreeNode,
                         TreeNodePropsInterface,
@@ -141,7 +144,7 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
                             key: item.key || index,
                             info: item
                         },
-                        children
+                        loop(item.children)
                     );
                 }
 
@@ -151,11 +154,15 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
                 });
             });
 
+        if (Array.isArray(this.props.info.children)) {
+            children = loop(this.props.info.children);
+        }
+        
         return createElement(
             treeInfo.component,
             treeInfo.componentInterface,
             this.props,
-            loop(this.props.info.children)
+            children
         );
     }
 }

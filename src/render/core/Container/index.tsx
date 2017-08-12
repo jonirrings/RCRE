@@ -43,7 +43,12 @@ class Container extends BasicContainer<ContainerProps, {}> {
     private compileValueExpress(props: BasicConfig, $data: Map<string, any>): BasicConfig {
         each(props, (item, key) => {
             if (isString(item) && item.indexOf('$data') === 0) {
-                props[key] = parseObjectPropertyExpress('$data', item, this.props.$data.toObject());
+                let parseRet = parseObjectPropertyExpress('$data', item, this.props.$data.toObject());
+
+                if (parseRet && parseRet[0] !== '$') {
+                    props[key] = parseRet;
+                }
+                
             } else {
                 props[key] = item;
             }
@@ -79,7 +84,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
             return <div />;
         }
 
-        let compiledInfo = this.compileValueExpress(this.props.info, this.props.$data);
+        let compiled = this.compileValueExpress(this.props.info, this.props.$data);
         
         let {
             component,
@@ -87,7 +92,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
         } = componentInfo;
 
         return createElement<ContainerProps>(component, componentInterface, {
-            info: compiledInfo,
+            info: compiled,
             $data: this.props.$data,
             setData: this.emitChange,
             initData: this.props.initData,
