@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {IsString, IsDefined, IsBoolean} from 'class-validator';
-import {BasicContainer, ContainerBasicPropsInterface} from '../../render/core/Container/types';
+import {IsBoolean, IsDefined, IsString} from 'class-validator';
+import {BasicConfig, BasicContainer, ContainerBasicPropsInterface} from '../../render/core/Container/types';
 import * as PropTypes from 'prop-types';
 
-export class ButtonPropsInterface extends ContainerBasicPropsInterface {
+export class ButtonConfig extends BasicConfig {
     /**
      * 按钮的文字
      * @public
@@ -18,12 +18,6 @@ export class ButtonPropsInterface extends ContainerBasicPropsInterface {
      */
     @IsString()
     buttonType: 'primary' | 'dashed' | 'danger' | 'ghost' | undefined;
-
-    /**
-     * 按钮的点击回调
-     * @private
-     */
-    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 
     /**
      * 按钮的HTML类型 https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type
@@ -68,13 +62,21 @@ export class ButtonPropsInterface extends ContainerBasicPropsInterface {
     ghost: boolean;
 }
 
+export class ButtonPropsInterface extends ContainerBasicPropsInterface {
+    info: ButtonConfig;
+
+    /**
+     * 按钮的点击回调
+     * @private
+     */
+    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
 class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
     static defaultProps = {
         onClick: () => {
             console.error('Button onClick 没有实现');
-        },
-
-        label: ''
+        }
     };
 
     static contextTypes = {
@@ -96,7 +98,7 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
         let driver = this.context.driver;
         let componentInfo = driver.getComponent('button');
         let Component = componentInfo.component;
-        return React.createElement(Component, this.props);
+        return React.createElement(Component, this.props, this.props.info.label);
     }
 }
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 // import { CreateContainer } from './Container/index';
 import WrappedContainer from './Container/index';
 import {ContainerBasicPropsInterface} from './Container/types';
-import {IsString, IsDefined} from 'class-validator';
+import {IsDefined, IsString} from 'class-validator';
 import {Provider} from 'react-redux';
 import themeDriver from '../../drivers/index';
 import * as PropsTypes from 'prop-types';
@@ -48,17 +48,30 @@ class Page extends React.Component<PageProps, {}> {
             body = this.props.body;
         } else if (Array.isArray(this.props.body)) {
             body = this.props.body.map((item, index) => {
-                return React.createElement(WrappedContainer, Object.assign(item, {
+                return React.createElement(WrappedContainer, {
+                    info: item,
                     key: index,
                     $depth: 0,
                     $uuid: `0_${index}`
-                }));
+                });
+
+                // return React.createElement(WrappedContainer, Object.assign(item, {
+                //     key: index,
+                //     $depth: 0,
+                //     $uuid: `0_${index}`
+                // }));
             });
         } else {
-            body = React.createElement(WrappedContainer, Object.assign(this.props.body, {
+            body = React.createElement(WrappedContainer, {
+                info: this.props.body,
                 $uuid: `0_0`,
                 $depth: 0
-            }));
+            });
+
+            // body = React.createElement(WrappedContainer, Object.assign(this.props.body, {
+            //     $uuid: `0_0`,
+            //     $depth: 0
+            // }));
         }
 
         return (

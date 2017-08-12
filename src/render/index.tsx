@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Page, { PageProps } from './core/Page';
+import Page, {PageProps} from './core/Page';
 import paramCheck from './util/paramCheck';
 
 import './index.css';
@@ -8,7 +8,7 @@ interface RenderPropsInterface {
     code: string;
 }
 
-class Render extends React.Component<RenderPropsInterface, {}> {
+export class Render extends React.Component<RenderPropsInterface, {}> {
     constructor() {
         super();
     }
@@ -43,5 +43,3 @@ class Render extends React.Component<RenderPropsInterface, {}> {
         );
     }
 }
-
-export default Render;

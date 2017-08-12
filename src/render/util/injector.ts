@@ -1,7 +1,8 @@
 import {originJSONType} from '../core/Container/types';
 import {each, isPlainObject} from 'lodash';
-import { parseObjectPropertyExpress } from './vm';
-import { SET_DATA_PAYLOAD } from '../core/Container/action';
+import {parseObjectPropertyExpress} from './vm';
+import {SET_DATA_PAYLOAD} from '../core/Container/action';
+import {isString} from 'util';
 
 class ParamsInjector {
     private originObject: Object;
@@ -35,7 +36,7 @@ class ParamsInjector {
                 return;
             }
 
-            if (val.indexOf('$response') === 0) {
+            if (isString(val) && val.indexOf('$response') === 0) {
                 this.changePayloads.push({
                     type: key,
                     newValue: parseObjectPropertyExpress('$response', val, mirror)

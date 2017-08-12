@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Button } from 'antd';
-import { ButtonPropsInterface } from '../../../../abstractComponents/Button/Button';
+import {Button} from 'antd';
+import {ButtonConfig, ButtonPropsInterface} from '../../../../abstractComponents/Button/Button';
 
 class AntButtonProps {
     type: 'primary' | 'dashed' | 'danger' | 'ghost' | undefined;
@@ -14,30 +14,26 @@ class AntButtonProps {
     children: any;
 }
 
-export default class AntButton extends React.Component<ButtonPropsInterface, {}> {
+export default class AntButton extends React.Component<ButtonConfig & ButtonPropsInterface, {}> {
     constructor() {
         super();
     }
 
-    mapOptions(props: ButtonPropsInterface): AntButtonProps {
+    mapOptions(props: ButtonConfig & ButtonPropsInterface): AntButtonProps {
         return {
-            htmlType: props.htmlType,
-            type: props.buttonType,
-            icon: props.icon,
-            shape: props.shape,
-            size: props.size,
-            loading: props.loading,
-            onClick: props.onClick,
-            ghost: props.ghost,
-            children: props.label
+            htmlType: props.info.htmlType,
+            type: props.info.buttonType,
+            icon: props.info.icon,
+            shape: props.info.shape,
+            size: props.info.size,
+            loading: props.info.loading,
+            onClick: this.props.onClick,
+            ghost: props.info.ghost,
+            children: props.info.label
         };
     }
     
     render() {
-        let {
-            children
-        } = this.mapOptions(this.props);
-        
-        return React.createElement(Button, this.mapOptions(this.props), children);
+        return React.createElement(Button, this.mapOptions(this.props), this.props.children);
     }
 }

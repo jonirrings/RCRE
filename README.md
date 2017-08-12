@@ -1,5 +1,7 @@
-可视化构建系统
+RCRE (React Component Render Engine)
 ==============
+
+> 强大的前端组件渲染引擎
 
 ## 如何安装
 

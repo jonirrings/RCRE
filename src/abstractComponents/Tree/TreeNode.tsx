@@ -1,27 +1,31 @@
 import * as React from 'react';
-import {BasicContainer, ContainerBasicPropsInterface} from '../../render/core/Container/types';
+import {BasicConfig, BasicContainer, ContainerBasicPropsInterface} from '../../render/core/Container/types';
 import createElement from '../../render/util/createElement';
 import * as PropTypes from 'prop-types';
 import {IsArray, IsBoolean, IsString} from 'class-validator';
 
-export class TreeNodePropsInterface extends ContainerBasicPropsInterface {
+export class TreeNodeConfig extends BasicConfig {
     @IsBoolean()
     disabled?: boolean;
-    
+
     @IsBoolean()
     disableCheckbox?: boolean;
-    
+
     @IsString()
     title?: string | React.ReactNode;
-    
+
     @IsString()
     key?: string;
-    
+
     @IsBoolean()
     isLeaf?: boolean;
-    
+
     @IsArray()
-    childNodes?: TreeNodePropsInterface[];
+    children?: TreeNodeConfig[];
+}
+
+export class TreeNodePropsInterface extends ContainerBasicPropsInterface {
+    info: TreeNodeConfig;
 }
 
 class AbstractTreeNode extends BasicContainer<TreeNodePropsInterface, {}> {

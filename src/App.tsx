@@ -3,7 +3,7 @@
 import * as React from 'react';
 import JSONEditor from './editor/index';
 import * as jsonformat from 'json-format';
-import Render from './render/index';
+import {Render} from './render/index';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import 'font-awesome/css/font-awesome.css';
@@ -22,18 +22,30 @@ const pageConfig = {
         {
             'type': 'tree',
             'checkable': true,
+            'data': {
+                'tree': '$response.tree',
+                'show': '$response.show'
+            },
+            'xxx': '$data.show',
+            'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/tree',
             'defaultExpandAll': false,
-            // 'defaultExpandedKeys': ['b'],
-            'childNodes': [
+            'defaultExpandedKeys': [],
+            // 'checkedKeys': ['a-b'],
+            'children': [
                 {
                     'type': 'treeNode',
                     'title': 'xxx',
                     'key': 'a',
-                    'childNodes': [
+                    'children': [
                         {
                             'type': 'treeNode',
                             'title': 'test',
-                            'key': 'b'
+                            'key': 'a-b'
+                        },
+                        {
+                            'type': 'treeNode',
+                            'title': 'xxxxx',
+                            'key': 'a-o'
                         }
                     ]
                 }
@@ -127,13 +139,24 @@ class App extends React.Component<{}, AppStateInterface> {
     }
 
     render() {
+        // 这样每次保存就能重新完整渲染render
+        class Preview extends Render {
+            constructor() {
+                super();
+            }
+
+            render() {
+                return <Render code={this.props.code}/>;
+            }
+        }
+        
         return (
             <div className="App">
                 <JSONEditor
                     code={this.state.code}
                     onChange={this.onJSONEditorChange}
                 />
-                <Render code={this.state.code}/>
+                <Preview code={this.state.code}/>
             </div>
         );
     }

@@ -1,12 +1,12 @@
 import * as React from 'react';
-import {BasicContainer, ContainerBasicPropsInterface} from '../../render/core/Container/types';
+import {BasicConfig, BasicContainer, ContainerBasicPropsInterface} from '../../render/core/Container/types';
 import createElement from '../../render/util/createElement';
 import * as PropTypes from 'prop-types';
 import {IsArray, IsBoolean, Validate} from 'class-validator';
-import TreeNode, {TreeNodePropsInterface} from './TreeNode';
-import {IsArrayString, IsCheckedKeys } from '../../render/util/validators';
+import TreeNode, {TreeNodeConfig, TreeNodePropsInterface} from './TreeNode';
+import {IsArrayString, IsCheckedKeys} from '../../render/util/validators';
 
-export class TreePropsInterface extends ContainerBasicPropsInterface {
+export class TreeConfig extends BasicConfig {
     /**
      * 支持点选多个节点（节点本身）
      * @public
@@ -22,7 +22,7 @@ export class TreePropsInterface extends ContainerBasicPropsInterface {
      */
     @IsBoolean()
     checkable?: boolean;
-    
+
     /**
      * 默认展开所有树节点
      * @public
@@ -96,7 +96,7 @@ export class TreePropsInterface extends ContainerBasicPropsInterface {
      */
     @Validate(IsArrayString)
     selectedKeys: string[];
-    
+
     /**
      * 是否展示连接线
      * @public
@@ -107,9 +107,13 @@ export class TreePropsInterface extends ContainerBasicPropsInterface {
 
     @IsBoolean()
     showIcon: boolean;
-    
+
     @IsArray()
-    childNodes: TreeNodePropsInterface[];
+    children: TreeNodeConfig[];
+}
+
+export class TreePropsInterface extends ContainerBasicPropsInterface {
+    info: TreeConfig;
 }
 
 class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
@@ -125,30 +129,33 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
         let driver = this.context.driver;
         let treeInfo = driver.getComponent('tree');
 
-        const loop = (data: TreeNodePropsInterface[]): React.ReactElement<{}>[] => data.map((item, index) => {
-            item = Object.assign(item, {
-                key: item.key || index
+        const loop = (data: TreeNodeConfig[]): React.ReactElement<TreeNodePropsInterface>[] =>
+            data.map((item, index) => {
+                if (item.children && item.children.length > 0) {
+                    let children = loop(item.children);
+
+                    return createElement(
+                        TreeNode,
+                        TreeNodePropsInterface,
+                        {
+                            key: item.key || index,
+                            info: item
+                        },
+                        children
+                    );
+                }
+
+                return createElement(TreeNode, TreeNodePropsInterface, {
+                    info: item,
+                    key: item.key || index
+                });
             });
 
-            if (item.childNodes && item.childNodes.length > 0) {
-                let children = loop(item.childNodes);
-
-                return createElement(
-                    TreeNode,
-                    TreeNodePropsInterface,
-                    item,
-                    children
-                );
-            }
-
-            return createElement(TreeNode, TreeNodePropsInterface, item);
-        });
-        
         return createElement(
             treeInfo.component,
             treeInfo.componentInterface,
             this.props,
-            loop(this.props.childNodes)
+            loop(this.props.info.children)
         );
     }
 }

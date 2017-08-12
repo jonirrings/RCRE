@@ -1,21 +1,21 @@
 import * as React from 'react';
 import {Tree} from 'antd';
-import {TreeNodePropsInterface} from '../../../../abstractComponents/Tree/TreeNode';
+import {TreeNodeConfig, TreeNodePropsInterface} from '../../../../abstractComponents/Tree/TreeNode';
 import {AntTreeNodeProps} from 'antd/lib/tree';
-
+//
 const TreeNode = Tree.TreeNode;
 
 function mapTreeOptions(props: TreeNodePropsInterface): AntTreeNodeProps {
     return Object.assign({}, props, {
-        disabled: props.disabled,
-        disableCheckbox: props.disableCheckbox,
-        title: props.title,
-        key: props.key,
-        isLeaf: props.isLeaf
+        disabled: props.info.disabled,
+        disableCheckbox: props.info.disableCheckbox,
+        title: props.info.title,
+        key: props.info.key,
+        isLeaf: props.info.isLeaf
     });
 }
 
-export default class AntTreeNode extends React.Component<TreeNodePropsInterface, {}> {
+export default class AntTreeNode extends React.Component<TreeNodePropsInterface & TreeNodeConfig, {}> {
     constructor() {
         super();
     }
