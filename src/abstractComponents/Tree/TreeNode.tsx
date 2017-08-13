@@ -1,27 +1,52 @@
 import * as React from 'react';
-import {BasicConfig, BasicContainer, ContainerBasicPropsInterface} from '../../render/core/Container/types';
+import {
+    BasicConfig,
+    BasicContainer,
+    ContainerBasicPropsInterface,
+    defaultData
+} from '../../render/core/Container/types';
 import createElement from '../../render/util/createElement';
 import * as PropTypes from 'prop-types';
 import {IsArray, IsBoolean, IsString} from 'class-validator';
 
 export class TreeNodeConfig extends BasicConfig {
+    @IsString()
+    title: string | React.ReactNode;
+
+    @IsString()
+    key: string;
+
+    @IsArray()
+    children: defaultData[];
+
     @IsBoolean()
     disabled?: boolean;
 
     @IsBoolean()
     disableCheckbox?: boolean;
 
-    @IsString()
-    title?: string | React.ReactNode;
-
-    @IsString()
-    key?: string;
-
     @IsBoolean()
     isLeaf?: boolean;
+}
 
-    @IsArray()
-    children?: TreeNodeConfig[];
+export class TreeNodeMappingConfig {
+    @IsString()
+    title: string;
+
+    @IsString()
+    key: string;
+
+    @IsString()
+    children: string;
+
+    @IsString()
+    disabled: string;
+
+    @IsString()
+    disableCheckbox: string;
+
+    @IsString()
+    isLeaf: string;
 }
 
 export class TreeNodePropsInterface extends ContainerBasicPropsInterface {

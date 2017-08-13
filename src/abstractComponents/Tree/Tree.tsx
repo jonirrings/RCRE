@@ -1,10 +1,17 @@
 import * as React from 'react';
-import {BasicConfig, BasicContainer, ContainerBasicPropsInterface} from '../../render/core/Container/types';
+import {
+    BasicConfig,
+    BasicContainer,
+    ContainerBasicPropsInterface,
+    defaultData
+} from '../../render/core/Container/types';
 import createElement from '../../render/util/createElement';
 import * as PropTypes from 'prop-types';
 import {IsArray, IsBoolean, Validate} from 'class-validator';
-import TreeNode, {TreeNodeConfig, TreeNodePropsInterface} from './TreeNode';
+import TreeNode, {TreeNodeConfig, TreeNodeMappingConfig, TreeNodePropsInterface} from './TreeNode';
 import {IsArrayString, IsCheckedKeys} from '../../render/util/validators';
+import {parseObjectPropertyExpress} from '../../render/util/vm';
+import * as _ from 'lodash';
 
 export class TreeConfig extends BasicConfig {
     /**
@@ -109,7 +116,9 @@ export class TreeConfig extends BasicConfig {
     showIcon: boolean;
 
     @IsArray()
-    children: TreeNodeConfig[];
+    children: defaultData[];
+
+    childMapping?: TreeNodeMappingConfig;
 }
 
 export class TreePropsInterface extends ContainerBasicPropsInterface {
@@ -125,32 +134,50 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
         super();
     }
 
+    private applyChildMapping(data: defaultData): TreeNodeConfig {
+        let info = this.props.info;
+        let retObj = {
+            type: 'treeNode',
+            title: '',
+            key: '',
+            children: []
+        };
+
+        if (info.childMapping) {
+            _.each<TreeNodeMappingConfig>(info.childMapping, (item: keyof TreeNodeMappingConfig, key: string) => {
+                if (item.indexOf('$iterator') === 0) {
+                    retObj[key] = parseObjectPropertyExpress('$iterator', item, data);
+                }
+            });
+        }
+
+        return retObj;
+    }
+
     render() {
         let driver = this.context.driver;
         let treeInfo = driver.getComponent('tree');
         let children;
-        
-        const loop = (data: TreeNodeConfig[]): React.ReactElement<TreeNodePropsInterface>[] =>
+
+        const loop = (data: defaultData[]): React.ReactElement<TreeNodePropsInterface>[] =>
             data.map((item, index) => {
-                if (!item.type) {
-                    item.type = 'treeNode';
-                }
-                
-                if (item.children && item.children.length > 0) {
+                let ret = this.applyChildMapping(item);
+
+                if (ret.children && ret.children.length > 0) {
                     return createElement(
                         TreeNode,
                         TreeNodePropsInterface,
                         {
-                            key: item.key || index,
-                            info: item
+                            key: ret.key || index,
+                            info: ret
                         },
-                        loop(item.children)
+                        loop(ret.children)
                     );
                 }
 
                 return createElement(TreeNode, TreeNodePropsInterface, {
-                    info: item,
-                    key: item.key || index
+                    info: ret,
+                    key: ret.key || index
                 });
             });
 

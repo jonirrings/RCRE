@@ -21,15 +21,21 @@ const pageConfig = {
         },
         {
             'type': 'tree',
-            'checkable': true,
+            // 'checkable': true,
             'data': {
                 'tree': '$response.tree',
                 'show': '$response.show'
             },
             'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/tree',
-            'defaultExpandAll': false,
-            'defaultExpandedKeys': [],
-            'children': '$data.tree'
+            'children': '$data.tree',
+            'childMapping': {
+                'title': '$iterator.title',
+                'key': '$iterator.key',
+                'children': '$iterator.children',
+                'isLeaf': '$iterator.isLeaf',
+                'disableCheckbox': '$iterator.disableCheckbox',
+                'disabled': '$iterator.disabled'
+            }
         }
         // {
         //     'type': 'form',
