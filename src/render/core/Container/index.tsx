@@ -9,7 +9,7 @@ import {RootState} from '../../data/reducers';
 import {Map} from 'immutable';
 import ParamsInjector from '../../util/injector';
 import {each, isString} from 'lodash';
-import {parseObjectPropertyExpress} from '../../util/vm';
+import {runInContext} from '../../util/vm';
 
 class Container extends BasicContainer<ContainerProps, {}> {
     static WrappedComponent: string;
@@ -42,9 +42,11 @@ class Container extends BasicContainer<ContainerProps, {}> {
 
     private compileValueExpress(props: BasicConfig, $data: Map<string, any>): BasicConfig {
         each(props, (item, key) => {
-            if (isString(item) && item.indexOf('$data') === 0) {
-                let parseRet = parseObjectPropertyExpress('$data', item, this.props.$data.toObject());
-
+            if (isString(item) && item.indexOf('$') >= 0) {
+                let parseRet = runInContext(item, {
+                    $data: this.props.$data.toObject()
+                });
+                
                 if (parseRet && parseRet[0] !== '$') {
                     props[key] = parseRet;
                 }

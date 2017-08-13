@@ -17,7 +17,7 @@ export class TreeNodeConfig extends BasicConfig {
     key: string;
 
     @IsArray()
-    children: defaultData[];
+    children: defaultData[] & TreeNodeConfig[];
 
     @IsBoolean()
     disabled?: boolean;

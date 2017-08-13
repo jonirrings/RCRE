@@ -1,17 +1,13 @@
 import * as React from 'react';
-import {
-    BasicConfig,
-    BasicContainer,
-    ContainerBasicPropsInterface,
-    defaultData
-} from '../../render/core/Container/types';
+import {BasicConfig, BasicContainer, ContainerProps, defaultData} from '../../render/core/Container/types';
 import createElement from '../../render/util/createElement';
 import * as PropTypes from 'prop-types';
 import {IsArray, IsBoolean, Validate} from 'class-validator';
 import TreeNode, {TreeNodeConfig, TreeNodeMappingConfig, TreeNodePropsInterface} from './TreeNode';
 import {IsArrayString, IsCheckedKeys} from '../../render/util/validators';
-import {parseObjectPropertyExpress} from '../../render/util/vm';
+// import {parseObjectPropertyExpress} from '../../render/util/vm';
 import * as _ from 'lodash';
+import {runInContext} from '../../render/util/vm';
 
 export class TreeConfig extends BasicConfig {
     /**
@@ -116,12 +112,12 @@ export class TreeConfig extends BasicConfig {
     showIcon: boolean;
 
     @IsArray()
-    children: defaultData[];
+    children: defaultData[] & TreeNodeConfig[];
 
     childMapping?: TreeNodeMappingConfig;
 }
 
-export class TreePropsInterface extends ContainerBasicPropsInterface {
+export class TreePropsInterface extends ContainerProps {
     info: TreeConfig;
 }
 
@@ -134,7 +130,7 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
         super();
     }
 
-    private applyChildMapping(data: defaultData): TreeNodeConfig {
+    private applyChildMapping(data: TreeNodeConfig): TreeNodeConfig {
         let info = this.props.info;
         let retObj = {
             type: 'treeNode',
@@ -145,9 +141,14 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
 
         if (info.childMapping) {
             _.each<TreeNodeMappingConfig>(info.childMapping, (item: keyof TreeNodeMappingConfig, key: string) => {
-                if (item.indexOf('$iterator') === 0) {
-                    retObj[key] = parseObjectPropertyExpress('$iterator', item, data);
-                }
+                retObj[key] = runInContext(item, {
+                    $iterator: {
+                        title: data.title,
+                        key: data.key,
+                        children: data.children
+                    },
+                    $data: this.props.$data.toObject()
+                });
             });
         }
 
@@ -159,10 +160,13 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
         let treeInfo = driver.getComponent('tree');
         let children;
 
-        const loop = (data: defaultData[]): React.ReactElement<TreeNodePropsInterface>[] =>
+        const loop = (data: TreeNodeConfig[]): React.ReactElement<TreeNodePropsInterface>[] =>
             data.map((item, index) => {
-                let ret = this.applyChildMapping(item);
-
+                let ret = item;
+                if (this.props.info.childMapping) {
+                    ret = this.applyChildMapping(item);
+                }
+            
                 if (ret.children && ret.children.length > 0) {
                     return createElement(
                         TreeNode,
@@ -184,7 +188,7 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
         if (Array.isArray(this.props.info.children)) {
             children = loop(this.props.info.children);
         }
-        
+
         return createElement(
             treeInfo.component,
             treeInfo.componentInterface,

@@ -24,7 +24,7 @@ const pageConfig = {
             // 'checkable': true,
             'data': {
                 'tree': '$response.tree',
-                'show': '$response.show'
+                'show': 'Object.keys($response.show)'
             },
             'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/tree',
             'children': '$data.tree',
@@ -34,7 +34,7 @@ const pageConfig = {
                 'children': '$iterator.children',
                 'isLeaf': '$iterator.isLeaf',
                 'disableCheckbox': '$iterator.disableCheckbox',
-                'disabled': '$iterator.disabled'
+                'disabled': '$data.show.indexOf($iterator.key) >= 0'
             }
         }
         // {
