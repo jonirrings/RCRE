@@ -5,6 +5,8 @@ declare interface Window {
 
 declare module 'json-format' {
     function parse(obj: any): string;
-    namespace parse {}
+
+    namespace parse {
+    }
     export = parse;
 }

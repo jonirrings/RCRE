@@ -7,6 +7,7 @@ import Plain, { PlainPropsInterface } from '../../abstractComponents/Plain/Text'
 import Select, { SelectPropsInterface } from '../../abstractComponents/Form/FormItem/Select/Select';
 import Tree, { TreePropsInterface } from '../../abstractComponents/Tree/Tree';
 import TreeNode, { TreeNodePropsInterface } from '../../abstractComponents/Tree/TreeNode';
+import LineChart, { LineChartPropsInterface } from '../../abstractComponents/Charts/LineChart';
 
 export type ComponentLoaderMapVal = {
     component: React.ComponentClass<any>,
@@ -44,5 +45,6 @@ loader.addComponent('plain', Plain, PlainPropsInterface);
 loader.addComponent('select', Select, SelectPropsInterface);
 loader.addComponent('tree', Tree, TreePropsInterface);
 loader.addComponent('treeNode', TreeNode, TreeNodePropsInterface);
+loader.addComponent('lineChart', LineChart, LineChartPropsInterface);
 
 export default loader;

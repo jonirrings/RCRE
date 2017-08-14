@@ -1,4 +1,5 @@
 /// <reference path="./global.d.ts" />
+/// <reference path="./types/echarts.d.ts" />
 
 import * as React from 'react';
 import JSONEditor from './editor/index';
@@ -20,23 +21,30 @@ const pageConfig = {
             'buttonType': 'primary'
         },
         {
-            'type': 'tree',
-            // 'checkable': true,
-            'data': {
-                'tree': '$response.tree',
-                'show': 'Object.keys($response.show)'
-            },
-            'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/tree',
-            'children': '$data.tree',
-            'childMapping': {
-                'title': '$iterator.title',
-                'key': '$iterator.key',
-                'children': '$iterator.children',
-                'isLeaf': '$iterator.isLeaf',
-                'disableCheckbox': '$iterator.disableCheckbox',
-                'disabled': '$data.show.indexOf($iterator.key) >= 0'
+            'type': 'lineChart',
+            'style': {
+                'width': '400px',
+                'height': '200px'
             }
         }
+        // {
+        //     'type': 'tree',
+        //     // 'checkable': true,
+        //     'data': {
+        //         'tree': '$response.tree',
+        //         'show': 'Object.keys($response.show)'
+        //     },
+        //     'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/tree',
+        //     'children': '$data.tree',
+        //     'childMapping': {
+        //         'title': '$iterator.title',
+        //         'key': '$iterator.key',
+        //         'children': '$iterator.children',
+        //         'isLeaf': '$iterator.isLeaf',
+        //         'disableCheckbox': '$iterator.disableCheckbox',
+        //         'disabled': '$data.show.indexOf($iterator.key) >= 0'
+        //     }
+        // }
         // {
         //     'type': 'form',
         //     'title': 'test form',

@@ -27,6 +27,7 @@
     "class-validator": "^0.7.2",
     "classnames": "^2.2.5",
     "codemirror": "^5.28.0",
+    "echarts": "^3.6.2",
     "escodegen": "^1.8.1",
     "font-awesome": "^4.7.0",
     "hoist-non-react-statics": "^2.2.1",
