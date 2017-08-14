@@ -1,32 +1,57 @@
 import AntTheme from './antd/index';
-import { ComponentLoader } from '../render/util/componentLoader';
+import RcreTheme from './rcre/index';
+import {ComponentLoader} from '../render/util/componentLoader';
+import * as React from 'react';
+import {each} from 'lodash';
+
+export type ThemeConfig = {
+    [s: string]: {
+        component: React.ComponentClass<any>,
+        componentInterface: Object
+    }
+};
 
 export class DriverController {
-    private themeMap: Map<string, ComponentLoader>;
-    private lastValidTheme: any;
+    private theme: string;
+    private loader: ComponentLoader;
+    private registedTheme: Map<string, boolean>;
 
     constructor() {
-        this.themeMap = new Map();
-        this.setTheme('antd', AntTheme);
+        this.loader = new ComponentLoader();
+        this.theme = 'antd';
+        this.registedTheme = new Map();
     }
 
-    getTheme(theme: string): ComponentLoader {
-        let item = this.themeMap.get(theme);
-
-        if (!item) {
-            console.error('there is not theme type, val: ' + theme);
-            return this.lastValidTheme;
+    public setTheme(theme: string) {
+        if (!this.registedTheme.has(theme)) {
+            // TODO better error report
+            console.error('there are no registed themes');
+            return;
         }
 
-        return item;
+        this.theme = theme;
     }
 
-    setTheme(theme: string, loader: ComponentLoader) {
-        this.themeMap.set(theme, loader);
-        this.lastValidTheme = loader;
+    public registerTheme(theme: string, config: ThemeConfig) {
+        this.registedTheme.set(theme, true);
+
+        each(config, (info, name) => {
+            if (!/^[\w0-9]+$/.test(name)) {
+                console.error('invalid driver component name, name can only contains words and numbers');
+                return;
+            }
+
+            this.loader.addComponent(`${theme}.${name}`, info.component, info.componentInterface);
+        });
+    }
+
+    public getComponent(name: string) {
+        return this.loader.getDriverComponent(name, this.theme);
     }
 }
 
 let driver = new DriverController();
+driver.registerTheme('antd', AntTheme);
+driver.registerTheme('rcre', RcreTheme);
 
 export default driver;

@@ -2,6 +2,7 @@ import * as React from 'react';
 import {IsBoolean, IsDefined, IsString} from 'class-validator';
 import {BasicConfig, BasicContainer, ContainerBasicPropsInterface} from '../../render/core/Container/types';
 import * as PropTypes from 'prop-types';
+import {DriverController} from '../../drivers/index';
 
 export class ButtonConfig extends BasicConfig {
     /**
@@ -95,8 +96,14 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
     }
     
     render() {
-        let driver = this.context.driver;
-        let componentInfo = driver.getComponent('button');
+        let driver: DriverController = this.context.driver;
+        let componentInfo = driver.getComponent(this.props.info.type);
+
+        if (!componentInfo) {
+            console.error(`can not find component: ${this.props.info.type}`);
+            return <div/>;
+        }
+        
         let Component = componentInfo.component;
         return React.createElement(Component, this.props, this.props.info.label);
     }

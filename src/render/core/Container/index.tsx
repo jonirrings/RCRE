@@ -79,8 +79,8 @@ class Container extends BasicContainer<ContainerProps, {}> {
         let {
             type
         } = this.props.info;
-        
-        let componentInfo = componentLoader.getComponent(type);
+
+        let componentInfo = componentLoader.getAbstractComponent(type);
         
         if (!componentInfo) {
             return <div />;

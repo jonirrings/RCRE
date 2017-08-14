@@ -8,7 +8,7 @@ export class ActionProps {
 }
 
 export function createAction(info: ActionProps) {
-    let componentInfo = componentLoader.getComponent(info.type);
+    let componentInfo = componentLoader.getAbstractComponent(info.type);
     
     if (!componentInfo) {
         console.error(`can not find component of type: ${info.type}`);

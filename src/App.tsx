@@ -21,11 +21,9 @@ const pageConfig = {
             'buttonType': 'primary'
         },
         {
-            'type': 'lineChart',
-            'style': {
-                'width': '400px',
-                'height': '200px'
-            }
+            'type': 'rcre.lineChart',
+            'width': '500px',
+            'height': '400px'
         }
         // {
         //     'type': 'tree',

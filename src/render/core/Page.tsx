@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import { CreateContainer } from './Container/index';
 import WrappedContainer from './Container/index';
 import {ContainerBasicPropsInterface} from './Container/types';
 import {IsDefined, IsString} from 'class-validator';
@@ -30,10 +29,10 @@ class Page extends React.Component<PageProps, {}> {
     };
 
     getChildContext() {
-        let driver = themeDriver.getTheme(this.props.theme);
-
+        themeDriver.setTheme(this.props.theme);
+        
         return {
-            driver: driver
+            driver: themeDriver
         };
     }
 
@@ -54,12 +53,6 @@ class Page extends React.Component<PageProps, {}> {
                     $depth: 0,
                     $uuid: `0_${index}`
                 });
-
-                // return React.createElement(WrappedContainer, Object.assign(item, {
-                //     key: index,
-                //     $depth: 0,
-                //     $uuid: `0_${index}`
-                // }));
             });
         } else {
             body = React.createElement(WrappedContainer, {
@@ -67,11 +60,6 @@ class Page extends React.Component<PageProps, {}> {
                 $uuid: `0_0`,
                 $depth: 0
             });
-
-            // body = React.createElement(WrappedContainer, Object.assign(this.props.body, {
-            //     $uuid: `0_0`,
-            //     $depth: 0
-            // }));
         }
 
         return (

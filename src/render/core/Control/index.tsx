@@ -24,7 +24,7 @@ interface ControlOptions {
 // }
 
 export function createControl(info: BasicControlPropsInterface, options: ControlOptions) {
-    let componentInfo = componentLoader.getComponent(info.type);
+    let componentInfo = componentLoader.getAbstractComponent(info.type);
 
     if (!componentInfo) {
         console.error(`can not find component of type: ${info.type}`);
