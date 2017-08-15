@@ -22,8 +22,14 @@ const pageConfig = {
         },
         {
             'type': 'rcre.lineChart',
-            'width': '500px',
-            'height': '400px'
+            'title': '测试图表',
+            'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/linechart',
+            'data': {
+                'category': '$response.data.categories',
+                'series': '$response.data.series'
+            },
+            'categories': '$data.category',
+            'series': '$data.series'
         }
         // {
         //     'type': 'tree',
@@ -141,7 +147,7 @@ class App extends React.Component<{}, AppStateInterface> {
                 return <Render code={this.props.code}/>;
             }
         }
-        
+
         return (
             <div className="App">
                 <JSONEditor

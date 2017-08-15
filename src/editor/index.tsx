@@ -27,6 +27,14 @@ class JSONEditor extends React.Component<JSONEditorPropsInterface, JSONEditorSta
         this.handleChange = this.handleChange.bind(this);
     }
 
+    componentWillMount() {
+        if (this.props.code.length > 0) {
+            this.setState({
+                code: this.props.code
+            });
+        }
+    }
+    
     handleChange(code: string) {
         this.setState({
             code
