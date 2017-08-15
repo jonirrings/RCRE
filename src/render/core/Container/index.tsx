@@ -10,6 +10,7 @@ import {Map} from 'immutable';
 import ParamsInjector from '../../util/injector';
 import {each, isString} from 'lodash';
 import {runInContext} from '../../util/vm';
+import Col from '../Layout/Col/Col';
 
 class Container extends BasicContainer<ContainerProps, {}> {
     static WrappedComponent: string;
@@ -93,7 +94,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
             componentInterface
         } = componentInfo;
 
-        return createElement<ContainerProps>(component, componentInterface, {
+        let childProps = {
             info: compiled,
             $data: this.props.$data,
             setData: this.emitChange,
@@ -101,7 +102,17 @@ class Container extends BasicContainer<ContainerProps, {}> {
             requestAPI: this.emitAPIRequest,
             $depth: this.props.$depth,
             $uuid: this.props.$uuid
-        });
+        };
+
+        let retComponent = createElement<ContainerProps>(component, componentInterface, childProps);
+
+        if (typeof this.props.info.colSpan !== 'undefined') {
+            return React.createElement(Col, {
+                info: this.props.info
+            }, retComponent);
+        }
+
+        return retComponent;
     }
 }
 

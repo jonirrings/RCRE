@@ -1,9 +1,9 @@
-import * as React from 'react';
 import {IsDefined, IsString, Validate} from 'class-validator';
 import {Map} from 'immutable';
 import {INIT_DATA_PAYLOAD, SET_DATA_PAYLOAD} from './action';
 import {DriverController} from '../../../drivers/index';
 import {IsPageInfo} from '../../util/validators';
+import AbstractCol, {ColConfig, ColPropsInterface} from '../Layout/Col/Col';
 
 export type rawJSONType = string | number | null | boolean | Object;
 export type originJSONType = rawJSONType | rawJSONType[];
@@ -12,7 +12,7 @@ export type defaultData = {
     [s: string]: originJSONType
 };
 
-export class BasicConfig {
+export class BasicConfig extends ColConfig {
     @IsString()
     @IsDefined()
     type: string;
@@ -23,7 +23,7 @@ export class BasicConfig {
     data?: defaultData;
 }
 
-export class ContainerBasicPropsInterface {
+export class ContainerBasicPropsInterface extends ColPropsInterface {
     @Validate(IsPageInfo)
     info: BasicConfig;
 
@@ -53,7 +53,7 @@ export class ContainerProps extends ContainerBasicPropsInterface {
     public requestAPI: () => void;
 }
 
-export class BasicContainer <T extends ContainerBasicPropsInterface, P> extends React.Component<T, P> {
+export class BasicContainer<T extends ContainerBasicPropsInterface, P> extends AbstractCol<T, P> {
     constructor() {
         super();
     }

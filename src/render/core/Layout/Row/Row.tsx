@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {BasicConfig, BasicContainer, ContainerBasicPropsInterface} from '../../render/core/Container/types';
+import {BasicConfig, BasicContainer, ContainerBasicPropsInterface} from '../../Container/types';
 import * as PropTypes from 'prop-types';
-import {DriverController} from '../../drivers/index';
+import {DriverController} from '../../../../drivers/index';
 import {Validate} from 'class-validator';
-import {IsValidEnums} from '../../render/util/validators';
-import Container from '../../render/core/Container/index';
+import {IsValidEnums} from '../../../util/validators';
+import Container from '../../Container/index';
 
 export class RowConfig extends BasicConfig {
     /**
