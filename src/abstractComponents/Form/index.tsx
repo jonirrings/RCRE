@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Map } from 'immutable';
-import { IsString, IsDefined, IsArray} from 'class-validator';
+import {Map} from 'immutable';
+import {IsArray, IsDefined, IsString} from 'class-validator';
 import apiRequest from '../../render/services/api';
-import { FormItem, FormItemBasicPropsInterface} from './types';
-import { BasicContainer, ContainerProps} from '../../render/core/Container/types';
-import { createControl } from '../../render/core/Control/index';
+import {FormItem, FormItemBasicPropsInterface} from './types';
+import {BasicContainer, ContainerProps} from '../../render/core/Container/types';
+import {createControl} from '../../render/core/Control/index';
 
 export class FormPropsInterface extends ContainerProps {
     @IsString()
@@ -70,6 +70,7 @@ class Form extends BasicContainer<FormPropsInterface , {}> {
                 $data: this.props.$data,
                 $handleChange: this.handleChange
             });
+
         });
 
         return (

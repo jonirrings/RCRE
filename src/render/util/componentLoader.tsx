@@ -8,6 +8,7 @@ import Select, {SelectPropsInterface} from '../../abstractComponents/Form/FormIt
 import Tree, {TreePropsInterface} from '../../abstractComponents/Tree/Tree';
 import TreeNode, {TreeNodePropsInterface} from '../../abstractComponents/Tree/TreeNode';
 import LineChart, {LineChartPropsInterface} from '../../abstractComponents/Chart/LineChart';
+import Row, {RowPropsInterface} from '../../abstractComponents/Row/Row';
 
 export type ComponentLoaderMapVal = {
     component: React.ComponentClass<any>,
@@ -60,5 +61,6 @@ loader.addComponent('select', Select, SelectPropsInterface);
 loader.addComponent('tree', Tree, TreePropsInterface);
 loader.addComponent('treeNode', TreeNode, TreeNodePropsInterface);
 loader.addComponent('lineChart', LineChart, LineChartPropsInterface);
+loader.addComponent('row', Row, RowPropsInterface);
 
 export default loader;

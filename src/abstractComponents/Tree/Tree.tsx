@@ -173,7 +173,9 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
                         TreeNodePropsInterface,
                         {
                             key: ret.key || index,
-                            info: ret
+                            info: ret,
+                            $depth: this.props.$depth + 1,
+                            $uuid: this.props.$uuid
                         },
                         loop(ret.children)
                     );
@@ -181,7 +183,9 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
 
                 return createElement(TreeNode, TreeNodePropsInterface, {
                     info: ret,
-                    key: ret.key || index
+                    key: ret.key || index,
+                    $depth: this.props.$depth + 1,
+                    $uuid: this.props.$uuid
                 });
             });
 

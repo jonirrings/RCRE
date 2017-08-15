@@ -65,3 +65,18 @@ export class IsCheckedKeys implements ValidatorConstraintInterface {
         return `${args.targetName} is not valide for string[] | { checked: string[], halfChecked: string[] }`;
     }
 }
+
+@ValidatorConstraint({
+    name: 'IsValidEnums',
+    async: false
+})
+export class IsValidEnums implements ValidatorConstraintInterface {
+    validate(value: string, args: ValidationArguments) {
+        let enums = args.constraints;
+        return enums.indexOf(value) >= 0;
+    }
+
+    defaultMessage(args: ValidationArguments) {
+        return `${args.targetName} is not in ${args.constraints.join(',')}`;
+    }
+}

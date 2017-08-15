@@ -14,26 +14,26 @@ class AntButtonProps {
     children: any;
 }
 
-export default class AntButton extends React.Component<ButtonConfig & ButtonPropsInterface, {}> {
+export default class AntButton extends React.Component<ButtonPropsInterface, {}> {
     constructor() {
         super();
     }
 
-    mapOptions(props: ButtonConfig & ButtonPropsInterface): AntButtonProps {
+    mapOptions(props: ButtonConfig): AntButtonProps {
         return {
-            htmlType: props.info.htmlType,
-            type: props.info.buttonType,
-            icon: props.info.icon,
-            shape: props.info.shape,
-            size: props.info.size,
-            loading: props.info.loading,
+            htmlType: props.htmlType,
+            type: props.buttonType,
+            icon: props.icon,
+            shape: props.shape,
+            size: props.size,
+            loading: props.loading,
             onClick: this.props.onClick,
-            ghost: props.info.ghost,
-            children: props.info.label
+            ghost: props.ghost,
+            children: props.label
         };
     }
     
     render() {
-        return React.createElement(Button, this.mapOptions(this.props), this.props.children);
+        return React.createElement(Button, this.mapOptions(this.props.info), this.props.children);
     }
 }

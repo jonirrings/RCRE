@@ -15,22 +15,34 @@ const pageConfig = {
     'theme': 'antd',
     'body': [
         {
-            'type': 'button',
-            'label': 'click me',
-            'icon': 'cloud',
-            'buttonType': 'primary'
-        },
-        {
-            'type': 'rcre.lineChart',
-            'title': '测试图表',
-            'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/linechart',
-            'data': {
-                'category': '$response.data.categories',
-                'series': '$response.data.series'
-            },
-            'categories': '$data.category',
-            'series': '$data.series'
+            'type': 'row',
+            'children': [
+                {
+                    'type': 'button',
+                    'label': 'one',
+                    'icon': 'cloud',
+                    'buttonType': 'primary',
+                    'col-span': 4
+                },
+                {
+                    'type': 'button',
+                    'label': 'two',
+                    'buttonType': 'primary',
+                    'col-span': 4
+                },
+            ]
         }
+        // {
+        //     'type': 'rcre.lineChart',
+        //     'title': '测试图表',
+        //     'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/linechart',
+        //     'data': {
+        //         'category': '$response.data.categories',
+        //         'series': '$response.data.series'
+        //     },
+        //     'categories': '$data.category',
+        //     'series': '$data.series'
+        // },
         // {
         //     'type': 'tree',
         //     // 'checkable': true,

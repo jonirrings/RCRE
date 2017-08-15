@@ -37,13 +37,13 @@ export class ContainerBasicPropsInterface {
      * 组件唯一ID
      * @private
      */
-    $uuid?: string;
+    $uuid: string;
 
     /**
      * Container组件深度
      * @private
      */
-    $depth?: number;
+    $depth: number;
 }
 
 export class ContainerProps extends ContainerBasicPropsInterface {

@@ -98,7 +98,9 @@ class Container extends BasicContainer<ContainerProps, {}> {
             $data: this.props.$data,
             setData: this.emitChange,
             initData: this.props.initData,
-            requestAPI: this.emitAPIRequest
+            requestAPI: this.emitAPIRequest,
+            $depth: this.props.$depth,
+            $uuid: this.props.$uuid
         });
     }
 }
