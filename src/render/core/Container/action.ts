@@ -1,9 +1,11 @@
 export const SET_DATA = 'SET_DATA';
+export const SET_DATA_LIST = 'SET_DATA_LIST';
 export const INIT_DATA = 'INIT_DATA';
 export type SET_DATA_PAYLOAD = {
     type: string;
     newValue: any;
 };
+export type SET_DATA_LIST_PAYLOAD = SET_DATA_PAYLOAD[];
 export type INIT_DATA_PAYLOAD = any;
 
 export type IActions = {
@@ -14,6 +16,10 @@ export type IActions = {
     INIT_DATA: {
         type: typeof INIT_DATA,
         payload: INIT_DATA_PAYLOAD
+    },
+    SET_DATA_LIST: {
+        type: typeof SET_DATA_LIST,
+        payload: SET_DATA_LIST_PAYLOAD
     }
 };
 
@@ -26,6 +32,10 @@ export const actionCreators = {
     }),
     initData: (payload: INIT_DATA_PAYLOAD) => ({
         type: INIT_DATA as typeof INIT_DATA,
+        payload
+    }),
+    setDataList: (payload: SET_DATA_LIST_PAYLOAD) => ({
+        type: SET_DATA_LIST as typeof SET_DATA_LIST,
         payload
     })
 };

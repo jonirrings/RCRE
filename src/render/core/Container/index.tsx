@@ -72,7 +72,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
         let injector = new ParamsInjector(props, this.loadData);
 
         injector.finished((payloads: SET_DATA_PAYLOAD[]) => {
-            payloads.forEach(this.props.setData);
+            this.props.setDataList(payloads); 
         });
     }
 
@@ -98,6 +98,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
             info: compiled,
             $data: this.props.$data,
             setData: this.emitChange,
+            setDataList: this.props.setDataList,
             initData: this.props.initData,
             requestAPI: this.emitAPIRequest,
             $depth: this.props.$depth,
@@ -124,6 +125,7 @@ const mapStateToProps = (state: RootState, ownProps: any) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
     setData: actionCreators.setData,
+    setDataList: actionCreators.setDataList,
     initData: actionCreators.initData
 }, dispatch);
 

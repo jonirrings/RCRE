@@ -49,6 +49,7 @@ export class ContainerBasicPropsInterface extends ColPropsInterface {
 export class ContainerProps extends ContainerBasicPropsInterface {
     public $data: Map<string, any>;
     public setData: (payload: SET_DATA_PAYLOAD) => void;
+    public setDataList: (payload: SET_DATA_PAYLOAD[]) => void;
     public initData: (payload: INIT_DATA_PAYLOAD) => void;
     public requestAPI: () => void;
 }

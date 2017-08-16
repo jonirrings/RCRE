@@ -5,7 +5,6 @@ import * as PropTypes from 'prop-types';
 import {IsArray, IsBoolean, Validate} from 'class-validator';
 import TreeNode, {TreeNodeConfig, TreeNodeMappingConfig, TreeNodePropsInterface} from './TreeNode';
 import {IsArrayString, IsCheckedKeys} from '../../render/util/validators';
-// import {parseObjectPropertyExpress} from '../../render/util/vm';
 import * as _ from 'lodash';
 import {runInContext} from '../../render/util/vm';
 

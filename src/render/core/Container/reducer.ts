@@ -1,7 +1,7 @@
-import { Map } from 'immutable';
-import { Reducer } from 'redux';
-import { IRootAction } from '../../data/actions';
-import { SET_DATA, INIT_DATA } from './action';
+import {Map} from 'immutable';
+import {Reducer} from 'redux';
+import {IRootAction} from '../../data/actions';
+import {INIT_DATA, SET_DATA, SET_DATA_LIST} from './action';
 
 type stateItem = Map<string, any>;
 export type IState = Map<string, stateItem>;
@@ -21,7 +21,16 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
     switch (actions.type) {
         case SET_DATA:
             return state.set('data', state.get('data').set(actions.payload.type, actions.payload.newValue));
-            
+
+        case SET_DATA_LIST:
+            let payloadList = actions.payload;
+            let dataState = state.get('data');
+            payloadList.forEach(item => {
+                let keyName = item.type;
+                let val = item.newValue;
+                dataState = dataState.set(keyName, val);
+            });
+            return state.set('data', dataState);
         case INIT_DATA:
             return state.set('data', Map(actions.payload));
         default:
