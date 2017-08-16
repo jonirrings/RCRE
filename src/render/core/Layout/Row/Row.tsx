@@ -1,10 +1,9 @@
 import * as React from 'react';
-import {BasicConfig, BasicContainer, ContainerBasicPropsInterface} from '../../Container/types';
-import * as PropTypes from 'prop-types';
-import {DriverController} from '../../../../drivers/index';
+import {BasicConfig, ContainerBasicPropsInterface} from '../../Container/types';
 import {Validate} from 'class-validator';
 import {IsValidEnums} from '../../../util/validators';
 import Container from '../../Container/index';
+import {Row} from 'antd';
 
 export class RowConfig extends BasicConfig {
     /**
@@ -24,6 +23,13 @@ export class RowConfig extends BasicConfig {
     justify?: 'start' | 'end' | 'center' | 'space-around' | 'space-between';
 
     /**
+     * 栅格间隔
+     * @public
+     * @default 0
+     */
+    gutter?: number;
+    
+    /**
      * 字级container组件
      */
     children: BasicConfig[];
@@ -33,26 +39,28 @@ export class RowPropsInterface extends ContainerBasicPropsInterface {
     info: RowConfig;
 }
 
-export default class AbstractRow extends BasicContainer<RowPropsInterface, {}> {
-    static contextTypes = {
-        driver: PropTypes.object
-    };
+export class AntRowProps {
+    align?: 'top' | 'middle' | 'bottom';
+    justify?: 'start' | 'end' | 'center' | 'space-around' | 'space-between';
+    gutter?: number;
+    type?: 'flex';
+}
 
+export default class AbstractRow extends React.Component<RowPropsInterface, {}> {
     constructor() {
         super();
     }
 
+    private mapOptions(info: RowConfig): AntRowProps {
+        return {
+            align: info.align,
+            justify: info.justify,
+            gutter: info.gutter,
+            type: 'flex'
+        };
+    }
+
     render() {
-        let driver: DriverController = this.context.driver;
-        let componentInfo = driver.getComponent(this.props.info.type);
-
-        if (!componentInfo) {
-            console.error(`can not find component: ${this.props.info.type}`);
-            return <div/>;
-        }
-
-        let Component = componentInfo.component;
-
         let children = this.props.info.children.map((item, index) => {
             return React.createElement(Container, {
                 info: item,
@@ -61,6 +69,7 @@ export default class AbstractRow extends BasicContainer<RowPropsInterface, {}> {
                 $uuid: `0_${this.props.$depth + 1}`
             });
         });
-        return React.createElement(Component, this.props, children);
+
+        return React.createElement(Row, this.mapOptions(this.props.info), children);
     }
 }

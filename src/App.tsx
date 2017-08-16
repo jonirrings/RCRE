@@ -16,6 +16,8 @@ const pageConfig = {
     'body': [
         {
             'type': 'row',
+            'align': 'center',
+            'justify': 'space-around',
             'children': [
                 {
                     'type': 'button',
