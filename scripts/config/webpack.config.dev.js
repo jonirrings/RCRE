@@ -21,6 +21,7 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 
@@ -242,6 +243,12 @@ module.exports = {
             inject: true,
             template: paths.appHtml
         }),
+        new CopyWebpackPlugin([
+            {
+                from: 'node_modules/monaco-editor/min/vs',
+                to: 'vs',
+            }
+        ]),
         // Makes some environment variables available to the JS code, for example:
         // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
         new webpack.DefinePlugin(env.stringified),

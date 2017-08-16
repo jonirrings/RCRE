@@ -19,8 +19,7 @@ export class RowConfig extends BasicConfig {
      * @public
      * @default start
      */
-    @Validate(IsValidEnums, ['start', 'e' +
-    'Lll;; ghhvtgbyybyqnd', 'center', 'space-around', 'space-between'])
+    @Validate(IsValidEnums, ['start', 'end', 'center', 'space-around', 'space-between'])
     justify?: 'start' | 'end' | 'center' | 'space-around' | 'space-between';
 
     /**

@@ -1,9 +1,7 @@
 import * as React from 'react';
-import * as CodeMirror from 'react-codemirror';
+import MonacoEditor from 'react-monaco-editor';
 import * as keycode from 'keycode';
 import * as ReactDOM from 'react-dom';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/mode/javascript/javascript';
 
 import './index.css';
 
@@ -25,6 +23,7 @@ class JSONEditor extends React.Component<JSONEditorPropsInterface, JSONEditorSta
         };
         
         this.handleChange = this.handleChange.bind(this);
+        this.editorDidMount = this.editorDidMount.bind(this);
     }
 
     componentWillMount() {
@@ -54,19 +53,31 @@ class JSONEditor extends React.Component<JSONEditorPropsInterface, JSONEditorSta
         }, true);
     }
 
+    editorDidMount(editor: monaco.editor.ICodeEditor, monacoModule: typeof monaco) {
+        console.log('editorDidMount', editor);
+        editor.focus();
+    }
+
     render() {
+        const code = this.state.code;
         const options = {
-            lineNumbers: true,
-            mode: 'javascript',
-            viewportMargin: Infinity
+            selectOnLineNumbers: true,
+            minimap: {
+                enabled: false
+            }
         };
 
         return (
             <div className="editor-wrapper">
-                <CodeMirror
-                    value={this.props.code}
-                    onChange={this.handleChange}
+                <MonacoEditor
+                    width="700"
+                    height="700"
+                    language="json"
+                    theme="vs-light"
+                    value={code}
                     options={options}
+                    onChange={this.handleChange}
+                    editorDidMount={this.editorDidMount}
                 />
             </div>
         );

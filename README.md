@@ -5,6 +5,12 @@ RCRE (React Component Render Engine)
 
 ## 如何安装
 
+项目运行需要npm v5版本, 如果npm版本过低,
+需要升级npm
+```
+sudo npm install -g npm
+```
+
 安装依赖包
 ```bash
 npm install

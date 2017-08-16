@@ -78,6 +78,7 @@ class AbstractTreeNode extends BasicContainer<TreeNodePropsInterface, {}> {
 }
 
 // 为了兼容rc-tree非常恶心的实现方式
+// 需要让AbstractTreeNode也被AntTree当作是AntTreeNode. 这样才能拿到要传递给下层所需要的属性值
 // https://github.com/react-component/tree/blob/master/src/TreeNode.jsx#L187
 AbstractTreeNode.isTreeNode = true;
 
