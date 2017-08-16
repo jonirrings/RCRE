@@ -246,7 +246,7 @@ module.exports = {
         new CopyWebpackPlugin([
             {
                 from: 'node_modules/monaco-editor/min/vs',
-                to: 'vs',
+                to: 'vs'
             }
         ]),
         // Makes some environment variables available to the JS code, for example:
