@@ -1,7 +1,7 @@
 import * as React from 'react';
 // import {IsBoolean, IsString, IsEmail, validateSync, MinLength} from 'class-validator';
 import * as PropTypes from 'prop-types';
-import {BasicFormItemConfig} from '../Form/types';
+import {BasicFormItem, BasicFormItemConfig} from '../Form/types';
 import {DriverController} from '../../drivers/index';
 import createElement from '../../render/util/createElement';
 import {IsBoolean, IsString, Validate} from 'class-validator';
@@ -71,7 +71,7 @@ interface InputStateInterface {
     hasError: boolean;
 }
 
-class AbstractInput extends FormItem<InputPropsInterface, InputStateInterface> {
+class AbstractInput extends BasicFormItem<InputPropsInterface, InputStateInterface> {
     static defaultProps = {
         value: '',
 

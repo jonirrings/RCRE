@@ -1,6 +1,6 @@
 import {IsArray, IsDefined, IsString} from 'class-validator';
 import {BasicConfig} from '../../render/core/Container/types';
-import * as React from "react";
+import * as React from 'react';
 
 export class BasicFormItemConfig extends BasicConfig {
     /**

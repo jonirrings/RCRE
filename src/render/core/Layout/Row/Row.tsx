@@ -5,8 +5,8 @@ import {IsNumber, Validate} from 'class-validator';
 import {IsValidEnums} from '../../../util/validators';
 import Container from '../../Container/index';
 import {Row} from 'antd';
-import {DriverController} from "../../../../drivers/index";
-import createElement from "../../../util/createElement";
+import {DriverController} from '../../../../drivers/index';
+import createElement from '../../../util/createElement';
 import FormItem, {FormItemPropsInterface} from '../../../../abstractComponents/Form/FormItem';
 
 export class RowConfig extends BasicConfig {
@@ -98,7 +98,8 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
             
             let childProps = {
                 info: item,
-                key: index
+                key: index,
+                isError: true
             }; 
             
             let child = createElement(Wrapper, WrapperInterface, childProps);

@@ -86,19 +86,19 @@ const pageConfig = {
             'controls': [
                 {
                     'type': 'row',
+                    'justify': 'space-between',
                     'children': [
                         {
                             'type': 'input',
                             'name': 'username',
                             'label': 'username',
-                            'colSpan': 12
+                            'colSpan': 10
                         },
                         {
                             'type': 'input',
                             'name': 'password',
                             'label': 'password',
-                            'colSpan': 12,
-                            'colPush': 2
+                            'colSpan': 10
                         }
                     ]
                 },

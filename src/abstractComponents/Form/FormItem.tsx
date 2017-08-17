@@ -16,7 +16,7 @@ export class FormItemConfig extends BasicFormItemConfig {
      */
     @IsString()
     label?: string;
-    
+
     /**
      * 是否必填
      * @public
@@ -30,12 +30,27 @@ export class FormItemConfig extends BasicFormItemConfig {
      * @public
      * @default null
      */
+    @IsString()
     pattern?: string;
+
+    /**
+     * 错误提示信息
+     * @public
+     * @default ''
+     */
+    @IsString()
+    errmsg?: string;
 }
 
 export class FormItemPropsInterface extends BasicFormItemPropsInterface {
     @Validate(IsPageInfo)
     info: FormItemConfig;
+
+    /**
+     * 是否有错误
+     */
+    @IsBoolean()
+    isError: boolean;
 }
 
 class AbstractFormItem<T extends FormItemPropsInterface, P> extends BasicFormItem<T, P> {
@@ -47,7 +62,7 @@ class AbstractFormItem<T extends FormItemPropsInterface, P> extends BasicFormIte
         super();
     }
 
-    private renderLabel(info: FormItemConfig) {
+    private renderLabel(info: FormItemConfig, colSpan: number) {
         if (info.label) {
             let labelClass = classNames({
                 'ant-form-item-required': info.required
@@ -58,15 +73,15 @@ class AbstractFormItem<T extends FormItemPropsInterface, P> extends BasicFormIte
                 </div>
             );
             return this.wrapColumn(info, labelElement, {
-                colSpan: 8
+                colSpan: colSpan
             });
         }
-        
+
         return '';
     }
-    
+
     private wrapColumn
-        (info: FormItemConfig, children: React.ReactNode, options: ColConfig = {}) {
+    (info: FormItemConfig, children: React.ReactNode, options: ColConfig = {}) {
         return React.createElement(Col, {
             info: {
                 colSpan: options.colSpan || info.colSpan,
@@ -78,13 +93,37 @@ class AbstractFormItem<T extends FormItemPropsInterface, P> extends BasicFormIte
         }, children);
     }
 
-    render() {
+    private renderExplain(info: FormItemConfig) {
+        if (!this.props.isError) {
+            return '';
+        }
+
         return (
-            <div>
-                {this.renderLabel(this.props.info)}
-                {this.wrapColumn(this.props.info, this.props.children)}
+            <div className="ant-form-explain">{info.errmsg || `${info.type} is required`}</div>
+        );
+    }
+
+    render() {
+        let errorClass = classNames({
+            'has-error': this.props.isError,
+            'ant-form-item': true
+        });
+
+        let child = (
+            <div className={errorClass}>
+                {this.renderLabel(this.props.info, 8)}
+                {
+                    this.wrapColumn(this.props.info, [
+                        this.props.children,
+                        this.renderExplain(this.props.info)
+                    ], {
+                        colSpan: 16
+                    })
+                }
             </div>
         );
+
+        return this.wrapColumn(this.props.info, child);
     }
 }
 
