@@ -1,13 +1,14 @@
 import * as React from 'react';
 // import {IsBoolean, IsString, IsEmail, validateSync, MinLength} from 'class-validator';
 import * as PropTypes from 'prop-types';
-import {FormItem, FormItemBasicConfig, FormItemBasicPropsInterface} from '../../types';
-import {DriverController} from '../../../../drivers/index';
-import createElement from '../../../../render/util/createElement';
-import {Validate} from 'class-validator';
-import {IsValidEnums} from '../../../../render/util/validators';
+import {BasicFormItemConfig} from '../Form/types';
+import {DriverController} from '../../drivers/index';
+import createElement from '../../render/util/createElement';
+import {IsBoolean, IsString, Validate} from 'class-validator';
+import {IsValidEnums} from '../../render/util/validators';
+import FormItem, {FormItemPropsInterface} from '../Form/FormItem';
 
-export class InputProps extends FormItemBasicConfig {
+export class InputConfig extends BasicFormItemConfig {
     /**
      * 输入框类型
      * @public
@@ -15,10 +16,50 @@ export class InputProps extends FormItemBasicConfig {
      */
     @Validate(IsValidEnums, ['text', 'number', 'password', 'email'])
     inputType: 'text' | 'number' | 'password' | 'email';
+
+    /**
+     * 输入框ID
+     * @public
+     * @default ''
+     */
+    @IsString()
+    id: string;
+
+    /**
+     * 空间大小
+     * @public
+     * @default 'default'
+     */
+    @IsString()
+    size: 'default' | 'large' | 'small';
+
+    /**
+     * 是否禁用
+     * @public
+     * @default false
+     */
+    @IsBoolean()
+    disabled: boolean;
+
+    /**
+     * 带标签的 input，设置前置标签
+     * @public
+     * @default ''
+     */
+    @IsString()
+    addonBefore: string;
+
+    /**
+     * 带标签的 input，设置后置标签
+     * @public
+     * @default ''
+     */
+    @IsString()
+    addonAfter: string;
 }
 
-export class InputPropsInterface extends FormItemBasicPropsInterface {
-    info: InputProps;
+export class InputPropsInterface extends FormItemPropsInterface {
+    info: InputConfig;
 
     /**
      *  输入框文本触发回调
@@ -40,20 +81,43 @@ class AbstractInput extends FormItem<InputPropsInterface, InputStateInterface> {
     };
 
     static contextTypes = {
-        driver: PropTypes.object
+        driver: PropTypes.object,
+        form: PropTypes.bool
     };
 
     constructor() {
         super();
 
-        this.state = {
-            hasError: false
-        };
-
         // this.onChange = this.onChange.bind(this);
         // this.validateForm = this.validateForm.bind(this);
     }
+    
+    private wrapWithFormItem(children: React.ReactElement<InputPropsInterface>) {
+        return createElement(FormItem, FormItemPropsInterface, this.props, children);
+    }
 
+    render() {
+        
+        let driver: DriverController = this.context.driver;
+        let componentInfo = driver.getComponent(this.props.info.type);
+
+        if (!componentInfo) {
+            console.error(`can not find module ${this.props.info.type}`);
+            return <div/>;
+        }
+
+        let Component = componentInfo.component;
+        let componentInterface = componentInfo.componentInterface;
+
+        let children = createElement(Component, componentInterface, this.props);
+        
+        if (this.context.form) {
+            return this.wrapWithFormItem(children);
+        }
+        
+        return children;
+    }
+    
     // private onChange(event: React.FormEvent<HTMLInputElement>) {
     //     if (this.props.readonly) {
     //         return;
@@ -126,21 +190,6 @@ class AbstractInput extends FormItem<InputPropsInterface, InputStateInterface> {
     //    
     //     return valid;
     // }
-
-    render() {
-        let driver: DriverController = this.context.driver;
-        let componentInfo = driver.getComponent(this.props.info.type);
-
-        if (!componentInfo) {
-            console.error(`can not find module ${this.props.info.type}`);
-            return <div/>;
-        }
-
-        let Component = componentInfo.component;
-        let componentInterface = componentInfo.componentInterface;
-
-        return createElement(Component, componentInterface, this.props.info);
-    }
 }
 
 export default AbstractInput;

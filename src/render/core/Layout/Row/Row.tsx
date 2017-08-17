@@ -1,9 +1,13 @@
 import * as React from 'react';
-import {BasicConfig, ContainerBasicPropsInterface} from '../../Container/types';
-import {Validate} from 'class-validator';
+import * as PropTypes from 'prop-types';
+import {BasicConfig, ContainerBasicPropsInterface, ContainerProps} from '../../Container/types';
+import {IsNumber, Validate} from 'class-validator';
 import {IsValidEnums} from '../../../util/validators';
 import Container from '../../Container/index';
 import {Row} from 'antd';
+import {DriverController} from "../../../../drivers/index";
+import createElement from "../../../util/createElement";
+import FormItem, {FormItemPropsInterface} from '../../../../abstractComponents/Form/FormItem';
 
 export class RowConfig extends BasicConfig {
     /**
@@ -27,8 +31,14 @@ export class RowConfig extends BasicConfig {
      * @public
      * @default 0
      */
+    @IsNumber()
     gutter?: number;
-    
+
+    /**
+     * 自定义样式属性
+     */
+    style?: React.CSSProperties;
+
     /**
      * 字级container组件
      */
@@ -47,6 +57,11 @@ export class AntRowProps {
 }
 
 export default class AbstractRow extends React.Component<RowPropsInterface, {}> {
+    static contextTypes = {
+        driver: PropTypes.object,
+        form: PropTypes.bool
+    };
+
     constructor() {
         super();
     }
@@ -62,14 +77,49 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
 
     render() {
         let children = this.props.info.children.map((item, index) => {
-            return React.createElement(Container, {
+            let driver: DriverController = this.context.driver;
+            let Wrapper;
+            let WrapperInterface;
+
+            // Wrapper container component which have data properties
+            if (item.data) {
+                Wrapper = Container;
+                WrapperInterface = ContainerProps;
+            } else {
+                let componentInfo = driver.getComponent(item.type);
+                if (!componentInfo) {
+                    console.error(`can not find component of type ${item.type}`);
+                    return <div key={index} />;
+                }
+                
+                Wrapper = componentInfo.component;
+                WrapperInterface = componentInfo.componentInterface;
+            }
+            
+            let childProps = {
                 info: item,
-                key: index,
-                $depth: this.props.$depth + 1,
-                $uuid: `0_${this.props.$depth + 1}`
-            });
+                key: index
+            }; 
+            
+            let child = createElement(Wrapper, WrapperInterface, childProps);
+            
+            if (this.context.form) {
+                return createElement(FormItem, FormItemPropsInterface, childProps, child);
+            }
+
+            return child;
         });
 
-        return React.createElement(Row, this.mapOptions(this.props.info), children);
+        const defaultStyle = {
+            marginTop: 10,
+            marginBottom: 10
+        };
+
+        return (
+            <div style={Object.assign(defaultStyle, this.props.info.style || {})}>
+                {React.createElement(Row, this.mapOptions(this.props.info), children)}
+            </div>
+        );
+
     }
 }

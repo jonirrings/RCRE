@@ -1,8 +1,8 @@
-import * as React from 'react';
-import {IsArray, IsDefined, IsString, Validate} from 'class-validator';
-import {IsPageInfo} from '../../render/util/validators';
+import {IsArray, IsDefined, IsString} from 'class-validator';
+import {BasicConfig} from '../../render/core/Container/types';
+import * as React from "react";
 
-export class FormItemBasicConfig {
+export class BasicFormItemConfig extends BasicConfig {
     /**
      * control 类型
      * @public
@@ -31,21 +31,19 @@ export class FormItemBasicConfig {
      * @public
      */
     @IsArray()
-    controls?: FormItemBasicConfig[];
+    controls?: BasicFormItemConfig[];
 }
 
-export class FormItemBasicPropsInterface {
-    @Validate(IsPageInfo)
-    info: FormItemBasicConfig;
+export class BasicFormItemPropsInterface {
+    info: BasicFormItemConfig;
 }
 
-export class FormItem<T extends FormItemBasicPropsInterface, P> extends React.Component<T, P> {
+export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends React.Component<T, P> {
     constructor() {
         super();
     }
     
     public isValid() {
-        console.error(`${this.props.info.name} isValid() 没有被实现`);
-        return false;
+        console.error('isValid is not implemented');
     }
 }

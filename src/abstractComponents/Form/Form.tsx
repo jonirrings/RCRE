@@ -1,13 +1,14 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import componentLoader from '../../render/util/componentLoader';
+import createElement from '../../render/util/createElement';
 import {Map} from 'immutable';
-import {FormItem, FormItemBasicConfig, FormItemBasicPropsInterface} from './types';
+import * as PropsTypes from 'prop-types';
+import {BasicFormItemConfig} from './types';
 import {BasicConfig, BasicContainer, ContainerProps} from '../../render/core/Container/types';
 import {IsArray, IsDefined, IsString} from 'class-validator';
+import * as _ from 'lodash';
+import Col from '../../render/core/Layout/Col/Col';
 import {DriverController} from '../../drivers/index';
-import createElement from '../../render/util/createElement';
-
-// import {runInContext} from '../../render/util/vm';
 
 export class FormConfig extends BasicConfig {
     @IsString()
@@ -15,7 +16,7 @@ export class FormConfig extends BasicConfig {
     title: string;
 
     @IsArray()
-    controls: FormItemBasicConfig[];
+    controls: BasicFormItemConfig[];
 
     @IsString()
     @IsDefined()
@@ -26,12 +27,16 @@ export class FormPropsInterface extends ContainerProps {
     info: FormConfig;
 }
 
-class Form extends BasicContainer<FormPropsInterface, {}> {
+class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
     static contextTypes = {
-        driver: PropTypes.object
+        driver: PropsTypes.object
     };
 
-    private childInstance: Map<string, FormItem<FormItemBasicPropsInterface, {}>>;
+    static childContextTypes = {
+        form: PropsTypes.bool
+    };
+
+    private childInstance: Map<string, any>;
 
     constructor() {
         super();
@@ -41,96 +46,123 @@ class Form extends BasicContainer<FormPropsInterface, {}> {
         this.childInstance = Map();
     }
 
-    // handleChange(type: string, newValue: any) {
-    //     this.props.setData({
-    //         type,
-    //         newValue
-    //     });
-    // }
-    //
-    // async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    //     e.preventDefault();
-    //    
-    //     let isValidate = this.checkFormItem();
-    //    
-    //     if (!isValidate) {
-    //         return;
-    //     }
-    //    
-    //     let data = this.props.$data.toObject();
-    //    
-    //     await apiRequest(this.props.submitUrl, {
-    //         method: 'POST',
-    //         data: data
-    //     });
-    // }
-    //
-    // checkFormItem() {
-    //     let instanceArr = this.childInstance.toArray();
-    //    
-    //     return instanceArr.every(child => {
-    //         return child.isValid();
-    //     });
-    // }
-
-    private renderControl(info: FormItemBasicConfig): JSX.Element {
+    getChildContext() {
+        return {
+            // 指代, form组件内的组件, 只要这个参数存在, 内部组件就不能存在container组件
+            // 整个form的数据要高度统一
+            form: true 
+        };
+    }
+    
+    private renderControl(info: BasicFormItemConfig): JSX.Element {
         let type = info.type;
-        let driver: DriverController = this.context.driver;
-        let componentInfo = driver.getComponent(type);
+        let componentInfo = componentLoader.getAbstractComponent(type);
 
         if (!componentInfo) {
             console.error(`can not find component of type ${type}`);
-            return <div/>;
+            return <div key={Math.random()}/>;
         }
 
         let {
             component,
             componentInterface
         } = componentInfo;
-        //
-        // let updatedValue = this.props.$data.get(info.name);
-        // let defaultValue;
-
-        // if (info.initValue) {
-        //     defaultValue = runInContext(info.initValue)
-        // }
         
+        // TODO There are some HTML elements which is impossible to have childNodes, like input
+        // At this point, are warning should to printing if user try to generate a children of an input element
         let childElements;
-        if (info.controls) {
-            childElements = info.controls.map(control => this.renderControl(control));
+        if (info.controls && Array.isArray(info.controls)) {
+            childElements = info.controls.map(control => {
+                this.renderControl(control);
+            });
+        } else if (info.controls && _.isPlainObject(info.controls)) {
+            childElements = this.renderControl(info.controls);
         }
-
-        return createElement(component, componentInterface, {
-            key: info.name,
+        
+        let children = createElement(component, componentInterface, {
+            key: info.name || Math.random(),
             info: info
         }, childElements);
+        
+        if (typeof info.colSpan !== 'undefined') {
+            return React.createElement(Col, {
+                info: this.props.info
+            }, children);
+        }
+        
+        return children;
     }
 
     private renderTitle(): JSX.Element {
         let info = this.props.info;
 
+        if (!info.title) {
+            return <div />;
+        }
+
         return (
-            <div className="form-title">
+            <div className="form-title" key="title">
                 <h3>{info.title}</h3>
             </div>
         );
     }
 
     render() {
+        let driver: DriverController = this.context.driver;
         let controls = this.props.info.controls;
         let controlChildren;
-
+        
         if (controls && controls.length > 0) {
             controlChildren = controls.map(control => this.renderControl(control));
         }
-
-        return (
-            <form>
-                {this.renderTitle()}
-                {controlChildren}
-            </form>
-        );
+        
+        let FormInfo = driver.getComponent(this.props.info.type);
+        
+        if (!FormInfo) {
+            console.error(`Can not find module of ${this.props.info.type}`);
+            return <div />;
+        }
+        
+        let form = FormInfo.component;
+        let formInterface = FormInfo.componentInterface;
+        
+        return createElement(form, formInterface, this.props, [
+            this.renderTitle(),
+            controlChildren
+        ]);
     }
 }
 
-export default Form;
+export default AbstractForm;
+
+// handleChange(type: string, newValue: any) {
+//     this.props.setData({
+//         type,
+//         newValue
+//     });
+// }
+//
+// async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+//     e.preventDefault();
+//    
+//     let isValidate = this.checkFormItem();
+//    
+//     if (!isValidate) {
+//         return;
+//     }
+//    
+//     let data = this.props.$data.toObject();
+//    
+//     await apiRequest(this.props.submitUrl, {
+//         method: 'POST',
+//         data: data
+//     });
+// }
+//
+// checkFormItem() {
+//     let instanceArr = this.childInstance.toArray();
+//    
+//     return instanceArr.every(child => {
+//         return child.isValid();
+//     });
+// }

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Button, {ButtonPropsInterface} from '../../abstractComponents/Button/Button';
+import Input, {InputPropsInterface} from '../../abstractComponents/Input/Input';
 import Tree, {TreePropsInterface} from '../../abstractComponents/Tree/Tree';
 import TreeNode, {TreeNodePropsInterface} from '../../abstractComponents/Tree/TreeNode';
 import LineChart, {LineChartPropsInterface} from '../../abstractComponents/Chart/LineChart';
@@ -68,6 +69,10 @@ const config = {
     form: {
         component: Form,
         componentInterface: FormPropsInterface
+    },
+    input: {
+        component: Input,
+        componentInterface: InputPropsInterface
     }
 };
 

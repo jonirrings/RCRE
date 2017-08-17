@@ -5,7 +5,9 @@ import AntInput from './components/Input/Input';
 import {ButtonPropsInterface} from '../../abstractComponents/Button/Button';
 import {TreePropsInterface} from '../../abstractComponents/Tree/Tree';
 import {TreeNodePropsInterface} from '../../abstractComponents/Tree/TreeNode';
-import {InputPropsInterface} from '../../abstractComponents/Form/FormItem/Input/Input';
+import {InputPropsInterface} from '../../abstractComponents/Input/Input';
+import AntForm from './components/Form/Form';
+import {FormPropsInterface} from '../../abstractComponents/Form/Form';
 
 export default {
     button: {
@@ -23,5 +25,9 @@ export default {
     input: {
         component: AntInput,
         componentInterface: InputPropsInterface
+    },
+    form: {
+        component: AntForm,
+        componentInterface: FormPropsInterface
     }
 };

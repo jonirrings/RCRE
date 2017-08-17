@@ -24,7 +24,13 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
     }
 
     render() {
-        let info: PageProps = JSON.parse(this.props.code);
+        let info;
+        try {
+            info = JSON.parse(this.props.code);     
+        } catch (e) {
+            console.error(e);
+        }
+       
         let ret = paramCheck(info, PageProps);
         if (ret.length > 0) {
             console.error(ret);

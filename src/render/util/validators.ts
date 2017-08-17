@@ -80,3 +80,20 @@ export class IsValidEnums implements ValidatorConstraintInterface {
         return `${args.targetName} is not in ${args.constraints.join(',')}`;
     }
 }
+
+// @ValidatorConstraint({
+//     name: 'UniversalValidators',
+//     async: false
+// })
+// export class UniversalValidators implements ValidatorConstraintInterface {
+//     validate(value: Object, args: ValidationArguments) {
+//         let Validator = args.constraints[0];
+//         let container = new Validator();
+//         Object.assign(container, value);
+//         return validateSync(container).length === 0;
+//     }
+//    
+//     defaultMessage(args: ValidationArguments) {
+//         return `${args.targetName} is not valid`;
+//     }
+// }

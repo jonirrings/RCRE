@@ -85,8 +85,31 @@ const pageConfig = {
             'submitUrl': '/',
             'controls': [
                 {
-                    type: 'input',
-                    name: 'username'
+                    'type': 'row',
+                    'children': [
+                        {
+                            'type': 'input',
+                            'name': 'username',
+                            'label': 'username',
+                            'colSpan': 12
+                        },
+                        {
+                            'type': 'input',
+                            'name': 'password',
+                            'label': 'password',
+                            'colSpan': 12,
+                            'colPush': 2
+                        }
+                    ]
+                },
+                {
+                    'type': 'row',
+                    'children': [
+                        {
+                            'type': 'input',
+                            'name': 'email'
+                        }
+                    ]
                 }
                 // {
                 //     'type': 'password',
