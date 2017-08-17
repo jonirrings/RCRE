@@ -1,14 +1,11 @@
 import * as React from 'react';
-import Form, {FormPropsInterface} from '../../abstractComponents/Form/index';
 import Button, {ButtonPropsInterface} from '../../abstractComponents/Button/Button';
-import Text, {TextFieldPropsInterface} from '../../abstractComponents/Form/FormItem/TextField/TextField';
-import Html, {HtmlPropsInterface} from '../../abstractComponents/Plain/Html';
-import Plain, {PlainPropsInterface} from '../../abstractComponents/Plain/Text';
-import Select, {SelectPropsInterface} from '../../abstractComponents/Form/FormItem/Select/Select';
 import Tree, {TreePropsInterface} from '../../abstractComponents/Tree/Tree';
 import TreeNode, {TreeNodePropsInterface} from '../../abstractComponents/Tree/TreeNode';
 import LineChart, {LineChartPropsInterface} from '../../abstractComponents/Chart/LineChart';
+import Form, {FormPropsInterface} from '../../abstractComponents/Form/Form';
 import Row, {RowPropsInterface} from '../core/Layout/Row/Row';
+import * as _ from 'lodash';
 
 export type ComponentLoaderMapVal = {
     component: React.ComponentClass<any>,
@@ -39,7 +36,7 @@ export class ComponentLoader {
         return this.cache.get(`${theme}.${name}`);
     }
 
-    addComponent<T>(type: string, component: React.ComponentClass<T>, componentInterface: any) {
+    addComponent(type: string, component: React.ComponentClass<any>, componentInterface: any) {
         this.cache.set(type, {
             component,
             componentInterface
@@ -47,20 +44,38 @@ export class ComponentLoader {
     }
 }
 
+const config = {
+    button: {
+        component: Button,
+        componentInterface: ButtonPropsInterface
+    },
+    tree: {
+        component: Tree,
+        componentInterface: TreePropsInterface
+    },
+    treeNode: {
+        component: TreeNode,
+        componentInterface: TreeNodePropsInterface
+    },
+    lineChart: {
+        component: LineChart,
+        componentInterface: LineChartPropsInterface
+    },
+    row: {
+        component: Row,
+        componentInterface: RowPropsInterface
+    },
+    form: {
+        component: Form,
+        componentInterface: FormPropsInterface
+    }
+};
+
 const loader = new ComponentLoader();
-loader.addComponent('form', Form, FormPropsInterface);
-loader.addComponent('button', Button, ButtonPropsInterface);
-loader.addComponent('text', Text, TextFieldPropsInterface);
-loader.addComponent('number', Text, TextFieldPropsInterface);
-loader.addComponent('password', Text, TextFieldPropsInterface);
-loader.addComponent('email', Text, TextFieldPropsInterface);
-loader.addComponent('submit', Text, TextFieldPropsInterface);
-loader.addComponent('html', Html, HtmlPropsInterface);
-loader.addComponent('plain', Plain, PlainPropsInterface);
-loader.addComponent('select', Select, SelectPropsInterface);
-loader.addComponent('tree', Tree, TreePropsInterface);
-loader.addComponent('treeNode', TreeNode, TreeNodePropsInterface);
-loader.addComponent('lineChart', LineChart, LineChartPropsInterface);
-loader.addComponent('row', Row, RowPropsInterface);
+
+_.each(config, (info, name) => {
+    let component = info.component;
+    loader.addComponent(name, component, info.componentInterface);
+});
 
 export default loader;

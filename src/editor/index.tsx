@@ -54,7 +54,6 @@ class JSONEditor extends React.Component<JSONEditorPropsInterface, JSONEditorSta
     }
 
     editorDidMount(editor: monaco.editor.ICodeEditor, monacoModule: typeof monaco) {
-        console.log('editorDidMount', editor);
         editor.focus();
     }
 

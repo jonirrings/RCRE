@@ -84,6 +84,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
         let componentInfo = componentLoader.getAbstractComponent(type);
         
         if (!componentInfo) {
+            console.error(`can not find component of type: ${type}`);
             return <div />;
         }
 

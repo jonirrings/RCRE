@@ -10,6 +10,7 @@ export default function createElement<T>(component: React.ComponentClass<T>,
         validateResults.forEach(item => {
             console.error(item);
         });
+        return React.createElement('div', props); 
     }
 
     return React.createElement<T>(component, props, children);
