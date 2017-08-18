@@ -87,14 +87,14 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
     constructor() {
         super();
 
-        this.handleClick = this.handleClick.bind(this);
+        // this.handleClick = this.handleClick.bind(this);
     }
     
-    private handleClick(e: React.MouseEvent<HTMLButtonElement>) {
-        e.preventDefault();
-        this.props.onClick(e);
-    }
-    
+    // private handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+    //     e.preventDefault();
+    //     this.props.onClick(e);
+    // }
+    //
     render() {
         let driver: DriverController = this.context.driver;
         let componentInfo = driver.getComponent(this.props.info.type);

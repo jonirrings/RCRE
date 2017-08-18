@@ -12,7 +12,11 @@ class AntSelect extends React.Component<SelectPropsInterface, {}> {
 
     private mapOptions(props: SelectConfig): SelectProps {
         return {
-            mode: props.mode
+            mode: props.mode,
+            allowClear: props.allowClear,
+            placeholder: props.placeholder,
+            size: props.size,
+            disabled: props.disabled
         };
     }
 

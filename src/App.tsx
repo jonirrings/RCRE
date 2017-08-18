@@ -106,8 +106,14 @@ const pageConfig = {
                     'type': 'row',
                     'children': [
                         {
-                            'type': 'input',
-                            'name': 'email'
+                            'type': 'select',
+                            'name': 'email',
+                            'options': [
+                                {
+                                    'key': 'aaa',
+                                    'value': '1'
+                                }
+                            ]
                         }
                     ]
                 }
