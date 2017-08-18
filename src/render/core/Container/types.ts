@@ -24,7 +24,7 @@ export class BasicConfig extends ColConfig {
 }
 
 export class ContainerBasicPropsInterface extends ColPropsInterface {
-    @Validate(IsPageInfo)
+    @Validate(IsPageInfo, [BasicConfig])
     info: BasicConfig;
 
     /**

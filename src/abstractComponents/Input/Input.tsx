@@ -1,8 +1,5 @@
 import * as React from 'react';
-// import {IsBoolean, IsString, IsEmail, validateSync, MinLength} from 'class-validator';
-import * as PropTypes from 'prop-types';
 import {BasicFormItem, BasicFormItemConfig} from '../Form/types';
-import {DriverController} from '../../drivers/index';
 import createElement from '../../render/util/createElement';
 import {IsBoolean, IsString, Validate} from 'class-validator';
 import {IsValidEnums} from '../../render/util/validators';
@@ -80,11 +77,6 @@ class AbstractInput extends BasicFormItem<InputPropsInterface, InputStateInterfa
         }
     };
 
-    static contextTypes = {
-        driver: PropTypes.object,
-        form: PropTypes.bool
-    };
-
     constructor() {
         super();
 
@@ -97,20 +89,7 @@ class AbstractInput extends BasicFormItem<InputPropsInterface, InputStateInterfa
     }
 
     render() {
-        
-        let driver: DriverController = this.context.driver;
-        let componentInfo = driver.getComponent(this.props.info.type);
-
-        if (!componentInfo) {
-            console.error(`can not find module ${this.props.info.type}`);
-            return <div/>;
-        }
-
-        let Component = componentInfo.component;
-        let componentInterface = componentInfo.componentInterface;
-
-        let children = createElement(Component, componentInterface, this.props);
-        
+        let children = this.getComponentThroughDriver();
         if (this.context.form) {
             return this.wrapWithFormItem(children);
         }

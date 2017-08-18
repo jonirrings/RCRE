@@ -1,7 +1,7 @@
 import {ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
-import {BasicConfig} from '../core/Container/types';
 import {map} from 'lodash';
 import paramCheck from './paramCheck';
+import {BasicConfig} from '../core/Container/types';
 
 @ValidatorConstraint({
     name: 'IsPageInfo',
@@ -11,7 +11,7 @@ export class IsPageInfo implements ValidatorConstraintInterface {
     private errmsg: string = '';
 
     validate(info: BasicConfig, args: ValidationArguments) {
-        let errRet = paramCheck(info, BasicConfig);
+        let errRet = paramCheck(info, args.constraints[0]);
 
         this.errmsg = errRet.map(err => {
             let constraints = err.constraints;
@@ -80,20 +80,3 @@ export class IsValidEnums implements ValidatorConstraintInterface {
         return `${args.targetName} is not in ${args.constraints.join(',')}`;
     }
 }
-
-// @ValidatorConstraint({
-//     name: 'UniversalValidators',
-//     async: false
-// })
-// export class UniversalValidators implements ValidatorConstraintInterface {
-//     validate(value: Object, args: ValidationArguments) {
-//         let Validator = args.constraints[0];
-//         let container = new Validator();
-//         Object.assign(container, value);
-//         return validateSync(container).length === 0;
-//     }
-//    
-//     defaultMessage(args: ValidationArguments) {
-//         return `${args.targetName} is not valid`;
-//     }
-// }

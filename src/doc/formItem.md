@@ -4,7 +4,7 @@ FormItem 组件开发文档
 Form组件开发需要遵循一下规范来进行开发.
 
 ## 起步
-`src/components/Form/types.ts`提供了基础的Class和接口对象.
+`src/components/Form/types.tsx`提供了基础的Class和接口对象.
 所以新的FormItem只需要继承基础Class和接口对象即可
 
 ```typescript

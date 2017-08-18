@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import {BasicFormItem, BasicFormItemConfig, BasicFormItemPropsInterface} from './types';
 import {IsBoolean, IsString, Validate} from 'class-validator';
 import {IsPageInfo} from '../../render/util/validators';
@@ -43,7 +42,7 @@ export class FormItemConfig extends BasicFormItemConfig {
 }
 
 export class FormItemPropsInterface extends BasicFormItemPropsInterface {
-    @Validate(IsPageInfo)
+    @Validate(IsPageInfo, [FormItemConfig])
     info: FormItemConfig;
 
     /**
@@ -54,10 +53,6 @@ export class FormItemPropsInterface extends BasicFormItemPropsInterface {
 }
 
 class AbstractFormItem<T extends FormItemPropsInterface, P> extends BasicFormItem<T, P> {
-    static contextTypes = {
-        driver: PropTypes.object
-    };
-
     constructor() {
         super();
     }
@@ -99,7 +94,9 @@ class AbstractFormItem<T extends FormItemPropsInterface, P> extends BasicFormIte
         }
 
         return (
-            <div className="ant-form-explain">{info.errmsg || `${info.type} is required`}</div>
+            <div className="ant-form-explain" key={`${info.type}.errmsg`}>
+                {info.errmsg || `${info.type} is required`}
+            </div>
         );
     }
 

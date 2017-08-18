@@ -5,6 +5,7 @@ import Tree, {TreePropsInterface} from '../../abstractComponents/Tree/Tree';
 import TreeNode, {TreeNodePropsInterface} from '../../abstractComponents/Tree/TreeNode';
 import LineChart, {LineChartPropsInterface} from '../../abstractComponents/Chart/LineChart';
 import Form, {FormPropsInterface} from '../../abstractComponents/Form/Form';
+import Select, {SelectPropsInterface} from '../../abstractComponents/Select/Select';
 import Row, {RowPropsInterface} from '../core/Layout/Row/Row';
 import * as _ from 'lodash';
 
@@ -73,6 +74,10 @@ const config = {
     input: {
         component: Input,
         componentInterface: InputPropsInterface
+    },
+    select: {
+        component: Select,
+        componentInterface: SelectPropsInterface
     }
 };
 
