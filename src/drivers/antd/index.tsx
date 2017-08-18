@@ -4,12 +4,14 @@ import AntTreeNode from './components/Tree/TreeNode';
 import AntInput from './components/Input/Input';
 import AntSelect from './components/Select/Select';
 import AntCheckbox from './components/Checkbox/Checkbox';
+import AntRadio from './components/Radio/Radio';
 import {ButtonPropsInterface} from '../../abstractComponents/Button/Button';
 import {TreePropsInterface} from '../../abstractComponents/Tree/Tree';
 import {TreeNodePropsInterface} from '../../abstractComponents/Tree/TreeNode';
 import {InputPropsInterface} from '../../abstractComponents/Input/Input';
 import {SelectPropsInterface} from '../../abstractComponents/Select/Select';
 import {CheckboxPropsInterface} from '../../abstractComponents/Checkbox/Checkbox';
+import {RadioPropsInterface} from '../../abstractComponents/Radio/Radio';
 import AntForm from './components/Form/Form';
 import {FormPropsInterface} from '../../abstractComponents/Form/Form';
 
@@ -41,5 +43,9 @@ export default {
     checkbox: {
         component: AntCheckbox,
         componentInterface: CheckboxPropsInterface
+    },
+    radio: {
+        component: AntRadio,
+        componentInterface: RadioPropsInterface
     }
 };

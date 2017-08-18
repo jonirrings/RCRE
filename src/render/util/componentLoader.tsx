@@ -7,6 +7,7 @@ import LineChart, {LineChartPropsInterface} from '../../abstractComponents/Chart
 import Form, {FormPropsInterface} from '../../abstractComponents/Form/Form';
 import Select, {SelectPropsInterface} from '../../abstractComponents/Select/Select';
 import Checkbox, { CheckboxPropsInterface } from '../../abstractComponents/Checkbox/Checkbox';
+import Radio, { RadioPropsInterface } from '../../abstractComponents/Radio/Radio';
 import Row, {RowPropsInterface} from '../core/Layout/Row/Row';
 import * as _ from 'lodash';
 
@@ -83,6 +84,10 @@ const config = {
     checkbox: {
         component: Checkbox,
         componentInterface: CheckboxPropsInterface
+    },
+    radio: {
+        component: Radio,
+        componentInterface: RadioPropsInterface
     }
 };
 

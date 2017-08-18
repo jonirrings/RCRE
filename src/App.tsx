@@ -104,10 +104,13 @@ const pageConfig = {
                 },
                 {
                     'type': 'row',
+                    'justify': 'space-between',
                     'children': [
                         {
                             'type': 'select',
                             'name': 'email',
+                            'colSpan': 10,
+                            'label': 'select',
                             'options': [
                                 {
                                     'key': 'aaa',
@@ -118,7 +121,14 @@ const pageConfig = {
                         {
                             'type': 'checkbox',
                             'name': 'isRequired',
-                            'text': '1234'
+                            'text': '1234',
+                            'colSpan': 4
+                        },
+                        {
+                            'type': 'radio',
+                            'name': 'testRadio',
+                            'colSpan': 4,
+                            'text': 'radio'
                         }
                     ]
                 }

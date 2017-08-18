@@ -2,7 +2,7 @@ import {BasicFormItem, BasicFormItemConfig, BasicFormItemPropsInterface} from '.
 import {IsBoolean, IsString, Validate} from 'class-validator';
 import {IsPageInfo} from '../../render/util/validators';
 
-export class CheckboxConfig extends BasicFormItemConfig {
+export class RadioConfig extends BasicFormItemConfig {
     /**
      * 初始是否选中
      * @public
@@ -10,15 +10,15 @@ export class CheckboxConfig extends BasicFormItemConfig {
      */
     @IsBoolean()
     defaultChecked?: boolean;
-
+    
     /**
      * 是否禁用
      * @public
      * @default false
      */
     @IsBoolean()
-    disabled?: boolean;
-
+    disabled: boolean;
+    
     /**
      * 文字
      * @public
@@ -28,12 +28,12 @@ export class CheckboxConfig extends BasicFormItemConfig {
     text?: string;
 }
 
-export class CheckboxPropsInterface extends BasicFormItemPropsInterface {
-    @Validate(IsPageInfo, [CheckboxConfig])
-    info: CheckboxConfig;
+export class RadioPropsInterface extends BasicFormItemPropsInterface {
+    @Validate(IsPageInfo, [RadioConfig])
+    info: RadioConfig;
 }
 
-class AbstractCheckbox extends BasicFormItem<CheckboxPropsInterface, {}> {
+class AbstractRadio extends BasicFormItem<RadioPropsInterface, {}> {
     constructor() {
         super();
     }
@@ -43,4 +43,4 @@ class AbstractCheckbox extends BasicFormItem<CheckboxPropsInterface, {}> {
     }
 }
 
-export default AbstractCheckbox;
+export default AbstractRadio;
