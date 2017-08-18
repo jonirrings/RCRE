@@ -30,6 +30,10 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
         } catch (e) {
             console.error(e);
         }
+
+        if (!info) {
+            return <h1>JSON 解析异常</h1>;
+        }
        
         let ret = paramCheck(info, PageProps);
         if (ret.length > 0) {
