@@ -98,8 +98,7 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
             
             let childProps = {
                 info: item,
-                key: index,
-                isError: true
+                key: index
             }; 
             
             let child = createElement(Wrapper, WrapperInterface, childProps);

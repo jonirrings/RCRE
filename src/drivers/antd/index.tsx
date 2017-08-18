@@ -3,11 +3,13 @@ import AntTree from './components/Tree/Tree';
 import AntTreeNode from './components/Tree/TreeNode';
 import AntInput from './components/Input/Input';
 import AntSelect from './components/Select/Select';
+import AntCheckbox from './components/Checkbox/Checkbox';
 import {ButtonPropsInterface} from '../../abstractComponents/Button/Button';
 import {TreePropsInterface} from '../../abstractComponents/Tree/Tree';
 import {TreeNodePropsInterface} from '../../abstractComponents/Tree/TreeNode';
 import {InputPropsInterface} from '../../abstractComponents/Input/Input';
 import {SelectPropsInterface} from '../../abstractComponents/Select/Select';
+import {CheckboxPropsInterface} from '../../abstractComponents/Checkbox/Checkbox';
 import AntForm from './components/Form/Form';
 import {FormPropsInterface} from '../../abstractComponents/Form/Form';
 
@@ -35,5 +37,9 @@ export default {
     select: {
         component: AntSelect,
         componentInterface: SelectPropsInterface
+    },
+    checkbox: {
+        component: AntCheckbox,
+        componentInterface: CheckboxPropsInterface
     }
 };

@@ -114,6 +114,11 @@ const pageConfig = {
                                     'value': '1'
                                 }
                             ]
+                        },
+                        {
+                            'type': 'checkbox',
+                            'name': 'isRequired',
+                            'text': '1234'
                         }
                     ]
                 }
