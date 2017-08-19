@@ -82,7 +82,7 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
             let WrapperInterface;
 
             // Wrapper container component which have data properties
-            if (item.data) {
+            if (item.data && !this.context.form) {
                 Wrapper = Container;
                 WrapperInterface = ContainerProps;
             } else {

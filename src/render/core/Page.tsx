@@ -1,11 +1,12 @@
 import * as React from 'react';
 import WrappedContainer from './Container/index';
-import {BasicContainerPropsInterface} from './Container/types';
+import {BasicConfig} from './Container/types';
 import {IsDefined, IsString} from 'class-validator';
 import {Provider} from 'react-redux';
 import themeDriver from '../../drivers/index';
 import * as PropsTypes from 'prop-types';
 import store from '../data/store';
+import {createChild} from '../util/createChild';
 
 export class PageProps {
     @IsString()
@@ -15,7 +16,7 @@ export class PageProps {
     theme: string;
 
     @IsDefined()
-    body: BasicContainerPropsInterface[] | BasicContainerPropsInterface | string;
+    body: BasicConfig[] | BasicConfig | string;
 }
 
 class Page extends React.Component<PageProps, {}> {
@@ -47,12 +48,12 @@ class Page extends React.Component<PageProps, {}> {
             body = this.props.body;
         } else if (Array.isArray(this.props.body)) {
             body = this.props.body.map((item, index) => {
-                return React.createElement(WrappedContainer, {
+                return createChild(item, {
                     info: item,
                     key: index,
                     $depth: 0,
                     $uuid: `0_${index}`
-                });
+                }, WrappedContainer);
             });
         } else {
             body = React.createElement(WrappedContainer, {

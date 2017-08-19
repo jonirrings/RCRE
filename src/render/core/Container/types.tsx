@@ -47,6 +47,8 @@ export class BasicContainerPropsInterface extends ColPropsInterface {
      * @private
      */
     $depth: number;
+    
+    data?: Object;
 }
 
 export class ContainerProps extends BasicContainerPropsInterface {
