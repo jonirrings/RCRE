@@ -1,6 +1,5 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import {BasicConfig, BasicContainer, ContainerBasicPropsInterface} from '../../render/core/Container/types';
+import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {DriverController} from '../../drivers/index';
 import createElement from '../../render/util/createElement';
 import {IsArray, IsBoolean, IsString, Validate} from 'class-validator';
@@ -82,15 +81,11 @@ export class LineChartConfig extends BasicConfig {
     }[];
 }
 
-export class LineChartPropsInterface extends ContainerBasicPropsInterface {
+export class LineChartPropsInterface extends BasicContainerPropsInterface {
     info: LineChartConfig;
 }
 
 export default class AbstractLineChart extends BasicContainer<LineChartPropsInterface, {}> {
-    static contextTypes = {
-        driver: PropTypes.object
-    };
-
     constructor() {
         super();
     }

@@ -1,9 +1,12 @@
+import * as React from 'react';
 import {IsDefined, IsString, Validate} from 'class-validator';
 import {Map} from 'immutable';
 import {INIT_DATA_PAYLOAD, SET_DATA_PAYLOAD} from './action';
 import {DriverController} from '../../../drivers/index';
 import {IsPageInfo} from '../../util/validators';
+import * as PropTypes from 'prop-types';
 import AbstractCol, {ColConfig, ColPropsInterface} from '../Layout/Col/Col';
+import createElement from "../../util/createElement";
 
 export type rawJSONType = string | number | null | boolean | Object;
 export type originJSONType = rawJSONType | rawJSONType[];
@@ -23,7 +26,7 @@ export class BasicConfig extends ColConfig {
     data?: defaultData;
 }
 
-export class ContainerBasicPropsInterface extends ColPropsInterface {
+export class BasicContainerPropsInterface extends ColPropsInterface {
     @Validate(IsPageInfo, [BasicConfig])
     info: BasicConfig;
 
@@ -46,7 +49,7 @@ export class ContainerBasicPropsInterface extends ColPropsInterface {
     $depth: number;
 }
 
-export class ContainerProps extends ContainerBasicPropsInterface {
+export class ContainerProps extends BasicContainerPropsInterface {
     public $data: Map<string, any>;
     public setData: (payload: SET_DATA_PAYLOAD) => void;
     public setDataList: (payload: SET_DATA_PAYLOAD[]) => void;
@@ -54,9 +57,29 @@ export class ContainerProps extends ContainerBasicPropsInterface {
     public requestAPI: () => void;
 }
 
-export class BasicContainer<T extends ContainerBasicPropsInterface, P> extends AbstractCol<T, P> {
+export class BasicContainer<T extends BasicContainerPropsInterface, P> extends AbstractCol<T, P> {
+    static contextTypes = {
+        driver: PropTypes.object,
+        form: PropTypes.bool
+    };
+    
     constructor() {
         super();
+    }
+
+    public getComponentThroughDriver() {
+        let driver: DriverController = this.context.driver;
+        let componentInfo = driver.getComponent(this.props.info.type);
+
+        if (!componentInfo) {
+            console.error(`can not find module ${this.props.info.type}`);
+            return <div />;
+        }
+
+        let Component = componentInfo.component;
+        let componentInterface = componentInfo.componentInterface;
+
+        return createElement(Component, componentInterface, this.props);
     }
     
     emitChange(payload: any) {

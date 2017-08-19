@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {IsBoolean, IsDefined, IsString} from 'class-validator';
-import {BasicConfig, BasicContainer, ContainerBasicPropsInterface} from '../../render/core/Container/types';
-import * as PropTypes from 'prop-types';
+import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {DriverController} from '../../drivers/index';
 
 export class ButtonConfig extends BasicConfig {
@@ -63,7 +62,7 @@ export class ButtonConfig extends BasicConfig {
     ghost: boolean;
 }
 
-export class ButtonPropsInterface extends ContainerBasicPropsInterface {
+export class ButtonPropsInterface extends BasicContainerPropsInterface {
     info: ButtonConfig;
 
     /**
@@ -78,10 +77,6 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
         onClick: () => {
             console.error('Button onClick 没有实现');
         }
-    };
-
-    static contextTypes = {
-        driver: PropTypes.object
     };
 
     constructor() {

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {BasicConfig, BasicContainer, ContainerProps, defaultData} from '../../render/core/Container/types';
 import createElement from '../../render/util/createElement';
-import * as PropTypes from 'prop-types';
 import {IsArray, IsBoolean, Validate} from 'class-validator';
 import TreeNode, {TreeNodeConfig, TreeNodeMappingConfig, TreeNodePropsInterface} from './TreeNode';
 import {IsArrayString, IsCheckedKeys} from '../../render/util/validators';
@@ -121,10 +120,6 @@ export class TreePropsInterface extends ContainerProps {
 }
 
 class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
-    static contextTypes = {
-        driver: PropTypes.object
-    };
-
     constructor() {
         super();
     }

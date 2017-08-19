@@ -28,10 +28,6 @@ export class FormPropsInterface extends ContainerProps {
 }
 
 class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
-    static contextTypes = {
-        driver: PropsTypes.object
-    };
-
     static childContextTypes = {
         form: PropsTypes.bool
     };

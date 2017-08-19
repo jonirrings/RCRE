@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import {BasicConfig, ContainerBasicPropsInterface, ContainerProps} from '../../Container/types';
+import {BasicConfig, BasicContainerPropsInterface, ContainerProps} from '../../Container/types';
 import {IsNumber, Validate} from 'class-validator';
 import {IsValidEnums} from '../../../util/validators';
 import Container from '../../Container/index';
@@ -45,7 +45,7 @@ export class RowConfig extends BasicConfig {
     children: BasicConfig[];
 }
 
-export class RowPropsInterface extends ContainerBasicPropsInterface {
+export class RowPropsInterface extends BasicContainerPropsInterface {
     info: RowConfig;
 }
 

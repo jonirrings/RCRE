@@ -1,6 +1,6 @@
 import * as React from 'react';
 import WrappedContainer from './Container/index';
-import {ContainerBasicPropsInterface} from './Container/types';
+import {BasicContainerPropsInterface} from './Container/types';
 import {IsDefined, IsString} from 'class-validator';
 import {Provider} from 'react-redux';
 import themeDriver from '../../drivers/index';
@@ -15,7 +15,7 @@ export class PageProps {
     theme: string;
 
     @IsDefined()
-    body: ContainerBasicPropsInterface[] | ContainerBasicPropsInterface | string;
+    body: BasicContainerPropsInterface[] | BasicContainerPropsInterface | string;
 }
 
 class Page extends React.Component<PageProps, {}> {

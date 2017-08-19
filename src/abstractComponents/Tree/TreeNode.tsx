@@ -2,11 +2,10 @@ import * as React from 'react';
 import {
     BasicConfig,
     BasicContainer,
-    ContainerBasicPropsInterface,
+    BasicContainerPropsInterface,
     defaultData
 } from '../../render/core/Container/types';
 import createElement from '../../render/util/createElement';
-import * as PropTypes from 'prop-types';
 import {IsArray, IsBoolean, IsString} from 'class-validator';
 
 export class TreeNodeConfig extends BasicConfig {
@@ -49,15 +48,11 @@ export class TreeNodeMappingConfig {
     isLeaf: string;
 }
 
-export class TreeNodePropsInterface extends ContainerBasicPropsInterface {
+export class TreeNodePropsInterface extends BasicContainerPropsInterface {
     info: TreeNodeConfig;
 }
 
 class AbstractTreeNode extends BasicContainer<TreeNodePropsInterface, {}> {
-    static contextTypes = {
-        driver: PropTypes.object
-    };
-
     static isTreeNode: boolean;
     
     constructor() {
