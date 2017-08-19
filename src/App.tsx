@@ -34,42 +34,42 @@ const pageConfig = {
         //         },
         //     ]
         // },
-        // {
-        //     'type': 'row',
-        //     'children': [
-        //         // {
-        //         //     'type': 'tree',
-        //         //     'colSpan': 8,
-        //         //     // 'checkable': true,
-        //         //     'data': {
-        //         //         'tree': '$response.tree',
-        //         //         'show': 'Object.keys($response.show)'
-        //         //     },
-        //         //     'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/tree',
-        //         //     'children': '$data.tree',
-        //         //     'childMapping': {
-        //         //         'title': '$iterator.title',
-        //         //         'key': '$iterator.key',
-        //         //         'children': '$iterator.children',
-        //         //         'isLeaf': '$iterator.isLeaf',
-        //         //         'disableCheckbox': '$iterator.disableCheckbox',
-        //         //         // 'disabled': '$data.show.indexOf($iterator.key) >= 0'
-        //         //     }
-        //         // },
-        //         {
-        //             'type': 'rcre.lineChart',
-        //             'title': '测试图表',
-        //             'colSpan': 8,
-        //             'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/linechart',
-        //             'data': {
-        //                 'category': '$response.data.categories',
-        //                 'series': '$response.data.series'
-        //             },
-        //             'categories': '$data.category',
-        //             'series': '$data.series'
-        //         }
-        //     ]
-        // },
+        {
+            'type': 'row',
+            'children': [
+                // {
+                //     'type': 'tree',
+                //     'colSpan': 8,
+                //     // 'checkable': true,
+                //     'data': {
+                //         'tree': '$response.tree',
+                //         'show': 'Object.keys($response.show)'
+                //     },
+                //     'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/tree',
+                //     'children': '$data.tree',
+                //     'childMapping': {
+                //         'title': '$iterator.title',
+                //         'key': '$iterator.key',
+                //         'children': '$iterator.children',
+                //         'isLeaf': '$iterator.isLeaf',
+                //         'disableCheckbox': '$iterator.disableCheckbox',
+                //         // 'disabled': '$data.show.indexOf($iterator.key) >= 0'
+                //     }
+                // },
+                {
+                    'type': 'rcre.lineChart',
+                    'title': '测试图表',
+                    'colSpan': 8,
+                    'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/linechart',
+                    'data': {
+                        'category': '$response.data.categories',
+                        'series': '$response.data.series'
+                    },
+                    'categories': '$data.category',
+                    'series': '$data.series'
+                }
+            ]
+        },
         {
             'type': 'form',
             'title': 'test form',
@@ -84,6 +84,10 @@ const pageConfig = {
             'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/',
             'submitUrl': '/',
             'controls': [
+                {
+                    'type': 'button',
+                    'label': 'text'
+                },
                 {
                     'type': 'row',
                     'justify': 'space-between',

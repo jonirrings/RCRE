@@ -1,7 +1,4 @@
-import * as React from 'react';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
-import {DriverController} from '../../drivers/index';
-import createElement from '../../render/util/createElement';
 import {IsArray, IsBoolean, IsString, Validate} from 'class-validator';
 import {IsArrayString} from '../../render/util/validators';
 
@@ -91,14 +88,6 @@ export default class AbstractLineChart extends BasicContainer<LineChartPropsInte
     }
 
     render() {
-        let driver: DriverController = this.context.driver;
-        let componentInfo = driver.getComponent(this.props.info.type);
-
-        if (!componentInfo) {
-            console.error(`can not find component: ${this.props.info.type}`);
-            return <div/>;
-        }
-
-        return createElement(componentInfo.component, componentInfo.componentInterface, this.props);
+        return this.getComponentThroughDriver();
     }
 }

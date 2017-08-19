@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {IsBoolean, IsDefined, IsString} from 'class-validator';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
-import {DriverController} from '../../drivers/index';
 
 export class ButtonConfig extends BasicConfig {
     /**
@@ -81,26 +80,9 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
 
     constructor() {
         super();
-
-        // this.handleClick = this.handleClick.bind(this);
     }
-    
-    // private handleClick(e: React.MouseEvent<HTMLButtonElement>) {
-    //     e.preventDefault();
-    //     this.props.onClick(e);
-    // }
-    //
     render() {
-        let driver: DriverController = this.context.driver;
-        let componentInfo = driver.getComponent(this.props.info.type);
-
-        if (!componentInfo) {
-            console.error(`can not find component: ${this.props.info.type}`);
-            return <div/>;
-        }
-        
-        let Component = componentInfo.component;
-        return React.createElement(Component, this.props, this.props.info.label);
+        return this.getComponentThroughDriver(this.props.info.label);
     }
 }
 

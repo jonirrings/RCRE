@@ -6,7 +6,7 @@ import {DriverController} from '../../../drivers/index';
 import {IsPageInfo} from '../../util/validators';
 import * as PropTypes from 'prop-types';
 import AbstractCol, {ColConfig, ColPropsInterface} from '../Layout/Col/Col';
-import createElement from "../../util/createElement";
+import createElement from '../../util/createElement';
 
 export type rawJSONType = string | number | null | boolean | Object;
 export type originJSONType = rawJSONType | rawJSONType[];
@@ -67,7 +67,7 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends A
         super();
     }
 
-    public getComponentThroughDriver() {
+    public getComponentThroughDriver(child?: React.ReactChild | React.ReactChild[]) {
         let driver: DriverController = this.context.driver;
         let componentInfo = driver.getComponent(this.props.info.type);
 
@@ -79,7 +79,7 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends A
         let Component = componentInfo.component;
         let componentInterface = componentInfo.componentInterface;
 
-        return createElement(Component, componentInterface, this.props);
+        return createElement(Component, componentInterface, this.props, child);
     }
     
     emitChange(payload: any) {
