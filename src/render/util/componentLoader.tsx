@@ -6,8 +6,9 @@ import TreeNode, {TreeNodePropsInterface} from '../../abstractComponents/Tree/Tr
 import LineChart, {LineChartPropsInterface} from '../../abstractComponents/Chart/LineChart';
 import Form, {FormPropsInterface} from '../../abstractComponents/Form/Form';
 import Select, {SelectPropsInterface} from '../../abstractComponents/Select/Select';
-import Checkbox, { CheckboxPropsInterface } from '../../abstractComponents/Checkbox/Checkbox';
-import Radio, { RadioPropsInterface } from '../../abstractComponents/Radio/Radio';
+import Checkbox, {CheckboxPropsInterface} from '../../abstractComponents/Checkbox/Checkbox';
+import Radio, {RadioPropsInterface} from '../../abstractComponents/Radio/Radio';
+import Breadcrumb, {BreadcrumbPropsInterface} from '../../abstractComponents/Breadcrumb/Breadcrumb';
 import Row, {RowPropsInterface} from '../core/Layout/Row/Row';
 import * as _ from 'lodash';
 
@@ -88,6 +89,10 @@ const config = {
     radio: {
         component: Radio,
         componentInterface: RadioPropsInterface
+    },
+    breadcrumb: {
+        component: Breadcrumb,
+        componentInterface: BreadcrumbPropsInterface
     }
 };
 

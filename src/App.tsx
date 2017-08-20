@@ -14,6 +14,15 @@ const pageConfig = {
     'title': '实验平台',
     'theme': 'antd',
     'body': [
+        {
+            'type': 'breadcrumb',
+            'items': [
+                {
+                    'name': '1234',
+                    'path': 'xxx'
+                }
+            ]
+        },
         // {
         //     'type': 'row',
         //     'align': 'center',

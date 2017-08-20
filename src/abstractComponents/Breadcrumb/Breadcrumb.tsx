@@ -1,16 +1,28 @@
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsPageInfo} from '../../render/util/validators';
-import {Validate} from 'class-validator';
+import {IsDefined, IsString, Validate} from 'class-validator';
+
+export class BreadcrumbItem {
+    @IsString()
+    @IsDefined()
+    name: string;
+
+    @IsString()
+    @IsDefined()
+    path: string;
+}
 
 export class BreadcrumbConfig extends BasicConfig {
+    @IsDefined()
+    items: BreadcrumbItem[]; 
 }
 
 export class BreadcrumbPropsInterface extends BasicContainerPropsInterface {
-    @Validate(IsPageInfo)
+    @Validate(IsPageInfo, [BreadcrumbConfig])
     info: BreadcrumbConfig;
 }
 
-export class AbstractBreadcrumb extends BasicContainer<BreadcrumbPropsInterface, {}> {
+export default class AbstractBreadcrumb extends BasicContainer<BreadcrumbPropsInterface, {}> {
     constructor() {
         super();
     }
