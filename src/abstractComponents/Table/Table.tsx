@@ -1,8 +1,10 @@
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
-import {Validate} from 'class-validator';
+import {IsDefined, Validate} from 'class-validator';
 import {IsPageInfo} from '../../render/util/validators';
+import {TableRowSelection} from 'antd/lib/table/Table';
 
 export class TableDataSourceItem {
+    rowSelection: TableRowSelection<TableDataSourceItem>[];
 }
 
 export class TableColumnsItem {
@@ -12,7 +14,10 @@ export class TableColumnsItem {
 }
 
 export class TableConfig extends BasicConfig {
+    @IsDefined()
     dataSource: TableDataSourceItem[];
+
+    @IsDefined()
     columns: TableColumnsItem[];
 }
 
