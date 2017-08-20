@@ -9,6 +9,7 @@ import Select, {SelectPropsInterface} from '../../abstractComponents/Select/Sele
 import Checkbox, {CheckboxPropsInterface} from '../../abstractComponents/Checkbox/Checkbox';
 import Radio, {RadioPropsInterface} from '../../abstractComponents/Radio/Radio';
 import Breadcrumb, {BreadcrumbPropsInterface} from '../../abstractComponents/Breadcrumb/Breadcrumb';
+import Table, {TablePropsInterface} from '../../abstractComponents/Table/Table';
 import Row, {RowPropsInterface} from '../core/Layout/Row/Row';
 import * as _ from 'lodash';
 
@@ -93,6 +94,10 @@ const config = {
     breadcrumb: {
         component: Breadcrumb,
         componentInterface: BreadcrumbPropsInterface
+    },
+    table: {
+        component: Table,
+        componentInterface: TablePropsInterface
     }
 };
 

@@ -6,6 +6,7 @@ import AntSelect from './components/Select/Select';
 import AntCheckbox from './components/Checkbox/Checkbox';
 import AntRadio from './components/Radio/Radio';
 import AntBreadcrumb from './components/Breadcrumb/Breadcrumb';
+import AntTable from './components/Table/Table';
 import {ButtonPropsInterface} from '../../abstractComponents/Button/Button';
 import {TreePropsInterface} from '../../abstractComponents/Tree/Tree';
 import {TreeNodePropsInterface} from '../../abstractComponents/Tree/TreeNode';
@@ -14,6 +15,7 @@ import {SelectPropsInterface} from '../../abstractComponents/Select/Select';
 import {CheckboxPropsInterface} from '../../abstractComponents/Checkbox/Checkbox';
 import {RadioPropsInterface} from '../../abstractComponents/Radio/Radio';
 import {BreadcrumbPropsInterface} from '../../abstractComponents/Breadcrumb/Breadcrumb';
+import {TablePropsInterface} from '../../abstractComponents/Table/Table';
 import AntForm from './components/Form/Form';
 import {FormPropsInterface} from '../../abstractComponents/Form/Form';
 
@@ -53,5 +55,9 @@ export default {
     breadcrumb: {
         component: AntBreadcrumb,
         componentInterface: BreadcrumbPropsInterface
+    },
+    table: {
+        component: AntTable,
+        componentInterface: TablePropsInterface
     }
 };
