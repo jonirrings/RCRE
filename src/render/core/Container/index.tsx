@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {actionCreators, IAction, SET_DATA_PAYLOAD} from './action';
 import {RootState} from '../../data/reducers';
-import {Map} from 'immutable';
+// import {Map} from 'immutable';
 import ParamsInjector from '../../util/injector';
 import {each, isString} from 'lodash';
 import {runInContext} from '../../util/vm';
@@ -41,7 +41,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
         }
     }
 
-    private compileValueExpress(props: BasicConfig, $data: Map<string, any>): BasicConfig {
+    private compileValueExpress(props: BasicConfig, componentInterface: Object): BasicConfig {
         each(props, (item, key) => {
             if (isString(item) && item.indexOf('$') >= 0) {
                 let parseRet = runInContext(item, {
@@ -50,8 +50,9 @@ class Container extends BasicContainer<ContainerProps, {}> {
                 
                 if (parseRet && parseRet[0] !== '$') {
                     props[key] = parseRet;
+                } else {
+                    // TODO use class-validator to reflect types and set default values
                 }
-                
             } else {
                 props[key] = item;
             }
@@ -88,7 +89,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
             return <div />;
         }
 
-        let compiled = this.compileValueExpress(this.props.info, this.props.$data);
+        let compiled = this.compileValueExpress(this.props.info, componentInfo.componentInterface);
         
         let {
             component,
