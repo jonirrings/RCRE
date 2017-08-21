@@ -82,7 +82,7 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
         super();
     }
     render() {
-        return this.getComponentThroughDriver(this.props.info.label);
+        return this.getComponentThroughDriver();
     }
 }
 

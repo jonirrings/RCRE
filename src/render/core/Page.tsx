@@ -51,14 +51,12 @@ class Page extends React.Component<PageProps, {}> {
                 return createChild(item, {
                     info: item,
                     key: index,
-                    $depth: 0,
-                    $uuid: `0_${index}`
+                    $depth: 0
                 }, WrappedContainer);
             });
         } else {
             body = React.createElement(WrappedContainer, {
                 info: this.props.body,
-                $uuid: `0_0`,
                 $depth: 0
             });
         }

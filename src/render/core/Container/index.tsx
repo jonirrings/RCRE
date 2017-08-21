@@ -24,14 +24,21 @@ class Container extends BasicContainer<ContainerProps, {}> {
     }
 
     componentWillMount() {
-        if (this.props!.info.data) {
-            this.props.initData(this.props!.info.data);
+        if ((this.props.info.data && !this.props.info.model) || (!this.props.info.data && this.props.info.model)) {
+            console.error('model and data need to be exist');
+        }
+        
+        if (this.props.info.data && this.props.info.model) {
+            this.props.initData({
+                model: this.props.info.model,
+                data: this.props.info.data
+            });
             this.mergeOriginData(this.props);
         }
     }
 
     public emitChange(payload: SET_DATA_PAYLOAD) {
-        this.props.setData(payload);
+        this.props.setData(payload, this.props.info.model!);
     }
 
     private emitAPIRequest() {
@@ -42,6 +49,10 @@ class Container extends BasicContainer<ContainerProps, {}> {
     }
 
     private compileValueExpress(props: BasicConfig, componentInterface: Object): BasicConfig {
+        if (!this.props.$data) {
+            return props;
+        }
+        
         each(props, (item, key) => {
             if (isString(item) && item.indexOf('$') >= 0) {
                 let parseRet = runInContext(item, {
@@ -73,7 +84,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
         let injector = new ParamsInjector(props, this.loadData);
 
         injector.finished((payloads: SET_DATA_PAYLOAD[]) => {
-            this.props.setDataList(payloads); 
+            this.props.setDataList(payloads, this.props.info.model!); 
         });
     }
 
@@ -99,12 +110,11 @@ class Container extends BasicContainer<ContainerProps, {}> {
         let childProps = {
             info: compiled,
             $data: this.props.$data,
-            setData: this.emitChange,
+            setData: this.props.setData,
             setDataList: this.props.setDataList,
             initData: this.props.initData,
             requestAPI: this.emitAPIRequest,
-            $depth: this.props.$depth,
-            $uuid: this.props.$uuid
+            $depth: this.props.$depth
         };
 
         let retComponent = createElement<ContainerProps>(component, componentInterface, childProps);
@@ -121,7 +131,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
 
 const mapStateToProps = (state: RootState, ownProps: any) => {
     return {
-        $data: state.container.get('data')
+        $data: state.container.get(ownProps.info.model)
     };
 };
 

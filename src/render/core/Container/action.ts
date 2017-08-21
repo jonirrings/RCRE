@@ -6,12 +6,16 @@ export type SET_DATA_PAYLOAD = {
     newValue: any;
 };
 export type SET_DATA_LIST_PAYLOAD = SET_DATA_PAYLOAD[];
-export type INIT_DATA_PAYLOAD = any;
+export type INIT_DATA_PAYLOAD = {
+    model: string;
+    data: any;
+};
 
 export type IActions = {
     SET_DATA: { 
         type: typeof SET_DATA,
-        payload: SET_DATA_PAYLOAD 
+        payload: SET_DATA_PAYLOAD,
+        model: string;
     },
     INIT_DATA: {
         type: typeof INIT_DATA,
@@ -19,23 +23,26 @@ export type IActions = {
     },
     SET_DATA_LIST: {
         type: typeof SET_DATA_LIST,
-        payload: SET_DATA_LIST_PAYLOAD
+        payload: SET_DATA_LIST_PAYLOAD,
+        model: string;
     }
 };
 
 export type IAction = IActions[keyof IActions];
 
 export const actionCreators = {
-    setData: (payload: SET_DATA_PAYLOAD) => ({
+    setData: (payload: SET_DATA_PAYLOAD, model: string) => ({
         type: SET_DATA as typeof SET_DATA,
-        payload
+        payload,
+        model
     }),
     initData: (payload: INIT_DATA_PAYLOAD) => ({
         type: INIT_DATA as typeof INIT_DATA,
         payload
     }),
-    setDataList: (payload: SET_DATA_LIST_PAYLOAD) => ({
+    setDataList: (payload: SET_DATA_LIST_PAYLOAD, model: string) => ({
         type: SET_DATA_LIST as typeof SET_DATA_LIST,
-        payload
+        payload,
+        model
     })
 };

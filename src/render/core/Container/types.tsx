@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {IsDefined, IsString, Validate} from 'class-validator';
 import {Map} from 'immutable';
-import {INIT_DATA_PAYLOAD, SET_DATA_PAYLOAD} from './action';
 import {DriverController} from '../../../drivers/index';
 import {IsPageInfo} from '../../util/validators';
+import { actionCreators } from './action';
 import * as PropTypes from 'prop-types';
 import AbstractCol, {ColConfig, ColPropsInterface} from '../Layout/Col/Col';
 import createElement from '../../util/createElement';
@@ -23,6 +23,9 @@ export class BasicConfig extends ColConfig {
     @IsString()
     initialLoad?: string;
     
+    @IsString()
+    model?: string;
+    
     data?: defaultData;
 }
 
@@ -37,12 +40,6 @@ export class BasicContainerPropsInterface extends ColPropsInterface {
     $driver?: DriverController;
 
     /**
-     * 组件唯一ID
-     * @private
-     */
-    $uuid: string;
-
-    /**
      * Container组件深度
      * @private
      */
@@ -53,9 +50,9 @@ export class BasicContainerPropsInterface extends ColPropsInterface {
 
 export class ContainerProps extends BasicContainerPropsInterface {
     public $data: Map<string, any>;
-    public setData: (payload: SET_DATA_PAYLOAD) => void;
-    public setDataList: (payload: SET_DATA_PAYLOAD[]) => void;
-    public initData: (payload: INIT_DATA_PAYLOAD) => void;
+    public setData: typeof actionCreators.setData;
+    public setDataList: typeof actionCreators.setDataList;
+    public initData: typeof actionCreators.initData;
     public requestAPI: () => void;
 }
 

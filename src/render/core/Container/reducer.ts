@@ -5,17 +5,8 @@ import {INIT_DATA, SET_DATA, SET_DATA_LIST} from './action';
 
 type stateItem = Map<string, any>;
 export type IState = Map<string, stateItem>;
-export type relativeItems = {
-    // container 标识ID
-    uuid: string;
-    // container数据存储获取路径
-    entrance: string;
-};
 
-export const initialState: IState = Map<string, stateItem>({
-    data: Map<string, any>(),
-    relative: Map<string, any>()
-});
+export const initialState: IState = Map<string, stateItem>({});
 
 export const reducer: Reducer<IState> = (state: IState = initialState, actions: IRootAction): IState => {
     switch (actions.type) {
@@ -24,15 +15,22 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
 
         case SET_DATA_LIST:
             let payloadList = actions.payload;
-            let dataState = state.get('data');
+            let dataState = state.get(actions.model);
             payloadList.forEach(item => {
                 let keyName = item.type;
                 let val = item.newValue;
                 dataState = dataState.set(keyName, val);
             });
-            return state.set('data', dataState);
+            return state.set(actions.model, dataState);
         case INIT_DATA:
-            return state.set('data', Map(actions.payload));
+            let model = actions.payload.model;
+            let data = actions.payload.data;
+            
+            if (state.has(model)) {
+                console.error(`find exist model of model: ${model}`);
+            }
+            
+            return state.set(model, Map(data));
         default:
             return state;
     }
