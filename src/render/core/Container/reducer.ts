@@ -11,7 +11,9 @@ export const initialState: IState = Map<string, stateItem>({});
 export const reducer: Reducer<IState> = (state: IState = initialState, actions: IRootAction): IState => {
     switch (actions.type) {
         case SET_DATA:
-            return state.set('data', state.get('data').set(actions.payload.type, actions.payload.newValue));
+            return state
+                .set(actions.model, state.get(actions.model)
+                    .set(actions.payload.type, actions.payload.newValue));
 
         case SET_DATA_LIST:
             let payloadList = actions.payload;

@@ -46,7 +46,10 @@ class Container extends BasicContainer<ContainerProps, {}> {
     }
 
     private handleChange(key: string, value: any) {
-        console.log(key, value);
+        this.props.setData({
+            type: key,
+            newValue: value
+        }, this.props.info.model!);
     }
 
     private compileValueExpress(props: BasicConfig, componentInterface: Object): BasicConfig {

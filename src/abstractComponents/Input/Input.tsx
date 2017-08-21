@@ -1,9 +1,7 @@
-import * as React from 'react';
-import {BasicFormItem, BasicFormItemConfig} from '../Form/types';
-import createElement from '../../render/util/createElement';
+import {BasicFormItem, FormItemPropsInterface} from '../Form/FormItem';
 import {IsBoolean, IsString, Validate} from 'class-validator';
 import {IsValidEnums} from '../../render/util/validators';
-import FormItem, {FormItemPropsInterface} from '../Form/FormItem';
+import {BasicFormItemConfig} from '../Form/types';
 
 export class InputConfig extends BasicFormItemConfig {
     /**
@@ -57,6 +55,8 @@ export class InputConfig extends BasicFormItemConfig {
 
 export class InputPropsInterface extends FormItemPropsInterface {
     info: InputConfig;
+
+    value: string;
 }
 
 interface InputStateInterface {
@@ -78,18 +78,9 @@ class AbstractInput extends BasicFormItem<InputPropsInterface, InputStateInterfa
         // this.onChange = this.onChange.bind(this);
         // this.validateForm = this.validateForm.bind(this);
     }
-    
-    private wrapWithFormItem(children: React.ReactElement<InputPropsInterface>) {
-        return createElement(FormItem, FormItemPropsInterface, this.props, children);
-    }
 
     render() {
-        let children = this.getComponentThroughDriver();
-        if (this.context.form) {
-            return this.wrapWithFormItem(children);
-        }
-        
-        return children;
+        return this.getComponentThroughDriver();
     }
     
     // private onChange(event: React.FormEvent<HTMLInputElement>) {

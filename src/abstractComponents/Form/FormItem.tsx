@@ -1,9 +1,12 @@
 import * as React from 'react';
-import {BasicFormItem, BasicFormItemConfig, BasicFormItemPropsInterface} from './types';
+import {BasicFormItemConfig, BasicFormItemPropsInterface} from './types';
 import {IsBoolean, IsString, Validate} from 'class-validator';
 import {IsPageInfo} from '../../render/util/validators';
 import Col, {ColConfig} from '../../render/core/Layout/Col/Col';
+import * as PropTypes from 'prop-types';
 import classNames from 'classnames';
+import {DriverController} from '../../drivers/index';
+import createElement from '../../render/util/createElement';
 
 export class FormItemConfig extends BasicFormItemConfig {
     /**
@@ -48,6 +51,52 @@ export class FormItemPropsInterface extends BasicFormItemPropsInterface {
      */
     @IsBoolean()
     isError: boolean;
+}
+
+export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends React.Component<T, P> {
+    static contextTypes = {
+        driver: PropTypes.object,
+        form: PropTypes.bool
+    };
+
+    constructor() {
+        super();
+    }
+
+    private wrapWithFormItem(children: React.ReactElement<T>) {
+        return createElement(AbstractFormItem, FormItemPropsInterface, this.props, children);
+    }
+
+    public getComponentThroughDriver() {
+        let driver: DriverController = this.context.driver;
+        let componentInfo = driver.getComponent(this.props.info.type);
+
+        if (!componentInfo) {
+            console.error(`can not find module ${this.props.info.type}`);
+            return <div/>;
+        }
+
+        let Component = componentInfo.component;
+        let componentInterface = componentInfo.componentInterface;
+
+        console.log(this.props.value);
+
+        let children = createElement(Component, componentInterface, {
+            info: this.props.info,
+            value: this.props.value,
+            onChange: this.props.onChange
+        });
+
+        if (this.context.form) {
+            children = this.wrapWithFormItem(children);
+        }
+
+        return children;
+    }
+
+    public isValid() {
+        console.error('isValid is not implemented');
+    }
 }
 
 class AbstractFormItem<T extends FormItemPropsInterface, P> extends BasicFormItem<T, P> {

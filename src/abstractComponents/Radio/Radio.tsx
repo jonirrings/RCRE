@@ -1,6 +1,7 @@
-import {BasicFormItem, BasicFormItemConfig, BasicFormItemPropsInterface} from '../Form/types';
+import {BasicFormItemConfig, BasicFormItemPropsInterface} from '../Form/types';
 import {IsBoolean, IsString, Validate} from 'class-validator';
 import {IsPageInfo} from '../../render/util/validators';
+import {BasicFormItem} from "../Form/FormItem";
 
 export class RadioConfig extends BasicFormItemConfig {
     /**

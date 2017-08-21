@@ -49,6 +49,10 @@ class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
             form: true 
         };
     }
+
+    componentWillUnmount() {
+        console.log('unmount form');
+    }
     
     private renderControl(info: BasicFormItemConfig): JSX.Element {
         let type = info.type;
@@ -78,7 +82,9 @@ class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
         let children = createElement(component, componentInterface, {
             key: info.name || Math.random(),
             info: info,
-            onChange: this.props.onChange
+            onChange: this.props.onChange,
+            // TODO immutable data cause frequent update
+            value: this.props.$data ? this.props.$data.get(info.name) : ''
         }, childElements);
         
         if (typeof info.colSpan !== 'undefined') {

@@ -6,7 +6,7 @@ import {actionCreators} from './action';
 import * as PropTypes from 'prop-types';
 import AbstractCol, {ColConfig, ColPropsInterface} from '../Layout/Col/Col';
 import createElement from '../../util/createElement';
-import {initialState} from './reducer';
+import {Map} from 'immutable';
 
 export type rawJSONType = string | number | null | boolean | Object;
 export type originJSONType = rawJSONType | rawJSONType[];
@@ -41,10 +41,15 @@ export class BasicContainerPropsInterface extends ColPropsInterface {
      * 内部组件的数据触发通用接口
      */
     onChange: onContainerItemChange;
+
+    /**
+     * 当前Container的数据模型对象
+     */
+    $data: Map<string, any>;
 }
 
 export class ContainerProps extends BasicContainerPropsInterface {
-    public $data: typeof initialState;
+    public $data: Map<string, any>;
     public setData: typeof actionCreators.setData;
     public setDataList: typeof actionCreators.setDataList;
     public initData: typeof actionCreators.initData;

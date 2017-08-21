@@ -5,9 +5,10 @@ import {IsNumber, Validate} from 'class-validator';
 import {IsValidEnums} from '../../../util/validators';
 import Container from '../../Container/index';
 import {Row} from 'antd';
-import {DriverController} from '../../../../drivers/index';
 import createElement from '../../../util/createElement';
-import FormItem, {FormItemPropsInterface} from '../../../../abstractComponents/Form/FormItem';
+import componentLoader from '../../../util/componentLoader';
+
+// import FormItem, {FormItemPropsInterface} from '../../../../abstractComponents/Form/FormItem';
 
 export class RowConfig extends BasicConfig {
     /**
@@ -77,7 +78,6 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
 
     render() {
         let children = this.props.info.children.map((item, index) => {
-            let driver: DriverController = this.context.driver;
             let Wrapper;
             let WrapperInterface;
 
@@ -86,7 +86,7 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
                 Wrapper = Container;
                 WrapperInterface = ContainerProps;
             } else {
-                let componentInfo = driver.getComponent(item.type);
+                let componentInfo = componentLoader.getAbstractComponent(item.type);
                 if (!componentInfo) {
                     console.error(`can not find component of type ${item.type}`);
                     return <div key={index} />;
@@ -103,13 +103,7 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
             
             let child = createElement(Wrapper, WrapperInterface, childProps);
 
-            let clonedChild = React.cloneElement(child, Object.assign({}, this.props, childProps));
-            
-            if (this.context.form) {
-                return createElement(FormItem, FormItemPropsInterface, childProps, clonedChild);
-            }
-
-            return clonedChild;
+            return React.cloneElement(child, Object.assign({}, this.props, childProps));
         });
 
         const defaultStyle = {
