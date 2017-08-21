@@ -4,7 +4,7 @@ import createElement from '../../render/util/createElement';
 import {Map} from 'immutable';
 import * as PropsTypes from 'prop-types';
 import {BasicFormItemConfig} from './types';
-import {BasicConfig, BasicContainer, ContainerProps} from '../../render/core/Container/types';
+import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsArray, IsDefined, IsString} from 'class-validator';
 import * as _ from 'lodash';
 import Col from '../../render/core/Layout/Col/Col';
@@ -23,7 +23,7 @@ export class FormConfig extends BasicConfig {
     submitUrl: string;
 }
 
-export class FormPropsInterface extends ContainerProps {
+export class FormPropsInterface extends BasicContainerPropsInterface {
     info: FormConfig;
 }
 
@@ -77,7 +77,8 @@ class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
         
         let children = createElement(component, componentInterface, {
             key: info.name || Math.random(),
-            info: info
+            info: info,
+            onChange: this.props.onChange
         }, childElements);
         
         if (typeof info.colSpan !== 'undefined') {

@@ -1,5 +1,5 @@
 import {IsArray, IsDefined, IsString} from 'class-validator';
-import {BasicConfig} from '../../render/core/Container/types';
+import {BasicConfig, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import * as React from 'react';
 import {DriverController} from '../../drivers/index';
 import createElement from '../../render/util/createElement';
@@ -37,7 +37,7 @@ export class BasicFormItemConfig extends BasicConfig {
     controls?: BasicFormItemConfig[];
 }
 
-export class BasicFormItemPropsInterface {
+export class BasicFormItemPropsInterface extends BasicContainerPropsInterface {
     info: BasicFormItemConfig;
 }
 

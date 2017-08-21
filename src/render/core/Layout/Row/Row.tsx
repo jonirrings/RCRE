@@ -102,12 +102,14 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
             }; 
             
             let child = createElement(Wrapper, WrapperInterface, childProps);
+
+            let clonedChild = React.cloneElement(child, Object.assign({}, this.props, childProps));
             
             if (this.context.form) {
-                return createElement(FormItem, FormItemPropsInterface, childProps, child);
+                return createElement(FormItem, FormItemPropsInterface, childProps, clonedChild);
             }
 
-            return child;
+            return clonedChild;
         });
 
         const defaultStyle = {

@@ -57,11 +57,6 @@ export class InputConfig extends BasicFormItemConfig {
 
 export class InputPropsInterface extends FormItemPropsInterface {
     info: InputConfig;
-
-    /**
-     *  输入框文本触发回调
-     */
-    onChange: (type: string, newValue: string) => void;
 }
 
 interface InputStateInterface {

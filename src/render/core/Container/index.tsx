@@ -1,7 +1,7 @@
 import * as React from 'react';
 import componentLoader from '../../util/componentLoader';
 import createElement from '../../util/createElement';
-import {BasicConfig, BasicContainer, ContainerProps} from './types';
+import {BasicConfig, BasicContainer, BasicContainerPropsInterface, ContainerProps} from './types';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {actionCreators, IAction, SET_DATA_PAYLOAD} from './action';
@@ -19,13 +19,13 @@ class Container extends BasicContainer<ContainerProps, {}> {
     constructor() {
         super();
 
-        this.emitChange = this.emitChange.bind(this);
         this.loadData = this.loadData.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentWillMount() {
         if ((this.props.info.data && !this.props.info.model) || (!this.props.info.data && this.props.info.model)) {
-            console.error('model and data need to be exist');
+            console.error(`model and data need to be exist of type: ${this.props.info.type}`);
         }
         
         if (this.props.info.data && this.props.info.model) {
@@ -37,15 +37,16 @@ class Container extends BasicContainer<ContainerProps, {}> {
         }
     }
 
-    public emitChange(payload: SET_DATA_PAYLOAD) {
-        this.props.setData(payload, this.props.info.model!);
+    private loadData() {
+        if (this.props.info.initialLoad) {
+            return fetch(this.props.info.initialLoad).then(ret => ret.json());
+        }
+
+        return Promise.resolve({});
     }
 
-    private emitAPIRequest() {
-        if (!this.props.info.initialLoad) {
-            console.error('You can not get data through api request if you did\' provide api address');
-            return;
-        }
+    private handleChange(key: string, value: any) {
+        console.log(key, value);
     }
 
     private compileValueExpress(props: BasicConfig, componentInterface: Object): BasicConfig {
@@ -70,14 +71,6 @@ class Container extends BasicContainer<ContainerProps, {}> {
         });
 
         return props;
-    }
-
-    loadData() {
-        if (this.props.info.initialLoad) {
-            return fetch(this.props.info.initialLoad).then(ret => ret.json());
-        }
-
-        return Promise.resolve({});
     }
 
     private mergeOriginData(props: ContainerProps) {
@@ -110,14 +103,10 @@ class Container extends BasicContainer<ContainerProps, {}> {
         let childProps = {
             info: compiled,
             $data: this.props.$data,
-            setData: this.props.setData,
-            setDataList: this.props.setDataList,
-            initData: this.props.initData,
-            requestAPI: this.emitAPIRequest,
-            $depth: this.props.$depth
+            onChange: this.handleChange
         };
 
-        let retComponent = createElement<ContainerProps>(component, componentInterface, childProps);
+        let retComponent = createElement<BasicContainerPropsInterface>(component, componentInterface, childProps);
 
         if (typeof this.props.info.colSpan !== 'undefined') {
             return React.createElement(Col, {

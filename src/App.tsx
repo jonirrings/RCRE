@@ -23,208 +23,210 @@ const pageConfig = {
         //         }
         //     ]
         // },
-        {
-            'type': 'table',
-            'model': 'customTable',
-            'data': {
-                'dataSource': [
-                    {
-                        key: '1',
-                        name: '胡彦斌',
-                        age: 32,
-                        address: '西湖区湖底公园1号'
-                    }, {
-                        key: '2',
-                        name: '胡彦祖',
-                        age: 42,
-                        address: '西湖区湖底公园1号'
-                    }
-                ],
-                'columns': [
-                    {
-                        title: '姓名',
-                        dataIndex: 'name',
-                        key: 'name',
-                    }, {
-                        title: '年龄',
-                        dataIndex: 'age',
-                        key: 'age',
-                    }, {
-                        title: '住址',
-                        dataIndex: 'address',
-                        key: 'address',
-                    }
-                ]
-            },
-            'dataSource': '$data.dataSource',
-            'columns': '$data.columns'
-        },
-        {
-            'type': 'row',
-            'align': 'center',
-            'justify': 'space-around',
-            'children': [
-                {
-                    'type': 'button',
-                    'label': 'one',
-                    'icon': 'cloud',
-                    'buttonType': 'primary',
-
-                },
-                {
-                    'type': 'button',
-                    'label': 'two',
-                    'buttonType': 'primary',
-                    'colSpan': 6
-                },
-            ]
-        },
-        {
-            'type': 'row',
-            'children': [
-                {
-                    'type': 'tree',
-                    'colSpan': 8,
-                    'model': 'tree',
-                    // 'checkable': true,
-                    'data': {
-                        'tree': '$response.tree',
-                        'show': 'Object.keys($response.show)'
-                    },
-                    'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/tree',
-                    'children': '$data.tree',
-                    'childMapping': {
-                        'title': '$iterator.title',
-                        'key': '$iterator.key',
-                        'children': '$iterator.children',
-                        'isLeaf': '$iterator.isLeaf',
-                        'disableCheckbox': '$iterator.disableCheckbox',
-                        // 'disabled': '$data.show.indexOf($iterator.key) >= 0'
-                    }
-                },
-                {
-                    'type': 'rcre.lineChart',
-                    'model': 'linechart',
-                    'title': '测试图表',
-                    'colSpan': 8,
-                    'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/linechart',
-                    'data': {
-                        'category': '$response.data.categories',
-                        'series': '$response.data.series'
-                    },
-                    'categories': '$data.category',
-                    'series': '$data.series'
-                }
-            ]
-        },
         // {
-        //     'type': 'form',
-        //     'title': 'test form',
+        //     'type': 'table',
+        //     'model': 'customTable',
         //     'data': {
-        //         'name': 'andycall',
-        //         'age': '21',
-        //         'mixed': {
-        //             'foo': '1234'
-        //         },
-        //         'remoteErrno': '$response.data.data_list[0].plan_id'
+        //         'dataSource': [
+        //             {
+        //                 key: '1',
+        //                 name: '胡彦斌',
+        //                 age: 32,
+        //                 address: '西湖区湖底公园1号'
+        //             }, {
+        //                 key: '2',
+        //                 name: '胡彦祖',
+        //                 age: 42,
+        //                 address: '西湖区湖底公园1号'
+        //             }
+        //         ],
+        //         'columns': [
+        //             {
+        //                 title: '姓名',
+        //                 dataIndex: 'name',
+        //                 key: 'name',
+        //             }, {
+        //                 title: '年龄',
+        //                 dataIndex: 'age',
+        //                 key: 'age',
+        //             }, {
+        //                 title: '住址',
+        //                 dataIndex: 'address',
+        //                 key: 'address',
+        //             }
+        //         ]
         //     },
-        //     'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/',
-        //     'submitUrl': '/',
-        //     'controls': [
+        //     'dataSource': '$data.dataSource',
+        //     'columns': '$data.columns'
+        // },
+        // {
+        //     'type': 'row',
+        //     'align': 'center',
+        //     'justify': 'space-around',
+        //     'children': [
         //         {
         //             'type': 'button',
-        //             'label': 'text'
+        //             'label': 'one',
+        //             'icon': 'cloud',
+        //             'buttonType': 'primary',
+        //
         //         },
         //         {
-        //             'type': 'row',
-        //             'justify': 'space-between',
-        //             'children': [
-        //                 {
-        //                     'type': 'input',
-        //                     'name': 'username',
-        //                     'label': 'username',
-        //                     'colSpan': 10
-        //                 },
-        //                 {
-        //                     'type': 'input',
-        //                     'name': 'password',
-        //                     'label': 'password',
-        //                     'colSpan': 10
-        //                 }
-        //             ]
+        //             'type': 'button',
+        //             'label': 'two',
+        //             'buttonType': 'primary',
+        //             'colSpan': 6
         //         },
-        //         {
-        //             'type': 'row',
-        //             'justify': 'space-between',
-        //             'children': [
-        //                 {
-        //                     'type': 'select',
-        //                     'name': 'email',
-        //                     'colSpan': 10,
-        //                     'label': 'select',
-        //                     'options': [
-        //                         {
-        //                             'key': 'aaa',
-        //                             'value': '1'
-        //                         }
-        //                     ]
-        //                 },
-        //                 {
-        //                     'type': 'checkbox',
-        //                     'name': 'isRequired',
-        //                     'text': '1234',
-        //                     'colSpan': 4
-        //                 },
-        //                 {
-        //                     'type': 'radio',
-        //                     'name': 'testRadio',
-        //                     'colSpan': 4,
-        //                     'text': 'radio'
-        //                 }
-        //             ]
-        //         }
-        //         // {
-        //         //     'type': 'password',
-        //         //     'name': 'password',
-        //         //     'preAddon': '密码',
-        //         //     'required': true,
-        //         //     'errorMsg': '密码不能为空'
-        //         // },
-        //         // {
-        //         //     'type': 'email',
-        //         //     'name': 'email',
-        //         //     'preAddon': '邮箱',
-        //         //     'required': true,
-        //         //     'errorMsg': '邮箱格式不正确'
-        //         // },
-        //         // {
-        //         //     'type': 'select',
-        //         //     'name': 'sex',
-        //         //     'preAddon': '性别',
-        //         //     'options': ['男', '女', '不知道']
-        //         // },
-        //         // {
-        //         //     'type': 'select',
-        //         //     'name': 'region',
-        //         //     'preAddon': '省份',
-        //         //     'value': '002',
-        //         //     'options': [
-        //         //         {
-        //         //             'label': '北京',
-        //         //             'value': '001'
-        //         //         }, {
-        //         //             'label': '上海',
-        //         //             'value': '002'
-        //         //         }
-        //         //     ]
-        //         // },
-        //         // {
-        //         //     'type': 'submit',
-        //         //     'name': 'submit',
-        //         //     'initValue': 'submit'
-        //         // }
         //     ]
-        // }
+        // },
+        // {
+        //     'type': 'row',
+        //     'children': [
+        //         {
+        //             'type': 'tree',
+        //             'colSpan': 8,
+        //             'model': 'tree',
+        //             // 'checkable': true,
+        //             'data': {
+        //                 'tree': '$response.tree',
+        //                 'show': 'Object.keys($response.show)'
+        //             },
+        //             'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/tree',
+        //             'children': '$data.tree',
+        //             'childMapping': {
+        //                 'title': '$iterator.title',
+        //                 'key': '$iterator.key',
+        //                 'children': '$iterator.children',
+        //                 'isLeaf': '$iterator.isLeaf',
+        //                 'disableCheckbox': '$iterator.disableCheckbox',
+        //                 // 'disabled': '$data.show.indexOf($iterator.key) >= 0'
+        //             }
+        //         },
+        //         {
+        //             'type': 'rcre.lineChart',
+        //             'model': 'linechart',
+        //             'title': '测试图表',
+        //             'colSpan': 8,
+        //             'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/linechart',
+        //             'data': {
+        //                 'category': '$response.data.categories',
+        //                 'series': '$response.data.series'
+        //             },
+        //             'categories': '$data.category',
+        //             'series': '$data.series'
+        //         }
+        //     ]
+        // },
+        {
+            'type': 'form',
+            'title': 'test form',
+            'model': 'testForm',
+            'data': {
+                'name': 'andycall',
+                'age': '21',
+                'mixed': {
+                    'foo': '1234'
+                },
+                'remoteErrno': '$response.data.data_list[0].plan_id'
+            },
+            'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/',
+            'submitUrl': '/',
+            'controls': [
+                {
+                    'type': 'button',
+                    'label': 'text'
+                },
+                {
+                    'type': 'row',
+                    'justify': 'space-between',
+                    'children': [
+                        {
+                            'type': 'input',
+                            'name': 'username',
+                            'label': 'username',
+                            'colSpan': 10
+                        },
+                        {
+                            'type': 'input',
+                            'name': 'password',
+                            'label': 'password',
+                            'colSpan': 10
+                        }
+                    ]
+                },
+                {
+                    'type': 'row',
+                    'justify': 'space-between',
+                    'children': [
+                        {
+                            'type': 'select',
+                            'name': 'email',
+                            'mode': 'multiple',
+                            'colSpan': 10,
+                            'label': 'select',
+                            'options': [
+                                {
+                                    'key': 'aaa',
+                                    'value': '1'
+                                }
+                            ]
+                        },
+                        {
+                            'type': 'checkbox',
+                            'name': 'isRequired',
+                            'text': '1234',
+                            'colSpan': 4
+                        },
+                        {
+                            'type': 'radio',
+                            'name': 'testRadio',
+                            'colSpan': 4,
+                            'text': 'radio'
+                        }
+                    ]
+                }
+                // {
+                //     'type': 'password',
+                //     'name': 'password',
+                //     'preAddon': '密码',
+                //     'required': true,
+                //     'errorMsg': '密码不能为空'
+                // },
+                // {
+                //     'type': 'email',
+                //     'name': 'email',
+                //     'preAddon': '邮箱',
+                //     'required': true,
+                //     'errorMsg': '邮箱格式不正确'
+                // },
+                // {
+                //     'type': 'select',
+                //     'name': 'sex',
+                //     'preAddon': '性别',
+                //     'options': ['男', '女', '不知道']
+                // },
+                // {
+                //     'type': 'select',
+                //     'name': 'region',
+                //     'preAddon': '省份',
+                //     'value': '002',
+                //     'options': [
+                //         {
+                //             'label': '北京',
+                //             'value': '001'
+                //         }, {
+                //             'label': '上海',
+                //             'value': '002'
+                //         }
+                //     ]
+                // },
+                // {
+                //     'type': 'submit',
+                //     'name': 'submit',
+                //     'initValue': 'submit'
+                // }
+            ]
+        }
     ]
 };
 

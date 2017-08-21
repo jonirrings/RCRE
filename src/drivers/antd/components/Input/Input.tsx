@@ -6,6 +6,8 @@ import {InputConfig, InputPropsInterface} from '../../../../abstractComponents/I
 class AntInput extends React.Component<InputPropsInterface, {}> {
     constructor() {
         super();
+
+        this.handleChange = this.handleChange.bind(this);
     }
 
     private mapProps(props: InputConfig): InputProps {
@@ -18,11 +20,20 @@ class AntInput extends React.Component<InputPropsInterface, {}> {
             addonAfter: props.addonAfter
         };
     }
+    
+    private handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+        let target = event.currentTarget;
+        let value = target.value;
 
+        this.props.onChange(this.props.info.name, value);
+    }
+    
     render() {
         let info = this.props.info;
 
-        return React.createElement(Input, this.mapProps(info));
+        return React.createElement(Input, Object.assign(this.mapProps(info), {
+            onChange: this.handleChange
+        }));
     }
 }
 

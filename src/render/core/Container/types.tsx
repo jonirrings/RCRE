@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {IsDefined, IsString, Validate} from 'class-validator';
-import {Map} from 'immutable';
 import {DriverController} from '../../../drivers/index';
 import {IsPageInfo} from '../../util/validators';
-import { actionCreators } from './action';
+import {actionCreators} from './action';
 import * as PropTypes from 'prop-types';
 import AbstractCol, {ColConfig, ColPropsInterface} from '../Layout/Col/Col';
 import createElement from '../../util/createElement';
+import {initialState} from './reducer';
 
 export type rawJSONType = string | number | null | boolean | Object;
 export type originJSONType = rawJSONType | rawJSONType[];
@@ -29,27 +29,22 @@ export class BasicConfig extends ColConfig {
     data?: defaultData;
 }
 
+export type onContainerItemChange = (type: string, value: any) => void;
+
 export class BasicContainerPropsInterface extends ColPropsInterface {
     @Validate(IsPageInfo, [BasicConfig])
     info: BasicConfig;
-
-    /**
-     * 组件驱动加载器
-     * @private
-     */
-    $driver?: DriverController;
-
-    /**
-     * Container组件深度
-     * @private
-     */
-    $depth: number;
     
     data?: Object;
+
+    /**
+     * 内部组件的数据触发通用接口
+     */
+    onChange: onContainerItemChange;
 }
 
 export class ContainerProps extends BasicContainerPropsInterface {
-    public $data: Map<string, any>;
+    public $data: typeof initialState;
     public setData: typeof actionCreators.setData;
     public setDataList: typeof actionCreators.setDataList;
     public initData: typeof actionCreators.initData;
@@ -79,9 +74,5 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends A
         let componentInterface = componentInfo.componentInterface;
 
         return createElement(Component, componentInterface, this.props, child);
-    }
-    
-    emitChange(payload: any) {
-        console.error('emitChange 没有被实现');
     }
 }

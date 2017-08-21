@@ -5,8 +5,6 @@ import {IsPageInfo} from '../../render/util/validators';
 import Col, {ColConfig} from '../../render/core/Layout/Col/Col';
 import classNames from 'classnames';
 
-// import {DriverController} from "../../drivers/index";
-
 export class FormItemConfig extends BasicFormItemConfig {
     /**
      * 输入框标签
