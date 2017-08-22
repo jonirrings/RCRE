@@ -99,11 +99,9 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
             let childProps = {
                 info: item,
                 key: index
-            }; 
-            
-            let child = createElement(Wrapper, WrapperInterface, childProps);
+            };
 
-            return React.cloneElement(child, Object.assign({}, this.props, childProps));
+            return createElement(Wrapper, WrapperInterface, Object.assign({}, this.props, childProps));
         });
 
         const defaultStyle = {

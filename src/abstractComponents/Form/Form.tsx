@@ -53,8 +53,8 @@ class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
     componentWillUnmount() {
         console.log('unmount form');
     }
-    
-    private renderControl(info: BasicFormItemConfig): JSX.Element {
+
+    private renderControl(info: BasicFormItemConfig, depth: number): JSX.Element {
         let type = info.type;
         let componentInfo = componentLoader.getAbstractComponent(type);
 
@@ -73,18 +73,18 @@ class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
         let childElements;
         if (info.controls && Array.isArray(info.controls)) {
             childElements = info.controls.map(control => {
-                this.renderControl(control);
+                this.renderControl(control, depth++);
             });
         } else if (info.controls && _.isPlainObject(info.controls)) {
-            childElements = this.renderControl(info.controls);
+            childElements = this.renderControl(info.controls, depth++);
         }
         
         let children = createElement(component, componentInterface, {
-            key: info.name || Math.random(),
+            key: `${info.type}_${depth}`,
             info: info,
             onChange: this.props.onChange,
             // TODO immutable data cause frequent update
-            value: this.props.$data ? this.props.$data.get(info.name) : ''
+            $data: this.props.$data
         }, childElements);
         
         if (typeof info.colSpan !== 'undefined') {
@@ -116,7 +116,7 @@ class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
         let controlChildren;
         
         if (controls && controls.length > 0) {
-            controlChildren = controls.map(control => this.renderControl(control));
+            controlChildren = controls.map(control => this.renderControl(control, 0));
         }
         
         let FormInfo = driver.getComponent(this.props.info.type);

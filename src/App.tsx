@@ -132,10 +132,10 @@ const pageConfig = {
             'initialLoad': 'http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/',
             'submitUrl': '/',
             'controls': [
-                {
-                    'type': 'button',
-                    'label': 'text'
-                },
+                // {
+                //     'type': 'button',
+                //     'label': 'text'
+                // },
                 {
                     'type': 'row',
                     'justify': 'space-between',
@@ -146,45 +146,45 @@ const pageConfig = {
                             'label': 'username',
                             'colSpan': 10
                         },
-                        {
-                            'type': 'input',
-                            'name': 'password',
-                            'label': 'password',
-                            'colSpan': 10
-                        }
+                        // {
+                        //     'type': 'input',
+                        //     'name': 'password',
+                        //     'label': 'password',
+                        //     'colSpan': 10
+                        // }
                     ]
                 },
-                {
-                    'type': 'row',
-                    'justify': 'space-between',
-                    'children': [
-                        {
-                            'type': 'select',
-                            'name': 'email',
-                            'mode': 'multiple',
-                            'colSpan': 10,
-                            'label': 'select',
-                            'options': [
-                                {
-                                    'key': 'aaa',
-                                    'value': '1'
-                                }
-                            ]
-                        },
-                        {
-                            'type': 'checkbox',
-                            'name': 'isRequired',
-                            'text': '1234',
-                            'colSpan': 4
-                        },
-                        {
-                            'type': 'radio',
-                            'name': 'testRadio',
-                            'colSpan': 4,
-                            'text': 'radio'
-                        }
-                    ]
-                }
+                // {
+                //     'type': 'row',
+                //     'justify': 'space-between',
+                //     'children': [
+                //         {
+                //             'type': 'select',
+                //             'name': 'email',
+                //             'mode': 'multiple',
+                //             'colSpan': 10,
+                //             'label': 'select',
+                //             'options': [
+                //                 {
+                //                     'key': 'aaa',
+                //                     'value': '1'
+                //                 }
+                //             ]
+                //         },
+                //         {
+                //             'type': 'checkbox',
+                //             'name': 'isRequired',
+                //             'text': '1234',
+                //             'colSpan': 4
+                //         },
+                //         {
+                //             'type': 'radio',
+                //             'name': 'testRadio',
+                //             'colSpan': 4,
+                //             'text': 'radio'
+                //         }
+                //     ]
+                // }
                 // {
                 //     'type': 'password',
                 //     'name': 'password',

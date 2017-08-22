@@ -79,11 +79,15 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
         let Component = componentInfo.component;
         let componentInterface = componentInfo.componentInterface;
 
-        console.log(this.props.value);
+        let childValue = '';
 
+        if (this.props.$data) {
+            childValue = this.props.$data.get(this.props.info.name);
+        }
+        
         let children = createElement(Component, componentInterface, {
             info: this.props.info,
-            value: this.props.value,
+            value: childValue,
             onChange: this.props.onChange
         });
 
