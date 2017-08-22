@@ -89,7 +89,9 @@ class AbstractSelect extends BasicFormItem<SelectPropsInterface, {}> {
     }
 
     render() {
-        return this.getComponentThroughDriver();
+        let info = this.props.info;
+
+        return this.getComponentThroughDriver(info);
     }
 }
 

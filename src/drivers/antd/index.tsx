@@ -7,6 +7,7 @@ import AntCheckbox from './components/Checkbox/Checkbox';
 import AntRadio from './components/Radio/Radio';
 import AntBreadcrumb from './components/Breadcrumb/Breadcrumb';
 import AntTable from './components/Table/Table';
+import AntDatepicker from './components/Datepicker/Datepicker';
 import {ButtonPropsInterface} from '../../abstractComponents/Button/Button';
 import {TreePropsInterface} from '../../abstractComponents/Tree/Tree';
 import {TreeNodePropsInterface} from '../../abstractComponents/Tree/TreeNode';
@@ -16,6 +17,7 @@ import {CheckboxPropsInterface} from '../../abstractComponents/Checkbox/Checkbox
 import {RadioPropsInterface} from '../../abstractComponents/Radio/Radio';
 import {BreadcrumbPropsInterface} from '../../abstractComponents/Breadcrumb/Breadcrumb';
 import {TablePropsInterface} from '../../abstractComponents/Table/Table';
+import {DatePickerPropsInterface} from '../../abstractComponents/Datepicker/Datepicker';
 import AntForm from './components/Form/Form';
 import {FormPropsInterface} from '../../abstractComponents/Form/Form';
 
@@ -59,5 +61,9 @@ export default {
     table: {
         component: AntTable,
         componentInterface: TablePropsInterface
+    },
+    datepicker: {
+        component: AntDatepicker,
+        componentInterface: DatePickerPropsInterface
     }
 };

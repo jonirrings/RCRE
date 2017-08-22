@@ -54,6 +54,14 @@ export class FormItemPropsInterface extends BasicFormItemPropsInterface {
 }
 
 export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends React.Component<T, P> {
+    static defaultProps = {
+        value: '',
+
+        onChange() {
+            console.error('onChange 方法没有实现');
+        }
+    };
+    
     static contextTypes = {
         driver: PropTypes.object,
         form: PropTypes.bool
@@ -67,12 +75,12 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
         return createElement(AbstractFormItem, FormItemPropsInterface, this.props, children);
     }
 
-    public getComponentThroughDriver() {
+    public getComponentThroughDriver(info: FormItemConfig) {
         let driver: DriverController = this.context.driver;
-        let componentInfo = driver.getComponent(this.props.info.type);
+        let componentInfo = driver.getComponent(info.type);
 
         if (!componentInfo) {
-            console.error(`can not find module ${this.props.info.type}`);
+            console.error(`can not find module ${info.type}`);
             return <div/>;
         }
 
@@ -82,11 +90,11 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
         let childValue = '';
 
         if (this.props.$data) {
-            childValue = this.props.$data.get(this.props.info.name);
+            childValue = this.props.$data.get(info.name);
         }
         
         let children = createElement(Component, componentInterface, {
-            info: this.props.info,
+            info: info,
             value: childValue,
             onChange: this.props.onChange
         });

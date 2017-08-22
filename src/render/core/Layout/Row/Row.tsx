@@ -70,7 +70,7 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
     private mapOptions(info: RowConfig): AntRowProps {
         return {
             align: info.align,
-            justify: info.justify,
+            justify: info.justify || 'space-between',
             gutter: info.gutter,
             type: 'flex'
         };

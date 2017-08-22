@@ -184,6 +184,17 @@ const pageConfig = {
                             'text': 'radio'
                         }
                     ]
+                },
+                {
+                    'type': 'row',
+                    'justify': 'space-between',
+                    'children': [
+                        {
+                            'type': 'datepicker',
+                            'name': 'start_time',
+                            'startTime': 'now+1w-7d'
+                        }
+                    ]
                 }
                 // {
                 //     'type': 'password',

@@ -40,7 +40,8 @@ class AbstractCheckbox extends BasicFormItem<CheckboxPropsInterface, {}> {
     }
     
     render() {
-        return this.getComponentThroughDriver();
+        let info = this.props.info;
+        return this.getComponentThroughDriver(info);
     }
 }
 

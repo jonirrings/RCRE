@@ -40,7 +40,9 @@ class AbstractRadio extends BasicFormItem<RadioPropsInterface, {}> {
     }
     
     render() {
-        return this.getComponentThroughDriver();
+        let info = this.props.info;
+
+        return this.getComponentThroughDriver(info);
     }
 }
 
