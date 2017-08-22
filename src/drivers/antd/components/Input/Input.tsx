@@ -30,8 +30,6 @@ class AntInput extends React.Component<InputPropsInterface, {}> {
     
     render() {
         let info = this.props.info;
-
-        console.log(this.props);
         
         return React.createElement(Input, Object.assign(this.mapProps(info), {
             onChange: this.handleChange,

@@ -54,7 +54,7 @@ class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
         console.log('unmount form');
     }
 
-    private renderControl(info: BasicFormItemConfig, depth: number): JSX.Element {
+    private renderControl(info: BasicFormItemConfig, depth: number, index: number): JSX.Element {
         let type = info.type;
         let componentInfo = componentLoader.getAbstractComponent(type);
 
@@ -72,15 +72,16 @@ class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
         // At this point, are warning should to printing if user try to generate a children of an input element
         let childElements;
         if (info.controls && Array.isArray(info.controls)) {
-            childElements = info.controls.map(control => {
-                this.renderControl(control, depth++);
+            childElements = info.controls.map((control, i) => {
+                this.renderControl(control, depth++, i);
             });
         } else if (info.controls && _.isPlainObject(info.controls)) {
-            childElements = this.renderControl(info.controls, depth++);
+            childElements = this.renderControl(info.controls, depth++, 0);
         }
         
         let children = createElement(component, componentInterface, {
-            key: `${info.type}_${depth}`,
+            // TODO collection enough info to generate unique key, to prevent updating from React diff algorithm
+            key: `${info.type}_${depth}_${index}`,
             info: info,
             onChange: this.props.onChange,
             // TODO immutable data cause frequent update
@@ -116,7 +117,7 @@ class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
         let controlChildren;
         
         if (controls && controls.length > 0) {
-            controlChildren = controls.map(control => this.renderControl(control, 0));
+            controlChildren = controls.map((control, index) => this.renderControl(control, 0, index));
         }
         
         let FormInfo = driver.getComponent(this.props.info.type);

@@ -1,7 +1,7 @@
 import {BasicFormItemConfig, BasicFormItemPropsInterface} from '../Form/types';
 import {IsArray, IsBoolean, IsDefined, IsString, Validate} from 'class-validator';
 import {IsPageInfo, IsValidEnums} from '../../render/util/validators';
-import {BasicFormItem} from "../Form/FormItem";
+import {BasicFormItem} from '../Form/FormItem';
 
 export class SelectConfig extends BasicFormItemConfig {
     /**
