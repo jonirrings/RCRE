@@ -161,7 +161,7 @@ const pageConfig = {
                         {
                             'type': 'select',
                             'name': 'email',
-                            'mode': 'multiple',
+                            // 'mode': 'multiple',
                             'colSpan': 10,
                             'label': 'select',
                             'options': [

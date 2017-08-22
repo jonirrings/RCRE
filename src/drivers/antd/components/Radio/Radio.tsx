@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { Radio } from 'antd';
+import {Radio} from 'antd';
 import {RadioConfig, RadioPropsInterface} from '../../../../abstractComponents/Radio/Radio';
 import {RadioProps} from 'antd/lib/radio/radio';
 
 export default class AntRadio extends React.Component<RadioPropsInterface, {}> {
     constructor() {
         super();
+
+        this.handleChange = this.handleChange.bind(this);
     }
     
     private mapOptions(props: RadioConfig): RadioProps {
@@ -14,8 +16,21 @@ export default class AntRadio extends React.Component<RadioPropsInterface, {}> {
             defaultChecked: props.defaultChecked
         };
     }
+
+    private handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+        let checked = event.target.checked;
+        this.props.onChange(this.props.info.name, checked);
+    }
     
     render() {
-        return React.createElement(Radio, this.mapOptions(this.props.info), this.props.info.text);
+        return (
+            <Radio
+                checked={!!this.props.value}
+                onChange={this.handleChange}
+                {...this.mapOptions(this.props.info)}
+            >
+                {this.props.info.text}
+            </Radio>
+        );
     }
 }

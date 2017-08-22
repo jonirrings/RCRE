@@ -1,13 +1,15 @@
 import * as React from 'react';
 import {Select} from 'antd';
 import {OptionConfig, SelectConfig, SelectPropsInterface} from '../../../../abstractComponents/Select/Select';
-import {OptionProps, SelectProps} from 'antd/lib/select';
+import {OptionProps, SelectProps, SelectValue} from 'antd/lib/select';
 
 const Option = Select.Option;
 
 class AntSelect extends React.Component<SelectPropsInterface, {}> {
     constructor() {
         super();
+
+        this.handleChange = this.handleChange.bind(this);
     }
 
     private mapOptions(props: SelectConfig): SelectProps {
@@ -27,13 +29,21 @@ class AntSelect extends React.Component<SelectPropsInterface, {}> {
         };
     }
 
+    private handleChange(value: SelectValue) {
+        this.props.onChange(this.props.info.name, value);
+    }
+
     render() {
         let Options = this.props.info.options.map(op => {
             return React.createElement(Option, Object.assign(this.mapOptionOptions(op), {
                 key: op.key
             }), op.key);
         });
-        return React.createElement(Select, this.mapOptions(this.props.info), Options);
+
+        return React.createElement(Select, Object.assign(this.mapOptions(this.props.info), {
+            value: this.props.value,
+            onChange: this.handleChange
+        }), Options);
     }
 }
 
