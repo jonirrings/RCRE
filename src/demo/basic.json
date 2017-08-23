@@ -1,0 +1,35 @@
+{
+    "title": "实验平台",
+    "theme": "antd",
+    "body": [
+        {
+            "type": "button",
+            "data": {
+                "text": 1
+            },
+            "model": "simpleButton",
+            "label": "$data.text",
+            "trigger": [
+                {
+                    "eventType": "click",
+                    "target": "test",
+                    "ship": {
+                        "aaa": "$data.text"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "row",
+            "children": [
+                {
+                    "type": "html",
+                    "model": "test",
+                    "data": {
+                        "text": 1
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -3,6 +3,7 @@ import {IsPageInfo} from '../../util/validators';
 import {actionCreators} from './action';
 import AbstractCol, {ColConfig, ColPropsInterface} from '../Layout/Col/Col';
 import {Map} from 'immutable';
+import * as PropTypes from 'prop-types';
 // import * as React from 'react';
 // import AbstractFormItem, {FormItemPropsInterface} from '../../../abstractComponents/Form/FormItem';
 // import createElement from "../../util/createElement";
@@ -64,6 +65,11 @@ export class ContainerProps extends BasicContainerPropsInterface {
 }
 
 export class BasicContainer<T extends BasicContainerPropsInterface, P> extends AbstractCol<T, P> {
+    static contextTypes = {
+        driver: PropTypes.object,
+        form: PropTypes.bool
+    };
+    
     constructor() {
         super();
     }

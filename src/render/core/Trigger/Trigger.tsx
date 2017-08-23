@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {DriverController} from '../../../drivers/index';
-import * as PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import {BasicContainer, BasicContainerPropsInterface} from '../Container/types';
 import createElement from '../../util/createElement';
@@ -13,11 +12,6 @@ export class TriggerPropsInterface extends BasicContainerPropsInterface {
 }
 
 export default class Trigger<T extends TriggerPropsInterface> extends BasicContainer<T, {}> {
-    static contextTypes = {
-        driver: PropTypes.object,
-        form: PropTypes.bool
-    };
-
     constructor() {
         super();
 

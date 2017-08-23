@@ -5,3 +5,8 @@
 .render {
     padding: 0 10px;
 }
+
+.config-panel a {
+    display: inline-block;
+    padding: 0 10px;
+}
