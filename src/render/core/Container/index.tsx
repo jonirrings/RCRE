@@ -104,16 +104,18 @@ class Container extends BasicContainer<ContainerProps, {}> {
             return <div/>;
         }
 
-        let compiled = this.compileValueExpress(this.props.info, componentInfo.componentInterface);
+        let info = _.cloneDeep(this.props.info);
 
+        if (this.props.$data) {
+            info.data = this.props.$data.toObject();
+        }
+
+        let compiled = this.compileValueExpress(info, componentInfo.componentInterface);
+        
         let {
             component,
             componentInterface
         } = componentInfo;
-
-        if (this.props.$data) {
-            compiled.data = this.props.$data.toObject();
-        }
 
         let childProps = {
             info: compiled,
