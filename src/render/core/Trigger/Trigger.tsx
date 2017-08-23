@@ -6,12 +6,13 @@ import {BasicContainer, BasicContainerPropsInterface} from '../Container/types';
 import createElement from '../../util/createElement';
 import {TriggerConfig, TriggerItem, validEventTrigger} from './types';
 import {SET_DATA_LIST_PAYLOAD} from '../Container/action';
+import Col from '../Layout/Col/Col';
 
 export class TriggerPropsInterface extends BasicContainerPropsInterface {
     info: TriggerConfig;
 }
 
-export default class Trigger extends BasicContainer<TriggerPropsInterface, {}> {
+export default class Trigger<T extends TriggerPropsInterface> extends BasicContainer<T, {}> {
     static contextTypes = {
         driver: PropTypes.object,
         form: PropTypes.bool
@@ -77,10 +78,12 @@ export default class Trigger extends BasicContainer<TriggerPropsInterface, {}> {
 
         let children = createElement(Component, componentInterface, childProps, this.props.children);
 
-        return (
-            <div className="trigger-wrapper">
-                {children}
-            </div>
-        );
+        if (typeof childProps.info.colSpan !== 'undefined') {
+            children = React.createElement(Col, {
+                info: childProps.info
+            }, children);
+        }
+        
+        return children;
     }
 }

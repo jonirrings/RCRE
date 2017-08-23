@@ -30,6 +30,7 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
             
             if (state.has(model)) {
                 console.error(`find exist model of model: ${model}`);
+                return state;
             }
             
             return state.set(model, Map(data));

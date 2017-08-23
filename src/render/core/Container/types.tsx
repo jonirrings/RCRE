@@ -3,6 +3,9 @@ import {IsPageInfo} from '../../util/validators';
 import {actionCreators} from './action';
 import AbstractCol, {ColConfig, ColPropsInterface} from '../Layout/Col/Col';
 import {Map} from 'immutable';
+// import * as React from 'react';
+// import AbstractFormItem, {FormItemPropsInterface} from '../../../abstractComponents/Form/FormItem';
+// import createElement from "../../util/createElement";
 
 export type rawJSONType = string | number | null | boolean | Object;
 export type originJSONType = rawJSONType | rawJSONType[];
