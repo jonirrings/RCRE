@@ -7,10 +7,10 @@ import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {actionCreators, IAction, SET_DATA_PAYLOAD} from './action';
 import {RootState} from '../../data/reducers';
+import {Map} from 'immutable';
 import ParamsInjector from '../../util/injector';
-// import {runInContext} from '../../util/vm';
 import Col from '../Layout/Col/Col';
-import {isExpression, runInContext} from '../../util/vm';
+import {compileValueExpress, isExpression} from '../../util/vm';
 
 class Container extends BasicContainer<ContainerProps, {}> {
     static WrappedComponent: string;
@@ -60,30 +60,6 @@ class Container extends BasicContainer<ContainerProps, {}> {
         }, this.props.info.model!);
     }
 
-    private compileValueExpress(props: BasicConfig, componentInterface: Object): BasicConfig {
-        if (!this.props.$data) {
-            return props;
-        }
-
-        _.each(props, (item, key) => {
-            if (_.isString(item) && item.indexOf('$') >= 0) {
-                let parseRet = runInContext(item, {
-                    $data: this.props.$data.toObject()
-                });
-
-                if (parseRet && parseRet[0] !== '$') {
-                    props[key] = parseRet;
-                } else {
-                    // TODO use class-validator to reflect types and set default values
-                }
-            } else {
-                props[key] = item;
-            }
-        });
-
-        return props;
-    }
-
     private mergeOriginData(props: ContainerProps) {
         let injector = new ParamsInjector(props, this.loadData);
 
@@ -110,7 +86,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
             info.data = this.props.$data.toObject();
         }
 
-        let compiled = this.compileValueExpress(info, componentInfo.componentInterface);
+        let compiled = compileValueExpress<BasicConfig, Object>(info, this.props.$data.toObject(), '$data');
         
         let {
             component,
@@ -140,7 +116,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
 
 const mapStateToProps = (state: RootState, ownProps: any) => {
     return {
-        $data: state.container.get(ownProps.info.model),
+        $data: state.container.get(ownProps.info.model) || Map({}),
         $global: state.container
     };
 };

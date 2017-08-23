@@ -6,6 +6,7 @@ import createElement from '../../util/createElement';
 import {TriggerConfig, TriggerItem, validEventTrigger} from './types';
 import {SET_DATA_LIST_PAYLOAD} from '../Container/action';
 import Col from '../Layout/Col/Col';
+import {compileValueExpress} from '../../util/vm';
 
 export class TriggerPropsInterface extends BasicContainerPropsInterface {
     info: TriggerConfig;
@@ -29,8 +30,11 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
             }
 
             let ship = item.ship;
+
+            let compiled = compileValueExpress<Object, Object>(ship, this.props.$data.toObject(), '$data');
             let payload: SET_DATA_LIST_PAYLOAD = [];
-            _.each(ship, (val, name) => {
+
+            _.each(compiled, (val, name) => {
                 payload.push({
                     type: name,
                     newValue: val
