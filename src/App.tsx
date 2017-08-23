@@ -118,6 +118,18 @@ const pageConfig = {
         //     ]
         // },
         {
+            'type': 'row',
+            'children': [
+                {
+                    'type': 'html',
+                    'model': 'test',
+                    'data': {
+                        'text': 1
+                    }
+                }
+            ]
+        },
+        {
             'type': 'form',
             'title': 'test form',
             'model': 'testForm',
@@ -134,7 +146,16 @@ const pageConfig = {
             'controls': [
                 {
                     'type': 'button',
-                    'label': 'text'
+                    'label': 'text',
+                    'trigger': [
+                        {
+                            'eventType': 'click',
+                            'target': 'test',
+                            'ship': {
+                                'text': 10
+                            }
+                        }
+                    ]
                 },
                 {
                     'type': 'row',

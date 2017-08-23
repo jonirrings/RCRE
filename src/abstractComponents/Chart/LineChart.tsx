@@ -1,6 +1,8 @@
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsArray, IsBoolean, IsString, Validate} from 'class-validator';
 import {IsArrayString} from '../../render/util/validators';
+import * as React from 'react';
+import Trigger from '../../render/core/Trigger/Trigger';
 
 export class LineChartConfig extends BasicConfig {
     /**
@@ -88,6 +90,6 @@ export default class AbstractLineChart extends BasicContainer<LineChartPropsInte
     }
 
     render() {
-        return this.getComponentThroughDriver();
+        return React.createElement(Trigger, this.props);
     }
 }

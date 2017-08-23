@@ -1,8 +1,6 @@
 import {IsArray, IsDefined, IsString} from 'class-validator';
 import {BasicConfig, BasicContainerPropsInterface} from '../../render/core/Container/types';
 
-// import FormItem, {FormItemPropsInterface} from '../Form/FormItem';
-
 export class BasicFormItemConfig extends BasicConfig {
     /**
      * control 类型

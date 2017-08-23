@@ -38,3 +38,7 @@ export function runInContext(code: string, context: Object) {
         // TODO better error report   
     }
 }
+
+export function isExpression(str: any) {
+    return typeof str === 'string' && str.trim()[0] === '$';
+}

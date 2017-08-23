@@ -6,6 +6,7 @@ import TreeNode, {TreeNodeConfig, TreeNodeMappingConfig, TreeNodePropsInterface}
 import {IsArrayString, IsCheckedKeys} from '../../render/util/validators';
 import * as _ from 'lodash';
 import {runInContext} from '../../render/util/vm';
+import Trigger from '../../render/core/Trigger/Trigger';
 
 export class TreeConfig extends BasicConfig {
     /**
@@ -161,40 +162,33 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
                     ret = this.applyChildMapping(item);
                 }
 
+                let childProps = {
+                    key: ret.key || index,
+                    info: ret,
+                    onChange: this.props.onChange,
+                    $data: this.props.$data,
+                    $global: this.props.$global,
+                    $setData: this.props.$setData,
+                    $setDataList: this.props.$setDataList
+                }; 
+                
                 if (ret.children && ret.children.length > 0) {
                     return createElement(
                         TreeNode,
                         TreeNodePropsInterface,
-                        {
-                            key: ret.key || index,
-                            info: ret,
-                            onChange: this.props.onChange,
-                            $data: this.props.$data
-                        },
+                        childProps,
                         loop(ret.children)
                     );
                 }
 
-                return createElement(TreeNode, TreeNodePropsInterface, {
-                    info: ret,
-                    key: ret.key || index,
-                    onChange: this.props.onChange,
-                    $data: this.props.$data
-                });
+                return createElement(TreeNode, TreeNodePropsInterface, childProps);
             });
 
         if (Array.isArray(this.props.info.children)) {
             children = loop(this.props.info.children);
         }
 
-        return this.getComponentThroughDriver(children);
-
-        // return createElement(
-        //     treeInfo.component,
-        //     treeInfo.componentInterface,
-        //     this.props,
-        //     children
-        // );
+        return React.createElement(Trigger, this.props, children);
     }
 }
 

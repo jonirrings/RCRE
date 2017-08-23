@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {IsBoolean, IsDefined, IsString} from 'class-validator';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
+import Trigger from '../../render/core/Trigger/Trigger';
 
 export class ButtonConfig extends BasicConfig {
     /**
@@ -81,8 +82,11 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
     constructor() {
         super();
     }
+
     render() {
-        return this.getComponentThroughDriver();
+        let props = this.props;
+
+        return React.createElement(Trigger, props);
     }
 }
 

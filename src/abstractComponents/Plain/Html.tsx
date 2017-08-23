@@ -1,27 +1,24 @@
 import * as React from 'react';
-import { IsString, IsDefined } from 'class-validator';
+import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 
-export class HtmlPropsInterface {
-    @IsString()
-    @IsDefined()
-    type: string;
+export class HtmlConfig extends BasicConfig {
     
-    @IsString()
-    @IsDefined()
-    html: string;
 }
 
-class Html extends React.Component<HtmlPropsInterface, {}> {
+export class HtmlPropsInterface extends BasicContainerPropsInterface {
+    info: HtmlConfig;
+}
+
+export default class AbstractHTML extends BasicContainer<HtmlPropsInterface, {}> {
     constructor() {
         super();
     }
     
     render() {
-        
         return (
-            <div dangerouslySetInnerHTML={{__html: this.props.html}} />
+            <code>
+                {JSON.stringify(this.props.info.data)}
+            </code>
         );
     }
 }
-
-export default Html;

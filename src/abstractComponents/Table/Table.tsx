@@ -2,6 +2,8 @@ import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../r
 import {IsDefined, Validate} from 'class-validator';
 import {IsPageInfo} from '../../render/util/validators';
 import {TableRowSelection} from 'antd/lib/table/Table';
+import Trigger from '../../render/core/Trigger/Trigger';
+import * as React from 'react';
 
 export class TableDataSourceItem {
     rowSelection: TableRowSelection<TableDataSourceItem>[];
@@ -32,6 +34,6 @@ export default class AbstractTable extends BasicContainer<TablePropsInterface, {
     }
 
     render() {
-        return this.getComponentThroughDriver();
+        return React.createElement(Trigger, this.props);
     }
 }

@@ -3,6 +3,7 @@ import componentLoader from '../../render/util/componentLoader';
 import createElement from '../../render/util/createElement';
 import {Map} from 'immutable';
 import * as PropsTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import {BasicFormItemConfig} from './types';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsArray, IsDefined, IsString} from 'class-validator';
@@ -28,6 +29,11 @@ export class FormPropsInterface extends BasicContainerPropsInterface {
 }
 
 class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
+    static contextTypes = {
+        driver: PropTypes.object,
+        form: PropTypes.bool
+    };
+
     static childContextTypes = {
         form: PropsTypes.bool
     };
@@ -84,8 +90,10 @@ class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
             key: `${info.type}_${depth}_${index}`,
             info: info,
             onChange: this.props.onChange,
-            // TODO immutable data cause frequent update
-            $data: this.props.$data
+            $data: this.props.$data,
+            $global: this.props.$global,
+            $setData: this.props.$setData,
+            $setDataList: this.props.$setDataList
         }, childElements);
         
         if (typeof info.colSpan !== 'undefined') {

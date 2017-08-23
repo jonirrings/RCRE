@@ -11,6 +11,7 @@ import Radio, {RadioPropsInterface} from '../../abstractComponents/Radio/Radio';
 import Breadcrumb, {BreadcrumbPropsInterface} from '../../abstractComponents/Breadcrumb/Breadcrumb';
 import Table, {TablePropsInterface} from '../../abstractComponents/Table/Table';
 import Datepicker, {DatePickerPropsInterface} from '../../abstractComponents/Datepicker/Datepicker';
+import Html, {HtmlPropsInterface} from '../../abstractComponents/Plain/Html';
 import Row, {RowPropsInterface} from '../core/Layout/Row/Row';
 import * as _ from 'lodash';
 
@@ -103,6 +104,10 @@ const config = {
     datepicker: {
         component: Datepicker,
         componentInterface: DatePickerPropsInterface
+    },
+    html: {
+        component: Html,
+        componentInterface: HtmlPropsInterface
     }
 };
 
