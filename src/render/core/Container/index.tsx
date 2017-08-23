@@ -64,6 +64,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
         let injector = new ParamsInjector(props, this.loadData);
 
         injector.finished((payloads: SET_DATA_PAYLOAD[]) => {
+            console.log(payloads);
             this.props.setDataList(payloads, this.props.info.model!);
         });
     }

@@ -5,16 +5,18 @@
         {
             "type": "button",
             "data": {
-                "text": 1
+                "text": "点击把请求拿到的数据的数据到下面的组件",
+                "json": "$response.data"
             },
             "model": "simpleButton",
+            "initialLoad": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/",
             "label": "$data.text",
             "trigger": [
                 {
                     "eventType": "click",
                     "target": "test",
                     "ship": {
-                        "aaa": "$data.text"
+                        "text": "$data.json"
                     }
                 }
             ]

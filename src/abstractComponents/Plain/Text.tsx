@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { IsString, IsDefined } from 'class-validator';
+import {IsDefined, IsString} from 'class-validator';
 
-export class PlainPropsInterface {
+export class TextConfig {
     @IsString()
     @IsDefined()
     type: string;
@@ -11,14 +11,18 @@ export class PlainPropsInterface {
     text: string;
 }
 
-class Plain extends React.Component<PlainPropsInterface, {}> {
+export class TextPropsInterface {
+    info: TextConfig;
+}
+
+class Text extends React.Component<TextPropsInterface, {}> {
     constructor() {
         super();
     }
     
     render() {
-        return <span>{this.props.text}</span>;
+        return <span>{JSON.stringify(this.props.info)}</span>;
     }
 }
 
-export default Plain;
+export default Text;

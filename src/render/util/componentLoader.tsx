@@ -12,6 +12,7 @@ import Breadcrumb, {BreadcrumbPropsInterface} from '../../abstractComponents/Bre
 import Table, {TablePropsInterface} from '../../abstractComponents/Table/Table';
 import Datepicker, {DatePickerPropsInterface} from '../../abstractComponents/Datepicker/Datepicker';
 import Html, {HtmlPropsInterface} from '../../abstractComponents/Plain/Html';
+import Text, {TextPropsInterface} from '../../abstractComponents/Plain/Text';
 import Row, {RowPropsInterface} from '../core/Layout/Row/Row';
 import * as _ from 'lodash';
 
@@ -108,6 +109,10 @@ const config = {
     html: {
         component: Html,
         componentInterface: HtmlPropsInterface
+    },
+    text: {
+        component: Text,
+        componentInterface: TextPropsInterface
     }
 };
 
