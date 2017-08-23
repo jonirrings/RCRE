@@ -1,6 +1,7 @@
 export const SET_DATA = 'SET_DATA';
 export const SET_DATA_LIST = 'SET_DATA_LIST';
 export const INIT_DATA = 'INIT_DATA';
+export const CLEAR_DATA = 'CLEAR_DATA';
 export type SET_DATA_PAYLOAD = {
     type: string;
     newValue: any;
@@ -25,6 +26,9 @@ export type IActions = {
         type: typeof SET_DATA_LIST,
         payload: SET_DATA_LIST_PAYLOAD,
         model: string;
+    },
+    CLEAR_DATA: {
+        type: typeof CLEAR_DATA
     }
 };
 
@@ -44,5 +48,8 @@ export const actionCreators = {
         type: SET_DATA_LIST as typeof SET_DATA_LIST,
         payload,
         model
+    }),
+    clearData: () => ({
+        type: CLEAR_DATA as typeof CLEAR_DATA
     })
 };

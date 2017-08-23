@@ -9,6 +9,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import 'font-awesome/css/font-awesome.css';
 import './App.css';
+import {actionCreators} from './render/core/Container/action';
+import store from './render/data/store';
 
 const pageConfig = {
     'title': '实验平台',
@@ -118,6 +120,23 @@ const pageConfig = {
         //     ]
         // },
         {
+            'type': 'button',
+            'data': {
+                'text': 1
+            },
+            'model': 'simpleButton',
+            'label': '$data.text',
+            'trigger': [
+                {
+                    'eventType': 'click',
+                    'target': 'test',
+                    'ship': {
+                        'aaa': 1234
+                    }
+                }
+            ]
+        },
+        {
             'type': 'row',
             'children': [
                 {
@@ -145,15 +164,26 @@ const pageConfig = {
             'submitUrl': '/',
             'controls': [
                 {
-                    'type': 'button',
-                    'label': 'text',
-                    'trigger': [
+                    'type': 'row',
+                    'children': [
                         {
-                            'eventType': 'click',
-                            'target': 'test',
-                            'ship': {
-                                'text': 10
-                            }
+                            'type': 'input',
+                            'name': 'selectOptions',
+                            'colSpan': 10
+                        },
+                        {
+                            'type': 'button',
+                            'label': 'text',
+                            'colSpan': 2,
+                            'trigger': [
+                                {
+                                    'eventType': 'click',
+                                    'target': 'test',
+                                    'ship': {
+                                        'text': 10
+                                    }
+                                }
+                            ]
                         }
                     ]
                 },
@@ -278,6 +308,8 @@ class App extends React.Component<{}, AppStateInterface> {
     }
 
     onJSONEditorChange(code: string) {
+        store.dispatch(actionCreators.clearData());
+        
         this.setState({
             code
         });

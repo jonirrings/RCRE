@@ -1,7 +1,7 @@
 import {Map} from 'immutable';
 import {Reducer} from 'redux';
 import {IRootAction} from '../../data/actions';
-import {INIT_DATA, SET_DATA, SET_DATA_LIST} from './action';
+import {CLEAR_DATA, INIT_DATA, SET_DATA, SET_DATA_LIST} from './action';
 
 type stateItem = Map<string, any>;
 export type IState = Map<string, stateItem>;
@@ -33,6 +33,11 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
             }
             
             return state.set(model, Map(data));
+
+        // only for dev
+        case CLEAR_DATA:
+            state = Map({});
+            return state;
         default:
             return state;
     }

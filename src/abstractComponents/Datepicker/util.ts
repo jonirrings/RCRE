@@ -36,7 +36,7 @@ export function parseTimeString(timeStr: string): moment.Moment {
         return moment();
     }
 
-    const timeTokenRegex = /(?:\s*(\+|-)\s*)?(\d+)(s|m|h|d|M|Y)/g;
+    const timeTokenRegex = /(?:\s*(\+|-)\s*)?(\d+)(s|m|h|d|M|Y|w)/g;
     let pattern = timeTokenRegex.exec(timeStr);
     let nowTime = moment();
 
