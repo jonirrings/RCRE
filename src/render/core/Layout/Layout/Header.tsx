@@ -1,5 +1,5 @@
 import {Layout} from 'antd';
-import {BasicAbstractLayout, BasicLayoutConfig, BasicLayoutPropsInterface} from "./BasicLayout";
+import {BasicAbstractLayout, BasicLayoutConfig, BasicLayoutPropsInterface} from './BasicLayout';
 
 const Header = Layout.Header;
 

@@ -2,7 +2,7 @@ import {Layout} from 'antd';
 import {Validate} from 'class-validator';
 import {IsPageInfo} from '../../../util/validators';
 import {BasicAbstractLayout, BasicLayoutConfig, BasicLayoutPropsInterface} from './BasicLayout';
-import {SiderProps} from "antd/lib/layout/Sider";
+import {SiderProps} from 'antd/lib/layout/Sider';
 
 const Sider = Layout.Sider;
 
