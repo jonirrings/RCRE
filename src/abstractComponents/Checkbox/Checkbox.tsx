@@ -2,6 +2,8 @@ import {BasicFormItemConfig, BasicFormItemPropsInterface} from '../Form/types';
 import {IsBoolean, IsString, Validate} from 'class-validator';
 import {IsPageInfo} from '../../render/util/validators';
 import {BasicFormItem} from '../Form/FormItem';
+import Trigger from '../../render/core/Trigger/Trigger';
+import * as React from 'react';
 
 export class CheckboxConfig extends BasicFormItemConfig {
     /**
@@ -40,8 +42,7 @@ class AbstractCheckbox extends BasicFormItem<CheckboxPropsInterface, {}> {
     }
     
     render() {
-        let info = this.props.info;
-        return this.getComponentThroughDriver(info);
+        return React.createElement(Trigger, this.props);
     }
 }
 

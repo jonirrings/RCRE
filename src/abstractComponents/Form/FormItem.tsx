@@ -55,16 +55,13 @@ export class FormItemPropsInterface extends BasicFormItemPropsInterface {
 
 export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends React.Component<T, P> {
     static defaultProps = {
-        value: '',
-
-        onChange() {
-            console.error('onChange 方法没有实现');
-        }
+        value: ''
     };
     
     static contextTypes = {
         driver: PropTypes.object,
-        form: PropTypes.bool
+        form: PropTypes.bool,
+        $setData: PropTypes.func
     };
 
     constructor() {

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {IsDefined, IsJSON, IsString} from 'class-validator';
+import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 
-export class TextConfig {
+export class TextConfig extends BasicConfig {
     @IsString()
     @IsDefined()
     type: string;
@@ -14,17 +15,24 @@ export class TextConfig {
     style?: React.CSSProperties;
 }
 
-export class TextPropsInterface {
+export class TextPropsInterface extends BasicContainerPropsInterface {
     info: TextConfig;
 }
 
-class Text extends React.Component<TextPropsInterface, {}> {
+const defaultTextStyle = {
+    padding: '0 10px',
+    minWidth: 80,
+    textAlign: 'center',
+    lineHeight: '25px'
+};
+
+class Text extends BasicContainer<TextPropsInterface, {}> {
     constructor() {
         super();
     }
     
     render() {
-        return <span style={this.props.info.style}>{this.props.info.text}</span>;
+        return <span style={Object.assign(defaultTextStyle, this.props.info.style)}>{this.props.info.text}</span>;
     }
 }
 

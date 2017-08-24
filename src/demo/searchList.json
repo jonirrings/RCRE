@@ -1,0 +1,39 @@
+{
+    "body": [
+        {
+            "type": "row",
+            "children": [
+                {
+                    "type": "text",
+                    "text": "搜索",
+                    "colSpan": 4
+                },
+                {
+                    "type": "input",
+                    "name": "search",
+                    "data": {
+                        "search": ""
+                    },
+                    "model": "inputSearch",
+                    "trigger": [
+                        {
+                            "eventType": "change",
+                            "target": "sample",
+                            "ship": {
+                                "text": "$data.search"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "text",
+            "text": "$data.text",
+            "data": {
+                "text": "1234"
+            },
+            "model": "sample"
+        }
+    ]
+}

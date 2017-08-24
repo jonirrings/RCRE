@@ -2,6 +2,8 @@ import {BasicFormItem, FormItemPropsInterface} from '../Form/FormItem';
 import {IsBoolean, IsString, Validate} from 'class-validator';
 import {IsValidEnums} from '../../render/util/validators';
 import {BasicFormItemConfig} from '../Form/types';
+import * as React from 'react';
+import Trigger from '../../render/core/Trigger/Trigger';
 
 export class InputConfig extends BasicFormItemConfig {
     /**
@@ -55,7 +57,6 @@ export class InputConfig extends BasicFormItemConfig {
 
 export class InputPropsInterface extends FormItemPropsInterface {
     info: InputConfig;
-
     value: string;
 }
 
@@ -69,9 +70,18 @@ class AbstractInput extends BasicFormItem<InputPropsInterface, InputStateInterfa
     }
 
     render() {
-        let info = this.props.info;
+        let props = this.props;
 
-        return this.getComponentThroughDriver(info);
+        let childValue = '';
+
+        if (this.props.$data) {
+            childValue = this.props.$data.get(this.props.info.name);
+        }
+
+        return React.createElement(Trigger, Object.assign({}, props, {
+            value: childValue,
+            onChange: this.props.onChange
+        }));
     }
 }
 

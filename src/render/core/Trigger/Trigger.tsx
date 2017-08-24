@@ -24,8 +24,8 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
         this.handleTrigger = this.handleTrigger.bind(this);
     }
 
-    handleTrigger(item: TriggerItem) {
-        return (event: React.MouseEvent<HTMLInputElement>) => {
+    handleTrigger(item: TriggerItem): (type: string, value: any) => void {
+        return (type: string, value: any) => {
             let target = item.target;
             let $global = this.context.$global;
 
@@ -74,7 +74,24 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
                 }
 
                 let method = validEventTrigger[eventType];
-                mergeProps[method] = this.handleTrigger(item);
+
+                if (childProps[method]) {
+                    let oldFn = childProps[method];
+
+                    mergeProps[method] = (type: string, value: any) => {
+                        oldFn(type, value);
+                        setTimeout(() => {
+                            this.handleTrigger(item)(this.props.info.model!, value);
+                        });
+                    };
+                } else {
+                    mergeProps[method] = (event: React.MouseEvent<HTMLInputElement>) => {
+                        let target = event.currentTarget;
+                        let value = target.value;
+
+                        this.handleTrigger(item)(this.props.info.model!, value);
+                    };
+                }
             });
 
             childProps = Object.assign({}, childProps, mergeProps);

@@ -4,7 +4,7 @@ import {actionCreators} from './action';
 import AbstractCol, {ColConfig, ColPropsInterface} from '../Layout/Col/Col';
 import {Map} from 'immutable';
 import * as PropTypes from 'prop-types';
-// import * as React from 'react';
+import * as React from 'react';
 // import AbstractFormItem, {FormItemPropsInterface} from '../../../abstractComponents/Form/FormItem';
 // import createElement from "../../util/createElement";
 
@@ -29,7 +29,7 @@ export class BasicConfig extends ColConfig {
     data?: defaultData;
 }
 
-export type onContainerItemChange = (type: string, value: any) => void;
+export type onContainerItemChange = (type: string, value: any, event?: React.ChangeEvent<HTMLElement>) => void;
 
 export class BasicContainerPropsInterface extends ColPropsInterface {
     @Validate(IsPageInfo, [BasicConfig])

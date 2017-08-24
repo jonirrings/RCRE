@@ -1,7 +1,8 @@
 import {BasicConfig} from '../Container/types';
 
 export const validEventTrigger = {
-    'click': 'onClick'
+    'click': 'onClick',
+    'change': 'onChange'
 };
 
 export class TriggerItem {

@@ -18,6 +18,7 @@ let lineChartConfig = require('./demo/linechart.json');
 let treeConfig = require('./demo/tree.json');
 let tableConfig = require('./demo/table.json');
 let layoutConfig = require('./demo/layout.json');
+let searchConfig = require('./demo/searchList.json');
 
 interface AppStateInterface {
     code: string;
@@ -28,7 +29,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(layoutConfig)
+            code: jsonformat(searchConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -70,6 +71,7 @@ class App extends React.Component<{}, AppStateInterface> {
                     <a onClick={this.changeConfig(basicConfig)}>Basic</a>
                     <a onClick={this.changeConfig(formConfig)}>Form</a>
                     <a onClick={this.changeConfig(layoutConfig)}>Layout</a>
+                    <a onClick={this.changeConfig(searchConfig)}>Search</a>
                     <a onClick={this.changeConfig(lineChartConfig)}>LineChart</a>
                     <a onClick={this.changeConfig(treeConfig)}>Tree</a>
                     <a onClick={this.changeConfig(tableConfig)}>Table</a>

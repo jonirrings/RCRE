@@ -30,11 +30,18 @@ class AntInput extends React.Component<InputPropsInterface, {}> {
     
     render() {
         let info = this.props.info;
-        
-        return React.createElement(Input, Object.assign(this.mapProps(info), {
-            onChange: this.handleChange,
-            value: this.props.value
-        }));
+
+        let childProps: {
+            value?: string;
+            onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+        } = {};
+
+        if (this.props.onChange) {
+            childProps.value = this.props.value;
+            childProps.onChange = this.handleChange;
+        }
+
+        return React.createElement(Input, Object.assign(this.mapProps(info), childProps));
     }
 }
 

@@ -1,8 +1,10 @@
+import * as React from 'react';
 import {BasicFormItem} from '../Form/FormItem';
 import {BasicFormItemConfig, BasicFormItemPropsInterface} from '../Form/types';
 import {IsBoolean, IsNumber, IsString, Validate} from 'class-validator';
 import {IsValidEnums} from '../../render/util/validators';
 import {parseTimeString} from './util';
+import Trigger from '../../render/core/Trigger/Trigger';
 
 export class DatePickerConfig extends BasicFormItemConfig {
     /**
@@ -74,7 +76,8 @@ export default class AbstractDatepicker extends BasicFormItem<DatePickerPropsInt
     }
 
     render() {
-        let info = Object.assign({}, this.props.info);
+        let props = Object.assign({}, this.props);
+        let info = props.info;
 
         if (info.startTime) {
             info.startTime = parseTimeString(info.startTime).valueOf().toString();
@@ -84,6 +87,6 @@ export default class AbstractDatepicker extends BasicFormItem<DatePickerPropsInt
             info.endTime = parseTimeString(info.endTime).valueOf().toString();
         }
 
-        return this.getComponentThroughDriver(info);
+        return React.createElement(Trigger, props);
     }
 }
