@@ -7,12 +7,17 @@ import {TriggerConfig, TriggerItem, validEventTrigger} from './types';
 import {SET_DATA_LIST_PAYLOAD} from '../Container/action';
 import Col from '../Layout/Col/Col';
 import {compileValueExpress} from '../../util/vm';
+import {Map} from 'immutable';
 
 export class TriggerPropsInterface extends BasicContainerPropsInterface {
     info: TriggerConfig;
 }
 
 export default class Trigger<T extends TriggerPropsInterface> extends BasicContainer<T, {}> {
+    static defaultProps = {
+        $data: Map({})
+    };
+    
     constructor() {
         super();
 
@@ -22,7 +27,7 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
     handleTrigger(item: TriggerItem) {
         return (event: React.MouseEvent<HTMLInputElement>) => {
             let target = item.target;
-            let $global = this.props.$global;
+            let $global = this.context.$global;
 
             if (!$global.has(target)) {
                 console.error(`can not find target model of target: ${target}`);
@@ -40,7 +45,8 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
                     newValue: val
                 });
             });
-            this.props.$setDataList(payload, target);
+
+            this.context.$setDataList(payload, target);
         };
     }
 

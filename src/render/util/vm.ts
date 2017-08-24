@@ -1,27 +1,5 @@
 import * as _ from 'lodash';
 
-export function parseObjectPropertyExpress(preDefine: string, code: string, mirror: Object): any {
-    // TODO safe run context;
-    try {
-        // TODO too dangerous
-        let f = new Function(preDefine, `return ${code}`);
-        return f(mirror);
-    } catch (e) {
-        // TODO better error report
-        // console.error('got unexpected error');
-    }
-}
-
-/*
-    runInContext('$iterator.key', { 
-        $iterator: {
-            "name": 1
-        },
-        $data: {
-             
-        }
-    });
-*/
 export function runInContext(code: string, context: Object) {
     try {
         let params: string[] = [];
@@ -64,5 +42,5 @@ export function compileValueExpress<Config, Source>(props: Config, source: Sourc
 }
 
 export function isExpression(str: any) {
-    return typeof str === 'string' && str.trim()[0] === '$';
+    return typeof str === 'string' && str.indexOf('$') >= 0;
 }

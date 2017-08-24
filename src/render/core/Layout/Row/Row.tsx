@@ -1,14 +1,10 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import {BasicConfig, BasicContainerPropsInterface, ContainerProps} from '../../Container/types';
+import {BasicConfig, BasicContainerPropsInterface} from '../../Container/types';
 import {IsNumber, Validate} from 'class-validator';
 import {IsValidEnums} from '../../../util/validators';
-import Container from '../../Container/index';
 import {Row} from 'antd';
-import createElement from '../../../util/createElement';
-import componentLoader from '../../../util/componentLoader';
-
-// import FormItem, {FormItemPropsInterface} from '../../../../abstractComponents/Form/FormItem';
+import {createChild} from '../../../util/createChild';
 
 export class RowConfig extends BasicConfig {
     /**
@@ -70,39 +66,23 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
     private mapOptions(info: RowConfig): AntRowProps {
         return {
             align: info.align,
-            justify: info.justify || 'space-between',
+            justify: info.justify,
             gutter: info.gutter,
             type: 'flex'
         };
     }
 
     render() {
-        let children = this.props.info.children.map((item, index) => {
-            let Wrapper;
-            let WrapperInterface;
+        let children;
 
-            // Wrapper container component which have data properties
-            if (item.data && !this.context.form) {
-                Wrapper = Container;
-                WrapperInterface = ContainerProps;
-            } else {
-                let componentInfo = componentLoader.getAbstractComponent(item.type);
-                if (!componentInfo) {
-                    console.error(`can not find component of type ${item.type}`);
-                    return <div key={index} />;
-                }
-                
-                Wrapper = componentInfo.component;
-                WrapperInterface = componentInfo.componentInterface;
-            }
-            
-            let childProps = {
-                info: item,
-                key: index
-            };
-
-            return createElement(Wrapper, WrapperInterface, Object.assign({}, this.props, childProps));
-        });
+        if (Array.isArray(this.props.info.children)) {
+            children = this.props.info.children.map((item, index) => {
+                return createChild(item, {
+                    info: item,
+                    key: index
+                }, this.context.form);
+            });
+        }
 
         const defaultStyle = {
             marginTop: 10,

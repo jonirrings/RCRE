@@ -1,12 +1,16 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 import WrappedContainer from './Container/index';
 import {BasicConfig} from './Container/types';
 import {IsDefined, IsString} from 'class-validator';
-import {Provider} from 'react-redux';
 import themeDriver from '../../drivers/index';
 import * as PropsTypes from 'prop-types';
-import store from '../data/store';
 import {createChild} from '../util/createChild';
+import {connect} from 'react-redux';
+import {Map} from 'immutable';
+import {RootState} from '../data/reducers';
+import {bindActionCreators, Dispatch} from 'redux';
+import {actionCreators, IAction} from './Container/action';
 
 export class PageProps {
     @IsString()
@@ -17,23 +21,31 @@ export class PageProps {
 
     @IsDefined()
     body: BasicConfig[] | BasicConfig | string;
+
+    $global: Map<string, any>;
+
+    $setDataList: typeof actionCreators.setDataList;
 }
 
 class Page extends React.Component<PageProps, {}> {
     static defaultProps = {
-        title: '标题',
+        title: '',
         theme: 'antd'
     };
 
     static childContextTypes = {
-        driver: PropsTypes.object
+        driver: PropsTypes.object,
+        $global: PropsTypes.object,
+        $setDataList: PropsTypes.func
     };
 
     getChildContext() {
         themeDriver.setTheme(this.props.theme);
-        
+
         return {
-            driver: themeDriver
+            driver: themeDriver,
+            $global: this.props.$global,
+            $setDataList: this.props.$setDataList
         };
     }
 
@@ -50,30 +62,40 @@ class Page extends React.Component<PageProps, {}> {
             body = this.props.body.map((item, index) => {
                 return createChild(item, {
                     info: item,
-                    key: index,
-                    $depth: 0
-                }, WrappedContainer);
+                    key: index
+                });
             });
-        } else {
+        } else if (_.isPlainObject(this.props.body)) {
             body = React.createElement(WrappedContainer, {
-                info: this.props.body,
-                $depth: 0
+                info: this.props.body
             });
         }
 
+        let pageHeader = this.props.title ? (
+            <div className="page-header">
+                <h1>{this.props.title}</h1>
+            </div>
+        ) : '';
+
         return (
-            <Provider store={store}>
-                <div className="page-container">
-                    <div className="page-header">
-                        <h1>{this.props.title}</h1>
-                    </div>
-                    <div className="page-body">
-                        {body}
-                    </div>
+            <div className="page-container">
+                {pageHeader}
+                <div className="page-body">
+                    {body}
                 </div>
-            </Provider>
+            </div>
         );
     }
 }
 
-export default Page;
+const mapStateToProps = (state: RootState, ownProps: any) => {
+    return {
+        $global: state.container
+    };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
+    $setDataList: actionCreators.setDataList
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Page);

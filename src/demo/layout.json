@@ -1,0 +1,36 @@
+{
+    "title": "布局框架",
+    "body": [
+        {
+            "type": "layout",
+            "children": [
+                {
+                    "type": "row",
+                    "children": [
+                        {
+                            "type": "button",
+                            "label": "text",
+                            "trigger": [
+                                {
+                                    "eventType": "click",
+                                    "target": "modelButton",
+                                    "ship": {
+                                        "text": 1234
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "button",
+                            "label": "$data.text",
+                            "model": "modelButton",
+                            "data": {
+                                "text": "abc2"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

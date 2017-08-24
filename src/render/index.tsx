@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Page, {PageProps} from './core/Page';
 import paramCheck from './util/paramCheck';
+import store from './data/store';
+import {Provider} from 'react-redux';
 
 import './index.css';
 
@@ -44,11 +46,13 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
         // TODO: 每次JSON更新都会整体重渲染, 性能很烂
         return (
             <div className="render">
-                <Page
-                    title={info.title}
-                    body={info.body}
-                    theme={info.theme}
-                />
+                <Provider store={store}>
+                    <Page
+                        title={info.title}
+                        body={info.body}
+                        theme={info.theme}
+                    />
+                </Provider>
             </div>
         );
     }

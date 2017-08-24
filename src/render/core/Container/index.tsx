@@ -97,7 +97,6 @@ class Container extends BasicContainer<ContainerProps, {}> {
         let childProps = {
             info: compiled,
             $data: this.props.$data,
-            $global: this.props.$global,
             $setData: this.props.setData,
             $setDataList: this.props.setDataList,
             onChange: this.handleChange
@@ -117,8 +116,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
 
 const mapStateToProps = (state: RootState, ownProps: any) => {
     return {
-        $data: state.container.get(ownProps.info.model) || Map({}),
-        $global: state.container
+        $data: state.container.get(ownProps.info.model) || Map({})
     };
 };
 

@@ -39,6 +39,14 @@ class JSONEditor extends React.Component<JSONEditorPropsInterface, JSONEditorSta
             code
         });
     }
+
+    componentWillReceiveProps(nextProps: JSONEditorStateInterface) {
+        if (nextProps.code !== this.props.code) {
+            this.setState({
+                code: nextProps.code
+            });
+        }
+    }
     
     componentDidMount() {
         ReactDOM.findDOMNode(this).addEventListener('keydown', (e: KeyboardEvent) => {

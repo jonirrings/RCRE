@@ -14,6 +14,7 @@ import Datepicker, {DatePickerPropsInterface} from '../../abstractComponents/Dat
 import Html, {HtmlPropsInterface} from '../../abstractComponents/Plain/Html';
 import Text, {TextPropsInterface} from '../../abstractComponents/Plain/Text';
 import Row, {RowPropsInterface} from '../core/Layout/Row/Row';
+import Layout, {LayoutPropsInterface} from '../core/Layout/Layout/Layout';
 import * as _ from 'lodash';
 
 export type ComponentLoaderMapVal = {
@@ -113,6 +114,10 @@ const config = {
     text: {
         component: Text,
         componentInterface: TextPropsInterface
+    },
+    layout: {
+        component: Layout,
+        componentInterface: LayoutPropsInterface
     }
 };
 

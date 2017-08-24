@@ -45,11 +45,6 @@ export class BasicContainerPropsInterface extends ColPropsInterface {
      */
     $data: Map<string, any>;
 
-    /**
-     * 全局数据模型
-     */
-    $global: Map<string, any>;
-
     $setData: typeof actionCreators.setData;
 
     $setDataList: typeof actionCreators.setDataList;
@@ -57,7 +52,6 @@ export class BasicContainerPropsInterface extends ColPropsInterface {
 
 export class ContainerProps extends BasicContainerPropsInterface {
     public $data: Map<string, any>;
-    public $global: Map<string, any>;
     public setData: typeof actionCreators.setData;
     public setDataList: typeof actionCreators.setDataList;
     public initData: typeof actionCreators.initData;
@@ -67,7 +61,9 @@ export class ContainerProps extends BasicContainerPropsInterface {
 export class BasicContainer<T extends BasicContainerPropsInterface, P> extends AbstractCol<T, P> {
     static contextTypes = {
         driver: PropTypes.object,
-        form: PropTypes.bool
+        form: PropTypes.bool,
+        $global: PropTypes.object,
+        $setDataList: PropTypes.func
     };
     
     constructor() {
