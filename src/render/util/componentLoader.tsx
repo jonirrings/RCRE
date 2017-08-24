@@ -15,6 +15,10 @@ import Html, {HtmlPropsInterface} from '../../abstractComponents/Plain/Html';
 import Text, {TextPropsInterface} from '../../abstractComponents/Plain/Text';
 import Row, {RowPropsInterface} from '../core/Layout/Row/Row';
 import Layout, {LayoutPropsInterface} from '../core/Layout/Layout/Layout';
+import Header, {HeaderPropsInterface} from '../core/Layout/Layout/Header';
+import Sider, {SidePropsInterface} from '../core/Layout/Layout/Sider';
+import Footer, {FooterPropsInterface} from '../core/Layout/Layout/Footer';
+import Content, {ContentPropsInterface} from '../core/Layout/Layout/Content';
 import * as _ from 'lodash';
 
 export type ComponentLoaderMapVal = {
@@ -118,6 +122,22 @@ const config = {
     layout: {
         component: Layout,
         componentInterface: LayoutPropsInterface
+    },
+    header: {
+        component: Header,
+        componentInterface: HeaderPropsInterface
+    },
+    sider: {
+        component: Sider,
+        componentInterface: SidePropsInterface
+    },
+    content: {
+        component: Content,
+        componentInterface: ContentPropsInterface
+    },
+    footer: {
+        component: Footer,
+        componentInterface: FooterPropsInterface
     }
 };
 

@@ -1,32 +1,67 @@
 {
-    "title": "布局框架",
     "body": [
         {
             "type": "layout",
             "children": [
                 {
-                    "type": "row",
+                    "type": "sider",
+                    "width": 100,
+                    "children": []
+                },
+                {
+                    "type": "layout",
                     "children": [
                         {
-                            "type": "button",
-                            "label": "text",
-                            "trigger": [
+                            "type": "header",
+                            "style": {
+                                "background": "#fff",
+                                "border": "1px solid #000"
+                            },
+                            "children": [
                                 {
-                                    "eventType": "click",
-                                    "target": "modelButton",
-                                    "ship": {
-                                        "text": 1234
-                                    }
+                                    "type": "text",
+                                    "text": "这是头部"
                                 }
                             ]
                         },
                         {
-                            "type": "button",
-                            "label": "$data.text",
-                            "model": "modelButton",
-                            "data": {
-                                "text": "abc2"
-                            }
+                            "type": "content",
+                            "children": [
+                                {
+                                    "type": "button",
+                                    "data": {
+                                        "text": "点击把请求拿到的数据的数据到下面的组件",
+                                        "json": "$response.data"
+                                    },
+                                    "model": "simpleButton",
+                                    "initialLoad": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/",
+                                    "label": "$data.text",
+                                    "trigger": [
+                                        {
+                                            "eventType": "click",
+                                            "target": "test",
+                                            "ship": {
+                                                "text": "$data.json"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "row",
+                                    "children": [
+                                        {
+                                            "type": "html",
+                                            "model": "test",
+                                            "data": {
+                                                "text": 1
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "footer"
                         }
                     ]
                 }

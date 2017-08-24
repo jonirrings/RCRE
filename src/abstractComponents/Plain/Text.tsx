@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {IsDefined, IsString} from 'class-validator';
+import {IsDefined, IsJSON, IsString} from 'class-validator';
 
 export class TextConfig {
     @IsString()
@@ -9,6 +9,9 @@ export class TextConfig {
     @IsString()
     @IsDefined()
     text: string;
+
+    @IsJSON()
+    style?: React.CSSProperties;
 }
 
 export class TextPropsInterface {
@@ -21,7 +24,7 @@ class Text extends React.Component<TextPropsInterface, {}> {
     }
     
     render() {
-        return <span>{JSON.stringify(this.props.info)}</span>;
+        return <span style={this.props.info.style}>{this.props.info.text}</span>;
     }
 }
 
