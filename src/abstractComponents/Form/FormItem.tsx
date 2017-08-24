@@ -77,8 +77,7 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
         let componentInfo = driver.getComponent(info.type);
 
         if (!componentInfo) {
-            console.error(`can not find module ${info.type}`);
-            return <div/>;
+            return <pre>{`can not find module $\{info.type}`}</pre>;
         }
 
         let Component = componentInfo.component;

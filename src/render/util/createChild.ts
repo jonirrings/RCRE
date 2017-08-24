@@ -8,7 +8,7 @@ import createElement from './createElement';
 export function createChild(item: BasicConfig, childProps: Object, inForm: boolean = false) {
     if (!_.isPlainObject(item)) {
         console.error('invalid Item Object', item);
-        return React.createElement('div');
+        return React.createElement('div', {}, 'invalid Item Object');
     }
 
     let component: React.ComponentClass<any>;
@@ -21,8 +21,7 @@ export function createChild(item: BasicConfig, childProps: Object, inForm: boole
         let componentInfo = componentLoader.getAbstractComponent(item.type);
 
         if (!componentInfo) {
-            console.error(`can not find component of type ${item.type}`);
-            return React.createElement('div');
+            return React.createElement('pre', {}, `can not find component of type ${item.type}`);
         }
 
         component = componentInfo.component;

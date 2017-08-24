@@ -124,8 +124,7 @@ class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
         let FormInfo = driver.getComponent(this.props.info.type);
         
         if (!FormInfo) {
-            console.error(`Can not find module of ${this.props.info.type}`);
-            return <div />;
+            return <pre>{`Can not find module of ${this.props.info.type}`}</pre>;
         }
         
         let form = FormInfo.component;

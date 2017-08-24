@@ -77,8 +77,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
         let componentInfo = componentLoader.getAbstractComponent(type);
 
         if (!componentInfo) {
-            console.error(`can not find component of type: ${type}`);
-            return <div/>;
+            return <pre>{`can not find component of type: ${type}`}</pre>;
         }
 
         let info = _.cloneDeep(this.props.info);

@@ -55,8 +55,7 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
         let componentInfo = driver.getComponent(this.props.info.type);
 
         if (!componentInfo) {
-            console.error(`can not find module ${this.props.info.type}`);
-            return <div/>;
+            return <pre>{`can not find module ${this.props.info.type}`}</pre>;
         }
 
         let Component = componentInfo.component;
