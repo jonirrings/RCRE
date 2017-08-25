@@ -44,3 +44,13 @@ export function compileValueExpress<Config, Source>(props: Config, source: Sourc
 export function isExpression(str: any) {
     return typeof str === 'string' && str.indexOf('$') >= 0;
 }
+
+export function filterExpressionData(obj: Object) {
+    _.each(obj, (val, name) => {
+        if (isExpression(val)) {
+            delete obj[name];
+        }
+    });
+
+    return obj;
+}

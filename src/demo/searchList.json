@@ -4,39 +4,46 @@
             "type": "row",
             "children": [
                 {
-                    "type": "text",
-                    "text": "搜索",
-                    "colSpan": 4
-                },
-                {
-                    "type": "input",
+                    "type": "container",
                     "data": {},
-                    "model": "inputSearch",
-                    "trigger": [
+                    "model": "searchBox",
+                    "children": [
                         {
-                            "eventType": "change",
-                            "target": "sample",
-                            "ship": {
-                                "text": "$data.inputSearch"
-                            }
+                            "type": "input",
+                            "model": "inputSearch",
+                            "placeholder": "请输入搜索内容"
+                        },
+                        {
+                            "type": "button",
+                            "label": "搜索",
+                            "trigger": [
+                                {
+                                    "eventType": "click",
+                                    "target": "feedList",
+                                    "ship": {
+                                        "query": "$data.inputSearch"
+                                    }
+                                }
+                            ]
                         }
                     ]
                 }
             ]
         },
         {
-            "type": "text",
-            "text": "$data.text",
-            "data": {
-                "text": "1234"
-            },
-            "model": "sample"
-        },
-        {
             "type": "container",
-            "data": {
+            "initialLoad": {
+                "stopFirstLoad": true,
+                "url": "http://localhost:8220/afd/udwmessage/table",
+                "data": {
+                    "query": "$data.query"
+                }
             },
-            "model": "textContainer",
+            "data": {
+                "query": "",
+                "list": "$response.data"
+            },
+            "model": "feedList",
             "children": [
                 {
                     "type": "input",

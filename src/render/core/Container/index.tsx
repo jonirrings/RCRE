@@ -7,14 +7,18 @@ import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {actionCreators, IAction, SET_DATA_PAYLOAD} from './action';
 import {RootState} from '../../data/reducers';
+import axios from 'axios';
 import {Map} from 'immutable';
 import ParamsInjector from '../../util/injector';
 import Col from '../Layout/Col/Col';
-import {compileValueExpress, isExpression} from '../../util/vm';
+import {compileValueExpress, filterExpressionData, isExpression} from '../../util/vm';
 
 class Container extends BasicContainer<ContainerProps, {}> {
     static WrappedComponent: string;
     static displayName: string;
+
+    private parseProperty = {};
+    private prevRequestData = {};
 
     constructor() {
         super();
@@ -41,16 +45,57 @@ class Container extends BasicContainer<ContainerProps, {}> {
                 model: this.props.info.model,
                 data: initData
             });
-            this.mergeOriginData(this.props);
+
+            if (this.props.info.initialLoad) {
+                this.mergeOriginData(this.props);
+            }
         }
     }
 
+    componentDidUpdate(nextProps: ContainerProps) {
+        this.mergeOriginData(this.props);
+    }
+
     private loadData() {
-        if (this.props.info.initialLoad) {
-            return fetch(this.props.info.initialLoad).then(ret => ret.json());
+        let initialLoad = this.props.info.initialLoad;
+        let requestConfig = null;
+
+        if (typeof initialLoad === 'string') {
+            requestConfig = {
+                url: initialLoad
+            };
+        } else if (typeof initialLoad === 'object') {
+            let data = initialLoad.data;
+
+            _.each(data, (val, name) => {
+                if (isExpression(val)) {
+                    this.parseProperty[name] = val;
+                }
+            });
+
+            if (data) {
+                initialLoad.data = Object.assign(
+                    initialLoad.data,
+                    compileValueExpress(_.cloneDeep(this.parseProperty), this.props.$data.toObject(), '$data')
+                );
+            }
+
+            filterExpressionData(initialLoad.data);
+
+            if (!initialLoad.method || /^get$/i.test(initialLoad.method)) {
+                initialLoad.params = initialLoad.data;
+            }
+
+            requestConfig = initialLoad;
         }
 
-        return Promise.resolve({});
+        if (!requestConfig || _.isEqual(requestConfig, this.prevRequestData)) {
+            return Promise.resolve({});
+        }
+
+        this.prevRequestData = _.cloneDeep(requestConfig);
+
+        return axios(requestConfig.url!, requestConfig); 
     }
 
     private handleChange(key: string, value: any) {
@@ -60,11 +105,13 @@ class Container extends BasicContainer<ContainerProps, {}> {
         }, this.props.info.model!);
     }
 
-    private mergeOriginData(props: ContainerProps) {
+    public mergeOriginData(props: ContainerProps) {
         let injector = new ParamsInjector(props, this.loadData);
 
         injector.finished((payloads: SET_DATA_PAYLOAD[]) => {
-            this.props.setDataList(payloads, this.props.info.model!);
+            if (payloads.length > 0) {
+                this.props.setDataList(payloads, this.props.info.model!);
+            }
         });
     }
 

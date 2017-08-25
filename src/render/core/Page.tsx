@@ -26,9 +26,9 @@ export class PageProps {
 
     $setDataList: typeof actionCreators.setDataList;
 
-    $setData: typeof actionCreators.setData;
-
     $initData: typeof actionCreators.initData;
+
+    $triggerListData: typeof actionCreators.triggerListData;
 }
 
 class Page extends React.Component<PageProps, {}> {
@@ -41,8 +41,8 @@ class Page extends React.Component<PageProps, {}> {
         driver: PropsTypes.object,
         $global: PropsTypes.object,
         $setDataList: PropsTypes.func,
-        $setData: PropsTypes.func,
-        $initData: PropsTypes.func
+        $initData: PropsTypes.func,
+        $triggerListData: PropsTypes.func
     };
 
     getChildContext() {
@@ -52,8 +52,8 @@ class Page extends React.Component<PageProps, {}> {
             driver: themeDriver,
             $global: this.props.$global,
             $setDataList: this.props.$setDataList,
-            $setData: this.props.$setData,
-            $initData: this.props.$initData
+            $initData: this.props.$initData,
+            $triggerListData: this.props.$triggerListData
         };
     }
 
@@ -104,8 +104,8 @@ const mapStateToProps = (state: RootState, ownProps: any) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
     $setDataList: actionCreators.setDataList,
-    $setData: actionCreators.setData,
-    $initData: actionCreators.initData
+    $initData: actionCreators.initData,
+    $triggerListData: actionCreators.triggerListData
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Page);

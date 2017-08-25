@@ -5,6 +5,7 @@ import AbstractCol, {ColConfig, ColPropsInterface} from '../Layout/Col/Col';
 import {Map} from 'immutable';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
+import {AxiosRequestConfig} from 'axios';
 // import AbstractFormItem, {FormItemPropsInterface} from '../../../abstractComponents/Form/FormItem';
 // import createElement from "../../util/createElement";
 
@@ -15,13 +16,15 @@ export type defaultData = {
     [s: string]: originJSONType
 };
 
+export interface RequestConfig extends AxiosRequestConfig {
+}
+
 export class BasicConfig extends ColConfig {
     @IsString()
     @IsDefined()
     type: string;
 
-    @IsString()
-    initialLoad?: string;
+    initialLoad?: string | RequestConfig;
     
     @IsString()
     model?: string;
@@ -63,7 +66,7 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends A
         driver: PropTypes.object,
         form: PropTypes.bool,
         $global: PropTypes.object,
-        $setDataList: PropTypes.func
+        $triggerListData: PropTypes.func
     };
     
     constructor() {

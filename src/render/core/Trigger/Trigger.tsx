@@ -30,7 +30,7 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
             let $global = this.context.$global;
 
             if (!$global.has(target)) {
-                console.error(`can not find target model of target: ${target}`);
+                console.error(`can not find target model of target: ${target} `);
                 return;
             }
 
@@ -46,7 +46,7 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
                 });
             });
 
-            this.context.$setDataList(payload, target);
+            this.context.$triggerListData(payload, target);
         };
     }
 

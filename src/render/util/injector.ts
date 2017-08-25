@@ -37,12 +37,16 @@ class ParamsInjector {
             }
 
             if (isString(val) && val.indexOf('$response') >= 0) {
-                this.changePayloads.push({
-                    type: key,
-                    newValue: runInContext(val, {
-                        $response: mirror
-                    })
+                let ret = runInContext(val, {
+                    $response: mirror
                 });
+
+                if (ret) {
+                    this.changePayloads.push({
+                        type: key,
+                        newValue: ret
+                    });
+                }
             }
         });
     }
