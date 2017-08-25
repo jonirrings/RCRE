@@ -29,7 +29,7 @@ export class BasicConfig extends ColConfig {
     data?: defaultData;
 }
 
-export type onContainerItemChange = (type: string, value: any, event?: React.ChangeEvent<HTMLElement>) => void;
+export type onContainerItemChange = (value: any, event?: React.ChangeEvent<HTMLElement>) => void;
 
 export class BasicContainerPropsInterface extends ColPropsInterface {
     @Validate(IsPageInfo, [BasicConfig])

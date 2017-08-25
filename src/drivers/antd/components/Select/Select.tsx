@@ -30,7 +30,7 @@ class AntSelect extends React.Component<SelectPropsInterface, {}> {
     }
 
     private handleChange(value: SelectValue) {
-        this.props.onChange(this.props.info.name, value);
+        this.props.onChange(value);
     }
 
     render() {

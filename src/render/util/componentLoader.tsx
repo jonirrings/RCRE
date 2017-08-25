@@ -13,7 +13,7 @@ import Table, {TablePropsInterface} from '../../abstractComponents/Table/Table';
 import Datepicker, {DatePickerPropsInterface} from '../../abstractComponents/Datepicker/Datepicker';
 import Html, {HtmlPropsInterface} from '../../abstractComponents/Plain/Html';
 import Text, {TextPropsInterface} from '../../abstractComponents/Plain/Text';
-import Container, {ContainerPropsInterface} from "../../abstractComponents/Container/Container";
+import Container, {ContainerPropsInterface} from '../../abstractComponents/Container/Container';
 import Row, {RowPropsInterface} from '../core/Layout/Row/Row';
 import Layout, {LayoutPropsInterface} from '../core/Layout/Layout/Layout';
 import Header, {HeaderPropsInterface} from '../core/Layout/Layout/Header';

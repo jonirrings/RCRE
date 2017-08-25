@@ -10,17 +10,14 @@
                 },
                 {
                     "type": "input",
-                    "name": "search",
-                    "data": {
-                        "search": ""
-                    },
+                    "data": {},
                     "model": "inputSearch",
                     "trigger": [
                         {
                             "eventType": "change",
                             "target": "sample",
                             "ship": {
-                                "text": "$data.search"
+                                "text": "$data.inputSearch"
                             }
                         }
                     ]
@@ -34,6 +31,18 @@
                 "text": "1234"
             },
             "model": "sample"
+        },
+        {
+            "type": "container",
+            "data": {
+            },
+            "model": "textContainer",
+            "children": [
+                {
+                    "type": "input",
+                    "model": "helloworld"
+                }
+            ]
         }
     ]
 }

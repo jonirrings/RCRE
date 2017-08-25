@@ -66,12 +66,24 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
 
     constructor() {
         super();
+
+        this.handleChange = this.handleChange.bind(this);
     }
 
     private wrapWithFormItem(children: React.ReactElement<T>) {
         return createElement(AbstractFormItem, FormItemPropsInterface, this.props, children);
     }
 
+    public handleChange(value: any) {
+        if (this.context.form) {
+            //     // In Form, use name as key
+            this.props.onChange(this.props.info.name, value);
+        } else {
+            // In Normal Container, use model as key
+            this.props.onChange(this.props.info.model, value);
+        }
+    }
+    
     public getComponentThroughDriver(info: FormItemConfig) {
         let driver: DriverController = this.context.driver;
         let componentInfo = driver.getComponent(info.type);
@@ -85,14 +97,14 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
 
         let childValue = '';
 
-        if (this.props.$data) {
+        if (this.props.$data && info.name) {
             childValue = this.props.$data.get(info.name);
         }
         
         let children = createElement(Component, componentInterface, {
             info: info,
             value: childValue,
-            onChange: this.props.onChange
+            onChange: this.handleChange
         });
 
         if (this.context.form) {

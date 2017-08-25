@@ -2,6 +2,8 @@ import {BasicFormItemConfig, BasicFormItemPropsInterface} from '../Form/types';
 import {IsBoolean, IsString, Validate} from 'class-validator';
 import {IsPageInfo} from '../../render/util/validators';
 import {BasicFormItem} from '../Form/FormItem';
+import * as React from 'react';
+import Trigger from '../../render/core/Trigger/Trigger';
 
 export class RadioConfig extends BasicFormItemConfig {
     /**
@@ -40,9 +42,7 @@ class AbstractRadio extends BasicFormItem<RadioPropsInterface, {}> {
     }
     
     render() {
-        let info = this.props.info;
-
-        return this.getComponentThroughDriver(info);
+        return React.createElement(Trigger, this.props);
     }
 }
 

@@ -22,8 +22,7 @@ export class BasicFormItemConfig extends BasicConfig {
      * @public
      */
     @IsString()
-    @IsDefined()
-    name: string;
+    name?: string;
 
     /**
      * 字级FormItem

@@ -19,7 +19,7 @@ export default class AntRadio extends React.Component<RadioPropsInterface, {}> {
 
     private handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         let checked = event.target.checked;
-        this.props.onChange(this.props.info.name, checked, event);
+        this.props.onChange(checked);
     }
     
     render() {
