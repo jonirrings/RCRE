@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 
 export function runInContext(code: string, context: Object) {
+    let f: any;
     try {
         let params: string[] = [];
         let source: Object[] = [];
@@ -9,10 +10,10 @@ export function runInContext(code: string, context: Object) {
             source.push(value);
         });
         params.push(`return ${code}`);
-        let f = new Function(...params);
+        f = new Function(...params);
         return f.apply(context, source);
     } catch (e) {
-        console.error(e);
+        console.error(e, f);
         // TODO better error report   
     }
 }

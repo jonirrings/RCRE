@@ -5,13 +5,19 @@
             "children": [
                 {
                     "type": "container",
-                    "data": {},
+                    "data": {
+                        "inputSearch": "关联请求数"
+                    },
                     "model": "searchBox",
                     "children": [
                         {
                             "type": "input",
-                            "model": "inputSearch",
+                            "childModel": "inputSearch",
                             "placeholder": "请输入搜索内容"
+                        },
+                        {
+                            "type": "text",
+                            "text": "$data.inputSearch"
                         },
                         {
                             "type": "button",
@@ -33,7 +39,6 @@
         {
             "type": "container",
             "initialLoad": {
-                "stopFirstLoad": true,
                 "url": "http://localhost:8220/afd/udwmessage/table",
                 "data": {
                     "query": "$data.query"
@@ -46,8 +51,27 @@
             "model": "feedList",
             "children": [
                 {
-                    "type": "input",
-                    "model": "helloworld"
+                    "type": "list",
+                    "resource": "$data.list",
+                    "itemMap": {
+                        "xxx": "$resource.table_name",
+                        "aaa": "$resource.description"
+                    },
+                    "iterator": [
+                        {
+                            "type": "row",
+                            "children": [
+                                {
+                                    "type": "text",
+                                    "text": "$resource.table_name"
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "$resource.description"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }

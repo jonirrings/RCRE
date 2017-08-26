@@ -30,6 +30,13 @@ export class BasicFormItemConfig extends BasicConfig {
      */
     @IsArray()
     controls?: BasicFormItemConfig[];
+
+    /**
+     * 字级模型, 用于脱离Form, 直接由Container控制的模型key
+     * @public
+     */
+    @IsString()
+    childModel?: string;
 }
 
 export class BasicFormItemPropsInterface extends BasicContainerPropsInterface {

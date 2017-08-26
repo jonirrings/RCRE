@@ -77,8 +77,8 @@ class AbstractInput extends BasicFormItem<InputPropsInterface, InputStateInterfa
         if (this.props.$data) {
             if (this.context.form && this.props.info.name) {
                 childValue = this.props.$data.get(this.props.info.name);
-            } else if (this.props.info.model) {
-                childValue = this.props.$data.get(this.props.info.model);
+            } else if (this.props.info.childModel) {
+                childValue = this.props.$data.get(this.props.info.childModel);
             }
         }
 

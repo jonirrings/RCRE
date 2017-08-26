@@ -79,8 +79,8 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
             //     // In Form, use name as key
             this.props.onChange(this.props.info.name, value);
         } else {
-            // In Normal Container, use model as key
-            this.props.onChange(this.props.info.model, value);
+            // In Normal Container, use childModel as key
+            this.props.onChange(this.props.info.childModel, value);
         }
     }
     

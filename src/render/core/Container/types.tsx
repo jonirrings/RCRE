@@ -30,6 +30,8 @@ export class BasicConfig extends ColConfig {
     model?: string;
     
     data?: defaultData;
+
+    children?: BasicConfig[];
 }
 
 export type onContainerItemChange = (value: any, event?: React.ChangeEvent<HTMLElement>) => void;

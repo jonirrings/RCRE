@@ -1,12 +1,14 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {Validate} from 'class-validator';
 import {IsPageInfo} from '../../render/util/validators';
 import createElement from '../../render/util/createElement';
 import componentLoader from '../../render/util/componentLoader';
+import {isExpression, runInContext} from '../../render/util/vm';
 
 export class ContainerConfig extends BasicConfig {
-    children?: BasicConfig[];   
+    children?: BasicConfig[];
 }
 
 export class ContainerPropsInterface extends BasicContainerPropsInterface {
@@ -19,6 +21,23 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
         super();
 
         this.handleChange = this.handleChange.bind(this);
+    }
+
+    render() {
+        let children;
+
+        if (Array.isArray(this.props.info.children)) {
+            let ret = this.parseChildrenExpression(this.props.info.children);
+            children = ret.map((child, index) => {
+                return this.renderChildren(child, 0, index);
+            });
+        }
+
+        return (
+            <div>
+                {children}
+            </div>
+        );
     }
 
     private renderChildren(info: BasicConfig, depth: number, index: number) {
@@ -48,19 +67,28 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
         this.props.onChange(type, val);
     }
 
-    render() {
-        let children;
+    private parseChildrenExpression(info: BasicConfig[]) {
+        let infoCopy = _.cloneDeep(info);
+        let mirror = this.props.$data.toObject();
 
-        if (Array.isArray(this.props.info.children)) {
-            children = this.props.info.children.map((child, index) => {
-                return this.renderChildren(child, 0, index);
-            });
+        if (_.isEmpty(mirror)) {
+            return infoCopy;
         }
-        
-        return (
-            <div>
-                {children}
-            </div>
-        );
+
+        _.each(infoCopy, (config, index) => {
+            _.each(config, (val, name) => {
+                if (isExpression(val)) {
+                    config[name] = runInContext(val, {
+                        $data: mirror
+                    });
+                }
+
+                if (val && name === 'children' && Array.isArray(val)) {
+                    config[name] = this.parseChildrenExpression(val);
+                }
+            });
+        });
+
+        return infoCopy;
     }
 }
