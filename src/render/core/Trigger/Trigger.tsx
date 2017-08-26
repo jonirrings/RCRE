@@ -133,7 +133,7 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
             let mergeProps = {};
 
             _.each(this.props.info.trigger, (item, index) => {
-                return this.bindTrigger(item, mergeProps, childProps);
+                this.bindTrigger(item, mergeProps, childProps);
             }); 
 
             childProps = Object.assign({}, childProps, mergeProps);

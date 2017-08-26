@@ -14,8 +14,81 @@
                 }
             },
             "data": {
+                "data_type": "$response.data.data_type",
+                "db_name": "$response.data.db_name",
+                "table_name": "$response.data.table_name",
+                "description": "$response.data.description",
+                "frequency": "$response.data.frequency",
+                "hi_ref": "$response.data.hi_ref",
+                "head": "$response.data.head",
+                "body": "$response.data.body"
             },
             "children": [
+                {
+                    "type": "row",
+                    "children": [
+                        {
+                            "type": "text",
+                            "text": "$data.data_type.name"
+                        },
+                        {
+                            "type": "text",
+                            "text": "$data.data_type.value"
+                        }
+                    ]
+                },
+                {
+                    "type": "row",
+                    "children": [
+                        {
+                            "type": "text",
+                            "text": "$data.db_name.name"
+                        },
+                        {
+                            "type": "text",
+                            "text": "$data.db_name.value"
+                        }
+                    ]
+                },
+                {
+                    "type": "row",
+                    "children": [
+                        {
+                            "type": "text",
+                            "text": "$data.table_name.name"
+                        },
+                        {
+                            "type": "text",
+                            "text": "$data.table_name.value"
+                        }
+                    ]
+                },
+                {
+                    "type": "row",
+                    "children": [
+                        {
+                            "type": "text",
+                            "text": "$data.description.name"
+                        },
+                        {
+                            "type": "text",
+                            "text": "$data.description.value"
+                        }
+                    ]
+                },
+                {
+                    "type": "row",
+                    "children": [
+                        {
+                            "type": "text",
+                            "text": "$data.frequency.name"
+                        },
+                        {
+                            "type": "text",
+                            "text": "$data.frequency.value"
+                        }
+                    ]
+                }
             ]
         },
         {

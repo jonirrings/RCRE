@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {IsDefined, IsJSON, IsString} from 'class-validator';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
+import {isExpression} from '../../render/util/vm';
 
 export class TextConfig extends BasicConfig {
     @IsString()
@@ -32,6 +33,10 @@ class Text extends BasicContainer<TextPropsInterface, {}> {
     }
     
     render() {
+        if (isExpression(this.props.info.text)) {
+            return <span/>;
+        }
+        
         return <span style={Object.assign(defaultTextStyle, this.props.info.style)}>{this.props.info.text}</span>;
     }
 }

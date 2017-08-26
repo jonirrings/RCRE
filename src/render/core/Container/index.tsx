@@ -142,8 +142,6 @@ class Container extends BasicContainer<ContainerProps, {}> {
                     $query: this.context.$query
                 });
 
-                filterExpressionData(compiledRet);
-
                 Object.assign(initialLoad.data, compiledRet);
             }
 
