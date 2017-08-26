@@ -11,6 +11,8 @@ import {Map} from 'immutable';
 import {RootState} from '../data/reducers';
 import {bindActionCreators, Dispatch} from 'redux';
 import {actionCreators, IAction} from './Container/action';
+import * as URL from 'url';
+import * as querystring from 'querystring';
 
 export class PageProps {
     @IsString()
@@ -42,18 +44,41 @@ class Page extends React.Component<PageProps, {}> {
         $global: PropsTypes.object,
         $setDataList: PropsTypes.func,
         $initData: PropsTypes.func,
-        $triggerListData: PropsTypes.func
+        $triggerListData: PropsTypes.func,
+        $location: PropsTypes.object,
+        $query: PropsTypes.object
     };
+
+    static getLocationService() {
+        let $location = URL.parse(location.href);
+        let $query = {};
+
+        if ($location.query) {
+            $query = querystring.parse($location.query);
+        }
+
+        return {
+            $location,
+            $query
+        };
+    }
 
     getChildContext() {
         themeDriver.setTheme(this.props.theme);
 
+        let {
+            $location,
+            $query
+        } = Page.getLocationService();
+        
         return {
             driver: themeDriver,
             $global: this.props.$global,
             $setDataList: this.props.$setDataList,
             $initData: this.props.$initData,
-            $triggerListData: this.props.$triggerListData
+            $triggerListData: this.props.$triggerListData,
+            $location,
+            $query
         };
     }
 

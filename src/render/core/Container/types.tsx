@@ -68,7 +68,9 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends A
         driver: PropTypes.object,
         form: PropTypes.bool,
         $global: PropTypes.object,
-        $triggerListData: PropTypes.func
+        $triggerListData: PropTypes.func,
+        $location: PropTypes.object,
+        $query: PropTypes.object
     };
     
     constructor() {

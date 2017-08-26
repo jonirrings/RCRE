@@ -71,7 +71,9 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
                         return;
                     }
 
-                    let compiled = compileValueExpress<Object, Object>(ship, this.props.$data.toObject(), '$data');
+                    let compiled = compileValueExpress<Object, Object>(ship, {
+                        $data: this.props.$data.toObject()
+                    });
                     let payload: SET_DATA_LIST_PAYLOAD = [];
 
                     _.each(compiled, (val, name) => {

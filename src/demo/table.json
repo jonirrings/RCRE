@@ -1,6 +1,23 @@
 {
-    "title": "表格实例",
     "body": [
+        {
+            "type": "container",
+            "model": "tableSource",
+            "initialLoad": {
+                "url": "http://localhost:8220/afd/udwmessage/tabledetail",
+                "data": {
+                    "data_type": "$query.data_type",
+                    "db_name": "$query.db_name",
+                    "table_name": "$query.table_name",
+                    "description": "$query.description",
+                    "frequency": "$query.frequency"
+                }
+            },
+            "data": {
+            },
+            "children": [
+            ]
+        },
         {
             "type": "table",
             "model": "customTable",

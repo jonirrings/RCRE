@@ -56,65 +56,6 @@ class Container extends BasicContainer<ContainerProps, {}> {
         this.mergeOriginData(this.props);
     }
 
-    private loadData() {
-        let initialLoad = this.props.info.initialLoad;
-        let requestConfig = null;
-
-        if (typeof initialLoad === 'string') {
-            requestConfig = {
-                url: initialLoad
-            };
-        } else if (typeof initialLoad === 'object') {
-            let data = initialLoad.data;
-
-            _.each(data, (val, name) => {
-                if (isExpression(val)) {
-                    this.parseProperty[name] = val;
-                }
-            });
-
-            if (data) {
-                initialLoad.data = Object.assign(
-                    initialLoad.data,
-                    compileValueExpress(_.cloneDeep(this.parseProperty), this.props.$data.toObject(), '$data')
-                );
-            }
-
-            filterExpressionData(initialLoad.data);
-
-            if (!initialLoad.method || /^get$/i.test(initialLoad.method)) {
-                initialLoad.params = initialLoad.data;
-            }
-
-            requestConfig = initialLoad;
-        }
-
-        if (!requestConfig || _.isEqual(requestConfig, this.prevRequestData)) {
-            return Promise.resolve({});
-        }
-
-        this.prevRequestData = _.cloneDeep(requestConfig);
-
-        return axios(requestConfig.url!, requestConfig); 
-    }
-
-    private handleChange(key: string, value: any) {
-        this.props.setData({
-            type: key,
-            newValue: value
-        }, this.props.info.model!);
-    }
-
-    public mergeOriginData(props: ContainerProps) {
-        let injector = new ParamsInjector(props, this.loadData);
-
-        injector.finished((payloads: SET_DATA_PAYLOAD[]) => {
-            if (payloads.length > 0) {
-                this.props.setDataList(payloads, this.props.info.model!);
-            }
-        });
-    }
-
     render() {
         let {
             type
@@ -132,8 +73,10 @@ class Container extends BasicContainer<ContainerProps, {}> {
             info.data = this.props.$data.toObject();
         }
 
-        let compiled = compileValueExpress<BasicConfig, Object>(info, this.props.$data.toObject(), '$data');
-        
+        let compiled = compileValueExpress<BasicConfig, Object>(info, {
+            $data: this.props.$data.toObject()
+        });
+
         let {
             component,
             componentInterface
@@ -156,6 +99,70 @@ class Container extends BasicContainer<ContainerProps, {}> {
         }
 
         return retComponent;
+    }
+
+    private handleChange(key: string, value: any) {
+        this.props.setData({
+            type: key,
+            newValue: value
+        }, this.props.info.model!);
+    }
+
+    public mergeOriginData(props: ContainerProps) {
+        let injector = new ParamsInjector(props, this.loadData);
+
+        injector.finished((payloads: SET_DATA_PAYLOAD[]) => {
+            if (payloads.length > 0) {
+                this.props.setDataList(payloads, this.props.info.model!);
+            }
+        });
+    }
+
+    private loadData() {
+        let initialLoad = this.props.info.initialLoad;
+        let requestConfig = null;
+
+        if (typeof initialLoad === 'string') {
+            requestConfig = {
+                url: initialLoad
+            };
+        } else if (typeof initialLoad === 'object') {
+            let data = initialLoad.data;
+
+            _.each(data, (val, name) => {
+                if (isExpression(val)) {
+                    this.parseProperty[name] = val;
+                }
+            });
+
+            if (data) {
+                let property = _.cloneDeep(this.parseProperty);
+                let compiledRet = compileValueExpress(property, {
+                    $data: this.props.$data.toObject(),
+                    $query: this.context.$query
+                });
+
+                filterExpressionData(compiledRet);
+
+                Object.assign(initialLoad.data, compiledRet);
+            }
+
+            filterExpressionData(initialLoad.data);
+
+            if (!initialLoad.method || /^get$/i.test(initialLoad.method)) {
+                initialLoad.params = initialLoad.data;
+            }
+
+            requestConfig = initialLoad;
+        }
+
+        if (!requestConfig || _.isEqual(requestConfig, this.prevRequestData)) {
+            return Promise.resolve({});
+        }
+
+        this.prevRequestData = _.cloneDeep(requestConfig);
+
+        return axios(requestConfig.url!, requestConfig);
     }
 }
 
