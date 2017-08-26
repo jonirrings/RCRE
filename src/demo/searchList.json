@@ -8,27 +8,31 @@
                     "data": {
                         "inputSearch": "关联请求数"
                     },
+                    "style": {
+                        "display": "flex"
+                    },
                     "model": "searchBox",
                     "children": [
                         {
-                            "type": "input",
-                            "childModel": "inputSearch",
-                            "placeholder": "请输入搜索内容"
-                        },
-                        {
-                            "type": "text",
-                            "text": "$data.inputSearch"
-                        },
-                        {
-                            "type": "button",
-                            "label": "搜索",
-                            "trigger": [
+                            "type": "row",
+                            "children": [
                                 {
-                                    "eventType": "click",
-                                    "target": "feedList",
-                                    "ship": {
-                                        "query": "$data.inputSearch"
-                                    }
+                                    "type": "input",
+                                    "childModel": "inputSearch",
+                                    "placeholder": "请输入搜索内容"
+                                },
+                                {
+                                    "type": "button",
+                                    "label": "搜索",
+                                    "trigger": [
+                                        {
+                                            "eventType": "click",
+                                            "target": "feedList",
+                                            "ship": {
+                                                "query": "$data.inputSearch"
+                                            }
+                                        }
+                                    ]
                                 }
                             ]
                         }
@@ -63,11 +67,35 @@
                             "children": [
                                 {
                                     "type": "text",
+                                    "text": "table_name: "
+                                },
+                                {
+                                    "type": "text",
                                     "text": "$resource.table_name"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "row",
+                            "children": [
+                                {
+                                    "type": "text",
+                                    "text": "description: "
                                 },
                                 {
                                     "type": "text",
                                     "text": "$resource.description"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "button",
+                            "label": "查看详情",
+                            "trigger": [
+                                {
+                                    "eventType": "click",
+                                    "triggerType": "link",
+                                    "href": "http://www.baidu.com?table_name={{$resource.table_name}}&description={{$resource.description}}"
                                 }
                             ]
                         }

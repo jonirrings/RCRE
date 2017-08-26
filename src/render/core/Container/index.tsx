@@ -10,7 +10,7 @@ import {RootState} from '../../data/reducers';
 import axios from 'axios';
 import {Map} from 'immutable';
 import ParamsInjector from '../../util/injector';
-import Col from '../Layout/Col/Col';
+import Col, {hasColProps} from '../Layout/Col/Col';
 import {compileValueExpress, filterExpressionData, isExpression} from '../../util/vm';
 
 class Container extends BasicContainer<ContainerProps, {}> {
@@ -149,7 +149,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
 
         let retComponent = createElement<BasicContainerPropsInterface>(component, componentInterface, childProps);
 
-        if (typeof this.props.info.colSpan !== 'undefined') {
+        if (hasColProps(this.props.info)) {
             retComponent = React.createElement(Col, {
                 info: this.props.info
             }, retComponent);

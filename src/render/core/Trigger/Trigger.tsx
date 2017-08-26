@@ -5,8 +5,7 @@ import {BasicContainer, BasicContainerPropsInterface} from '../Container/types';
 import createElement from '../../util/createElement';
 import {TriggerConfig, TriggerItem, validEventTrigger} from './types';
 import {SET_DATA_LIST_PAYLOAD} from '../Container/action';
-import Col from '../Layout/Col/Col';
-import {compileValueExpress} from '../../util/vm';
+import {compileValueExpress, isExpression, runInContext} from '../../util/vm';
 import {Map} from 'immutable';
 
 export class TriggerPropsInterface extends BasicContainerPropsInterface {
@@ -24,30 +23,95 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
         this.handleTrigger = this.handleTrigger.bind(this);
     }
 
-    handleTrigger(item: TriggerItem): (type: string, value: any) => void {
+    handleTrigger(item: TriggerItem, triggerType: 'data' | 'link' | undefined): (type: string, value: any) => void {
         return (type: string, value: any) => {
             let target = item.target;
             let $global = this.context.$global;
 
-            if (!$global.has(target)) {
-                console.error(`can not find target model of target: ${target} `);
-                return;
+            switch (triggerType) {
+                case 'link':
+                    let href = item.href;
+
+                    if (!href) {
+                        console.error('your must provide href attribute to finish jumping...');
+                        return;
+                    }
+
+                    const templateRegex = /{{([^}]+)}}/g;
+
+                    href = href.replace(templateRegex, (str, expression) => {
+                        if (!isExpression(expression)) {
+                            return expression;
+                        }
+
+                        let ret = runInContext(expression, {
+                            $resource: this.props.$data.toObject()
+                        });
+
+                        if (!ret) {
+                            return expression;
+                        }
+
+                        return encodeURIComponent(ret);
+                    });
+
+                    location.href = href;
+                    break;
+                case 'data':
+                default:
+                    if (!$global.has(target)) {
+                        console.error(`can not find target model of target: ${target} `);
+                        return;
+                    }
+
+                    let ship = item.ship;
+
+                    if (!ship) {
+                        console.error('you must provide ship to finish event trigger');
+                        return;
+                    }
+
+                    let compiled = compileValueExpress<Object, Object>(ship, this.props.$data.toObject(), '$data');
+                    let payload: SET_DATA_LIST_PAYLOAD = [];
+
+                    _.each(compiled, (val, name) => {
+                        payload.push({
+                            type: name,
+                            newValue: val
+                        });
+                    });
+
+                    this.context.$triggerListData(payload, target);
             }
-
-            let ship = item.ship;
-
-            let compiled = compileValueExpress<Object, Object>(ship, this.props.$data.toObject(), '$data');
-            let payload: SET_DATA_LIST_PAYLOAD = [];
-
-            _.each(compiled, (val, name) => {
-                payload.push({
-                    type: name,
-                    newValue: val
-                });
-            });
-
-            this.context.$triggerListData(payload, target);
         };
+    }
+
+    bindTrigger(item: TriggerItem, mergeProps: Object, childProps: Object) {
+        let eventType = item.eventType;
+        let triggerType = item.triggerType;
+        if (!validEventTrigger[eventType]) {
+            return;
+        }
+
+        let method = validEventTrigger[eventType];
+
+        if (childProps[method]) {
+            let oldFn = childProps[method];
+
+            mergeProps[method] = (type: string, value: any) => {
+                oldFn(type, value);
+                setTimeout(() => {
+                    this.handleTrigger(item, triggerType)(this.props.info.model!, value);
+                });
+            };
+        } else {
+            mergeProps[method] = (event: React.MouseEvent<HTMLInputElement>) => {
+                let target = event.currentTarget;
+                let value = target.value;
+
+                this.handleTrigger(item, triggerType)(this.props.info.model!, value);
+            };
+        }
     }
 
     render() {
@@ -67,43 +131,12 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
             let mergeProps = {};
 
             _.each(this.props.info.trigger, (item, index) => {
-                let eventType = item.eventType;
-                if (!validEventTrigger[eventType]) {
-                    return;
-                }
-
-                let method = validEventTrigger[eventType];
-
-                if (childProps[method]) {
-                    let oldFn = childProps[method];
-
-                    mergeProps[method] = (type: string, value: any) => {
-                        oldFn(type, value);
-                        setTimeout(() => {
-                            this.handleTrigger(item)(this.props.info.model!, value);
-                        });
-                    };
-                } else {
-                    mergeProps[method] = (event: React.MouseEvent<HTMLInputElement>) => {
-                        let target = event.currentTarget;
-                        let value = target.value;
-
-                        this.handleTrigger(item)(this.props.info.model!, value);
-                    };
-                }
-            });
+                return this.bindTrigger(item, mergeProps, childProps);
+            }); 
 
             childProps = Object.assign({}, childProps, mergeProps);
         }
 
-        let children = createElement(Component, componentInterface, childProps, this.props.children);
-
-        if (typeof childProps.info.colSpan !== 'undefined') {
-            children = React.createElement(Col, {
-                info: childProps.info
-            }, children);
-        }
-        
-        return children;
+        return createElement(Component, componentInterface, childProps, this.props.children);
     }
 }

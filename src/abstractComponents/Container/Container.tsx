@@ -8,6 +8,8 @@ import componentLoader from '../../render/util/componentLoader';
 import {isExpression, runInContext} from '../../render/util/vm';
 
 export class ContainerConfig extends BasicConfig {
+    style?: React.CSSProperties;
+    
     children?: BasicConfig[];
 }
 
@@ -34,7 +36,7 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
         }
 
         return (
-            <div>
+            <div className="rcre-abstract-container" style={this.props.info.style}>
                 {children}
             </div>
         );

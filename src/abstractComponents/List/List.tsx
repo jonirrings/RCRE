@@ -1,10 +1,11 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
-import {Validate} from 'class-validator';
+import {IsArray, Validate} from 'class-validator';
 import {IsPageInfo} from '../../render/util/validators';
 import {isExpression, runInContext} from '../../render/util/vm';
 import componentLoader from '../../render/util/componentLoader';
+import {Map} from 'immutable';
 import createElement from '../../render/util/createElement';
 
 export class ListItemMappingConfig {
@@ -14,11 +15,13 @@ export class ListItemMappingConfig {
 export class ListItem {
 }
 
+// TODO ListConfig params validation
 export class ListConfig extends BasicConfig {
     resource: string;
 
     itemMap: ListItemMappingConfig;
 
+    @IsArray()
     iterator: BasicConfig[];
 }
 
@@ -30,14 +33,6 @@ export class ListPropsInterface extends BasicContainerPropsInterface {
 export default class AbstractList extends BasicContainer<ListPropsInterface, {}> {
     constructor() {
         super();
-    }
-
-    render() {
-        let info = this.props.info;
-        let resource = this.getResource(info);
-        let children = resource.map((item) => this.renderResource(item));
-
-        return <div>{children}</div>;
     }
 
     private getResource(info: ListConfig): ListItem[] {
@@ -55,6 +50,24 @@ export default class AbstractList extends BasicContainer<ListPropsInterface, {}>
         return [];
     }
 
+    render() {
+        let info = this.props.info;
+        let resource = this.getResource(info);
+
+        if (resource.length === 0) {
+            return <div>loading...</div>;
+        }
+
+        let children = resource.map((item, index) => {
+            return [
+                this.renderResource(item),
+                <hr key={index}/>,
+            ];
+        });
+
+        return <div>{children}</div>;
+    }
+
     private renderResource(item: ListItem) {
         let ret = _.cloneDeep(item);
 
@@ -65,29 +78,10 @@ export default class AbstractList extends BasicContainer<ListPropsInterface, {}>
                 });
             });
         }
-        //
-        let iterator = this.parseIterator(this.props.info.iterator, item);
 
-        return iterator.map((i, index) => this.renderIterator(i, index, 0));
-    }
+        let iterator = this.parseIterator(this.props.info.iterator, ret);
 
-    private renderIterator(iterator: BasicConfig, index: number, depth: number) {
-        let type = iterator.type;
-        let componentInfo = componentLoader.getAbstractComponent(type);
-
-        if (!componentInfo) {
-            return React.createElement('pre', {}, `can not find component of type ${type}`);
-        }
-
-        let {
-            component,
-            componentInterface
-        } = componentInfo;
-
-        return createElement(component, componentInterface, {
-            key: `${type}_${index}_${depth}`,
-            info: iterator
-        });
+        return iterator.map((i, index) => this.renderIterator(i, index, 0, ret));
     }
 
     private parseIterator(iterator: BasicConfig[], item: ListItem) {
@@ -116,5 +110,25 @@ export default class AbstractList extends BasicContainer<ListPropsInterface, {}>
         });
 
         return iteratorCopy;
+    }
+
+    private renderIterator(iterator: BasicConfig, index: number, depth: number, item: ListItem) {
+        let type = iterator.type;
+        let componentInfo = componentLoader.getAbstractComponent(type);
+
+        if (!componentInfo) {
+            return React.createElement('pre', {}, `can not find component of type ${type}`);
+        }
+
+        let {
+            component,
+            componentInterface
+        } = componentInfo;
+
+        return createElement(component, componentInterface, {
+            key: `${type}_${index}_${depth}`,
+            info: iterator,
+            $data: Map(item)
+        });
     }
 }

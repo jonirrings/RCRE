@@ -14,12 +14,24 @@ export class TriggerItem {
     /**
      * 目标数据模型
      */
-    target: string;
+    target?: string;
 
+    /**
+     * 触发类型
+     * data --> 数据传递 @default
+     * link --> 跳转
+     */
+    triggerType?: 'data' | 'link';
+
+    /**
+     * 跳转的地址
+     */
+    href?: string;
+    
     /**
      * 传递的数据
      */
-    ship: Object;
+    ship?: Object;
 }
 
 export class TriggerConfig extends BasicConfig {

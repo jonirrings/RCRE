@@ -77,10 +77,10 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
 
         if (Array.isArray(this.props.info.children)) {
             children = this.props.info.children.map((item, index) => {
-                return createChild(item, {
+                return createChild(item, Object.assign({}, this.props, {
                     info: item,
                     key: index
-                }, this.context.form);
+                }), this.context.form);
             });
         }
 
