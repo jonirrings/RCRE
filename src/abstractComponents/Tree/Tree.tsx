@@ -1,5 +1,11 @@
 import * as React from 'react';
-import {BasicConfig, BasicContainer, ContainerProps, defaultData} from '../../render/core/Container/types';
+import {
+    BasicConfig,
+    BasicContainer,
+    BasicTriggerEvent,
+    ContainerProps,
+    defaultData
+} from '../../render/core/Container/types';
 import createElement from '../../render/util/createElement';
 import {IsArray, IsBoolean, Validate} from 'class-validator';
 import TreeNode, {TreeNodeConfig, TreeNodeMappingConfig, TreeNodePropsInterface} from './TreeNode';
@@ -122,10 +128,17 @@ export class TreePropsInterface extends ContainerProps {
     onCheck: (checkedKeys: Array<string>) => void;
 }
 
+export class TreeTriggerEvent extends BasicTriggerEvent {
+    model: string;
+
+    checkedKeys: Array<string>;
+
+    selectedKeys: Array<string>;
+}
+
 class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
     static defaultProps = {
         onCheck: (checkedKeys: Array<string>) => {
-            console.log(checkedKeys);
         },
         onSelect: () => {
         }
@@ -195,7 +208,9 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
             children = loop(this.props.info.children);
         }
 
-        let treeProps = Object.assign({}, this.props, {});
+        let treeProps = Object.assign({}, this.props, {
+            $triggerEvent: TreeTriggerEvent
+        });
 
         return React.createElement(Trigger, treeProps, children);
     }

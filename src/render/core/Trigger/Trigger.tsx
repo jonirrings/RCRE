@@ -4,7 +4,6 @@ import * as _ from 'lodash';
 import {BasicContainer, BasicContainerPropsInterface} from '../Container/types';
 import createElement from '../../util/createElement';
 import {TriggerConfig, TriggerItem, validEventTrigger} from './types';
-// import {SET_DATA_LIST_PAYLOAD} from '../Container/action';
 import {compileValueExpress, isExpression, runInContext} from '../../util/vm';
 import {Map} from 'immutable';
 import {SET_DATA_LIST_PAYLOAD} from '../Container/action';
@@ -25,7 +24,7 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
     }
 
     handleTrigger(item: TriggerItem, triggerType: 'data' | 'link' | undefined): (type: string, value: any) => void {
-        return (type: string, value: any) => {
+        return (model: string, value: any) => {
             let target = item.target;
             let $global = this.context.$global;
 
@@ -76,10 +75,15 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
                         console.error('can not find exist data model for trigger component');
                         return;
                     }
-
+                    
                     let compiled = compileValueExpress<Object, Object>(ship!, {
-                        $data: this.props.$data.toObject()
+                        $data: this.props.$data.toObject(),
+                        $event: {
+                            model: model,
+                            value: value
+                        }
                     });
+
                     let payload: SET_DATA_LIST_PAYLOAD = [];
 
                     _.each(compiled, (val, name) => {

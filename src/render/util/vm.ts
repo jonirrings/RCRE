@@ -23,21 +23,22 @@ export type compilePairType<S> = {
 };
 
 export function compileValueExpress<Config, Source>(props: Config, pair: compilePairType<Source>): Config {
-    _.each(props, (item, key) => {
+    let copy = _.cloneDeep(props);
+    _.each(copy, (item, key) => {
         if (isExpression(item)) {
             let parseRet = runInContext(item, pair);
 
             if (parseRet && !isExpression(parseRet)) {
-                props[key] = parseRet;
+                copy[key] = parseRet;
             } else {
                 // TODO use class-validator to reflect types and set default values
             }
         } else {
-            props[key] = item;
+            copy[key] = item;
         }
     });
 
-    return props;
+    return copy;
 }
 
 export function isExpression(str: any) {

@@ -1,6 +1,6 @@
-import { validateSync } from 'class-validator';
+import {validateSync, ValidationError} from 'class-validator';
 
-export default function paramCheck(info: any, validateClass: any) {
+export default function paramCheck(info: any, validateClass: any): ValidationError[] {
     let validateObj = new validateClass();
     Object.assign(validateObj, info);
     

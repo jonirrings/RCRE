@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { parse } from 'marked'; 
+import {parse} from 'marked';
 
 import './index.css';
 
@@ -7,7 +7,7 @@ let plan = require('../doc/plan.md');
 let developerGuide = require('../doc/developer_guide.md');
 let formItem = require('../doc/formItem.md');
 
-interface GaeaDocStateInterface {
+export interface GaeaDocStateInterface {
     html: string;
 }
 

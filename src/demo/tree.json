@@ -21,15 +21,14 @@
                             "checkable": true,
                             "data": {
                                 "tree": "$response.tree",
-                                "show": "Object.keys($response.show)",
-                                "checked": []
+                                "show": "Object.keys($response.show)"
                             },
                             "trigger": [
                                 {
                                     "eventType": "treeCheck",
                                     "target": "textModel",
                                     "ship": {
-                                        "str": "$data.checked"
+                                        "str": "$event.value"
                                     }
                                 }
                             ],

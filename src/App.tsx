@@ -30,7 +30,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(mvvmConfig)
+            code: jsonformat(treeConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -75,6 +75,7 @@ class App extends React.Component<{}, AppStateInterface> {
                     <a onClick={this.changeConfig(searchConfig)}>Search</a>
                     <a onClick={this.changeConfig(lineChartConfig)}>LineChart</a>
                     <a onClick={this.changeConfig(treeConfig)}>Tree</a>
+                    <a onClick={this.changeConfig(mvvmConfig)}>MVVM example</a>
                     <a onClick={this.changeConfig(tableConfig)}>Table</a>
                 </div>
                 <div className="App">

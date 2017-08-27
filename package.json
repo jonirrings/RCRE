@@ -23,6 +23,7 @@
         "antd": "^2.12.4",
         "axios": "^0.16.2",
         "bootstrap": "^3.3.7",
+        "class-transformer": "^0.1.7",
         "class-validator": "^0.7.2",
         "classnames": "^2.2.5",
         "echarts": "^3.6.2",
@@ -43,6 +44,7 @@
         "react-redux": "^5.0.5",
         "react-router-dom": "^4.1.2",
         "redux": "^3.7.2",
+        "reflect-metadata": "^0.1.10",
         "stringify-object": "^3.2.0",
         "text-loader": "0.0.1"
     },

@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import * as React from 'react';
 import Page, {PageProps} from './core/Page';
 import paramCheck from './util/paramCheck';
@@ -28,7 +29,7 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
     render() {
         let info;
         try {
-            info = JSON.parse(this.props.code);     
+            info = JSON.parse(this.props.code);
         } catch (e) {
             console.error(e);
         }
@@ -36,13 +37,13 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
         if (!info) {
             return <h1>JSON 解析异常</h1>;
         }
-       
+
         let ret = paramCheck(info, PageProps);
         if (ret.length > 0) {
             console.error(ret);
             // TODO json property error log
         }
-        
+
         // TODO: 每次JSON更新都会整体重渲染, 性能很烂
         return (
             <div className="render">

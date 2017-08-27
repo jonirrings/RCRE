@@ -20,6 +20,7 @@
         "suppressImplicitAnyIndexErrors": true,
         "noUnusedLocals": true,
         "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "jsx": "react",
         "allowSyntheticDefaultImports": true
     },

@@ -36,6 +36,10 @@ export class BasicConfig extends ColConfig {
 
 export type onContainerItemChange = (value: any, event?: React.ChangeEvent<HTMLElement>) => void;
 
+export class BasicTriggerEvent {
+    name: string;
+}
+
 export class BasicContainerPropsInterface extends ColPropsInterface {
     @Validate(IsPageInfo, [BasicConfig])
     info: BasicConfig;
@@ -53,6 +57,8 @@ export class BasicContainerPropsInterface extends ColPropsInterface {
     $setData: typeof actionCreators.setData;
 
     $setDataList: typeof actionCreators.setDataList;
+
+    $triggerEvent?: typeof BasicTriggerEvent;
 }
 
 export class ContainerProps extends BasicContainerPropsInterface {
