@@ -2,24 +2,61 @@
     "title": "树组件实例",
     "body": [
         {
-            "type": "tree",
-            "colSpan": 8,
-            "model": "tree",
-            "checkable": true,
-            "data": {
-                "tree": "$response.tree",
-                "show": "Object.keys($response.show)"
+            "type": "layout",
+            "style": {
+                "flexDirection": "row"
             },
-            "initialLoad": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/tree",
-            "children": "$data.tree",
-            "childMapping": {
-                "title": "$iterator.title",
-                "key": "$iterator.key",
-                "children": "$iterator.children",
-                "isLeaf": "$iterator.isLeaf",
-                "disableCheckbox": "$iterator.disableCheckbox",
-                "disabled": "$data.show.indexOf($iterator.key) >= 0"
-            }
+            "children": [
+                {
+                    "type": "sider",
+                    "width": 300,
+                    "style": {
+                        "background": "#fff"
+                    },
+                    "children": [
+                        {
+                            "type": "tree",
+                            "colSpan": 8,
+                            "model": "tree",
+                            "checkable": true,
+                            "data": {
+                                "tree": "$response.tree",
+                                "show": "Object.keys($response.show)",
+                                "checked": []
+                            },
+                            "trigger": [
+                                {
+                                    "eventType": "treeCheck",
+                                    "target": "textModel",
+                                    "ship": {
+                                        "str": "$data.checked"
+                                    }
+                                }
+                            ],
+                            "initialLoad": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8800/tree",
+                            "children": "$data.tree",
+                            "childMapping": {
+                                "title": "$iterator.title",
+                                "key": "$iterator.key",
+                                "children": "$iterator.children",
+                                "isLeaf": "$iterator.isLeaf",
+                                "disableCheckbox": "$iterator.disableCheckbox"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "content",
+                    "children": [
+                        {
+                            "type": "text",
+                            "model": "textModel",
+                            "data": {},
+                            "text": "$data.str"
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }

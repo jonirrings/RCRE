@@ -24,10 +24,10 @@ export type compilePairType<S> = {
 
 export function compileValueExpress<Config, Source>(props: Config, pair: compilePairType<Source>): Config {
     _.each(props, (item, key) => {
-        if (_.isString(item) && item.indexOf('$') >= 0) {
+        if (isExpression(item)) {
             let parseRet = runInContext(item, pair);
 
-            if (parseRet && parseRet[0] !== '$') {
+            if (parseRet && !isExpression(parseRet)) {
                 props[key] = parseRet;
             } else {
                 // TODO use class-validator to reflect types and set default values

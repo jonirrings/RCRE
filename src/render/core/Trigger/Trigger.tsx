@@ -4,9 +4,10 @@ import * as _ from 'lodash';
 import {BasicContainer, BasicContainerPropsInterface} from '../Container/types';
 import createElement from '../../util/createElement';
 import {TriggerConfig, TriggerItem, validEventTrigger} from './types';
-import {SET_DATA_LIST_PAYLOAD} from '../Container/action';
+// import {SET_DATA_LIST_PAYLOAD} from '../Container/action';
 import {compileValueExpress, isExpression, runInContext} from '../../util/vm';
 import {Map} from 'immutable';
+import {SET_DATA_LIST_PAYLOAD} from '../Container/action';
 
 export class TriggerPropsInterface extends BasicContainerPropsInterface {
     info: TriggerConfig;
@@ -66,12 +67,17 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
 
                     let ship = item.ship;
 
-                    if (!ship) {
+                    if (!_.isPlainObject(ship)) {
                         console.error('you must provide ship to finish event trigger');
                         return;
                     }
 
-                    let compiled = compileValueExpress<Object, Object>(ship, {
+                    if (!this.props.$data) {
+                        console.error('can not find exist data model for trigger component');
+                        return;
+                    }
+
+                    let compiled = compileValueExpress<Object, Object>(ship!, {
                         $data: this.props.$data.toObject()
                     });
                     let payload: SET_DATA_LIST_PAYLOAD = [];
@@ -100,8 +106,8 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
         if (childProps[method]) {
             let oldFn = childProps[method];
 
-            mergeProps[method] = (type: string, value: any) => {
-                oldFn(type, value);
+            mergeProps[method] = (value: any) => {
+                oldFn(value);
                 setTimeout(() => {
                     this.handleTrigger(item, triggerType)(this.props.info.model!, value);
                 });

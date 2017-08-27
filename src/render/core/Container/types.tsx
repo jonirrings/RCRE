@@ -63,15 +63,18 @@ export class ContainerProps extends BasicContainerPropsInterface {
     public requestAPI: () => void;
 }
 
+export const BasicContextTypes = {
+    driver: PropTypes.object,
+    form: PropTypes.bool,
+    abstractContainer: PropTypes.bool,
+    $global: PropTypes.object,
+    $triggerListData: PropTypes.func,
+    $location: PropTypes.object,
+    $query: PropTypes.object
+};
+
 export class BasicContainer<T extends BasicContainerPropsInterface, P> extends AbstractCol<T, P> {
-    static contextTypes = {
-        driver: PropTypes.object,
-        form: PropTypes.bool,
-        $global: PropTypes.object,
-        $triggerListData: PropTypes.func,
-        $location: PropTypes.object,
-        $query: PropTypes.object
-    };
+    static contextTypes = BasicContextTypes;
     
     constructor() {
         super();

@@ -118,9 +118,19 @@ export class TreeConfig extends BasicConfig {
 
 export class TreePropsInterface extends ContainerProps {
     info: TreeConfig;
+
+    onCheck: (checkedKeys: Array<string>) => void;
 }
 
 class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
+    static defaultProps = {
+        onCheck: (checkedKeys: Array<string>) => {
+            console.log(checkedKeys);
+        },
+        onSelect: () => {
+        }
+    };
+    
     constructor() {
         super();
     }
@@ -151,8 +161,6 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
     }
 
     render() {
-        // let driver = this.context.driver;
-        // let treeInfo = driver.getComponent('tree');
         let children;
 
         const loop = (data: TreeNodeConfig[]): React.ReactElement<TreeNodePropsInterface>[] =>
@@ -187,7 +195,9 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
             children = loop(this.props.info.children);
         }
 
-        return React.createElement(Trigger, this.props, children);
+        let treeProps = Object.assign({}, this.props, {});
+
+        return React.createElement(Trigger, treeProps, children);
     }
 }
 

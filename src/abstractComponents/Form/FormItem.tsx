@@ -57,7 +57,7 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
     static defaultProps = {
         value: ''
     };
-    
+
     static contextTypes = {
         driver: PropTypes.object,
         form: PropTypes.bool,
@@ -78,12 +78,14 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
         if (this.context.form) {
             //     // In Form, use name as key
             this.props.onChange(this.props.info.name, value);
-        } else {
+        } else if (this.context.abstractContainer) {
             // In Normal Container, use childModel as key
             this.props.onChange(this.props.info.childModel, value);
+        } else {
+            this.props.onChange(this.props.info.model, value);
         }
     }
-    
+
     public getComponentThroughDriver(info: FormItemConfig) {
         let driver: DriverController = this.context.driver;
         let componentInfo = driver.getComponent(info.type);
@@ -100,7 +102,7 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
         if (this.props.$data && info.name) {
             childValue = this.props.$data.get(info.name);
         }
-        
+
         let children = createElement(Component, componentInterface, {
             info: info,
             value: childValue,

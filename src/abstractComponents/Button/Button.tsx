@@ -76,7 +76,6 @@ export class ButtonPropsInterface extends BasicContainerPropsInterface {
 class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
     static defaultProps = {
         onClick: () => {
-            console.error('Button onClick 没有实现');
         }
     };
 

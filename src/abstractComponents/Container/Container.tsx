@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
+import * as PropTypes from 'prop-types';
 import {Validate} from 'class-validator';
 import {IsPageInfo} from '../../render/util/validators';
 import createElement from '../../render/util/createElement';
@@ -19,10 +20,21 @@ export class ContainerPropsInterface extends BasicContainerPropsInterface {
 }
 
 export default class AbstractContainer extends BasicContainer<ContainerPropsInterface, {}> {
+    static childContextTypes = {
+        abstractContainer: PropTypes.bool
+    };
+    
     constructor() {
         super();
 
         this.handleChange = this.handleChange.bind(this);
+    }
+
+    getChildContext() {
+        return {
+            // 抽象Abstract组件, 为子级的所有组件提供一致的数据模型
+            abstractContainer: true
+        };
     }
 
     render() {

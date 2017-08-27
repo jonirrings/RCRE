@@ -2,7 +2,9 @@ import {BasicConfig} from '../Container/types';
 
 export const validEventTrigger = {
     'click': 'onClick',
-    'change': 'onChange'
+    'change': 'onChange',
+    'treeCheck': 'onCheck',
+    'treeSelect': 'onSelect'
 };
 
 export class TriggerItem {

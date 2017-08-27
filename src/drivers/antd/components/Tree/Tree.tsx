@@ -1,15 +1,32 @@
 import * as React from 'react';
 import {Tree} from 'antd';
-import {TreeConfig, TreePropsInterface} from '../../../../abstractComponents/Tree/Tree';
-import {TreeProps} from 'antd/lib/tree';
+import {TreePropsInterface} from '../../../../abstractComponents/Tree/Tree';
+import {AntTreeNodeEvent, TreeProps} from 'antd/lib/tree';
 import * as _ from 'lodash';
 
-export class AntTree extends React.Component<TreePropsInterface & TreeConfig, {}> {
+export class AntTree extends React.Component<TreePropsInterface, {}> {
     constructor() {
         super();
+
+        this.handleSelect = this.handleSelect.bind(this);
+        this.handleCheck = this.handleCheck.bind(this);
     }
 
-    private mapTreeOptions(props: TreePropsInterface & TreeConfig): TreeProps {
+    handleSelect(checkedKeys: Array<string>, e: AntTreeNodeEvent) {
+    }
+
+    handleCheck(checkedKeys: Array<string>, e: AntTreeNodeEvent) {
+        this.props.onCheck(checkedKeys);
+    }
+
+    render() {
+        return React.createElement(Tree, Object.assign(this.mapTreeOptions(this.props), {
+            onSelect: this.handleSelect,
+            onCheck: this.handleCheck
+        }), this.props.children);
+    }
+
+    private mapTreeOptions(props: TreePropsInterface): TreeProps {
         let newProps = {};
 
         _.each(props.info, (item, key) => {
@@ -19,10 +36,6 @@ export class AntTree extends React.Component<TreePropsInterface & TreeConfig, {}
         });
 
         return newProps;
-    }
-    
-    render() {
-        return React.createElement(Tree, this.mapTreeOptions(this.props), this.props.children);
     }
 }
 

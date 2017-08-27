@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {Layout} from 'antd';
 import {Validate} from 'class-validator';
 import {IsPageInfo} from '../../../util/validators';
@@ -41,6 +42,8 @@ export class SiderConfig extends BasicLayoutConfig {
      * @default ''
      */
     className?: string;
+
+    style?: React.CSSProperties;
 }
 
 export class SidePropsInterface extends BasicLayoutPropsInterface {
@@ -71,7 +74,8 @@ export default class AbstractLayout<T extends SidePropsInterface> extends BasicA
 
     public mapOptions(props: SiderConfig): SiderProps {
         return {
-            collapsible: props.collapsible || true,
+            style: props.style,
+            collapsible: props.collapsible || false,
             defaultCollapsed: props.defaultCollapsed,
             reverseArrow: props.reverseArrow,
             width: props.width,
