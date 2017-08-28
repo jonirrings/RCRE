@@ -28,7 +28,7 @@ export function compileValueExpress<Config, Source>(props: Config, pair: compile
         if (isExpression(item)) {
             let parseRet = runInContext(item, pair);
 
-            if (parseRet && !isExpression(parseRet)) {
+            if (typeof parseRet !== 'undefined' && !isExpression(parseRet)) {
                 copy[key] = parseRet;
             } else {
                 // TODO use class-validator to reflect types and set default values

@@ -56,77 +56,85 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
         return children;
     }
 
+    private handleLinkTrigger(item: TriggerItem, model: string, value: any) {
+        let href = item.href;
+
+        if (!href) {
+            console.error('your must provide href attribute to finish jumping...');
+            return;
+        }
+
+        const templateRegex = /{{([^}]+)}}/g;
+
+        href = href.replace(templateRegex, (str, expression) => {
+            if (!isExpression(expression)) {
+                return expression;
+            }
+
+            let ret = runInContext(expression, {
+                $resource: this.props.$data.toObject()
+            });
+
+            if (!ret) {
+                return expression;
+            }
+
+            return encodeURIComponent(ret);
+        });
+
+        location.href = href;
+    }
+
+    private handleDataTrigger(item: TriggerItem, model: string, value: any) {
+        let target = item.target;
+        let $global = this.context.$global;
+
+        if (!$global.has(target)) {
+            console.error(`can not find target model of target: ${target} `);
+            return;
+        }
+
+        let ship = item.ship;
+
+        if (!_.isPlainObject(ship)) {
+            console.error('you must provide ship to finish event trigger');
+            return;
+        }
+
+        if (!this.props.$data) {
+            console.error('can not find exist data model for trigger component');
+            return;
+        }
+
+        let compiled = compileValueExpress<Object, Object>(ship!, {
+            $data: this.props.$data.toObject(),
+            $event: {
+                model: model,
+                value: value
+            }
+        });
+
+        let payload: SET_DATA_LIST_PAYLOAD = [];
+
+        _.each(compiled, (val, name) => {
+            payload.push({
+                type: name,
+                newValue: val
+            });
+        });
+
+        this.context.$triggerListData(payload, target);
+    }
+
     private handleTrigger(item: TriggerItem, triggerType: 'data' | 'link' | undefined): (type: string, value: any) => void {
         return (model: string, value: any) => {
-            let target = item.target;
-            let $global = this.context.$global;
-
             switch (triggerType) {
                 case 'link':
-                    let href = item.href;
-
-                    if (!href) {
-                        console.error('your must provide href attribute to finish jumping...');
-                        return;
-                    }
-
-                    const templateRegex = /{{([^}]+)}}/g;
-
-                    href = href.replace(templateRegex, (str, expression) => {
-                        if (!isExpression(expression)) {
-                            return expression;
-                        }
-
-                        let ret = runInContext(expression, {
-                            $resource: this.props.$data.toObject()
-                        });
-
-                        if (!ret) {
-                            return expression;
-                        }
-
-                        return encodeURIComponent(ret);
-                    });
-
-                    location.href = href;
+                    this.handleLinkTrigger(item, model, value);
                     break;
                 case 'data':
                 default:
-                    if (!$global.has(target)) {
-                        console.error(`can not find target model of target: ${target} `);
-                        return;
-                    }
-
-                    let ship = item.ship;
-
-                    if (!_.isPlainObject(ship)) {
-                        console.error('you must provide ship to finish event trigger');
-                        return;
-                    }
-
-                    if (!this.props.$data) {
-                        console.error('can not find exist data model for trigger component');
-                        return;
-                    }
-                    
-                    let compiled = compileValueExpress<Object, Object>(ship!, {
-                        $data: this.props.$data.toObject(),
-                        $event: {
-                            model: model,
-                            value: value
-                        }
-                    });
-
-                    let payload: SET_DATA_LIST_PAYLOAD = [];
-
-                    _.each(compiled, (val, name) => {
-                        payload.push({
-                            type: name,
-                            newValue: val
-                        });
-                    });
-
-                    this.context.$triggerListData(payload, target);
+                    this.handleDataTrigger(item, model, value);
             }
         };
     }

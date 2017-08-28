@@ -1,25 +1,14 @@
 import * as React from 'react';
 import {Button} from 'antd';
 import {ButtonConfig, ButtonPropsInterface} from '../../../../abstractComponents/Button/Button';
-
-class AntButtonProps {
-    type: 'primary' | 'dashed' | 'danger' | 'ghost' | undefined;
-    htmlType: 'submit' | 'button' | 'reset';
-    icon: string;
-    shape: 'circle' | 'circle-outline' | undefined;
-    size: 'small' | 'large' | undefined;
-    loading: boolean;
-    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    ghost: boolean;
-    children: any;
-}
+import {ButtonProps} from 'antd/lib/button/button';
 
 export default class AntButton extends React.Component<ButtonPropsInterface, {}> {
     constructor() {
         super();
     }
 
-    mapOptions(props: ButtonConfig): AntButtonProps {
+    mapOptions(props: ButtonConfig): ButtonProps {
         return {
             htmlType: props.htmlType,
             type: props.buttonType,
@@ -29,7 +18,7 @@ export default class AntButton extends React.Component<ButtonPropsInterface, {}>
             loading: props.loading,
             onClick: this.props.onClick,
             ghost: props.ghost,
-            children: props.text
+            disabled: props.disabled
         };
     }
     

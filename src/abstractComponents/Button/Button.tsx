@@ -61,6 +61,12 @@ export class ButtonConfig extends BasicConfig {
      */
     @IsBoolean()
     ghost: boolean;
+
+    /**
+     * 是否禁用
+     * @public
+     */
+    disabled: boolean;
 }
 
 export class ButtonPropsInterface extends BasicContainerPropsInterface {

@@ -4,7 +4,8 @@ export const validEventTrigger = {
     'click': 'onClick',
     'change': 'onChange',
     'treeCheck': 'onCheck',
-    'treeSelect': 'onSelect'
+    'treeSelect': 'onSelect',
+    'submitSuccess': ''
 };
 
 export class TriggerItem {
