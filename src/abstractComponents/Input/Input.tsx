@@ -73,20 +73,8 @@ class AbstractInput extends BasicFormItem<InputPropsInterface, InputStateInterfa
     render() {
         let props = this.props;
 
-        let childValue = '';
-
-        if (this.props.$data) {
-            if (this.context.form && this.props.info.name) {
-                childValue = this.props.$data.get(this.props.info.name);
-            } else if (this.context.abstractContainer && this.props.info.childModel) {
-                childValue = this.props.$data.get(this.props.info.childModel);
-            } else if (this.props.info.model) {
-                childValue = this.props.$data.get(this.props.info.model);
-            }
-        }
-
         let children = React.createElement(Trigger, Object.assign({}, props, {
-            value: childValue,
+            value: this.getChildValue(),
             onChange: this.handleChange
         }));
 
