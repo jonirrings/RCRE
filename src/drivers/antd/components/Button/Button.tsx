@@ -29,11 +29,11 @@ export default class AntButton extends React.Component<ButtonPropsInterface, {}>
             loading: props.loading,
             onClick: this.props.onClick,
             ghost: props.ghost,
-            children: props.label
+            children: props.text
         };
     }
     
     render() {
-        return React.createElement(Button, this.mapOptions(this.props.info), this.props.info.label);
+        return React.createElement(Button, this.mapOptions(this.props.info), this.props.info.text);
     }
 }

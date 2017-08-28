@@ -1,0 +1,55 @@
+{
+    "title": "权限信息",
+    "body": [
+        {
+            "type": "form",
+            "model": "form",
+            "initialLoad": {
+                "method": "get",
+                "url": "http://localhost:8220/afd/userapproval/userapprovalinfo",
+                "data": {
+                    "db_name": "default",
+                    "table_name": "native_feed_st_afd_report_ad_ui_channel",
+                    "applicant": "lishuai15"
+                }
+            },
+            "submit": {
+                "url": "http://cp01-yjk.epc.baidu.com:8203/afd/userapproval/submitapprovalinfo",
+                "data": {
+                    "db_name": "default",
+                    "table_name": "native_feed_st_afd_report_ad_ui_channel",
+                    "applicant": "lishuai15",
+                    "reason": "xxx"
+                },
+                "method": "GET"
+            },
+            "data": {
+            },
+            "controls": [
+                {
+                    "type": "input",
+                    "name": "db_name",
+                    "label": "数据库名称",
+                    "colSpan": 14
+                },
+                {
+                    "type": "input",
+                    "name": "table_name",
+                    "label": "表名",
+                    "colSpan": 14
+                },
+                {
+                    "type": "input",
+                    "name": "applicant",
+                    "label": "申请人",
+                    "colSpan": 14
+                },
+                {
+                    "type": "button",
+                    "htmlType": "submit",
+                    "text": "提交"
+                }
+            ]
+        }
+    ]
+}

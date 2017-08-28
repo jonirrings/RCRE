@@ -20,6 +20,7 @@ let tableConfig = require('./demo/table.json');
 let layoutConfig = require('./demo/layout.json');
 let searchConfig = require('./demo/searchList.json');
 let mvvmConfig = require('./demo/mvvm.json');
+let submitConfig = require('./demo/submit.json');
 
 interface AppStateInterface {
     code: string;
@@ -30,7 +31,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(treeConfig)
+            code: jsonformat(submitConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);

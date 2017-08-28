@@ -4,6 +4,7 @@ import {IsPageInfo} from '../../render/util/validators';
 import {BasicFormItem} from '../Form/FormItem';
 import Trigger from '../../render/core/Trigger/Trigger';
 import * as React from 'react';
+import * as _ from 'lodash';
 
 export class CheckboxConfig extends BasicFormItemConfig {
     /**
@@ -42,7 +43,12 @@ class AbstractCheckbox extends BasicFormItem<CheckboxPropsInterface, {}> {
     }
     
     render() {
-        return React.createElement(Trigger, this.props);
+        let children = React.createElement(Trigger, Object.assign(_.clone(this.props), {
+            value: this.getChildValue(),
+            onChange: this.handleChange
+        }));
+
+        return this.renderChildren(children);
     }
 }
 

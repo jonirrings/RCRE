@@ -7,11 +7,11 @@ import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {actionCreators, IAction, SET_DATA_PAYLOAD} from './action';
 import {RootState} from '../../data/reducers';
-import axios from 'axios';
 import {Map} from 'immutable';
 import ParamsInjector from '../../util/injector';
 import Col, {hasColProps} from '../Layout/Col/Col';
 import {compileValueExpress, filterExpressionData, isExpression} from '../../util/vm';
+import {request} from '../../services/api';
 
 class Container extends BasicContainer<ContainerProps, {}> {
     static WrappedComponent: string;
@@ -147,10 +147,6 @@ class Container extends BasicContainer<ContainerProps, {}> {
 
             filterExpressionData(initialLoad.data);
 
-            if (!initialLoad.method || /^get$/i.test(initialLoad.method)) {
-                initialLoad.params = initialLoad.data;
-            }
-
             requestConfig = initialLoad;
         }
 
@@ -160,7 +156,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
 
         this.prevRequestData = _.cloneDeep(requestConfig);
 
-        return axios(requestConfig.url!, requestConfig);
+        return request(requestConfig.url!, requestConfig);
     }
 }
 

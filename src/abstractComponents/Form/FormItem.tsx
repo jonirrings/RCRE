@@ -2,11 +2,9 @@ import * as React from 'react';
 import {BasicFormItemConfig, BasicFormItemPropsInterface} from './types';
 import {IsBoolean, IsString, Validate} from 'class-validator';
 import {IsPageInfo} from '../../render/util/validators';
-import Col, {ColConfig} from '../../render/core/Layout/Col/Col';
+import Col, {ColConfig, hasColProps} from '../../render/core/Layout/Col/Col';
 import * as PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {DriverController} from '../../drivers/index';
-import createElement from '../../render/util/createElement';
 
 export class FormItemConfig extends BasicFormItemConfig {
     /**
@@ -45,12 +43,6 @@ export class FormItemConfig extends BasicFormItemConfig {
 export class FormItemPropsInterface extends BasicFormItemPropsInterface {
     @Validate(IsPageInfo, [FormItemConfig])
     info: FormItemConfig;
-
-    /**
-     * 是否有错误
-     */
-    @IsBoolean()
-    isError: boolean;
 }
 
 export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends React.Component<T, P> {
@@ -90,9 +82,15 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
 
         this.props.onChange(runTimeKey, value);
     }
-    
-    private wrapWithFormItem(children: React.ReactElement<T>) {
-        return createElement(AbstractFormItem, FormItemPropsInterface, this.props, children);
+
+    public renderChildren<Type>(children: React.ReactElement<Type>) {
+        if (hasColProps(this.props.info)) {
+            children = React.createElement(Col, {
+                info: this.props.info
+            }, children);
+        }
+
+        return children;
     }
 
     private getRuntimeKey() {
@@ -110,45 +108,53 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
             return '';
         }
     }
-
-    public getComponentThroughDriver(info: FormItemConfig) {
-        let driver: DriverController = this.context.driver;
-        let componentInfo = driver.getComponent(info.type);
-
-        if (!componentInfo) {
-            return <pre>{`can not find module $\{info.type}`}</pre>;
-        }
-
-        let Component = componentInfo.component;
-        let componentInterface = componentInfo.componentInterface;
-
-        let childValue = '';
-
-        if (this.props.$data && info.name) {
-            childValue = this.props.$data.get(info.name);
-        }
-
-        let children = createElement(Component, componentInterface, {
-            info: info,
-            value: childValue,
-            onChange: this.handleChange
-        });
-
-        if (this.context.form) {
-            children = this.wrapWithFormItem(children);
-        }
-
-        return children;
-    }
-
-    public isValid() {
-        console.error('isValid is not implemented');
-    }
 }
 
-class AbstractFormItem<T extends FormItemPropsInterface, P> extends BasicFormItem<T, P> {
+export interface FormItemStatesInterface {
+    error: boolean;
+    errmsg: string;
+}
+
+class AbstractFormItem<T extends FormItemPropsInterface>
+    extends BasicFormItem<T, FormItemStatesInterface> {
     constructor() {
         super();
+
+        this.state = {
+            error: false,
+            errmsg: ''
+        };
+
+        this.validateFormItem = this.validateFormItem.bind(this);
+    }
+
+    componentDidMount() {
+        if (this.context.form && this.props.info.name) {
+            this.props.injectChildElement(this.validateFormItem);
+        }
+    }
+
+    render() {
+        let errorClass = classNames({
+            'has-error': this.state.error,
+            'ant-form-item': true
+        });
+
+        let child = (
+            <div className={errorClass}>
+                {this.renderLabel(this.props.info, 8)}
+                {
+                    this.wrapColumn(this.props.info, [
+                        this.addChangeProxyToChildren(this.props.children),
+                        this.renderExplain(this.props.info)
+                    ], {
+                        colSpan: 16
+                    })
+                }
+            </div>
+        );
+
+        return this.wrapColumn(this.props.info, child);
     }
 
     private renderLabel(info: FormItemConfig, colSpan: number) {
@@ -182,39 +188,63 @@ class AbstractFormItem<T extends FormItemPropsInterface, P> extends BasicFormIte
         }, children);
     }
 
+    private validateFormItem(value?: any): boolean {
+        if (!value) {
+            value = this.props.value;
+        }
+
+        if (this.props.info.required && !value) {
+            this.setState({
+                error: true,
+                errmsg: `${this.props.info.label} is required`
+            });
+            return false;
+        }
+
+        if (this.props.info.pattern) {
+            let regex = new RegExp(this.props.info.pattern);
+
+            if (!regex.test(value)) {
+                this.setState({
+                    error: true,
+                    errmsg: `${value} is not satisfied for ${this.props.info.pattern}`
+                });
+                return false;
+            }
+        }
+        
+        this.setState({
+            error: false,
+            errmsg: ''
+        });
+        return true;
+    }
+    
     private renderExplain(info: FormItemConfig) {
-        if (!this.props.isError) {
+        if (!this.state.error) {
             return '';
         }
 
         return (
             <div className="ant-form-explain" key={`${info.type}.errmsg`}>
-                {info.errmsg || `${info.type} is required`}
+                {this.state.errmsg || `${info.label || info.name || info.type} is required`}
             </div>
         );
     }
 
-    render() {
-        let errorClass = classNames({
-            'has-error': this.props.isError,
-            'ant-form-item': true
-        });
+    private addChangeProxyToChildren(children: React.ReactNode) {
+        return React.Children.map(children, (child: React.ReactElement<any>, index) => {
+            let oldOnChange = this.props.onChange;
 
-        let child = (
-            <div className={errorClass}>
-                {this.renderLabel(this.props.info, 8)}
-                {
-                    this.wrapColumn(this.props.info, [
-                        this.props.children,
-                        this.renderExplain(this.props.info)
-                    ], {
-                        colSpan: 16
-                    })
+            const cloneProps = Object.assign({}, this.props, {
+                onChange: (value: any, event?: React.ChangeEvent<HTMLElement>) => {
+                    this.validateFormItem(value);
+
+                    oldOnChange(value, event);
                 }
-            </div>
-        );
-
-        return this.wrapColumn(this.props.info, child);
+            });
+            return React.cloneElement(child, cloneProps);
+        });
     }
 }
 

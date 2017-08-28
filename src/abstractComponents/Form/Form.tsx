@@ -5,10 +5,22 @@ import {Map} from 'immutable';
 import * as PropsTypes from 'prop-types';
 import {BasicFormItemConfig} from './types';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
-import {IsArray, IsDefined, IsString} from 'class-validator';
+import {IsArray, IsDefined, IsString, IsUrl, Validate} from 'class-validator';
 import * as _ from 'lodash';
 import Col from '../../render/core/Layout/Col/Col';
-import {DriverController} from '../../drivers/index';
+import {IsPageInfo} from '../../render/util/validators';
+import Trigger from '../../render/core/Trigger/Trigger';
+import {request} from '../../render/services/api';
+
+class SubmitConfig {
+    @IsUrl()
+    url: string;
+
+    data: Object;
+
+    @IsString()
+    method: string;
+}
 
 export class FormConfig extends BasicConfig {
     @IsString()
@@ -18,28 +30,39 @@ export class FormConfig extends BasicConfig {
     @IsArray()
     controls: BasicFormItemConfig[];
 
-    @IsString()
-    @IsDefined()
-    submitUrl: string;
+    @Validate(IsPageInfo, [SubmitConfig])
+    submit: SubmitConfig;
 }
 
 export class FormPropsInterface extends BasicContainerPropsInterface {
     info: FormConfig;
+
+    onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
+export class FormStatesInterface {
+    submit: boolean;
+}
+
+class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterface> {
     static childContextTypes = {
         form: PropsTypes.bool
     };
 
     private childInstance: Map<string, any>;
+    private formItemStatus: ((value?: any) => boolean)[];
 
     constructor() {
         super();
 
-        // this.handleChange = this.handleChange.bind(this);
-        // this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = {
+            submit: false
+        };
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.injectChildElement = this.injectChildElement.bind(this);
         this.childInstance = Map();
+        this.formItemStatus = [];
     }
 
     getChildContext() {
@@ -50,8 +73,59 @@ class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
         };
     }
 
+    handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        let submitConfig = this.props.info.submit;
+
+        if (!_.isPlainObject(submitConfig)) {
+            return;
+        }
+
+        let status = true;
+        this.formItemStatus.forEach(fn => {
+            let ret = fn();
+
+            if (!ret) {
+                status = ret;
+            }
+        });
+
+        if (!status) {
+            console.log('form validate failed');
+            return;
+        }
+
+        console.log('form validation success');
+
+        let url = submitConfig.url;
+        let data = submitConfig.data;
+        let method = submitConfig.method;
+
+        return request(url, {
+            method: method,
+            data: data
+        });
+    }
+
     componentWillUnmount() {
         console.log('unmount form');
+    }
+
+    render() {
+        let controls = this.props.info.controls;
+        let controlChildren;
+
+        if (controls && controls.length > 0) {
+            controlChildren = controls.map((control, index) => this.renderControl(control, 0, index));
+        }
+
+        let props = Object.assign({}, this.props, {
+            onSubmit: this.handleSubmit
+        });
+
+        return React.createElement(Trigger, props, [
+            this.renderTitle(),
+            controlChildren
+        ]);
     }
 
     private renderControl(info: BasicFormItemConfig, depth: number, index: number): JSX.Element {
@@ -84,6 +158,7 @@ class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
             key: `${info.type}_${depth}_${index}`,
             info: info,
             onChange: this.props.onChange,
+            injectChildElement: this.injectChildElement,
             $data: this.props.$data,
             $setData: this.props.$setData,
             $setDataList: this.props.$setDataList
@@ -102,7 +177,7 @@ class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
         let info = this.props.info;
 
         if (!info.title) {
-            return <div />;
+            return <div key="title"/>;
         }
 
         return (
@@ -112,61 +187,9 @@ class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
         );
     }
 
-    render() {
-        let driver: DriverController = this.context.driver;
-        let controls = this.props.info.controls;
-        let controlChildren;
-        
-        if (controls && controls.length > 0) {
-            controlChildren = controls.map((control, index) => this.renderControl(control, 0, index));
-        }
-        
-        let FormInfo = driver.getComponent(this.props.info.type);
-        
-        if (!FormInfo) {
-            return <pre>{`Can not find module of ${this.props.info.type}`}</pre>;
-        }
-        
-        let form = FormInfo.component;
-        let formInterface = FormInfo.componentInterface;
-        
-        return createElement(form, formInterface, this.props, [
-            this.renderTitle(),
-            controlChildren
-        ]);
+    private injectChildElement(validator: () => boolean) {
+        this.formItemStatus.push(validator);
     }
 }
 
 export default AbstractForm;
-
-// handleChange(type: string, newValue: any) {
-//     this.props.setData({
-//         type,
-//         newValue
-//     });
-// }
-//
-// async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-//     e.preventDefault();
-//    
-//     let isValidate = this.checkFormItem();
-//    
-//     if (!isValidate) {
-//         return;
-//     }
-//    
-//     let data = this.props.$data.toObject();
-//    
-//     await apiRequest(this.props.submitUrl, {
-//         method: 'POST',
-//         data: data
-//     });
-// }
-//
-// checkFormItem() {
-//     let instanceArr = this.childInstance.toArray();
-//    
-//     return instanceArr.every(child => {
-//         return child.isValid();
-//     });
-// }

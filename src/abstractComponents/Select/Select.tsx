@@ -1,7 +1,9 @@
+import * as React from 'react';
 import {BasicFormItemConfig, BasicFormItemPropsInterface} from '../Form/types';
 import {IsArray, IsBoolean, IsDefined, IsString, Validate} from 'class-validator';
 import {IsPageInfo, IsValidEnums} from '../../render/util/validators';
 import {BasicFormItem} from '../Form/FormItem';
+import Trigger from '../../render/core/Trigger/Trigger';
 
 export class SelectConfig extends BasicFormItemConfig {
     /**
@@ -43,7 +45,7 @@ export class SelectConfig extends BasicFormItemConfig {
      */
     @IsBoolean()
     disabled?: boolean;
-    
+
     /**
      * 下拉框列表
      */
@@ -89,9 +91,12 @@ class AbstractSelect extends BasicFormItem<SelectPropsInterface, {}> {
     }
 
     render() {
-        let info = this.props.info;
+        let children = React.createElement(Trigger, Object.assign({}, this.props, {
+            value: this.getChildValue(),
+            onChange: this.handleChange
+        }));
 
-        return this.getComponentThroughDriver(info);
+        return this.renderChildren(children);
     }
 }
 

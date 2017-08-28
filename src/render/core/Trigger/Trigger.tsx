@@ -7,6 +7,7 @@ import {TriggerConfig, TriggerItem, validEventTrigger} from './types';
 import {compileValueExpress, isExpression, runInContext} from '../../util/vm';
 import {Map} from 'immutable';
 import {SET_DATA_LIST_PAYLOAD} from '../Container/action';
+import AbstractFormItem, {FormItemPropsInterface} from '../../../abstractComponents/Form/FormItem';
 
 export class TriggerPropsInterface extends BasicContainerPropsInterface {
     info: TriggerConfig;
@@ -23,7 +24,39 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
         this.handleTrigger = this.handleTrigger.bind(this);
     }
 
-    handleTrigger(item: TriggerItem, triggerType: 'data' | 'link' | undefined): (type: string, value: any) => void {
+    render() {
+        let driver: DriverController = this.context.driver;
+        let componentInfo = driver.getComponent(this.props.info.type);
+
+        if (!componentInfo) {
+            return <pre>{`can not find module ${this.props.info.type}`}</pre>;
+        }
+
+        let Component = componentInfo.component;
+        let componentInterface = componentInfo.componentInterface;
+
+        let childProps = this.props;
+
+        if (this.props.info.trigger) {
+            let mergeProps = {};
+
+            _.each(this.props.info.trigger, (item, index) => {
+                this.bindTrigger(item, mergeProps, childProps);
+            });
+
+            childProps = Object.assign({}, childProps, mergeProps);
+        }
+
+        let children = createElement(Component, componentInterface, childProps, this.props.children);
+
+        if (this.context.form && this.props.info.type !== 'form') {
+            children = this.wrapWithFormItem(children);
+        }
+
+        return children;
+    }
+
+    private handleTrigger(item: TriggerItem, triggerType: 'data' | 'link' | undefined): (type: string, value: any) => void {
         return (model: string, value: any) => {
             let target = item.target;
             let $global = this.context.$global;
@@ -98,7 +131,7 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
         };
     }
 
-    bindTrigger(item: TriggerItem, mergeProps: Object, childProps: Object) {
+    private bindTrigger(item: TriggerItem, mergeProps: Object, childProps: Object) {
         let eventType = item.eventType;
         let triggerType = item.triggerType;
         if (!validEventTrigger[eventType]) {
@@ -126,29 +159,7 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
         }
     }
 
-    render() {
-        let driver: DriverController = this.context.driver;
-        let componentInfo = driver.getComponent(this.props.info.type);
-
-        if (!componentInfo) {
-            return <pre>{`can not find module ${this.props.info.type}`}</pre>;
-        }
-
-        let Component = componentInfo.component;
-        let componentInterface = componentInfo.componentInterface;
-
-        let childProps = this.props;
-
-        if (this.props.info.trigger) {
-            let mergeProps = {};
-
-            _.each(this.props.info.trigger, (item, index) => {
-                this.bindTrigger(item, mergeProps, childProps);
-            }); 
-
-            childProps = Object.assign({}, childProps, mergeProps);
-        }
-
-        return createElement(Component, componentInterface, childProps, this.props.children);
+    private wrapWithFormItem(children: React.ReactElement<T>) {
+        return createElement(AbstractFormItem, FormItemPropsInterface, this.props, children);
     }
 }

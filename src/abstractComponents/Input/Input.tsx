@@ -4,7 +4,6 @@ import {IsValidEnums} from '../../render/util/validators';
 import {BasicFormItemConfig} from '../Form/types';
 import * as React from 'react';
 import Trigger from '../../render/core/Trigger/Trigger';
-import Col, {hasColProps} from '../../render/core/Layout/Col/Col';
 
 export class InputConfig extends BasicFormItemConfig {
     /**
@@ -78,13 +77,7 @@ class AbstractInput extends BasicFormItem<InputPropsInterface, InputStateInterfa
             onChange: this.handleChange
         }));
 
-        if (hasColProps(props.info)) {
-            children = React.createElement(Col, {
-                info: this.props.info
-            }, children);
-        }
-
-        return children;
+        return this.renderChildren(children);
     }
 }
 

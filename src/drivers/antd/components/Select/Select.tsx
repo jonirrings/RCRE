@@ -17,7 +17,7 @@ class AntSelect extends React.Component<SelectPropsInterface, {}> {
             mode: props.mode,
             allowClear: props.allowClear,
             placeholder: props.placeholder,
-            size: props.size,
+            size: props.size || 'default',
             disabled: props.disabled
         };
     }

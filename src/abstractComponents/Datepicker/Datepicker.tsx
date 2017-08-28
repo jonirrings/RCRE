@@ -91,6 +91,8 @@ export default class AbstractDatepicker extends BasicFormItem<DatePickerPropsInt
             info.endTime = parseTimeString(info.endTime).valueOf().toString();
         }
 
-        return React.createElement(Trigger, props);
+        let children = React.createElement(Trigger, props);
+
+        return this.renderChildren(children);
     }
 }

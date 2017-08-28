@@ -69,6 +69,31 @@
                                             "name": "start_time",
                                             "startTime": "now+1w-7d",
                                             "childModel": "start_time"
+                                        },
+                                        {
+                                            "type": "select",
+                                            "childModel": "index",
+                                            "colSpan": 10,
+                                            "options": [
+                                                {
+                                                    "key": "滤前",
+                                                    "value": "prepv"
+                                                },
+                                                {
+                                                    "key": "滤后",
+                                                    "value": "after"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "row",
+                                    "children": [
+                                        {
+                                            "type": "checkbox",
+                                            "childModel": "index[]",
+                                            "text": "前链PV"
                                         }
                                     ]
                                 }

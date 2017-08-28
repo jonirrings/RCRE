@@ -11,7 +11,7 @@ export class ButtonConfig extends BasicConfig {
      */
     @IsString()
     @IsDefined()
-    label: string;
+    text: string;
 
     /**
      * 按钮的类型

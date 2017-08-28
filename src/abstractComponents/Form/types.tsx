@@ -41,6 +41,7 @@ export class BasicFormItemConfig extends BasicConfig {
 
 export class BasicFormItemPropsInterface extends BasicContainerPropsInterface {
     info: BasicFormItemConfig;
-    
     value: string;
+
+    injectChildElement: (fn: (value?: any) => boolean) => void;
 }

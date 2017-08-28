@@ -1,11 +1,9 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, {AxiosRequestConfig} from 'axios';
 
-export default async function ApiRequest(url: string, params: AxiosRequestConfig) {
-    try {
-        await axios(url, params);
-        // await axios[method](url, params);   
-    } catch (e) {
-        // TODO error report
-        console.error(e);
+export function request(url: string, config: AxiosRequestConfig) {
+    if (!config.method || /^get$/i.test(config.method)) {
+        config.params = config.data;
     }
+
+    return axios(url, config);
 }
