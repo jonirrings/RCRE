@@ -5,7 +5,10 @@ import Container from '../core/Container/index';
 import componentLoader from '../util/componentLoader';
 import createElement from './createElement';
 
-export function createChild(item: BasicConfig, childProps: Object, inForm: boolean = false) {
+export function createChild(item: BasicConfig,
+                            childProps: Object,
+                            inForm: boolean = false,
+                            abstractContainer: boolean = false) {
     if (!_.isPlainObject(item)) {
         console.error('invalid Item Object', item);
         return React.createElement('div', {}, 'invalid Item Object');
@@ -14,7 +17,7 @@ export function createChild(item: BasicConfig, childProps: Object, inForm: boole
     let component: React.ComponentClass<any>;
     let componentInterface;
 
-    if (item.data && !inForm) {
+    if (item.data && !inForm && !abstractContainer) {
         component = Container;
         componentInterface = BasicContainerPropsInterface;
     } else {

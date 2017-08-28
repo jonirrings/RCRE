@@ -26,9 +26,9 @@
                             "trigger": [
                                 {
                                     "eventType": "treeCheck",
-                                    "target": "textModel",
+                                    "target": "viewContent",
                                     "ship": {
-                                        "str": "$event.value"
+                                        "cmatch_tree": "$event.value"
                                     }
                                 }
                             ],
@@ -48,10 +48,31 @@
                     "type": "content",
                     "children": [
                         {
-                            "type": "text",
-                            "model": "textModel",
+                            "type": "container",
                             "data": {},
-                            "text": "$data.str"
+                            "model": "viewContent",
+                            "children": [
+                                {
+                                    "type": "row",
+                                    "children": [
+                                        {
+                                            "type": "html",
+                                            "data": "$data"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "row",
+                                    "children": [
+                                        {
+                                            "type": "datepicker",
+                                            "name": "start_time",
+                                            "startTime": "now+1w-7d",
+                                            "childModel": "start_time"
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 }

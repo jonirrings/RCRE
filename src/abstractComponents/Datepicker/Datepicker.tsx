@@ -76,7 +76,11 @@ export default class AbstractDatepicker extends BasicFormItem<DatePickerPropsInt
     }
 
     render() {
-        let props = Object.assign({}, this.props);
+        let props = Object.assign({}, this.props, {
+            value: this.getChildValue(),
+            onChange: this.handleChange
+        });
+        
         let info = props.info;
 
         if (info.startTime) {

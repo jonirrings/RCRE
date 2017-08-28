@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as jsonformat from 'json-format';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 
 export class HtmlConfig extends BasicConfig {
@@ -15,9 +16,10 @@ export default class AbstractHTML extends BasicContainer<HtmlPropsInterface, {}>
     }
     
     render() {
+        console.log(this.props.info.data);
         return (
             <code>
-                {JSON.stringify(this.props.info.data)}
+                {jsonformat(this.props.info.data)}
             </code>
         );
     }

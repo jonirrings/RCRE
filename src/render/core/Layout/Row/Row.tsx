@@ -56,7 +56,8 @@ export class AntRowProps {
 export default class AbstractRow extends React.Component<RowPropsInterface, {}> {
     static contextTypes = {
         driver: PropTypes.object,
-        form: PropTypes.bool
+        form: PropTypes.bool,
+        abstractContainer: PropTypes.bool
     };
 
     constructor() {
@@ -80,7 +81,7 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
                 return createChild(item, Object.assign({}, this.props, {
                     info: item,
                     key: index
-                }), this.context.form);
+                }), this.context.form, this.context.abstractContainer);
             });
         }
 

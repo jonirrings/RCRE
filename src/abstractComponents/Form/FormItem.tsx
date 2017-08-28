@@ -61,6 +61,7 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
     static contextTypes = {
         driver: PropTypes.object,
         form: PropTypes.bool,
+        abstractContainer: PropTypes.bool,
         $setData: PropTypes.func
     };
 
@@ -70,19 +71,43 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
         this.handleChange = this.handleChange.bind(this);
     }
 
+    public getChildValue() {
+        let runTimeKey = this.getRuntimeKey();
+
+        if (!runTimeKey) {
+            return null;
+        }
+
+        return this.props.$data.get(runTimeKey);
+    }
+
+    public handleChange(value: any) {
+        let runTimeKey = this.getRuntimeKey();
+
+        if (!runTimeKey) {
+            return;
+        }
+
+        this.props.onChange(runTimeKey, value);
+    }
+    
     private wrapWithFormItem(children: React.ReactElement<T>) {
         return createElement(AbstractFormItem, FormItemPropsInterface, this.props, children);
     }
 
-    public handleChange(value: any) {
-        if (this.context.form) {
-            //     // In Form, use name as key
-            this.props.onChange(this.props.info.name, value);
-        } else if (this.context.abstractContainer) {
-            // In Normal Container, use childModel as key
-            this.props.onChange(this.props.info.childModel, value);
+    private getRuntimeKey() {
+        if (this.context.form && this.props.info.name) {
+            // 作为Form组件下的受控组件
+            return this.props.info.name;
+        } else if (this.context.abstractContainer && this.props.info.childModel) {
+            // 作为抽象Container组件下面的受控组件
+            return this.props.info.childModel;
+        } else if (this.props.info.model) {
+            // 自己带有Container组件, 作为一个单独数据模型的组件
+            return this.props.info.model;
         } else {
-            this.props.onChange(this.props.info.model, value);
+            console.error('You must provide an key to enable formItem to be controlled');
+            return '';
         }
     }
 

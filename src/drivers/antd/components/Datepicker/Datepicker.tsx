@@ -11,26 +11,27 @@ export default class AntDatePicker extends React.Component<DatePickerPropsInterf
         this.handleChange = this.handleChange.bind(this);
     }
 
-    private mapOptions(props: DatePickerConfig): DatePickerProps {
-        return {
-            allowClear: true,
-            showTime: true,
-            defaultValue: moment(),
-            disabled: props.disabled,
-            placeholder: props.placeholder
-        };
+    render() {
+        let info = this.props.info;
+
+        return React.createElement(DatePicker, Object.assign(this.mapOptions(info), {
+            value: this.props.value ? moment(this.props.value) : moment(),
+            onChange: this.handleChange
+        }));
     }
 
     handleChange(dates: moment.Moment, dateStrings: string) {
         this.props.onChange(dateStrings);
     }
 
-    render() {
-        let info = this.props.info;
-
-        return React.createElement(DatePicker, Object.assign(this.mapOptions(info), {
-            value: moment(this.props.value),
-            onChange: this.handleChange
-        }));
+    private mapOptions(props: DatePickerConfig): DatePickerProps {
+        return {
+            allowClear: true,
+            showTime: true,
+            defaultValue: moment(),
+            disabled: props.disabled,
+            placeholder: props.placeholder,
+            format: props.format || 'YYYY-MM-DD HH:mm:ss'
+        };
     }
 }
