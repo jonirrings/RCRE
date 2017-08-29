@@ -11,7 +11,7 @@ import Col from '../../render/core/Layout/Col/Col';
 import {IsPageInfo} from '../../render/util/validators';
 import Trigger from '../../render/core/Trigger/Trigger';
 import {request} from '../../render/services/api';
-import {compileValueExpress, isExpression, runInContext} from '../../render/util/vm';
+import {compileValueExpress} from '../../render/util/vm';
 
 class SubmitConfig {
     @IsUrl()
@@ -100,13 +100,9 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
         let url = submitConfig.url;
         let data = submitConfig.data;
         let method = submitConfig.method;
-
-        _.each(data, (val, name) => {
-            if (isExpression(val)) {
-                data[name] = runInContext(val, {
-                    $data: this.props.$data.toObject()
-                });
-            }
+        
+        data = compileValueExpress(data, {
+            $data: this.props.$data.toObject()
         });
         
         return request(url, {
