@@ -21,7 +21,7 @@ BOS.getString(repoVersion).then(str => {
     let jsonInfo = JSON.parse(body);
     
     if (jsonInfo.version.indexOf(version) < 0) {
-        jsonInfo.version.push(version);
+        jsonInfo.version.unshift(version);
     }
     
     return BOS.putString(repoVersion, JSON.stringify(jsonInfo), {
