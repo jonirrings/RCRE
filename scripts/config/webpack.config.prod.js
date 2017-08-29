@@ -241,6 +241,10 @@ module.exports = {
             // Remember to add the new extension(s) to the "file" loader exclusion list.
         ]
     },
+    externals: {
+        'react': 'window.React',
+        'react-dom': 'window.ReactDOM'
+    },
     plugins: [
         // Makes some environment variables available to the JS code, for example:
         // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.
