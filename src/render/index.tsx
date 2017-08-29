@@ -58,3 +58,5 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
         );
     }
 }
+
+window.RCRE = Render;
