@@ -34,6 +34,7 @@ export default class AbstractTable extends BasicContainer<TablePropsInterface, {
     }
 
     render() {
-        return React.createElement(Trigger, this.props);
+        let children = React.createElement(Trigger, this.props);
+        return this.renderChildren(children);
     }
 }

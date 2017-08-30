@@ -90,6 +90,7 @@ export default class AbstractLineChart extends BasicContainer<LineChartPropsInte
     }
 
     render() {
-        return React.createElement(Trigger, this.props);
+        let children = React.createElement(Trigger, this.props);
+        return this.renderChildren(children); 
     }
 }

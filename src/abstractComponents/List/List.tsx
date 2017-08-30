@@ -65,7 +65,7 @@ export default class AbstractList extends BasicContainer<ListPropsInterface, {}>
             ];
         });
 
-        return <div>{children}</div>;
+        return this.renderChildren(<div>{children}</div>);
     }
 
     private renderResource(item: ListItem) {

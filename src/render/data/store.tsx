@@ -1,8 +1,7 @@
-import { createStore, compose } from 'redux';
-import { rootReducer, RootState } from './reducers';
+import {compose, createStore} from 'redux';
+import {rootReducer, RootState} from './reducers';
 
 const composeEnhancers = (
-    process.env.NODE_ENV === 'development' &&
     window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 ) || compose;
 

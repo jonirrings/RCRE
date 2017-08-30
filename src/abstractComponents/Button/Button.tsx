@@ -100,7 +100,7 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
             }, children);
         }
 
-        return children;
+        return this.renderChildren(children);
     }
 }
 

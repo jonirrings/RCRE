@@ -30,6 +30,8 @@ export default class AbstractBreadcrumb extends BasicContainer<BreadcrumbPropsIn
     }
     
     render() {
-        return React.createElement(Trigger, this.props);
+        let children = React.createElement(Trigger, this.props);
+
+        return this.renderChildren(children);
     }
 }

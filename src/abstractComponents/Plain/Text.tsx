@@ -7,7 +7,7 @@ export class TextConfig extends BasicConfig {
     @IsString()
     @IsDefined()
     type: string;
-    
+
     @IsString()
     @IsDefined()
     text: string;
@@ -31,13 +31,19 @@ class Text extends BasicContainer<TextPropsInterface, {}> {
     constructor() {
         super();
     }
-    
+
     render() {
         if (isExpression(this.props.info.text)) {
             return <span/>;
         }
-        
-        return <span style={Object.assign(defaultTextStyle, this.props.info.style)}>{this.props.info.text}</span>;
+
+        let children = (
+            <span style={Object.assign(defaultTextStyle, this.props.info.style)}>
+                {this.props.info.text}
+            </span>
+        );
+
+        return this.renderChildren(children);
     }
 }
 

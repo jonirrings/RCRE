@@ -31,6 +31,8 @@ export class BasicConfig extends ColConfig {
     
     data?: defaultData;
 
+    hidden?: boolean;
+
     children?: BasicConfig[];
 }
 
@@ -84,5 +86,13 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends A
     
     constructor() {
         super();
+    }
+
+    public renderChildren<Type>(children: React.ReactElement<Type>) {
+        if (this.props.info.hidden) {
+            return React.createElement('div');
+        }
+
+        return children;
     }
 }

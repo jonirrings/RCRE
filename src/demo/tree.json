@@ -26,7 +26,7 @@
                             "trigger": [
                                 {
                                     "eventType": "treeCheck",
-                                    "target": "form",
+                                    "target": "treeEditMode",
                                     "ship": {
                                         "treeId": "$event.value"
                                     }
@@ -47,83 +47,121 @@
                     "type": "content",
                     "children": [
                         {
-                            "type": "form",
-                            "model": "form",
-                            "initialLoad": {
-                                "method": "get",
-                                "url": "http://localhost:8800/tree/tree/node",
-                                "data": {
-                                    "id": "$data.treeId[0]"
-                                }
-                            },
+                            "type": "container",
+                            "model": "treeEditMode",
                             "data": {
                                 "treeId": [],
-                                "node_name": "$response.data[0].node_name",
-                                "node_type": "$response.data[0].node_type",
-                                "rule": "$response.data[0].rule",
-                                "remark": "$response.data[0].remark",
-                                "parent": "$response.data[0].parent"
+                                "mode": "add"
                             },
-                            "submit": {
-                                "url": "http://localhost:8800/tree/tree/edit",
-                                "data": {
-                                    "id": "$data.treeId[0]",
-                                    "parent": "$data.parent",
-                                    "node_name": "$data.node_name",
-                                    "node_type": "$data.node_type",
-                                    "rule": "$data.rule",
-                                    "remark": "$data.remark"
-                                },
-                                "method": "GET"
-                            },
-                            "trigger": [
+                            "hidden": "$data.treeId.length === 0",
+                            "children": [
                                 {
-                                    "eventType": "submitSuccess"
-                                },
-                                {
-                                    "eventType": "submitFailed"
-                                }
-                            ],
-                            "controls": [
-                                {
-                                    "type": "input",
-                                    "label": "节点名称",
-                                    "required": true,
-                                    "name": "node_name"
-                                },
-                                {
-                                    "type": "select",
-                                    "label": "节点类型",
-                                    "required": true,
-                                    "name": "node_type",
-                                    "options": [
+                                    "type": "row",
+                                    "children": [
                                         {
-                                            "key": "物理节点",
-                                            "value": 1
-                                        },
-                                        {
-                                            "key": "虚拟节点",
-                                            "value": 2
+                                            "type": "select",
+                                            "childModel": "mode",
+                                            "colSpan": 10,
+                                            "options": [
+                                                {
+                                                    "key": "新增",
+                                                    "value": "add"
+                                                },
+                                                {
+                                                    "key": "更新",
+                                                    "value": "update"
+                                                },
+                                                {
+                                                    "key": "删除",
+                                                    "value": "delete"
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
                                 {
-                                    "type": "input",
-                                    "label": "统计规则",
-                                    "disabled": "$data.node_type != 1",
-                                    "name": "rule",
-                                    "required": true
+                                    "type": "form",
+                                    "model": "form",
+                                    "hidden": "$data.mode !== 'add'",
+                                    "data": {
+                                        "treeId": [],
+                                        "node_name": "$response.data[0].node_name",
+                                        "node_type": "$response.data[0].node_type",
+                                        "rule": "$response.data[0].rule",
+                                        "remark": "$response.data[0].remark",
+                                        "parent": "$response.data[0].parent"
+                                    },
+                                    "submit": {
+                                        "url": "http://localhost:8800/tree/tree/add",
+                                        "data": {
+                                            "parent": "$data.treeId[0]",
+                                            "node_name": "$data.node_name",
+                                            "node_type": "$data.node_type",
+                                            "rule": "$data.rule",
+                                            "remark": "$data.remark"
+                                        },
+                                        "method": "GET"
+                                    },
+                                    "trigger": [
+                                        {
+                                            "eventType": "submitSuccess"
+                                        },
+                                        {
+                                            "eventType": "submitFailed"
+                                        }
+                                    ],
+                                    "controls": [
+                                        {
+                                            "type": "input",
+                                            "label": "节点名称",
+                                            "required": true,
+                                            "name": "node_name"
+                                        },
+                                        {
+                                            "type": "select",
+                                            "label": "节点类型",
+                                            "required": true,
+                                            "name": "node_type",
+                                            "options": [
+                                                {
+                                                    "key": "物理节点",
+                                                    "value": "1"
+                                                },
+                                                {
+                                                    "key": "虚拟节点",
+                                                    "value": "2"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "input",
+                                            "label": "统计规则",
+                                            "disabled": "$data.node_type != 1",
+                                            "name": "rule",
+                                            "required": "$data.node_type == 1"
+                                        },
+                                        {
+                                            "type": "input",
+                                            "size": "large",
+                                            "label": "备注",
+                                            "name": "remark"
+                                        },
+                                        {
+                                            "type": "button",
+                                            "htmlType": "submit",
+                                            "text": "提交"
+                                        }
+                                    ]
                                 },
                                 {
-                                    "type": "input",
-                                    "size": "large",
-                                    "label": "备注",
-                                    "name": "remark"
+                                    "type": "text",
+                                    "text": "update",
+                                    "hidden": "$data.mode !== 'update'"
                                 },
                                 {
-                                    "type": "button",
-                                    "htmlType": "submit",
-                                    "text": "修改"
+                                    "type": "text",
+                                    "text": "delete",
+                                    "hidden": "$data.model !== 'delete'"
                                 }
                             ]
                         }

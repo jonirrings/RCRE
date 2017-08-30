@@ -129,10 +129,12 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
             onSubmit: this.handleSubmit
         });
 
-        return React.createElement(Trigger, props, [
+        let children = React.createElement(Trigger, props, [
             this.renderTitle(),
             controlChildren
         ]);
+
+        return this.renderChildren(children);
     }
 
     private renderControl(info: BasicFormItemConfig, depth: number, index: number): JSX.Element {

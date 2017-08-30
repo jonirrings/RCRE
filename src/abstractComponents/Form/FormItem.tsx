@@ -90,6 +90,10 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
             }, children);
         }
 
+        if (this.props.info.hidden) {
+            return React.createElement('div');
+        }
+
         return children;
     }
 

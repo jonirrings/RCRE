@@ -12,14 +12,20 @@ class AntSelect extends React.Component<SelectPropsInterface, {}> {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    private mapOptions(props: SelectConfig): SelectProps {
-        return {
-            mode: props.mode,
-            allowClear: props.allowClear,
-            placeholder: props.placeholder,
-            size: props.size || 'default',
-            disabled: props.disabled
-        };
+    render() {
+        let Options = this.props.info.options.map(op => {
+            return React.createElement(Option, Object.assign(this.mapOptionOptions(op), {
+                key: op.key
+            }), op.key);
+        });
+
+        return React.createElement(Select, Object.assign(this.mapOptions(this.props.info), {
+            value: this.props.value,
+            onChange: this.handleChange,
+            style: {
+                width: '100%'
+            }
+        }), Options);
     }
 
     private mapOptionOptions(props: OptionConfig): OptionProps {
@@ -33,17 +39,14 @@ class AntSelect extends React.Component<SelectPropsInterface, {}> {
         this.props.onChange(value);
     }
 
-    render() {
-        let Options = this.props.info.options.map(op => {
-            return React.createElement(Option, Object.assign(this.mapOptionOptions(op), {
-                key: op.key
-            }), op.key);
-        });
-
-        return React.createElement(Select, Object.assign(this.mapOptions(this.props.info), {
-            value: this.props.value,
-            onChange: this.handleChange
-        }), Options);
+    private mapOptions(props: SelectConfig): SelectProps {
+        return {
+            mode: props.mode,
+            allowClear: props.allowClear,
+            placeholder: props.placeholder,
+            size: props.size,
+            disabled: props.disabled
+        };
     }
 }
 

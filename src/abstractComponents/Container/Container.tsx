@@ -43,18 +43,18 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
         if (Array.isArray(this.props.info.children)) {
             let ret = this.parseChildrenExpression(this.props.info.children);
             children = ret.map((child, index) => {
-                return this.renderChildren(child, 0, index);
+                return this.renderChild(child, 0, index);
             });
         }
 
-        return (
+        return this.renderChildren((
             <div className="rcre-abstract-container" style={this.props.info.style}>
                 {children}
             </div>
-        );
+        ));
     }
 
-    private renderChildren(info: BasicConfig, depth: number, index: number) {
+    private renderChild(info: BasicConfig, depth: number, index: number) {
         let type = info.type;
         let componentInfo = componentLoader.getAbstractComponent(type);
 

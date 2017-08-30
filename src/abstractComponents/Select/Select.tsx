@@ -49,8 +49,9 @@ export class SelectConfig extends BasicFormItemConfig {
     /**
      * 下拉框列表
      */
-    @IsArray()
     @IsDefined()
+    @IsArray()
+        // TODO Option validate
     options: OptionConfig[];
 }
 

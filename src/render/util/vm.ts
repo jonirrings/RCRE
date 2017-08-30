@@ -13,7 +13,8 @@ export function runInContext(code: string, context: Object) {
         f = new Function(...params);
         return f.apply(context, source);
     } catch (e) {
-        console.error(e, f);
+        // console.error(e, f);
+        return false;
         // TODO better error report   
     }
 }

@@ -212,7 +212,7 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
             $triggerEvent: TreeTriggerEvent
         });
 
-        return React.createElement(Trigger, treeProps, children);
+        return this.renderChildren(React.createElement(Trigger, treeProps, children));
     }
 }
 

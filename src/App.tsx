@@ -20,6 +20,7 @@ let tableConfig = require('./demo/table.json');
 let layoutConfig = require('./demo/layout.json');
 let searchConfig = require('./demo/searchList.json');
 let mvvmConfig = require('./demo/mvvm.json');
+// let treeAddConfig = require('./demo/treeAdd.json');
 // let submitConfig = require('./demo/submit.json');
 
 interface AppStateInterface {
@@ -75,7 +76,7 @@ class App extends React.Component<{}, AppStateInterface> {
                     <a onClick={this.changeConfig(layoutConfig)}>Layout</a>
                     <a onClick={this.changeConfig(searchConfig)}>Search</a>
                     <a onClick={this.changeConfig(lineChartConfig)}>LineChart</a>
-                    <a onClick={this.changeConfig(treeConfig)}>Tree</a>
+                    <a onClick={this.changeConfig(treeConfig)}>树</a>
                     <a onClick={this.changeConfig(mvvmConfig)}>MVVM example</a>
                     <a onClick={this.changeConfig(tableConfig)}>Table</a>
                 </div>
