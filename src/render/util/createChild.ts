@@ -16,6 +16,12 @@ export function createChild(item: BasicConfig,
 
     let component: React.ComponentClass<any>;
     let componentInterface;
+    
+    // if (item.hidden) {
+    //     return React.createElement('div', {
+    //         key: Math.random()
+    //     });
+    // }
 
     if (item.data && !inForm && !abstractContainer) {
         component = Container;

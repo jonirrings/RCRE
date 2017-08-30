@@ -28,6 +28,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
     }
 
     componentWillMount() {
+        console.log('mount container', this.props.info.model);
         if ((this.props.info.data && !this.props.info.model) || (!this.props.info.data && this.props.info.model)) {
             console.error(`model and data need to be exist of type: ${this.props.info.type}`);
         }
@@ -46,9 +47,18 @@ class Container extends BasicContainer<ContainerProps, {}> {
                 data: initData
             });
 
-            if (this.props.info.initialLoad) {
+            if (this.props.info.initialLoad && !this.props.info.hidden) {
                 this.mergeOriginData(this.props);
             }
+        }
+    }
+    
+    componentWillUnmount() {
+        if (this.props.info.model) {
+            console.log('unmount container', this.props.info.model);
+            this.props.removeData({
+                model: this.props.info.model
+            }); 
         }
     }
 
@@ -87,6 +97,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
             $data: this.props.$data,
             $setData: this.props.setData,
             $setDataList: this.props.setDataList,
+            $removeData: this.props.removeData,
             onChange: this.handleChange
         };
 
@@ -169,7 +180,8 @@ const mapStateToProps = (state: RootState, ownProps: any) => {
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
     setData: actionCreators.setData,
     setDataList: actionCreators.setDataList,
-    initData: actionCreators.initData
+    initData: actionCreators.initData,
+    removeData: actionCreators.removeData
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

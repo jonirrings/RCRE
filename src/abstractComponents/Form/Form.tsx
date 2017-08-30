@@ -12,6 +12,7 @@ import {IsPageInfo} from '../../render/util/validators';
 import Trigger from '../../render/core/Trigger/Trigger';
 import {request} from '../../render/services/api';
 import {compileValueExpress} from '../../render/util/vm';
+import {notification} from 'antd';
 
 class SubmitConfig {
     @IsUrl()
@@ -109,7 +110,14 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
             method: method,
             data: data
         }).then(ret => {
-            console.log(ret);
+            notification.info({
+                message: '操作成功',
+                description: ''
+            });
+            
+            // this.props.$removeData({
+            //     model: this.props.info.model!
+            // });
         });
     }
 

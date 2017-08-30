@@ -4,9 +4,8 @@ import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../r
 import * as PropTypes from 'prop-types';
 import {Validate} from 'class-validator';
 import {IsPageInfo} from '../../render/util/validators';
-import createElement from '../../render/util/createElement';
-import componentLoader from '../../render/util/componentLoader';
 import {isExpression, runInContext} from '../../render/util/vm';
+import {createChild} from '../../render/util/createChild';
 
 export class ContainerConfig extends BasicConfig {
     style?: React.CSSProperties;
@@ -39,42 +38,31 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
 
     render() {
         let children;
-
+        
         if (Array.isArray(this.props.info.children)) {
             let ret = this.parseChildrenExpression(this.props.info.children);
             children = ret.map((child, index) => {
                 return this.renderChild(child, 0, index);
             });
         }
-
-        return this.renderChildren((
-            <div className="rcre-abstract-container" style={this.props.info.style}>
-                {children}
-            </div>
-        ));
+        
+        let childElement = React.createElement('div', {
+            style: this.props.info.style,
+            className: 'rcre-abstract-container'
+        }, children);
+        
+        return this.renderChildren(childElement);
     }
 
     private renderChild(info: BasicConfig, depth: number, index: number) {
-        let type = info.type;
-        let componentInfo = componentLoader.getAbstractComponent(type);
-
-        if (!componentInfo) {
-            return <pre>{`can not find component of type: ${type}`}</pre>;
-        }
-
-        let {
-            component,
-            componentInterface
-        } = componentInfo;
-
-        return createElement(component, componentInterface, {
+        return createChild(info, {
             key: `${info.type}_${depth}_${index}`,
             info: info,
             onChange: this.handleChange,
             $data: this.props.$data,
             $setData: this.props.$setData,
             $setDataList: this.props.$setDataList
-        });
+        }, this.context.form, false);
     }
 
     handleChange(type: string, val: any) {
@@ -84,23 +72,44 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
     private parseChildrenExpression(info: BasicConfig[]) {
         let infoCopy = _.cloneDeep(info);
         let mirror = this.props.$data.toObject();
+        let self = this;
 
         if (_.isEmpty(mirror)) {
             return infoCopy;
         }
+        
+        const validParseConfig = [
+            'children',
+            'data'
+        ];
 
+        function parseExpression(reference: Object, val: any, name: string | number) {
+            if (isExpression(val)) {
+                let ret = runInContext(val, {
+                    $data: mirror
+                });
+                
+                if (!_.isNil(ret)) {
+                    reference[name] = ret;
+                }
+            }
+
+            if (val && typeof name === 'string' && validParseConfig.indexOf(name) >= 0) {
+                reference[name] = self.parseChildrenExpression(val);
+            }
+        }
+        
         _.each(infoCopy, (config, index) => {
-            _.each(config, (val, name) => {
-                if (isExpression(val)) {
-                    config[name] = runInContext(val, {
-                        $data: mirror
-                    });
-                }
-
-                if (val && name === 'children' && Array.isArray(val)) {
-                    config[name] = this.parseChildrenExpression(val);
-                }
-            });
+            if (isExpression(config)) {
+                parseExpression(infoCopy, config, index);
+                return;
+            }
+            
+            if (_.isPlainObject(config)) {
+                _.each(config, (val, name) => {
+                    parseExpression(config, val, name);
+                });
+            }
         });
 
         return infoCopy;

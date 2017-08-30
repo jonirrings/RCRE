@@ -14,7 +14,7 @@ export function runInContext(code: string, context: Object) {
         return f.apply(context, source);
     } catch (e) {
         // console.error(e, f);
-        return false;
+        return null;
         // TODO better error report   
     }
 }

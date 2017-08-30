@@ -61,6 +61,8 @@ export class BasicContainerPropsInterface extends ColPropsInterface {
     $setDataList: typeof actionCreators.setDataList;
 
     $triggerEvent?: typeof BasicTriggerEvent;
+    
+    $removeData: typeof actionCreators.removeData;
 }
 
 export class ContainerProps extends BasicContainerPropsInterface {
@@ -68,6 +70,7 @@ export class ContainerProps extends BasicContainerPropsInterface {
     public setData: typeof actionCreators.setData;
     public setDataList: typeof actionCreators.setDataList;
     public initData: typeof actionCreators.initData;
+    public removeData: typeof actionCreators.removeData;
     public requestAPI: () => void;
 }
 

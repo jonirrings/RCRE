@@ -189,7 +189,8 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
                     onChange: this.props.onChange,
                     $data: this.props.$data,
                     $setData: this.props.$setData,
-                    $setDataList: this.props.$setDataList
+                    $setDataList: this.props.$setDataList,
+                    $removeData: this.props.$removeData
                 }; 
                 
                 if (ret.children && ret.children.length > 0) {
