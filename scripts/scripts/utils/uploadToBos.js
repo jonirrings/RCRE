@@ -18,11 +18,11 @@ const config = {
 let bucket = 'miskit';
 let client = new BosClient(config);
 
-exports.generateBosURL = function(key) {
+exports.generateBosURL = function (key) {
     return `${config.endpoint}/v1/miskit/${key}`;
 };
- 
-exports.getKeyFromBosURL = function(url) {
+
+exports.getKeyFromBosURL = function (url) {
     return url.replace(`${config.endpoint}/v1/miskit/`, '');
 };
 
@@ -34,7 +34,7 @@ exports.getKeyFromBosURL = function(url) {
  * @param {Object} options 配置
  * @return {Promise<any>}
  */
-exports.putString = function(key, string, options) {
+exports.putString = function (key, string, options) {
     return client.putObjectFromString(bucket, key, string, options);
 };
 
@@ -44,6 +44,6 @@ exports.putString = function(key, string, options) {
  * @param {string} key 资源Key
  * @return {Promise<any>}
  */
-exports.getString = function(key) {
+exports.getString = function (key) {
     return client.getObject(bucket, key);
 };
