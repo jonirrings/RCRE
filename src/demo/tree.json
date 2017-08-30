@@ -18,29 +18,28 @@
                             "type": "tree",
                             "colSpan": 8,
                             "model": "tree",
-                            "checkable": true,
+                            "checkable": false,
                             "data": {
-                                "tree": "$response.tree",
-                                "show": "Object.keys($response.show)"
+                                "tree": "$response.data.tree",
+                                "show": "Object.keys($response.data.show)"
                             },
                             "trigger": [
                                 {
                                     "eventType": "treeCheck",
-                                    "target": "viewContent",
+                                    "target": "form",
                                     "ship": {
-                                        "cmatch_tree": "$event.value"
+                                        "treeId": "$event.value"
                                     }
                                 }
                             ],
-                            "initialLoad": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8800/tree",
-                            "children": "$data.tree",
-                            "childMapping": {
-                                "title": "$iterator.title",
-                                "key": "$iterator.key",
-                                "children": "$iterator.children",
-                                "isLeaf": "$iterator.isLeaf",
-                                "disableCheckbox": "$iterator.disableCheckbox"
-                            }
+                            "initialLoad": {
+                                "url": "http://localhost:8800/tree/tree/tree",
+                                "method": "GET",
+                                "data": {
+                                    "root": "1"
+                                }
+                            },
+                            "children": "$data.tree"
                         }
                     ]
                 },
@@ -48,54 +47,83 @@
                     "type": "content",
                     "children": [
                         {
-                            "type": "container",
-                            "data": {},
-                            "model": "viewContent",
-                            "children": [
+                            "type": "form",
+                            "model": "form",
+                            "initialLoad": {
+                                "method": "get",
+                                "url": "http://localhost:8800/tree/tree/node",
+                                "data": {
+                                    "id": "$data.treeId[0]"
+                                }
+                            },
+                            "data": {
+                                "treeId": [],
+                                "node_name": "$response.data[0].node_name",
+                                "node_type": "$response.data[0].node_type",
+                                "rule": "$response.data[0].rule",
+                                "remark": "$response.data[0].remark",
+                                "parent": "$response.data[0].parent"
+                            },
+                            "submit": {
+                                "url": "http://localhost:8800/tree/tree/edit",
+                                "data": {
+                                    "id": "$data.treeId[0]",
+                                    "parent": "$data.parent",
+                                    "node_name": "$data.node_name",
+                                    "node_type": "$data.node_type",
+                                    "rule": "$data.rule",
+                                    "remark": "$data.remark"
+                                },
+                                "method": "GET"
+                            },
+                            "trigger": [
                                 {
-                                    "type": "row",
-                                    "children": [
-                                        {
-                                            "type": "html",
-                                            "data": "$data"
-                                        }
-                                    ]
+                                    "eventType": "submitSuccess"
                                 },
                                 {
-                                    "type": "row",
-                                    "children": [
+                                    "eventType": "submitFailed"
+                                }
+                            ],
+                            "controls": [
+                                {
+                                    "type": "input",
+                                    "label": "节点名称",
+                                    "required": true,
+                                    "name": "node_name"
+                                },
+                                {
+                                    "type": "select",
+                                    "label": "节点类型",
+                                    "required": true,
+                                    "name": "node_type",
+                                    "options": [
                                         {
-                                            "type": "datepicker",
-                                            "name": "start_time",
-                                            "startTime": "now+1w-7d",
-                                            "childModel": "start_time"
+                                            "key": "物理节点",
+                                            "value": 1
                                         },
                                         {
-                                            "type": "select",
-                                            "childModel": "index",
-                                            "colSpan": 10,
-                                            "options": [
-                                                {
-                                                    "key": "滤前",
-                                                    "value": "prepv"
-                                                },
-                                                {
-                                                    "key": "滤后",
-                                                    "value": "after"
-                                                }
-                                            ]
+                                            "key": "虚拟节点",
+                                            "value": 2
                                         }
                                     ]
                                 },
                                 {
-                                    "type": "row",
-                                    "children": [
-                                        {
-                                            "type": "checkbox",
-                                            "childModel": "index[]",
-                                            "text": "前链PV"
-                                        }
-                                    ]
+                                    "type": "input",
+                                    "label": "统计规则",
+                                    "disabled": "$data.node_type != 1",
+                                    "name": "rule",
+                                    "required": true
+                                },
+                                {
+                                    "type": "input",
+                                    "size": "large",
+                                    "label": "备注",
+                                    "name": "remark"
+                                },
+                                {
+                                    "type": "button",
+                                    "htmlType": "submit",
+                                    "text": "修改"
                                 }
                             ]
                         }

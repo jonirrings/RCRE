@@ -15,6 +15,7 @@ export default function createElement<T>(component: React.ComponentClass<T>,
                 errmsg += `${name}: ${msg}\n`;
             });
         });
+        console.trace(props);
         return React.createElement('pre', props, errmsg); 
     }
 

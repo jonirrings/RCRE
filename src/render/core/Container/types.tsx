@@ -1,4 +1,4 @@
-import {IsDefined, IsString, Validate} from 'class-validator';
+import {IsString, Validate} from 'class-validator';
 import {IsPageInfo} from '../../util/validators';
 import {actionCreators} from './action';
 import AbstractCol, {ColConfig, ColPropsInterface} from '../Layout/Col/Col';
@@ -21,7 +21,7 @@ export interface RequestConfig extends AxiosRequestConfig {
 
 export class BasicConfig extends ColConfig {
     @IsString()
-    @IsDefined()
+    // @IsDefined()
     type: string;
 
     initialLoad?: string | RequestConfig;

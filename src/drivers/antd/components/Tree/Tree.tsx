@@ -13,6 +13,7 @@ export class AntTree extends React.Component<TreePropsInterface, {}> {
     }
 
     handleSelect(checkedKeys: Array<string>, e: AntTreeNodeEvent) {
+        this.props.onCheck(checkedKeys);
     }
 
     handleCheck(checkedKeys: Array<string>, e: AntTreeNodeEvent) {

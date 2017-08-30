@@ -200,11 +200,11 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
                         loop(ret.children)
                     );
                 }
-
+                
                 return createElement(TreeNode, TreeNodePropsInterface, childProps);
             });
 
-        if (Array.isArray(this.props.info.children)) {
+        if (Array.isArray(this.props.info.children) && this.props.info.children.length > 0) {
             children = loop(this.props.info.children);
         }
 
