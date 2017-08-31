@@ -1,6 +1,6 @@
 {
     "name": "rcre-core",
-    "version": "0.9.5",
+    "version": "0.9.6",
     "main": "./build/main.js",
     "dependencies": {
         "@types/acorn": "^4.0.2",
