@@ -33,7 +33,7 @@
                                 }
                             ],
                             "initialLoad": {
-                                "url": "http://localhost:8800/tree/tree/tree",
+                                "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/tree/tree/tree",
                                 "method": "GET",
                                 "data": {
                                     "root": "1"
@@ -92,7 +92,7 @@
                                         "parent": "$response.data[0].parent"
                                     },
                                     "submit": {
-                                        "url": "http://localhost:8800/tree/tree/add",
+                                        "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/tree/tree/add",
                                         "data": {
                                             "parent": "$data.treeId",
                                             "node_name": "$data.node_name",
@@ -100,22 +100,8 @@
                                             "rule": "$data.rule",
                                             "remark": "$data.remark"
                                         },
-                                        "method": "GET",
-                                        "successEvents": [
-                                            {
-                                                "target": "tree",
-                                                "eventType": "update"
-                                            }
-                                        ]
+                                        "method": "GET"
                                     },
-                                    "trigger": [
-                                        {
-                                            "eventType": "submitSuccess"
-                                        },
-                                        {
-                                            "eventType": "submitFailed"
-                                        }
-                                    ],
                                     "controls": [
                                         {
                                             "type": "input",
@@ -165,7 +151,7 @@
                                     "hidden": "$data.mode !== 'update'",
                                     "initialLoad": {
                                         "method": "get",
-                                        "url": "http://localhost:8800/tree/tree/node",
+                                        "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/tree/tree/node",
                                         "data": {
                                             "id": "$data.treeId"
                                         }
@@ -179,7 +165,7 @@
                                         "parent": "$response.data[0].parent"
                                     },
                                     "submit": {
-                                        "url": "http://localhost:8800/tree/tree/edit",
+                                        "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/tree/tree/edit",
                                         "data": {
                                             "id": "$data.treeId[0]",
                                             "parent": "$data.parent",
@@ -188,22 +174,8 @@
                                             "rule": "$data.rule",
                                             "remark": "$data.remark"
                                         },
-                                        "method": "GET",
-                                        "successEvents": [
-                                            {
-                                                "target": "tree",
-                                                "eventType": "update"
-                                            }
-                                        ]
+                                        "method": "GET"
                                     },
-                                    "trigger": [
-                                        {
-                                            "eventType": "submitSuccess"
-                                        },
-                                        {
-                                            "eventType": "submitFailed"
-                                        }
-                                    ],
                                     "controls": [
                                         {
                                             "type": "input",
@@ -244,11 +216,6 @@
                                             "type": "button",
                                             "htmlType": "submit",
                                             "text": "修改"
-                                        },
-                                        {
-                                            "type": "button",
-                                            "buttonType": "danger",
-                                            "text": "删除节点"
                                         }
                                     ]
                                 },
@@ -260,7 +227,7 @@
                                     },
                                     "hidden": "$data.mode !== 'delete'",
                                     "submit": {
-                                        "url": "http://localhost:8800/tree/tree/delete",
+                                        "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/tree/tree/delete",
                                         "data": {
                                             "id": "$data.treeId"
                                         },

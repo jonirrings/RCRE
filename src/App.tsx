@@ -30,7 +30,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(searchConfig)
+            code: jsonformat(treeConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -60,7 +60,8 @@ class App extends React.Component<{}, AppStateInterface> {
 
             render() {
                 const globalOptions = {
-                    pageId: '4567'
+                    pageId: '4567',
+                    proxyServer: 'http://localhost:8800/proxy'
                 };
                 
                 return <Render code={this.props.code} global={globalOptions}/>;

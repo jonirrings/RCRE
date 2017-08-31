@@ -165,7 +165,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
 
         this.prevRequestData = _.cloneDeep(requestConfig);
 
-        return request(requestConfig.url!, requestConfig);
+        return request(requestConfig.url!, requestConfig, this.context.$global.proxyServer);
     }
 }
 

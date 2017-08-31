@@ -108,9 +108,10 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
         });
         
         return request(url, {
+            url: url,
             method: method,
             data: data
-        }).then(ret => {
+        }, this.context.$global.proxyServer).then(ret => {
             notification.info({
                 message: '操作成功',
                 description: ''
