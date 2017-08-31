@@ -100,7 +100,13 @@
                                             "rule": "$data.rule",
                                             "remark": "$data.remark"
                                         },
-                                        "method": "GET"
+                                        "method": "GET",
+                                        "successEvents": [
+                                            {
+                                                "target": "tree",
+                                                "eventType": "update"
+                                            }
+                                        ]
                                     },
                                     "trigger": [
                                         {
@@ -165,7 +171,7 @@
                                         }
                                     },
                                     "data": {
-                                        "treeId": "$data.treeId",
+                                        "treeId": "$data.treeId[0]",
                                         "node_name": "$response.data[0].node_name",
                                         "node_type": "$response.data[0].node_type",
                                         "rule": "$response.data[0].rule",
@@ -182,7 +188,13 @@
                                             "rule": "$data.rule",
                                             "remark": "$data.remark"
                                         },
-                                        "method": "GET"
+                                        "method": "GET",
+                                        "successEvents": [
+                                            {
+                                                "target": "tree",
+                                                "eventType": "update"
+                                            }
+                                        ]
                                     },
                                     "trigger": [
                                         {

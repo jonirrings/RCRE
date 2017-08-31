@@ -17,7 +17,7 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
     static defaultProps = {
         $data: Map({})
     };
-    
+
     constructor() {
         super();
 
@@ -126,7 +126,8 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
         this.context.$triggerListData(payload, target);
     }
 
-    private handleTrigger(item: TriggerItem, triggerType: 'data' | 'link' | undefined): (type: string, value: any) => void {
+    private handleTrigger(item: TriggerItem,
+                          triggerType: 'data' | 'link' | undefined): (type: string, value: any) => void {
         return (model: string, value: any) => {
             switch (triggerType) {
                 case 'link':

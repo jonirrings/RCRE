@@ -114,10 +114,6 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
                 message: '操作成功',
                 description: ''
             });
-            
-            // this.props.$removeData({
-            //     model: this.props.info.model!
-            // });
         });
     }
 

@@ -22,13 +22,11 @@ class Container extends BasicContainer<ContainerProps, {}> {
 
     constructor() {
         super();
-
         this.loadData = this.loadData.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
     componentWillMount() {
-        console.log('mount container', this.props.info.model);
         if ((this.props.info.data && !this.props.info.model) || (!this.props.info.data && this.props.info.model)) {
             console.error(`model and data need to be exist of type: ${this.props.info.type}`);
         }
@@ -55,7 +53,6 @@ class Container extends BasicContainer<ContainerProps, {}> {
     
     componentWillUnmount() {
         if (this.props.info.model) {
-            console.log('unmount container', this.props.info.model);
             this.props.removeData({
                 model: this.props.info.model
             }); 

@@ -29,7 +29,7 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
             let model = actions.payload.model;
             let data = actions.payload.data;
             
-            if (state.has(model)) {
+            if (state.has(model) && state.get(model).size !== 0) {
                 console.error(`find exist model of model: ${model}`);
                 return state;
             }
@@ -37,9 +37,8 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
             return state.set(model, Map(data));
             
         case REMOVE_DATA:
-            
             let delKey = actions.payload.model;
-            return state.delete(delKey);
+            return state.set(delKey, Map({}));
         // only for dev
         case CLEAR_DATA:
             state = Map({});

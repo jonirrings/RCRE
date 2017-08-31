@@ -63,6 +63,10 @@ class Page extends React.Component<PageProps, {}> {
         };
     }
 
+    constructor() {
+        super();
+    }
+
     getChildContext() {
         themeDriver.setTheme(this.props.theme);
 
@@ -70,7 +74,7 @@ class Page extends React.Component<PageProps, {}> {
             $location,
             $query
         } = Page.getLocationService();
-        
+
         return {
             driver: themeDriver,
             $global: this.props.$global,
@@ -80,10 +84,6 @@ class Page extends React.Component<PageProps, {}> {
             $location,
             $query
         };
-    }
-
-    constructor() {
-        super();
     }
 
     render() {
