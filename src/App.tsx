@@ -9,8 +9,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import 'font-awesome/css/font-awesome.css';
 import './App.css';
-import {actionCreators} from './render/core/Container/action';
-import store from './render/data/store';
 
 let basicConfig = require('./demo/basic.json');
 let formConfig = require('./demo/form.json');
@@ -40,8 +38,6 @@ class App extends React.Component<{}, AppStateInterface> {
     }
 
     onJSONEditorChange(code: string) {
-        store.dispatch(actionCreators.clearData());
-        
         this.setState({
             code
         });
@@ -49,7 +45,6 @@ class App extends React.Component<{}, AppStateInterface> {
 
     changeConfig(config: Object) {
         return () => {
-            store.dispatch(actionCreators.clearData());
             this.setState({
                 code: jsonformat(config)
             });

@@ -4,6 +4,7 @@ import Page, {PageProps} from './core/Page';
 import paramCheck from './util/paramCheck';
 import store from './data/store';
 import {Provider} from 'react-redux';
+import {actionCreators} from './core/Container/action';
 
 import './index.css';
 
@@ -23,6 +24,12 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
         } catch (e) {
             // TODO Error Report
             return false;
+        }
+    }
+    
+    componentWillUpdate(nextProps: RenderPropsInterface) {
+        if (nextProps.code !== this.props.code) {
+            store.dispatch(actionCreators.clearData());
         }
     }
 
