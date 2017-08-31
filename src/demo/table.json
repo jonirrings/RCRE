@@ -3,8 +3,10 @@
         {
             "type": "container",
             "model": "tableSource",
+            "colSpan": 24,
             "initialLoad": {
-                "url": "http://localhost:8220/afd/udwmessage/tabledetail",
+                "url": "http://cp01-yjk.epc.baidu.com:8203/afd/udwmessage/tabledetail",
+                "method": "GET",
                 "data": {
                     "data_type": "$query.data_type",
                     "db_name": "$query.db_name",
@@ -88,47 +90,89 @@
                             "text": "$data.frequency.value"
                         }
                     ]
+                },
+                {
+                    "type": "row",
+                    "children": [
+                        {
+                            "type": "text",
+                            "text": "$data.hi_ref.name"
+                        },
+                        {
+                            "type": "list",
+                            "resource": "$data.hi_ref.value",
+                            "iterator": [
+                                {
+                                    "type": "text",
+                                    "text": "$resource.user"
+                                },
+                                {
+                                    "type": "button",
+                                    "text": "Hi",
+                                    "trigger": [
+                                        {
+                                            "eventType": "click",
+                                            "triggerType": "link",
+                                            "isRaw": true,
+                                            "href": "{{$resource.ref}}"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "row",
+                    "colSpan": 24,
+                    "children": [
+                        {
+                            "type": "table",
+                            "colSpan": 24,
+                            "model": "customTable",
+                            "data": {
+                                "dataSource": [
+                                    {
+                                        "key": "1",
+                                        "name": "胡彦斌",
+                                        "age": 32,
+                                        "address": "西湖区湖底公园1号"
+                                    },
+                                    {
+                                        "key": "2",
+                                        "name": "胡彦祖",
+                                        "age": 42,
+                                        "address": "西湖区湖底公园1号"
+                                    }
+                                ],
+                                "columns": [
+                                    {
+                                        "title": "姓名",
+                                        "dataIndex": "name",
+                                        "key": "name"
+                                    },
+                                    {
+                                        "title": "年龄",
+                                        "dataIndex": "age",
+                                        "key": "age"
+                                    },
+                                    {
+                                        "title": "住址",
+                                        "dataIndex": "address",
+                                        "key": "address"
+                                    }
+                                ]
+                            },
+                            "dataSource": "$data.body",
+                            "columns": "$data.head",
+                            "columnsMapping": {
+                                "title": "$iterator.title",
+                                "dataIndex": "$iterator."
+                            }
+                        }
+                    ]
                 }
             ]
-        },
-        {
-            "type": "table",
-            "model": "customTable",
-            "data": {
-                "dataSource": [
-                    {
-                        "key": "1",
-                        "name": "胡彦斌",
-                        "age": 32,
-                        "address": "西湖区湖底公园1号"
-                    },
-                    {
-                        "key": "2",
-                        "name": "胡彦祖",
-                        "age": 42,
-                        "address": "西湖区湖底公园1号"
-                    }
-                ],
-                "columns": [
-                    {
-                        "title": "姓名",
-                        "dataIndex": "name",
-                        "key": "name"
-                    },
-                    {
-                        "title": "年龄",
-                        "dataIndex": "age",
-                        "key": "age"
-                    },
-                    {
-                        "title": "住址",
-                        "dataIndex": "address",
-                        "key": "address"
-                    }
-                ]
-            },
-            "dataSource": "$data.dataSource",
-            "columns": "$data.columns"
         }
     ]
 }

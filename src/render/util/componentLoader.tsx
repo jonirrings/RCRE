@@ -21,6 +21,7 @@ import Sider, {SidePropsInterface} from '../core/Layout/Layout/Sider';
 import Footer, {FooterPropsInterface} from '../core/Layout/Layout/Footer';
 import Content, {ContentPropsInterface} from '../core/Layout/Layout/Content';
 import List, {ListPropsInterface} from '../../abstractComponents/List/List';
+import Hr, {HrPropsInterface} from '../../abstractComponents/Plain/Hr';
 import * as _ from 'lodash';
 
 export type ComponentLoaderMapVal = {
@@ -148,6 +149,10 @@ const config = {
     list: {
         component: List,
         componentInterface: ListPropsInterface
+    },
+    hr: {
+        component: Hr,
+        componentInterface: HrPropsInterface
     }
 };
 

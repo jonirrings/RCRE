@@ -62,7 +62,7 @@ module.exports = {
         // Errors should be considered fatal in development
         require.resolve('react-error-overlay'),
         // Finally, this is your app's code:
-        paths.appIndexJs
+        process.env.REMOTE_DEBUG ? paths.proIndexJs : path.appIndexJs
     ],
     output: {
         // Next line is not used in dev but WebpackDevServer crashes without it:
@@ -231,6 +231,10 @@ module.exports = {
             // ** STOP ** Are you adding a new loader?
             // Remember to add the new extension(s) to the "url" loader exclusion list.
         ]
+    },
+    externals: {
+        'react': 'window.React',
+        'react-dom': 'window.ReactDOM'
     },
     plugins: [
         // Makes some environment variables available in index.html.

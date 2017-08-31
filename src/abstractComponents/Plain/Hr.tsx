@@ -1,23 +1,18 @@
 import * as React from 'react';
 import {IsDefined, IsJSON, IsString} from 'class-validator';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
-import {isExpression} from '../../render/util/vm';
 
-export class TextConfig extends BasicConfig {
+export class HrConfig extends BasicConfig {
     @IsString()
     @IsDefined()
     type: string;
-
-    @IsString()
-    @IsDefined()
-    text: string;
-
+    
     @IsJSON()
     style?: React.CSSProperties;
 }
 
-export class TextPropsInterface extends BasicContainerPropsInterface {
-    info: TextConfig;
+export class HrPropsInterface extends BasicContainerPropsInterface {
+    info: HrConfig;
 }
 
 const defaultTextStyle = {
@@ -27,24 +22,18 @@ const defaultTextStyle = {
     lineHeight: '25px'
 };
 
-class Text extends BasicContainer<TextPropsInterface, {}> {
+class Hr extends BasicContainer<HrPropsInterface, {}> {
     constructor() {
         super();
     }
 
     render() {
-        if (isExpression(this.props.info.text)) {
-            return <span/>;
-        }
-
         let children = (
-            <span style={Object.assign({}, defaultTextStyle, this.props.info.style)}>
-                {this.props.info.text}
-            </span>
+            <hr style={Object.assign({}, defaultTextStyle, this.props.info.style)} />
         );
 
         return this.renderChildren(children);
     }
 }
 
-export default Text;
+export default Hr;

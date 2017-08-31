@@ -100,9 +100,9 @@ module.exports = {
             // It usually still works on npm 3 without this but it would be
             // unfortunate to rely on, as react-scripts could be symlinked,
             // and thus babel-runtime might not be resolvable from the source.
-            'babel-runtime': path.dirname(
-                require.resolve('babel-runtime/package.json')
-            ),
+            // 'babel-runtime': path.dirname(
+            //     require.resolve('babel-runtime/package.json')
+            // ),
             // @remove-on-eject-end
             // Support React Native Web
             // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
@@ -241,10 +241,10 @@ module.exports = {
             // Remember to add the new extension(s) to the "file" loader exclusion list.
         ]
     },
-    // externals: {
-    //     'react': 'window.React',
-    //     'react-dom': 'window.ReactDOM'
-    // },
+    externals: {
+        'react': 'window.React',
+        'react-dom': 'window.ReactDOM'
+    },
     plugins: [
         // Makes some environment variables available to the JS code, for example:
         // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.

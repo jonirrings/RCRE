@@ -58,6 +58,7 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
 
     private handleLinkTrigger(item: TriggerItem, model: string, value: any) {
         let href = item.href;
+        let isRaw = item.isRaw;
 
         if (!href) {
             console.error('your must provide href attribute to finish jumping...');
@@ -80,7 +81,7 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
                 return expression;
             }
 
-            return encodeURIComponent(ret);
+            return isRaw ? ret : encodeURIComponent(ret);
         });
 
         location.href = href;

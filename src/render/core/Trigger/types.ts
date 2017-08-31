@@ -30,6 +30,11 @@ export class TriggerItem {
      * 跳转的地址
      */
     href?: string;
+
+    /**
+     * 是否使用encodeURIComponent来转义值
+     */
+    isRaw: boolean;
     
     /**
      * 传递的数据

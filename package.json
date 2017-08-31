@@ -93,6 +93,7 @@
     },
     "scripts": {
         "start": "node scripts/bin/react-scripts-ts start",
+        "remoteDebug": "REMOTE_DEBUG=true node scripts/bin/react-scripts-ts start",
         "build": "node scripts/bin/react-scripts-ts build",
         "publish": "node scripts/scripts/publish",
         "test": "node scripts/bin/react-scripts-ts test --env=jsdom"
