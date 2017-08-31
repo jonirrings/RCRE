@@ -72,7 +72,8 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
             }
 
             let ret = runInContext(expression, {
-                $resource: this.props.$data.toObject()
+                $resource: this.props.$data.toObject(),
+                $global: this.context.$global
             });
 
             if (!ret) {
@@ -87,9 +88,9 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
 
     private handleDataTrigger(item: TriggerItem, model: string, value: any) {
         let target = item.target;
-        let $global = this.context.$global;
+        let $store = this.context.$store;
 
-        if (!$global.has(target)) {
+        if (!$store.has(target)) {
             console.error(`can not find target model of target: ${target} `);
             return;
         }
@@ -108,6 +109,7 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
 
         let compiled = compileValueExpress<Object, Object>(ship!, {
             $data: this.props.$data.toObject(),
+            $global: this.context.$global,
             $event: {
                 model: model,
                 value: value

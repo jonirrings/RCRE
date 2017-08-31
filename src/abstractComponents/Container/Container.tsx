@@ -86,7 +86,8 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
         function parseExpression(reference: Object, val: any, name: string | number) {
             if (isExpression(val)) {
                 let ret = runInContext(val, {
-                    $data: mirror
+                    $data: mirror,
+                    $global: self.context.$global
                 });
                 
                 if (!_.isNil(ret)) {

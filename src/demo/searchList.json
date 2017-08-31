@@ -23,7 +23,7 @@
                                 },
                                 {
                                     "type": "button",
-                                    "label": "搜索",
+                                    "text": "搜索",
                                     "trigger": [
                                         {
                                             "eventType": "click",
@@ -43,7 +43,7 @@
         {
             "type": "container",
             "initialLoad": {
-                "url": "http://localhost:8220/afd/udwmessage/table",
+                "url": "http://localhost:8800/afd/udwmessage/table",
                 "data": {
                     "query": "$data.query"
                 }
@@ -90,7 +90,7 @@
                         },
                         {
                             "type": "button",
-                            "label": "查看详情",
+                            "text": "查看详情",
                             "trigger": [
                                 {
                                     "eventType": "click",

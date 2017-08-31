@@ -78,6 +78,7 @@ export const BasicContextTypes = {
     driver: PropTypes.object,
     form: PropTypes.bool,
     abstractContainer: PropTypes.bool,
+    $store: PropTypes.object,
     $global: PropTypes.object,
     $triggerListData: PropTypes.func,
     $location: PropTypes.object,

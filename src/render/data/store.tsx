@@ -1,18 +1,16 @@
 import {compose, createStore} from 'redux';
 import {rootReducer, RootState} from './reducers';
 
-const composeEnhancers = (
+const composeEnhancers = ((
     window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-) || compose;
+) || compose)();
 
 function configureStore(initialState?: RootState) {
     return createStore<RootState>(
         rootReducer,
         initialState!,
-        composeEnhancers()
+        composeEnhancers
     );
 }
 
-const store = configureStore();
-
-export default store;
+export default configureStore;

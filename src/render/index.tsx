@@ -2,17 +2,28 @@ import 'reflect-metadata';
 import * as React from 'react';
 import Page, {PageProps} from './core/Page';
 import paramCheck from './util/paramCheck';
-import store from './data/store';
+import configureStore from './data/store';
 import {Provider} from 'react-redux';
-import {actionCreators} from './core/Container/action';
 
 import './index.css';
 
+type globalOptions = {
+    [s: string]: any
+};
+
 interface RenderPropsInterface {
     code: string;
+    global?: globalOptions;
 }
 
+let store = configureStore();
+
 export class Render extends React.Component<RenderPropsInterface, {}> {
+    static defaultProps = {
+        code: '{"title": "空数据", "body": []}',
+        global: {}
+    };
+    
     constructor() {
         super();
     }
@@ -26,11 +37,13 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
             return false;
         }
     }
+
+    componentWillMount() {
+        store = configureStore();
+    }
     
     componentWillUpdate(nextProps: RenderPropsInterface) {
-        if (nextProps.code !== this.props.code) {
-            store.dispatch(actionCreators.clearData());
-        }
+        store = configureStore();
     }
 
     render() {
@@ -59,6 +72,7 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
                         title={info.title}
                         body={info.body}
                         theme={info.theme}
+                        global={this.props.global}
                     />
                 </Provider>
             </div>

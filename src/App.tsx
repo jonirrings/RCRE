@@ -30,7 +30,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(treeConfig)
+            code: jsonformat(searchConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -59,7 +59,11 @@ class App extends React.Component<{}, AppStateInterface> {
             }
 
             render() {
-                return <Render code={this.props.code}/>;
+                const globalOptions = {
+                    pageId: '4567'
+                };
+                
+                return <Render code={this.props.code} global={globalOptions}/>;
             }
         }
 

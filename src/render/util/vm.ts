@@ -25,15 +25,36 @@ export type compilePairType<S> = {
 
 export function compileValueExpress<Config, Source>(props: Config, pair: compilePairType<Source>): Config {
     let copy = _.cloneDeep(props);
+
+    function parseExpression(reference: Object, val: any, name: string | number) {
+        if (isExpression(val)) {
+            let parseRet = runInContext(val, pair);
+
+            if (!_.isNil(parseRet)) {
+                reference[name] = parseRet;
+            } else {
+                // TODO use class-validator to reflect types and set default values
+            }
+
+            if (_.isPlainObject(val)) {
+                reference[name] = compileValueExpress(val, pair);
+            }
+        }
+    }
+    
     _.each(copy, (item, key) => {
         if (isExpression(item)) {
             let parseRet = runInContext(item, pair);
 
-            if (typeof parseRet !== 'undefined' && !isExpression(parseRet)) {
+            if (!_.isNil(parseRet)) {
                 copy[key] = parseRet;
             } else {
                 // TODO use class-validator to reflect types and set default values
             }
+        } else if (_.isPlainObject(item) || _.isArray(item)) {
+            _.each(item, (val, name) => {
+                parseExpression(item, val, name);
+            });
         } else {
             copy[key] = item;
         }

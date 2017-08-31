@@ -103,7 +103,8 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
         let method = submitConfig.method;
         
         data = compileValueExpress(data, {
-            $data: this.props.$data.toObject()
+            $data: this.props.$data.toObject(),
+            $global: this.context.$global
         });
         
         return request(url, {
@@ -114,6 +115,11 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
                 message: '操作成功',
                 description: ''
             });
+
+            // TODO 暂时先这么搞
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
         });
     }
 
@@ -167,7 +173,8 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
         }
 
         let compiled = compileValueExpress(info, {
-            $data: this.props.$data.toObject()
+            $data: this.props.$data.toObject(),
+            $global: this.context.$global
         });
         
         let children = createElement(component, componentInterface, {

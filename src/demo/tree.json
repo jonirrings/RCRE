@@ -253,9 +253,26 @@
                                     ]
                                 },
                                 {
-                                    "type": "text",
-                                    "text": "delete",
-                                    "hidden": "$data.model !== 'delete'"
+                                    "type": "form",
+                                    "model": "deleteForm",
+                                    "data": {
+                                        "treeId": "$data.treeId[0]"
+                                    },
+                                    "hidden": "$data.mode !== 'delete'",
+                                    "submit": {
+                                        "url": "http://localhost:8800/tree/tree/delete",
+                                        "data": {
+                                            "id": "$data.treeId"
+                                        },
+                                        "method": "GET"
+                                    },
+                                    "controls": [
+                                        {
+                                            "type": "button",
+                                            "htmlType": "submit",
+                                            "text": "删除"
+                                        }
+                                    ]
                                 }
                             ]
                         }

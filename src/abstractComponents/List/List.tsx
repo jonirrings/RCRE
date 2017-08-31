@@ -74,7 +74,8 @@ export default class AbstractList extends BasicContainer<ListPropsInterface, {}>
         if (!_.isEmpty(this.props.info.itemMap)) {
             _.each(this.props.info.itemMap, (expression, key) => {
                 ret[key] = runInContext(expression, {
-                    $resource: item
+                    $resource: item,
+                    $global: this.context.$global
                 });
             });
         }

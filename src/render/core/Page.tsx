@@ -24,7 +24,11 @@ export class PageProps {
     @IsDefined()
     body: BasicConfig[] | BasicConfig | string;
 
-    $global: Map<string, any>;
+    // redux root对象
+    $store: Map<string, any>;
+
+    // 外部注入的全局对象
+    global: Object;
 
     $setDataList: typeof actionCreators.setDataList;
 
@@ -41,6 +45,7 @@ class Page extends React.Component<PageProps, {}> {
 
     static childContextTypes = {
         driver: PropsTypes.object,
+        $store: PropsTypes.object,
         $global: PropsTypes.object,
         $setDataList: PropsTypes.func,
         $initData: PropsTypes.func,
@@ -77,7 +82,8 @@ class Page extends React.Component<PageProps, {}> {
 
         return {
             driver: themeDriver,
-            $global: this.props.$global,
+            $store: this.props.$store,
+            $global: this.props.global,
             $setDataList: this.props.$setDataList,
             $initData: this.props.$initData,
             $triggerListData: this.props.$triggerListData,
@@ -123,7 +129,7 @@ class Page extends React.Component<PageProps, {}> {
 
 const mapStateToProps = (state: RootState, ownProps: any) => {
     return {
-        $global: state.container
+        $store: state.container
     };
 };
 

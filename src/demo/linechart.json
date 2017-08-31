@@ -2,20 +2,132 @@
     "title": "折线图实例",
     "body": [
         {
-            "type": "row",
+            "type": "layout",
+            "style": {
+                "flexDirection": "row"
+            },
             "children": [
                 {
-                    "type": "rcre.lineChart",
+                    "type": "sider",
+                    "width": 300,
+                    "style": {
+                        "background": "#fff"
+                    },
+                    "children": [
+                        {
+                            "type": "tree",
+                            "colSpan": 8,
+                            "model": "tree",
+                            "checkable": false,
+                            "data": {
+                                "tree": "$response.data.tree",
+                                "show": "Object.keys($response.data.show)"
+                            },
+                            "trigger": [
+                                {
+                                    "eventType": "treeCheck",
+                                    "target": "linechart",
+                                    "ship": {
+                                        "treeId": "$event.value"
+                                    }
+                                }
+                            ],
+                            "initialLoad": {
+                                "url": "http://localhost:8800/realtime/product/tree",
+                                "method": "GET",
+                                "data": {
+                                    "root": "1"
+                                }
+                            },
+                            "children": "$data.tree"
+                        }
+                    ]
+                },
+                {
+                    "type": "container",
                     "model": "linechart",
-                    "title": "测试图表",
-                    "colSpan": 8,
-                    "initialLoad": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/linechart",
+                    "initialLoad": {
+                        "url": "http://localhost:8800/realtime/product/chart",
+                        "method": "GET",
+                        "data": {
+                            "date": "$data.date",
+                            "fields": "$data.fields",
+                            "treeId": "$data.treeId[0]"
+                        }
+                    },
                     "data": {
+                        "treeId": "1",
+                        "fields": "click",
+                        "date": "20170831",
                         "category": "$response.data.categories",
                         "series": "$response.data.series"
                     },
-                    "categories": "$data.category",
-                    "series": "$data.series"
+                    "children": [
+                        {
+                            "type": "datepicker",
+                            "childModel": "date",
+                            "startTime": "now",
+                            "format": "YYYYMMDD"
+                        },
+                        {
+                            "type": "select",
+                            "childModel": "fields",
+                            "colSpan": 4,
+                            "options": [
+                                {
+                                    "key": "pv",
+                                    "value": "pv"
+                                },
+                                {
+                                    "key": "epv",
+                                    "value": "epv"
+                                },
+                                {
+                                    "key": "shows",
+                                    "value": "shows"
+                                },
+                                {
+                                    "key": "epv_win",
+                                    "value": "epv_win"
+                                },
+                                {
+                                    "key": "shows_win",
+                                    "value": "shows_win"
+                                },
+                                {
+                                    "key": "eshow",
+                                    "value": "eshow"
+                                },
+                                {
+                                    "key": "click",
+                                    "value": "click"
+                                },
+                                {
+                                    "key": "charge",
+                                    "value": "charge"
+                                },
+                                {
+                                    "key": "bid",
+                                    "value": "bid"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "row",
+                            "children": [
+                                {
+                                    "type": "rcre.lineChart",
+                                    "model": "linechart",
+                                    "title": "测试图表",
+                                    "colSpan": 8,
+                                    "categories": "$data.category",
+                                    "series": "$data.series",
+                                    "width": 1200,
+                                    "height": 500
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }
