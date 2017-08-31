@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import Page, {PageProps} from './core/Page';
 import paramCheck from './util/paramCheck';
 import configureStore from './data/store';
@@ -81,3 +82,5 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
 }
 
 window.RCRE = Render;
+window.RCRE_React = React;
+window.RCRE_ReactDOM = ReactDOM;
