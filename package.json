@@ -1,5 +1,5 @@
 {
-    "name": "rcre-core",
+    "name": "@miskit/rcre-core",
     "version": "0.9.11",
     "main": "./plugin/exportPlugin.js",
     "repository": "ssh://dongtiancheng@icode.baidu.com:8235/baidu/native-ads/gaea-aop",
@@ -97,7 +97,6 @@
         "remoteDebug": "REMOTE_DEBUG=true node scripts/bin/react-scripts-ts start",
         "build": "node scripts/bin/react-scripts-ts build",
         "plugin": "node scripts/bin/react-scripts-ts plugin",
-        "publish": "node scripts/scripts/publish",
         "test": "node scripts/bin/react-scripts-ts test --env=jsdom"
     },
     "license": "MIT"
