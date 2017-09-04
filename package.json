@@ -1,6 +1,6 @@
 {
     "name": "rcre-core",
-    "version": "0.9.10",
+    "version": "0.9.11",
     "main": "./plugin/exportPlugin.js",
     "repository": "ssh://dongtiancheng@icode.baidu.com:8235/baidu/native-ads/gaea-aop",
     "dependencies": {
