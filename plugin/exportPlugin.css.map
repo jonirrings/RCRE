@@ -1,0 +1,1 @@
+{"version":3,"sources":["render/index.css"],"names":[],"mappings":"AAAA,QACI,SAAW","file":"exportPlugin.css","sourcesContent":[".render {\n    width: 90%;\n}\n\n\n// WEBPACK FOOTER //\n// ./src/render/index.css"],"sourceRoot":""}
