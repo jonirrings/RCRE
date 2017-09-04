@@ -50,23 +50,6 @@ function getServedPath(appPackageJson) {
     return ensureSlash(servedUrl, true);
 }
 
-// config after eject: we're in ./config/
-module.exports = {
-    dotenv: resolveApp('.env'),
-    appBuild: resolveApp('build'),
-    appPublic: resolveApp('public'),
-    appHtml: resolveApp('public/index.html'),
-    appIndexJs: resolveApp('src/index.tsx'),
-    proIndexJs: resolveApp('src/render/index.tsx'),
-    appPackageJson: resolveApp('package.json'),
-    appSrc: resolveApp('src'),
-    yarnLockFile: resolveApp('yarn.lock'),
-    testsSetup: resolveApp('src/setupTests.ts'),
-    appNodeModules: resolveApp('node_modules'),
-    publicUrl: getPublicUrl(resolveApp('package.json')),
-    servedPath: getServedPath(resolveApp('package.json'))
-};
-
 // @remove-on-eject-begin
 const resolveOwn = relativePath => path.resolve(__dirname, '..', relativePath);
 
@@ -75,6 +58,7 @@ module.exports = {
     dotenv: resolveApp('.env'),
     appPath: resolveApp('.'),
     appBuild: resolveApp('build'),
+    pluginBuild: resolveApp('plugin'),
     appPublic: resolveApp('public'),
     appHtml: resolveApp('public/index.html'),
     appIndexJs: resolveApp('src/index.tsx'),

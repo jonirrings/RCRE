@@ -1,7 +1,8 @@
 {
     "name": "rcre-core",
     "version": "0.9.10",
-    "main": "./build/main.js",
+    "main": "./plugin/exportPlugin.js",
+    "repository": "ssh://dongtiancheng@icode.baidu.com:8235/baidu/native-ads/gaea-aop",
     "dependencies": {
         "@types/acorn": "^4.0.2",
         "@types/classnames": "^2.2.0",
@@ -37,7 +38,6 @@
         "keycode": "^2.1.9",
         "lodash": "^4.17.4",
         "marked": "^0.3.6",
-        "mobx": "^3.2.2",
         "moment": "^2.18.1",
         "react": "^15.6.1",
         "react-dom": "^15.6.1",
@@ -46,8 +46,7 @@
         "react-router-dom": "^4.1.2",
         "redux": "^3.7.2",
         "reflect-metadata": "^0.1.10",
-        "stringify-object": "^3.2.0",
-        "text-loader": "0.0.1"
+        "stringify-object": "^3.2.0"
     },
     "devDependencies": {
         "app-root-path": "^2.0.1",
@@ -79,6 +78,7 @@
         "source-map-loader": "^0.2.1",
         "style-loader": "0.17.0",
         "sw-precache-webpack-plugin": "0.9.1",
+        "text-loader": "0.0.1",
         "ts-jest": "^20.0.7",
         "ts-loader": "^2.2.1",
         "tslint": "^5.2.0",
@@ -89,13 +89,16 @@
         "webpack": "2.6.0",
         "webpack-dev-server": "2.4.5",
         "webpack-manifest-plugin": "1.1.0",
+        "webpack-node-externals": "^1.6.0",
         "whatwg-fetch": "2.0.3"
     },
     "scripts": {
         "start": "node scripts/bin/react-scripts-ts start",
         "remoteDebug": "REMOTE_DEBUG=true node scripts/bin/react-scripts-ts start",
         "build": "node scripts/bin/react-scripts-ts build",
+        "plugin": "node scripts/bin/react-scripts-ts plugin",
         "publish": "node scripts/scripts/publish",
         "test": "node scripts/bin/react-scripts-ts test --env=jsdom"
-    }
+    },
+    "license": "MIT"
 }
