@@ -62,7 +62,7 @@ module.exports = {
         // Errors should be considered fatal in development
         require.resolve('react-error-overlay'),
         // Finally, this is your app's code:
-        process.env.REMOTE_DEBUG ? paths.proIndexJs : path.appIndexJs
+        process.env.REMOTE_DEBUG ? paths.proIndexJs : paths.appIndexJs
     ],
     output: {
         // Next line is not used in dev but WebpackDevServer crashes without it:

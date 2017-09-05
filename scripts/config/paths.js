@@ -52,7 +52,6 @@ function getServedPath(appPackageJson) {
 
 // @remove-on-eject-begin
 const resolveOwn = relativePath => path.resolve(__dirname, '..', relativePath);
-
 // config before eject: we're in ./node_modules/react-scripts/config/
 module.exports = {
     dotenv: resolveApp('.env'),
