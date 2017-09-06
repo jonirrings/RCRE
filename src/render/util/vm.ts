@@ -76,3 +76,21 @@ export function filterExpressionData(obj: Object) {
 
     return obj;
 }
+
+export function compileStaticTemplate<Source>(rawString: string, pair: compilePairType<Source>) {
+    const templateRegex = /{{([^}]+)}}/g;
+
+    return rawString.replace(templateRegex, (str, expression) => {
+        if (!isExpression(expression)) {
+            return expression;
+        }
+
+        let ret = runInContext(expression, pair);
+
+        if (!ret) {
+            return expression;
+        }
+
+        return ret;
+    });
+}

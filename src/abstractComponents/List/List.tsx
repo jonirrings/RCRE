@@ -8,6 +8,8 @@ import componentLoader from '../../render/util/componentLoader';
 import {Map} from 'immutable';
 import createElement from '../../render/util/createElement';
 
+import './List.css';
+
 export class ListItemMappingConfig {
     [s: string]: string;
 }
@@ -55,7 +57,7 @@ export default class AbstractList extends BasicContainer<ListPropsInterface, {}>
         let resource = this.getResource(info);
 
         if (resource.length === 0) {
-            return <div>loading...</div>;
+            return <div className="rcre-abstract-list">没有数据</div>;
         }
 
         let children = resource.map((item, index) => {
@@ -65,7 +67,7 @@ export default class AbstractList extends BasicContainer<ListPropsInterface, {}>
             ];
         });
 
-        return this.renderChildren(<div>{children}</div>);
+        return this.renderChildren(<div className="rcre-abstract-list">{children}</div>);
     }
 
     private renderResource(item: ListItem) {

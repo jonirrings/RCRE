@@ -1,5 +1,5 @@
 {
-    "title": "折线图实例",
+    "title": "数据监控",
     "body": [
         {
             "type": "layout",
@@ -9,9 +9,10 @@
             "children": [
                 {
                     "type": "sider",
-                    "width": 300,
+                    "width": 250,
                     "style": {
-                        "background": "#fff"
+                        "background": "#fff",
+                        "border-right": "2px solid #a4b19b"
                     },
                     "children": [
                         {
@@ -33,7 +34,7 @@
                                 }
                             ],
                             "initialLoad": {
-                                "url": "http://localhost:8800/realtime/product/tree",
+                                "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/tree/tree/tree",
                                 "method": "GET",
                                 "data": {
                                     "root": "1"
@@ -46,8 +47,11 @@
                 {
                     "type": "container",
                     "model": "linechart",
+                    "style": {
+                        "marginLeft": "20"
+                    },
                     "initialLoad": {
-                        "url": "http://localhost:8800/realtime/product/chart",
+                        "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/realtime/product/chart",
                         "method": "GET",
                         "data": {
                             "date": "$data.date",
@@ -58,58 +62,77 @@
                     "data": {
                         "treeId": "1",
                         "fields": "click",
-                        "date": "20170831",
+                        "date": "20170904",
                         "category": "$response.data.categories",
                         "series": "$response.data.series"
                     },
                     "children": [
                         {
-                            "type": "datepicker",
-                            "childModel": "date",
-                            "startTime": "now",
-                            "format": "YYYYMMDD"
-                        },
-                        {
-                            "type": "select",
-                            "childModel": "fields",
-                            "colSpan": 4,
-                            "options": [
+                            "type": "row",
+                            "children": [
                                 {
-                                    "key": "pv",
-                                    "value": "pv"
+                                    "type": "text",
+                                    "text": "筛选",
+                                    "style": {
+                                        "display": "inline-block",
+                                        "fontSize": 12,
+                                        "height": 20,
+                                        "lineHeight": "20px",
+                                        "color": "#fff",
+                                        "backgroundColor": "#ac193d"
+                                    },
+                                    "colSpan": 3
                                 },
                                 {
-                                    "key": "epv",
-                                    "value": "epv"
+                                    "type": "select",
+                                    "childModel": "fields",
+                                    "colSpan": 6,
+                                    "options": [
+                                        {
+                                            "key": "pv",
+                                            "value": "pv"
+                                        },
+                                        {
+                                            "key": "epv",
+                                            "value": "epv"
+                                        },
+                                        {
+                                            "key": "shows",
+                                            "value": "shows"
+                                        },
+                                        {
+                                            "key": "epv_win",
+                                            "value": "epv_win"
+                                        },
+                                        {
+                                            "key": "shows_win",
+                                            "value": "shows_win"
+                                        },
+                                        {
+                                            "key": "eshow",
+                                            "value": "eshow"
+                                        },
+                                        {
+                                            "key": "click",
+                                            "value": "click"
+                                        },
+                                        {
+                                            "key": "charge",
+                                            "value": "charge"
+                                        },
+                                        {
+                                            "key": "bid",
+                                            "value": "bid"
+                                        }
+                                    ]
                                 },
                                 {
-                                    "key": "shows",
-                                    "value": "shows"
-                                },
-                                {
-                                    "key": "epv_win",
-                                    "value": "epv_win"
-                                },
-                                {
-                                    "key": "shows_win",
-                                    "value": "shows_win"
-                                },
-                                {
-                                    "key": "eshow",
-                                    "value": "eshow"
-                                },
-                                {
-                                    "key": "click",
-                                    "value": "click"
-                                },
-                                {
-                                    "key": "charge",
-                                    "value": "charge"
-                                },
-                                {
-                                    "key": "bid",
-                                    "value": "bid"
-                                }
+                                    "type": "datepicker",
+                                    "childModel": "date",
+                                    "startTime": "now",
+                                    "format": "YYYYMMDD",
+                                    "colSpan": 6
+                                }      
                             ]
                         },
                         {
@@ -118,11 +141,10 @@
                                 {
                                     "type": "rcre.lineChart",
                                     "model": "linechart",
-                                    "title": "测试图表",
                                     "colSpan": 8,
                                     "categories": "$data.category",
                                     "series": "$data.series",
-                                    "width": 1200,
+                                    "width": 800,
                                     "height": 500
                                 }
                             ]

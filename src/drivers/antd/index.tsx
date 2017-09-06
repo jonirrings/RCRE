@@ -8,6 +8,7 @@ import AntRadio from './components/Radio/Radio';
 import AntBreadcrumb from './components/Breadcrumb/Breadcrumb';
 import AntTable from './components/Table/Table';
 import AntDatepicker from './components/Datepicker/Datepicker';
+import AntText from './components/Text/Text';
 import {ButtonPropsInterface} from '../../abstractComponents/Button/Button';
 import {TreePropsInterface} from '../../abstractComponents/Tree/Tree';
 import {TreeNodePropsInterface} from '../../abstractComponents/Tree/TreeNode';
@@ -20,6 +21,7 @@ import {TablePropsInterface} from '../../abstractComponents/Table/Table';
 import {DatePickerPropsInterface} from '../../abstractComponents/Datepicker/Datepicker';
 import AntForm from './components/Form/Form';
 import {FormPropsInterface} from '../../abstractComponents/Form/Form';
+import {TextPropsInterface} from '../../abstractComponents/Plain/Text';
 
 export default {
     button: {
@@ -65,5 +67,9 @@ export default {
     datepicker: {
         component: AntDatepicker,
         componentInterface: DatePickerPropsInterface
+    },
+    text: {
+        component: AntText,
+        componentInterface: TextPropsInterface
     }
 };

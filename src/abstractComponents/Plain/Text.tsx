@@ -1,16 +1,20 @@
 import * as React from 'react';
-import {IsDefined, IsJSON, IsString} from 'class-validator';
+import {IsDefined, IsJSON, IsString, IsUrl, Validate} from 'class-validator';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
-import {isExpression} from '../../render/util/vm';
+import {compileStaticTemplate, isExpression} from '../../render/util/vm';
+import Trigger from '../../render/core/Trigger/Trigger';
+import {IsValidEnums} from '../../render/util/validators';
 
 export class TextConfig extends BasicConfig {
     @IsString()
     @IsDefined()
-    type: string;
-
-    @IsString()
-    @IsDefined()
     text: string;
+
+    @Validate(IsValidEnums, ['text', 'link', 'strong'])
+    textType: 'text' | 'link' | 'strong';
+
+    @IsUrl()
+    href?: string;
 
     @IsJSON()
     style?: React.CSSProperties;
@@ -19,13 +23,6 @@ export class TextConfig extends BasicConfig {
 export class TextPropsInterface extends BasicContainerPropsInterface {
     info: TextConfig;
 }
-
-const defaultTextStyle = {
-    padding: '0 10px',
-    minWidth: 80,
-    textAlign: 'center',
-    lineHeight: '25px'
-};
 
 class Text extends BasicContainer<TextPropsInterface, {}> {
     constructor() {
@@ -37,12 +34,14 @@ class Text extends BasicContainer<TextPropsInterface, {}> {
             return <span/>;
         }
 
-        let children = (
-            <span style={Object.assign({}, defaultTextStyle, this.props.info.style)}>
-                {this.props.info.text}
-            </span>
-        );
+        if (this.props.info.textType === 'link' && this.props.info.href) {
+            this.props.info.href = compileStaticTemplate(this.props.info.href, {
+                $resource: this.props.$data.toObject(),
+                $global: this.context.$global
+            });
+        }
 
+        let children = React.createElement(Trigger, this.props);
         return this.renderChildren(children);
     }
 }

@@ -1,4 +1,5 @@
 import axios, {AxiosRequestConfig} from 'axios';
+import {notification} from 'antd';
 
 export function request(url: string, config: AxiosRequestConfig, proxy?: string) {
     if (proxy) {
@@ -18,7 +19,13 @@ export function request(url: string, config: AxiosRequestConfig, proxy?: string)
 
     if (!config.method || /^get$/i.test(config.method)) {
         config.params = config.data;
+        config.method = 'GET';
     }
 
-    return axios(url, config);
+    return axios(url, config).catch(err => {
+        notification.error({
+            message: '接口调用失败',
+            description: `${err.message}`
+        });
+    });
 }

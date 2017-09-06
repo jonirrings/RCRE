@@ -5,6 +5,7 @@ import {IsPageInfo} from '../../render/util/validators';
 import Col, {ColConfig, hasColProps} from '../../render/core/Layout/Col/Col';
 import * as PropTypes from 'prop-types';
 import classNames from 'classnames';
+import './FormItem.css';
 
 export class FormItemConfig extends BasicFormItemConfig {
     /**
@@ -91,7 +92,11 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
         }
 
         if (this.props.info.hidden) {
-            return React.createElement('div');
+            return React.createElement('div', {
+                style: {
+                    display: 'none'
+                }
+            });
         }
 
         return children;
@@ -146,7 +151,7 @@ class AbstractFormItem<T extends FormItemPropsInterface>
 
         let child = (
             <div className={errorClass}>
-                {this.renderLabel(this.props.info, 8)}
+                {this.renderLabel(this.props.info)}
                 {
                     this.wrapColumn(this.props.info, [
                         this.addChangeProxyToChildren(this.props.children),
@@ -161,19 +166,16 @@ class AbstractFormItem<T extends FormItemPropsInterface>
         return this.wrapColumn(this.props.info, child);
     }
 
-    private renderLabel(info: FormItemConfig, colSpan: number) {
+    private renderLabel(info: FormItemConfig) {
         if (info.label) {
             let labelClass = classNames({
                 'ant-form-item-required': info.required
             });
-            let labelElement = (
-                <div className="ant-form-item-label">
+            return (
+                <div className="ant-form-item-label rcre-form-item-label">
                     <label className={labelClass}>{info.label}</label>
                 </div>
             );
-            return this.wrapColumn(info, labelElement, {
-                colSpan: colSpan
-            });
         }
 
         return '';

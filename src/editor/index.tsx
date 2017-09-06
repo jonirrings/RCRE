@@ -77,7 +77,6 @@ class JSONEditor extends React.Component<JSONEditorPropsInterface, JSONEditorSta
         return (
             <div className="editor-wrapper">
                 <MonacoEditor
-                    width="700"
                     language="json"
                     theme="vs-light"
                     value={code}

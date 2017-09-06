@@ -11,13 +11,12 @@ import 'font-awesome/css/font-awesome.css';
 import './App.css';
 
 let basicConfig = require('./demo/basic.json');
-let formConfig = require('./demo/form.json');
 let lineChartConfig = require('./demo/linechart.json');
 let treeConfig = require('./demo/tree.json');
 let tableConfig = require('./demo/table.json');
 let layoutConfig = require('./demo/layout.json');
 let searchConfig = require('./demo/searchList.json');
-let mvvmConfig = require('./demo/mvvm.json');
+let treeEditConfig = require('./demo/treeEdit.json');
 // let treeAddConfig = require('./demo/treeAdd.json');
 // let submitConfig = require('./demo/submit.json');
 
@@ -30,7 +29,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(treeConfig)
+            code: jsonformat(treeEditConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -72,21 +71,20 @@ class App extends React.Component<{}, AppStateInterface> {
             <div>
                 <div className="config-panel">
                     <a onClick={this.changeConfig(basicConfig)}>Basic</a>
-                    <a onClick={this.changeConfig(formConfig)}>Form</a>
                     <a onClick={this.changeConfig(layoutConfig)}>Layout</a>
                     <a onClick={this.changeConfig(searchConfig)}>Search</a>
                     <a onClick={this.changeConfig(lineChartConfig)}>LineChart</a>
+                    <a onClick={this.changeConfig(treeEditConfig)}>treeEdit</a>
                     <a onClick={this.changeConfig(treeConfig)}>树</a>
-                    <a onClick={this.changeConfig(mvvmConfig)}>MVVM example</a>
                     <a onClick={this.changeConfig(tableConfig)}>Table</a>
                 </div>
                 <div className="App">
-                    <JSONEditor
-                        code={this.state.code}
-                        onChange={this.onJSONEditorChange}
-                    />
                     <Preview code={this.state.code}/>
                 </div>
+                <JSONEditor
+                    code={this.state.code}
+                    onChange={this.onJSONEditorChange}
+                />
             </div>
         );
     }

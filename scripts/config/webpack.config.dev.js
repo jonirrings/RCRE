@@ -232,10 +232,6 @@ module.exports = {
             // Remember to add the new extension(s) to the "url" loader exclusion list.
         ]
     },
-    externals: {
-        'react': 'window.React',
-        'react-dom': 'window.ReactDOM'
-    },
     plugins: [
         // Makes some environment variables available in index.html.
         // The public URL is available as %PUBLIC_URL% in index.html, e.g.:

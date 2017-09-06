@@ -1,8 +1,10 @@
 {
-    "title": "树组件实例",
     "body": [
         {
             "type": "layout",
+            "style": {
+                "flexDirection": "row"
+            },
             "children": [
                 {
                     "type": "sider",
@@ -42,11 +44,11 @@
                 },
                 {
                     "type": "content",
+                    "colSpan": 16,
                     "children": [
                         {
                             "type": "container",
                             "model": "treeEditMode",
-                            "colSpan": 16,
                             "data": {
                                 "treeId": [],
                                 "mode": "add"
@@ -81,6 +83,7 @@
                                     "type": "form",
                                     "model": "addModel",
                                     "hidden": "$data.mode !== 'add'",
+                                    "colSpan": 10,
                                     "data": {
                                         "treeId": "$data.treeId[0]",
                                         "node_name": "$response.data[0].node_name",
@@ -147,6 +150,7 @@
                                     "type": "form",
                                     "model": "updateModel",
                                     "hidden": "$data.mode !== 'update'",
+                                    "colSpan": 10,
                                     "initialLoad": {
                                         "method": "get",
                                         "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/tree/tree/node",
@@ -202,7 +206,7 @@
                                             "label": "统计规则",
                                             "disabled": "$data.node_type != 1",
                                             "name": "rule",
-                                            "required": true
+                                            "required": "$data.node_type == 1"
                                         },
                                         {
                                             "type": "input",
@@ -223,6 +227,7 @@
                                     "data": {
                                         "treeId": "$data.treeId[0]"
                                     },
+                                    "colSpan": 10,
                                     "hidden": "$data.mode !== 'delete'",
                                     "submit": {
                                         "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/tree/tree/delete",

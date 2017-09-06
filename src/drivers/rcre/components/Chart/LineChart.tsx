@@ -21,7 +21,7 @@ export default class RcreLineChart extends React.Component<LineChartPropsInterfa
             }
         },
         legend: {
-            top: '8%',
+            top: '6%',
             data: []
         },
         toolbox: {

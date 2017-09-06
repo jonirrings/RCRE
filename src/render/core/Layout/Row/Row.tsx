@@ -64,15 +64,6 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
         super();
     }
 
-    private mapOptions(info: RowConfig): AntRowProps {
-        return {
-            align: info.align,
-            justify: info.justify,
-            gutter: info.gutter,
-            type: 'flex'
-        };
-    }
-
     render() {
         let children;
 
@@ -86,8 +77,8 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
         }
 
         const defaultStyle = {
-            marginTop: 10,
-            marginBottom: 10
+            marginTop: 15,
+            marginBottom: 15
         };
 
         return (
@@ -96,5 +87,13 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
             </div>
         );
 
+    }
+
+    private mapOptions(info: RowConfig): AntRowProps {
+        return {
+            align: info.align,
+            justify: info.justify,
+            gutter: info.gutter || 16
+        };
     }
 }

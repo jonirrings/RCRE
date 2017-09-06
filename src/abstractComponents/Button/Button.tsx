@@ -28,6 +28,12 @@ export class ButtonConfig extends BasicConfig {
     htmlType: 'submit' | 'button' | 'reset';
 
     /**
+     * 设置之后, 会弹出一个确认框, 来确认是否要触发click事件
+     */
+    @IsString()
+    confirm?: string;
+
+    /**
      * 按钮的图标类型
      * @public
      */

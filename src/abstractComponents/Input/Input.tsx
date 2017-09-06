@@ -4,6 +4,7 @@ import {IsValidEnums} from '../../render/util/validators';
 import {BasicFormItemConfig} from '../Form/types';
 import * as React from 'react';
 import Trigger from '../../render/core/Trigger/Trigger';
+import {onContainerItemChange} from '../../render/core/Container/types';
 
 export class InputConfig extends BasicFormItemConfig {
     /**
@@ -11,8 +12,8 @@ export class InputConfig extends BasicFormItemConfig {
      * @public
      * @default text
      */
-    @Validate(IsValidEnums, ['text', 'number', 'password', 'email'])
-    inputType: 'text' | 'number' | 'password' | 'email';
+    @Validate(IsValidEnums, ['text', 'number', 'password', 'email', 'search'])
+    inputType: 'text' | 'number' | 'password' | 'email' | 'search';
 
     /**
      * 输入框ID
@@ -58,6 +59,8 @@ export class InputConfig extends BasicFormItemConfig {
 export class InputPropsInterface extends FormItemPropsInterface {
     info: InputConfig;
     value: string;
+
+    onSearch: onContainerItemChange;
 }
 
 interface InputStateInterface {
@@ -69,12 +72,16 @@ class AbstractInput extends BasicFormItem<InputPropsInterface, InputStateInterfa
         super();
     }
 
+    handleSearch() {
+    }
+
     render() {
         let props = this.props;
 
         let children = React.createElement(Trigger, Object.assign({}, props, {
             value: this.getChildValue(),
-            onChange: this.handleChange
+            onChange: this.handleChange,
+            onSearch: this.handleSearch
         }));
 
         return this.renderChildren(children);

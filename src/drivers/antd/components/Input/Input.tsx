@@ -3,11 +3,14 @@ import {Input} from 'antd';
 import {InputProps} from 'antd/lib/input/Input';
 import {InputConfig, InputPropsInterface} from '../../../../abstractComponents/Input/Input';
 
+const Search = Input.Search;
+
 class AntInput extends React.Component<InputPropsInterface, {}> {
     constructor() {
         super();
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
     }
 
     private mapProps(props: InputConfig): InputProps {
@@ -41,7 +44,17 @@ class AntInput extends React.Component<InputPropsInterface, {}> {
             childProps.onChange = this.handleChange;
         }
 
+        if (this.props.info.inputType === 'search') {
+            return React.createElement(Search, Object.assign({
+                onSearch: this.handleSearch
+            }, this.mapProps(info), childProps));
+        }
+
         return React.createElement(Input, Object.assign(this.mapProps(info), childProps));
+    }
+
+    private handleSearch(value: string) {
+        this.props.onSearch(value);
     }
 }
 

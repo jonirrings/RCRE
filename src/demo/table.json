@@ -3,9 +3,8 @@
         {
             "type": "container",
             "model": "tableSource",
-            "colSpan": 24,
             "initialLoad": {
-                "url": "http://cp01-yjk.epc.baidu.com:8203/afd/udwmessage/tabledetail",
+                "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/udwmeta/tablemeta/tabledetail",
                 "method": "GET",
                 "data": {
                     "data_type": "$query.data_type",
@@ -26,6 +25,18 @@
                 "body": "$response.data.body"
             },
             "children": [
+                {
+                    "type": "row",
+                    "children": [
+                        {
+                            "type": "text",
+                            "text": "权限详情",
+                            "style": {
+                                "fontSize": 24
+                            }
+                        }
+                    ]
+                },
                 {
                     "type": "row",
                     "children": [
@@ -107,16 +118,10 @@
                                     "text": "$resource.user"
                                 },
                                 {
-                                    "type": "button",
+                                    "type": "text",
                                     "text": "Hi",
-                                    "trigger": [
-                                        {
-                                            "eventType": "click",
-                                            "triggerType": "link",
-                                            "isRaw": true,
-                                            "href": "{{$resource.ref}}"
-                                        }
-                                    ]
+                                    "textType": "link",
+                                    "href": "{{$resource.ref}}"
                                 }
                             ]
                         }
@@ -124,50 +129,21 @@
                 },
                 {
                     "type": "row",
-                    "colSpan": 24,
                     "children": [
                         {
                             "type": "table",
                             "colSpan": 24,
                             "model": "customTable",
                             "data": {
-                                "dataSource": [
-                                    {
-                                        "key": "1",
-                                        "name": "胡彦斌",
-                                        "age": 32,
-                                        "address": "西湖区湖底公园1号"
-                                    },
-                                    {
-                                        "key": "2",
-                                        "name": "胡彦祖",
-                                        "age": 42,
-                                        "address": "西湖区湖底公园1号"
-                                    }
-                                ],
-                                "columns": [
-                                    {
-                                        "title": "姓名",
-                                        "dataIndex": "name",
-                                        "key": "name"
-                                    },
-                                    {
-                                        "title": "年龄",
-                                        "dataIndex": "age",
-                                        "key": "age"
-                                    },
-                                    {
-                                        "title": "住址",
-                                        "dataIndex": "address",
-                                        "key": "address"
-                                    }
-                                ]
+                                "dataSource": [],
+                                "columns": []
                             },
                             "dataSource": "$data.body",
                             "columns": "$data.head",
                             "columnsMapping": {
-                                "title": "$iterator.title",
-                                "dataIndex": "$iterator."
+                                "dataIndex": "$iterator.key",
+                                "title": "$iterator.value",
+                                "key": "$iterator.key"
                             }
                         }
                     ]

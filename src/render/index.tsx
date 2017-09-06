@@ -4,6 +4,7 @@ import * as ReactDOM from 'react-dom';
 import Page, {PageProps} from './core/Page';
 import paramCheck from './util/paramCheck';
 import configureStore from './data/store';
+import {actionCreators} from './core/Container/action';
 import {Provider} from 'react-redux';
 
 import './index.css';
@@ -39,12 +40,12 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
         }
     }
 
-    componentWillMount() {
-        store = configureStore();
+    componentWillUnmount() {
+        store.dispatch(actionCreators.clearData());
     }
-    
-    componentWillUpdate(nextProps: RenderPropsInterface) {
-        store = configureStore();
+
+    componentWillReceiveProps() {
+        store.dispatch(actionCreators.clearData());
     }
 
     render() {
@@ -67,7 +68,7 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
 
         // TODO: 每次JSON更新都会整体重渲染, 性能很烂
         return (
-            <div className="render">
+            <div className="rcre-render">
                 <Provider store={store}>
                     <Page
                         title={info.title}

@@ -7,6 +7,8 @@ import {IsPageInfo} from '../../render/util/validators';
 import {isExpression, runInContext} from '../../render/util/vm';
 import {createChild} from '../../render/util/createChild';
 
+import './Container.css';
+
 export class ContainerConfig extends BasicConfig {
     style?: React.CSSProperties;
     
@@ -42,6 +44,15 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
         if (Array.isArray(this.props.info.children)) {
             let ret = this.parseChildrenExpression(this.props.info.children);
             children = ret.map((child, index) => {
+                if (child.hidden) {
+                    return React.createElement('div', {
+                        style: {
+                            display: 'none'
+                        },
+                        key: `${child.type}_${0}_${index}`
+                    });
+                }
+                
                 return this.renderChild(child, 0, index);
             });
         }
@@ -55,6 +66,7 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
     }
 
     private renderChild(info: BasicConfig, depth: number, index: number) {
+        console.log(info);
         return createChild(info, {
             key: `${info.type}_${depth}_${index}`,
             info: info,

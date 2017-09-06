@@ -5,7 +5,10 @@ import {TableRowSelection} from 'antd/lib/table/Table';
 import Trigger from '../../render/core/Trigger/Trigger';
 import * as React from 'react';
 import * as _ from 'lodash';
-import {isExpression, runInContext} from '../../render/util/vm';
+import {compileValueExpress, isExpression, runInContext} from '../../render/util/vm';
+import {FormItemConfig} from '../Form/FormItem';
+import {createChild} from '../../render/util/createChild';
+import {Map} from 'immutable';
 
 export class TableDataSourceItem {
     rowSelection: TableRowSelection<TableDataSourceItem>[];
@@ -15,6 +18,10 @@ export class TableColumnsItem {
     title?: string;
     key?: string;
     dataIndex?: string;
+
+    controls?: FormItemConfig[];
+
+    render?: (source: TableDataSourceItem) => any;
 }
 
 export class TableConfig extends BasicConfig {
@@ -39,14 +46,43 @@ export default class AbstractTable extends BasicContainer<TablePropsInterface, {
         super();
     }
 
-    private applyMapping<T>(data: T, mappingConfig: T): T {
+    render() {
+        let columns = this.props.info.columns;
+        let dataSource = this.props.info.dataSource;
+
+        if (this.props.info.columnsMapping && !isExpression(columns)) {
+            columns = _.map(columns, (co, index) => this.applyMapping(co, this.props.info.columnsMapping, index)!);
+        }
+
+        if (this.props.info.dataSourceMapping && !isExpression(dataSource)) {
+            dataSource = _.map(dataSource, (da, index) =>
+                this.applyMapping(da, this.props.info.dataSourceMapping, index)!);
+        }
+
+        if (!isExpression(columns)) {
+            columns = columns.map(co => this.renderColumnControls(co));   
+        }
+
+        let childProps = Object.assign({}, this.props, {
+            info: Object.assign(this.props.info, {
+                columns: columns,
+                dataSource: dataSource
+            })
+        });
+
+        let children = React.createElement(Trigger, childProps);
+        return this.renderChildren(children);
+    }
+
+    private applyMapping<T>(data: T, mappingConfig: T, index: number): T {
         let copy = data;
 
         _.each<T>(mappingConfig, (expression: keyof T, key: string) => {
             let ret = runInContext(expression, {
-                $iterator: copy
+                $iterator: copy,
+                $index: index
             });
-            
+
             if (!_.isNil(ret)) {
                 copy[key] = ret;
             }
@@ -55,26 +91,33 @@ export default class AbstractTable extends BasicContainer<TablePropsInterface, {
         return copy;
     }
 
-    render() {
-        let columns = this.props.info.columns;
-        let dataSource = this.props.info.dataSource;
-
-        if (this.props.info.columnsMapping && !isExpression(columns)) {
-            columns = _.map(columns, (co) => this.applyMapping(co, this.props.info.columnsMapping)!);
-        }
-
-        if (this.props.info.dataSourceMapping && !isExpression(dataSource)) {
-            dataSource = _.map(dataSource, (da) => this.applyMapping(da, this.props.info.dataSourceMapping)!);
-        }
-        
-        let childProps = Object.assign({}, this.props, {
-            columns: columns,
-            dataSource: dataSource
+    private renderControl(info: FormItemConfig, depth: number, index: number, source: TableDataSourceItem) {
+        let compiled = compileValueExpress(info, {
+            $dataSource: source
         });
-        
-        console.log(childProps);
 
-        let children = React.createElement(Trigger, childProps);
-        return this.renderChildren(children);
+        let childProps = {
+            key: `${info.type}_${depth}_${index}`,
+            info: compiled,
+            onChange: this.props.onChange,
+            $data: Map(source)
+        };
+
+        return createChild(info, childProps, this.context.form, this.context.abstractContainer);
+    }
+
+    private renderColumnControls(item: TableColumnsItem) {
+        let copy = _.cloneDeep(item);
+
+        if (copy.controls) {
+            let controls = copy.controls;
+            copy.render = (source) => {
+                return controls.map((info, index) => this.renderControl(info, 0, index, source));
+            };
+
+            delete copy.controls;
+        }
+
+        return copy;
     }
 }

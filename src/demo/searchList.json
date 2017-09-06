@@ -6,7 +6,7 @@
                 {
                     "type": "container",
                     "data": {
-                        "inputSearch": "关联请求数"
+                        "inputSearch": ""
                     },
                     "style": {
                         "display": "flex"
@@ -19,14 +19,11 @@
                                 {
                                     "type": "input",
                                     "childModel": "inputSearch",
-                                    "placeholder": "请输入搜索内容"
-                                },
-                                {
-                                    "type": "button",
-                                    "text": "搜索",
+                                    "inputType": "search",
+                                    "placeholder": "请输入搜索内容",
                                     "trigger": [
                                         {
-                                            "eventType": "click",
+                                            "eventType": "search",
                                             "target": "feedList",
                                             "ship": {
                                                 "query": "$data.inputSearch"
@@ -43,59 +40,64 @@
         {
             "type": "container",
             "initialLoad": {
-                "url": "http://localhost:8800/afd/udwmessage/table",
+                "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/udwmeta/tablemeta/table",
+                "method": "GET",
                 "data": {
                     "query": "$data.query"
                 }
             },
             "data": {
                 "query": "",
-                "list": "$response.data"
+                "list": "$response.data",
+                "message": "$response.message"
             },
             "model": "feedList",
             "children": [
                 {
-                    "type": "list",
-                    "resource": "$data.list",
-                    "itemMap": {
-                        "xxx": "$resource.table_name",
-                        "aaa": "$resource.description"
+                    "type": "text",
+                    "text": "$data.message"
+                },
+                {
+                    "type": "table",
+                    "dataSource": "$data.list",
+                    "dataSourceMapping": {
+                        "key": "$index"
                     },
-                    "iterator": [
+                    "columns": [
                         {
-                            "type": "row",
-                            "children": [
-                                {
-                                    "type": "text",
-                                    "text": "table_name: "
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "$resource.table_name"
-                                }
-                            ]
+                            "dataIndex": "data_type",
+                            "key": "data_type",
+                            "title": "data_type"
                         },
                         {
-                            "type": "row",
-                            "children": [
-                                {
-                                    "type": "text",
-                                    "text": "description: "
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "$resource.description"
-                                }
-                            ]
+                            "dataIndex": "table_name",
+                            "key": "table_name",
+                            "title": "table_name"
                         },
                         {
-                            "type": "button",
-                            "text": "查看详情",
-                            "trigger": [
+                            "dataIndex": "db_name",
+                            "key": "db_name",
+                            "title": "db_name"
+                        },
+                        {
+                            "dataIndex": "frequency",
+                            "key": "frequency",
+                            "title": "frequency"
+                        },
+                        {
+                            "dataIndex": "description",
+                            "key": "description",
+                            "title": "description"
+                        },
+                        {
+                            "title": "操作",
+                            "key": "operation",
+                            "controls": [
                                 {
-                                    "eventType": "click",
-                                    "triggerType": "link",
-                                    "href": "http://www.baidu.com?table_name={{$resource.table_name}}&description={{$resource.description}}"
+                                    "type": "text",
+                                    "text": "查看详情",
+                                    "textType": "link",
+                                    "href": "http://www.baidu.com?frequency={{$resource.frequency}}"
                                 }
                             ]
                         }

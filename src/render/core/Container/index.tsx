@@ -10,10 +10,15 @@ import {RootState} from '../../data/reducers';
 import {Map} from 'immutable';
 import ParamsInjector from '../../util/injector';
 import Col, {hasColProps} from '../Layout/Col/Col';
+import {Spin} from 'antd';
 import {compileValueExpress, filterExpressionData, isExpression} from '../../util/vm';
 import {request} from '../../services/api';
 
-class Container extends BasicContainer<ContainerProps, {}> {
+export interface ContainerStateInterface {
+    loading: boolean;
+}
+
+class Container extends BasicContainer<ContainerProps, ContainerStateInterface> {
     static WrappedComponent: string;
     static displayName: string;
 
@@ -24,6 +29,10 @@ class Container extends BasicContainer<ContainerProps, {}> {
         super();
         this.loadData = this.loadData.bind(this);
         this.handleChange = this.handleChange.bind(this);
+
+        this.state = {
+            loading: false
+        };
     }
 
     componentWillMount() {
@@ -50,12 +59,12 @@ class Container extends BasicContainer<ContainerProps, {}> {
             }
         }
     }
-    
+
     componentWillUnmount() {
         if (this.props.info.model) {
             this.props.removeData({
                 model: this.props.info.model
-            }); 
+            });
         }
     }
 
@@ -107,7 +116,11 @@ class Container extends BasicContainer<ContainerProps, {}> {
             }, retComponent);
         }
 
-        return retComponent;
+        return (
+            <Spin spinning={this.state.loading}>
+                {retComponent}
+            </Spin>
+        );
     }
 
     private handleChange(key: string, value: any) {
@@ -165,7 +178,16 @@ class Container extends BasicContainer<ContainerProps, {}> {
 
         this.prevRequestData = _.cloneDeep(requestConfig);
 
-        return request(requestConfig.url!, requestConfig, this.context.$global.proxyServer);
+        this.setState({
+            loading: true
+        });
+
+        return request(requestConfig.url!, requestConfig, this.context.$global.proxyServer).then((ret) => {
+            this.setState({
+                loading: false
+            });
+            return Promise.resolve(ret);
+        });
     }
 }
 

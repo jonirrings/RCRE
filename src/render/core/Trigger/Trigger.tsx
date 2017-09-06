@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import {BasicContainer, BasicContainerPropsInterface} from '../Container/types';
 import createElement from '../../util/createElement';
 import {TriggerConfig, TriggerItem, validEventTrigger} from './types';
-import {compileValueExpress, isExpression, runInContext} from '../../util/vm';
+import {compileStaticTemplate, compileValueExpress} from '../../util/vm';
 import {Map} from 'immutable';
 import {SET_DATA_LIST_PAYLOAD} from '../Container/action';
 import AbstractFormItem, {FormItemPropsInterface} from '../../../abstractComponents/Form/FormItem';
@@ -29,7 +29,7 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
         let componentInfo = driver.getComponent(this.props.info.type);
 
         if (!componentInfo) {
-            return <pre>{`can not find module ${this.props.info.type}`}</pre>;
+            return React.createElement('pre', {}, 'can not find module ' + this.props.info.type);
         }
 
         let Component = componentInfo.component;
@@ -65,26 +65,12 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
             return;
         }
 
-        const templateRegex = /{{([^}]+)}}/g;
-
-        href = href.replace(templateRegex, (str, expression) => {
-            if (!isExpression(expression)) {
-                return expression;
-            }
-
-            let ret = runInContext(expression, {
-                $resource: this.props.$data.toObject(),
-                $global: this.context.$global
-            });
-
-            if (!ret) {
-                return expression;
-            }
-
-            return isRaw ? ret : encodeURIComponent(ret);
+        let compiledHref = compileStaticTemplate(href, {
+            $resource: this.props.$data.toObject(),
+            $global: this.context.$global
         });
 
-        location.href = href;
+        location.href = isRaw ? compiledHref : encodeURIComponent(compiledHref);
     }
 
     private handleDataTrigger(item: TriggerItem, model: string, value: any) {
@@ -92,7 +78,7 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
         let $store = this.context.$store;
 
         if (!$store.has(target)) {
-            console.error(`can not find target model of target: ${target} `);
+            console.error('can not find target model of target: ' + target);
             return;
         }
 

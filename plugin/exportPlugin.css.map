@@ -1,1 +1,19 @@
-{"version":3,"sources":["render/index.css"],"names":[],"mappings":"AAAA,QACI,SAAW","file":"exportPlugin.css","sourcesContent":[".render {\n    width: 90%;\n}\n\n\n// WEBPACK FOOTER //\n// ./src/render/index.css"],"sourceRoot":""}
+{
+    "version": 3,
+    "sources": [
+        "abstractComponents/Form/FormItem.css",
+        "abstractComponents/Container/Container.css",
+        "abstractComponents/List/List.css",
+        "render/index.css"
+    ],
+    "names": [],
+    "mappings": "AAAA,sBACI,WACA,cAAgB,CCFpB,yBACI,aAAe,CCDnB,oBACI,oBAAsB,CCD1B,aACI,WACA,sBAAwB",
+    "file": "exportPlugin.css",
+    "sourcesContent": [
+        ".rcre-form-item-label {\n    float: left;\n    min-width: 80px;\n}\n\n\n// WEBPACK FOOTER //\n// ./src/abstractComponents/Form/FormItem.css",
+        ".rcre-abstract-container {\n    overflow: auto;\n}\n\n\n// WEBPACK FOOTER //\n// ./src/abstractComponents/Container/Container.css",
+        ".rcre-abstract-list {\n    display: inline-block;\n}\n\n\n// WEBPACK FOOTER //\n// ./src/abstractComponents/List/List.css",
+        ".rcre-render {\n    width: 100%;\n    background: transparent;\n}\n\n\n// WEBPACK FOOTER //\n// ./src/render/index.css"
+    ],
+    "sourceRoot": ""
+}

@@ -22,7 +22,8 @@ class AbstractLayout<T extends LayoutPropsInterface> extends BasicAbstractLayout
     public mapOptions(props: LayoutConfig): BasicProps {
         return {
             style: Object.assign({
-                background: '#fff'
+                background: '#fff',
+                flexDirection: 'row'
             }, props.style)
         };
     }
