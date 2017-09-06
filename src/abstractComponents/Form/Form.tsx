@@ -173,6 +173,8 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
             childElements = this.renderControl(info.controls, depth++, 0);
         }
 
+        console.log(this.props.$data);
+        
         let compiled = compileValueExpress(info, {
             $data: this.props.$data.toObject(),
             $global: this.context.$global

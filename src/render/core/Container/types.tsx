@@ -66,6 +66,7 @@ export class BasicContainerPropsInterface extends ColPropsInterface {
 
 export class ContainerProps extends BasicContainerPropsInterface {
     public $data: Map<string, any>;
+    public $parent?: Map<string, any>;
     public setData: typeof actionCreators.setData;
     public setDataList: typeof actionCreators.setDataList;
     public initData: typeof actionCreators.initData;

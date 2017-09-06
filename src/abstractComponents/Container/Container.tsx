@@ -66,11 +66,12 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
     }
 
     private renderChild(info: BasicConfig, depth: number, index: number) {
-        console.log(info);
         return createChild(info, {
             key: `${info.type}_${depth}_${index}`,
             info: info,
             onChange: this.handleChange,
+            // 如果自己还有container组件的话, 就得换个名字
+            $parent: this.props.$data,
             $data: this.props.$data,
             $setData: this.props.$setData,
             $setDataList: this.props.$setDataList
@@ -89,16 +90,11 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
         if (_.isEmpty(mirror)) {
             return infoCopy;
         }
-        
-        const validParseConfig = [
-            'children',
-            'data'
-        ];
 
         function parseExpression(reference: Object, val: any, name: string | number) {
             if (isExpression(val)) {
                 let ret = runInContext(val, {
-                    $data: mirror,
+                    $parent: mirror,
                     $global: self.context.$global
                 });
                 
@@ -107,9 +103,9 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
                 }
             }
 
-            if (val && typeof name === 'string' && validParseConfig.indexOf(name) >= 0) {
-                reference[name] = self.parseChildrenExpression(val);
-            }
+            // if (val && typeof name === 'string' && validParseConfig.indexOf(name) >= 0) {
+            //     reference[name] = self.parseChildrenExpression(val);
+            // }
         }
         
         _.each(infoCopy, (config, index) => {

@@ -5,7 +5,7 @@ import createElement from '../../util/createElement';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface, ContainerProps} from './types';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
-import {actionCreators, IAction, SET_DATA_PAYLOAD} from './action';
+import {actionCreators, IAction, SET_DATA_LIST_PAYLOAD, SET_DATA_PAYLOAD} from './action';
 import {RootState} from '../../data/reducers';
 import {Map} from 'immutable';
 import ParamsInjector from '../../util/injector';
@@ -23,7 +23,8 @@ class Container extends BasicContainer<ContainerProps, ContainerStateInterface> 
     static displayName: string;
 
     private parseProperty = {};
-    private prevRequestData = {};
+
+    // private prevRequestData = {};
 
     constructor() {
         super();
@@ -40,23 +41,14 @@ class Container extends BasicContainer<ContainerProps, ContainerStateInterface> 
             console.error(`model and data need to be exist of type: ${this.props.info.type}`);
         }
 
+        // console.log('mount form');
         if (this.props.info.data && this.props.info.model) {
-            let initData = {};
-
-            _.each(this.props.info.data, (item, key) => {
-                if (!isExpression(item)) {
-                    initData[key] = item;
+            this.setDataIntoStore(this.props.info.model, this.props);
+            setTimeout(() => {
+                if (this.props.info.initialLoad && !this.props.info.hidden) {
+                    this.mergeOriginData(this.props);
                 }
             });
-
-            this.props.initData({
-                model: this.props.info.model,
-                data: initData
-            });
-
-            if (this.props.info.initialLoad && !this.props.info.hidden) {
-                this.mergeOriginData(this.props);
-            }
         }
     }
 
@@ -68,9 +60,27 @@ class Container extends BasicContainer<ContainerProps, ContainerStateInterface> 
         }
     }
 
-    componentDidUpdate(nextProps: ContainerProps) {
-        this.mergeOriginData(this.props);
+    componentWillReceiveProps(nextProps: ContainerProps) {
+        // console.log('will update', !!this.props.$parent, this.props.info.model, this.props.$parent, nextProps.$parent, this.props);
+        if (!!this.props.$parent && this.props.info.model && nextProps.$parent !== this.props.$parent) {
+            // console.log('update init');
+            this.setDataIntoStore(this.props.info.model, nextProps, true);
+            setTimeout(() => {
+                if (this.props.info.initialLoad && !this.props.info.hidden) {
+                    this.mergeOriginData(this.props);
+                }
+            });
+        }
     }
+
+    shouldComponentUpdate(nextProps: ContainerProps, nextState: ContainerStateInterface) {
+        // console.log('should update', this.props.$data !== nextProps.$data, this.props);
+        return this.props.$data !== nextProps.$data;
+    }
+
+    // componentDidUpdate(nextProps: ContainerProps) {
+    //     this.mergeOriginData(this.props);
+    // }
 
     render() {
         let {
@@ -140,6 +150,44 @@ class Container extends BasicContainer<ContainerProps, ContainerStateInterface> 
         });
     }
 
+    private setDataIntoStore(model: string, nextProps: ContainerProps, merge?: boolean) {
+        let initData = {};
+
+        let infoData = nextProps.info.data;
+        if (nextProps.$parent) {
+            infoData = compileValueExpress(infoData, {
+                $parent: nextProps.$parent.toObject(),
+                $global: this.context.$global
+            });
+        }
+
+        console.log('infodata', infoData);
+
+        _.each(infoData, (item, key) => {
+            if (!isExpression(item)) {
+                initData[key] = item;
+            }
+        });
+
+        if (!merge) {
+            this.props.initData({
+                model: model,
+                data: initData
+            });
+        } else {
+            let payloads: SET_DATA_LIST_PAYLOAD = [];
+            _.each(initData, (val, name) => {
+                payloads.push({
+                    type: name,
+                    newValue: val
+                });
+            });
+
+            this.props.setDataList(payloads, model);
+        }
+
+    }
+
     private loadData() {
         let initialLoad = this.props.info.initialLoad;
         let requestConfig = null;
@@ -172,11 +220,11 @@ class Container extends BasicContainer<ContainerProps, ContainerStateInterface> 
             requestConfig = initialLoad;
         }
 
-        if (!requestConfig || _.isEqual(requestConfig, this.prevRequestData)) {
+        if (!requestConfig) {
             return Promise.resolve({});
         }
 
-        this.prevRequestData = _.cloneDeep(requestConfig);
+        // this.prevRequestData = _.cloneDeep(requestConfig);
 
         this.setState({
             loading: true
