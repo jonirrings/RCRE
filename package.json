@@ -4,6 +4,9 @@
     "main": "./plugin/exportPlugin.js",
     "repository": "ssh://dongtiancheng@icode.baidu.com:8235/baidu/native-ads/gaea-aop",
     "homepage": "http://miskit.baidu.com",
+    "files": [
+        "plugin"
+    ],
     "dependencies": {
         "@types/acorn": "^4.0.2",
         "@types/classnames": "^2.2.3",
