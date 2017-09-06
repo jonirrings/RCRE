@@ -1,6 +1,6 @@
 {
     "name": "@miskit/rcre-core",
-    "version": "0.9.13",
+    "version": "0.9.14",
     "main": "./plugin/exportPlugin.js",
     "repository": "ssh://dongtiancheng@icode.baidu.com:8235/baidu/native-ads/gaea-aop",
     "homepage": "http://miskit.baidu.com",
