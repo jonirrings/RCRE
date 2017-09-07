@@ -78,6 +78,10 @@ class AbstractInput extends BasicFormItem<InputPropsInterface, InputStateInterfa
     render() {
         let props = this.props;
 
+        if (props.info.disabled) {
+            this.handleChange('');
+        }
+
         let children = React.createElement(Trigger, Object.assign({}, props, {
             value: this.getChildValue(),
             onChange: this.handleChange,

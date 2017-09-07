@@ -83,7 +83,7 @@
                                     "type": "form",
                                     "model": "addModel",
                                     "hidden": "$parent.mode !== 'add'",
-                                    "colSpan": 10,
+                                    "colSpan": 16,
                                     "data": {
                                         "treeId": "$parent.treeId[0]",
                                         "node_name": "$response.data[0].node_name",
@@ -150,7 +150,7 @@
                                     "type": "form",
                                     "model": "updateModel",
                                     "hidden": "$parent.mode !== 'update'",
-                                    "colSpan": 10,
+                                    "colSpan": 16,
                                     "initialLoad": {
                                         "method": "get",
                                         "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/tree/tree/node",
@@ -227,7 +227,7 @@
                                     "data": {
                                         "treeId": "$parent.treeId[0]"
                                     },
-                                    "colSpan": 10,
+                                    "colSpan": 16,
                                     "hidden": "$parent.mode !== 'delete'",
                                     "submit": {
                                         "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/tree/tree/delete",
