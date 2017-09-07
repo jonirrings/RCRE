@@ -76,6 +76,7 @@ module.exports = {
         filename: 'plugin.js',
         // We inferred the "public path" (such as / or /my-project) from homepage.
         publicPath: publicPath,
+        libraryTarget: 'commonjs2',
         // Point sourcemap entries to original disk location
         devtoolModuleFilenameTemplate(info) {
             return path.relative(paths.appSrc, info.absoluteResourcePath);
