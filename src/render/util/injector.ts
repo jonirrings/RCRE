@@ -1,8 +1,10 @@
 import {ContainerProps} from '../core/Container/types';
 import * as _ from 'lodash';
+import {each, isPlainObject} from 'lodash';
+import {runInContext} from './vm';
 import {SET_DATA_PAYLOAD} from '../core/Container/action';
 import {AxiosResponse} from 'axios';
-import {compileValueExpress, isExpression} from './vm';
+import {isString} from 'util';
 
 class ParamsInjector {
     private originObject: ContainerProps;
@@ -13,7 +15,7 @@ class ParamsInjector {
     constructor(originObject: ContainerProps, resourceProvider: () => Promise<any>) {
         this.originObject = originObject;
         this.changePayloads = [];
-        
+
         resourceProvider().then((ret) => {
             this.$resource = ret;
             this.parseObjItem(this.originObject, this.$resource);
@@ -26,18 +28,23 @@ class ParamsInjector {
     }
 
     private parseObjItem(origin: ContainerProps, mirror: AxiosResponse) {
-        let dataObject = origin.info.data;
+        each(origin, (val, key) => {
+            if (isPlainObject(val)) {
+                this.parseObjItem(val, mirror);
+                return;
+            }
 
-        let output = compileValueExpress(dataObject, {
-            $response: mirror.data
-        });
-
-        _.each(output, (val, key) => {
-            if (!isExpression(val)) {
-                this.changePayloads.push({
-                    type: key,
-                    newValue: val
+            if (isString(val) && val.indexOf('$response') >= 0 && !_.isEmpty(mirror)) {
+                let ret = runInContext(val, {
+                    $response: mirror.data
                 });
+
+                if (ret) {
+                    this.changePayloads.push({
+                        type: key,
+                        newValue: ret
+                    });
+                }
             }
         });
     }
