@@ -44,8 +44,10 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
         store.dispatch(actionCreators.clearData());
     }
 
-    componentWillReceiveProps() {
-        store.dispatch(actionCreators.clearData());
+    componentWillReceiveProps(nextProps: RenderPropsInterface) {
+        if (this.props.code !== nextProps.code) {
+            store.dispatch(actionCreators.clearData());   
+        }
     }
 
     render() {
