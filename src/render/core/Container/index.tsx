@@ -13,27 +13,19 @@ import Col, {hasColProps} from '../Layout/Col/Col';
 import {Spin} from 'antd';
 import {compileValueExpress, filterExpressionData, isExpression} from '../../util/vm';
 import {request} from '../../services/api';
+import {AxiosRequestConfig, AxiosResponse} from 'axios';
 
-export interface ContainerStateInterface {
-    loading: boolean;
-}
-
-class Container extends BasicContainer<ContainerProps, ContainerStateInterface> {
+class Container extends BasicContainer<ContainerProps, {}> {
     static WrappedComponent: string;
     static displayName: string;
 
     private parseProperty = {};
-
-    // private prevRequestData = {};
+    private prevRequestData = {};
 
     constructor() {
         super();
         this.loadData = this.loadData.bind(this);
         this.handleChange = this.handleChange.bind(this);
-
-        this.state = {
-            loading: false
-        };
     }
 
     componentWillMount() {
@@ -41,7 +33,7 @@ class Container extends BasicContainer<ContainerProps, ContainerStateInterface> 
             console.error(`model and data need to be exist of type: ${this.props.info.type}`);
         }
 
-        // console.log('mount form');
+        console.log('mount form');
         if (this.props.info.data && this.props.info.model) {
             this.setDataIntoStore(this.props.info.model, this.props);
             setTimeout(() => {
@@ -61,9 +53,7 @@ class Container extends BasicContainer<ContainerProps, ContainerStateInterface> 
     }
 
     componentWillReceiveProps(nextProps: ContainerProps) {
-        // console.log('will update', !!this.props.$parent, this.props.info.model, this.props.$parent, nextProps.$parent, this.props);
         if (!!this.props.$parent && this.props.info.model && nextProps.$parent !== this.props.$parent) {
-            // console.log('update init');
             this.setDataIntoStore(this.props.info.model, nextProps, true);
             setTimeout(() => {
                 if (this.props.info.initialLoad && !this.props.info.hidden) {
@@ -73,14 +63,13 @@ class Container extends BasicContainer<ContainerProps, ContainerStateInterface> 
         }
     }
 
-    shouldComponentUpdate(nextProps: ContainerProps, nextState: ContainerStateInterface) {
-        // console.log('should update', this.props.$data !== nextProps.$data, this.props);
+    shouldComponentUpdate(nextProps: ContainerProps) {
         return this.props.$data !== nextProps.$data;
     }
 
-    // componentDidUpdate(nextProps: ContainerProps) {
-    //     this.mergeOriginData(this.props);
-    // }
+    componentDidUpdate() {
+        this.mergeOriginData(this.props);
+    }
 
     render() {
         let {
@@ -127,7 +116,7 @@ class Container extends BasicContainer<ContainerProps, ContainerStateInterface> 
         }
 
         return (
-            <Spin spinning={this.state.loading}>
+            <Spin spinning={this.props.$data.get('$loading')}>
                 {retComponent}
             </Spin>
         );
@@ -144,6 +133,11 @@ class Container extends BasicContainer<ContainerProps, ContainerStateInterface> 
         let injector = new ParamsInjector(props, this.loadData);
 
         injector.finished((payloads: SET_DATA_PAYLOAD[]) => {
+            this.props.setData({
+                type: '$loading',
+                newValue: false
+            }, this.props.info.model!);
+
             if (payloads.length > 0) {
                 this.props.setDataList(payloads, this.props.info.model!);
             }
@@ -160,8 +154,6 @@ class Container extends BasicContainer<ContainerProps, ContainerStateInterface> 
                 $global: this.context.$global
             });
         }
-
-        console.log('infodata', infoData);
 
         _.each(infoData, (item, key) => {
             if (!isExpression(item)) {
@@ -190,7 +182,7 @@ class Container extends BasicContainer<ContainerProps, ContainerStateInterface> 
 
     private loadData() {
         let initialLoad = this.props.info.initialLoad;
-        let requestConfig = null;
+        let requestConfig: AxiosRequestConfig = {};
 
         if (typeof initialLoad === 'string') {
             requestConfig = {
@@ -220,22 +212,21 @@ class Container extends BasicContainer<ContainerProps, ContainerStateInterface> 
             requestConfig = initialLoad;
         }
 
-        if (!requestConfig) {
+        if (!requestConfig || _.isEqual(requestConfig, this.prevRequestData)) {
             return Promise.resolve({});
         }
 
-        // this.prevRequestData = _.cloneDeep(requestConfig);
+        this.prevRequestData = _.cloneDeep(requestConfig);
 
-        this.setState({
-            loading: true
-        });
+        this.props.setData({
+            type: '$loading',
+            newValue: true
+        }, this.props.info.model!);
 
-        return request(requestConfig.url!, requestConfig, this.context.$global.proxyServer).then((ret) => {
-            this.setState({
-                loading: false
+        return request(requestConfig.url!, requestConfig, this.context.$global.proxyServer)
+            .then((ret: AxiosResponse) => {
+                return Promise.resolve(ret);
             });
-            return Promise.resolve(ret);
-        });
     }
 }
 

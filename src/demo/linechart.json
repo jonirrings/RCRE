@@ -12,7 +12,7 @@
                     "width": 250,
                     "style": {
                         "background": "#fff",
-                        "border-right": "2px solid #a4b19b"
+                        "borderRight": "2px solid #a4b19b"
                     },
                     "children": [
                         {
@@ -48,7 +48,7 @@
                     "type": "container",
                     "model": "linechart",
                     "style": {
-                        "marginLeft": "20"
+                        "marginLeft": 20
                     },
                     "initialLoad": {
                         "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/realtime/product/chart",
@@ -142,8 +142,8 @@
                                     "type": "rcre.lineChart",
                                     "model": "linechart",
                                     "colSpan": 8,
-                                    "categories": "$data.category",
-                                    "series": "$data.series",
+                                    "categories": "$parent.category",
+                                    "series": "$parent.series",
                                     "width": 800,
                                     "height": 500
                                 }

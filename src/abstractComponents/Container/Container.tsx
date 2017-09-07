@@ -91,6 +91,10 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
             return infoCopy;
         }
 
+        const validParseConfig = [
+            'children'
+        ];
+        
         function parseExpression(reference: Object, val: any, name: string | number) {
             if (isExpression(val)) {
                 let ret = runInContext(val, {
@@ -103,9 +107,9 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
                 }
             }
 
-            // if (val && typeof name === 'string' && validParseConfig.indexOf(name) >= 0) {
-            //     reference[name] = self.parseChildrenExpression(val);
-            // }
+            if (val && typeof name === 'string' && validParseConfig.indexOf(name) >= 0) {
+                reference[name] = self.parseChildrenExpression(val);
+            }
         }
         
         _.each(infoCopy, (config, index) => {

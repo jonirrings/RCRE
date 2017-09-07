@@ -29,7 +29,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(treeEditConfig)
+            code: jsonformat(lineChartConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);

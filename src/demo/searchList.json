@@ -59,7 +59,7 @@
                 },
                 {
                     "type": "table",
-                    "dataSource": "$data.list",
+                    "dataSource": "$parent.list",
                     "dataSourceMapping": {
                         "key": "$index"
                     },
