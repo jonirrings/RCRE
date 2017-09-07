@@ -12,8 +12,8 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
     switch (actions.type) {
         case SET_DATA:
             return state
-                .set(actions.model, state.get(actions.model)
-                    .set(actions.payload.type, actions.payload.newValue));
+                .set(actions.model, state.get(actions.model))
+                    .set(actions.payload.type, actions.payload.newValue);
 
         case TRIGGER_LIST_DATA:
         case SET_DATA_LIST:
