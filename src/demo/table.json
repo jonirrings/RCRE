@@ -42,11 +42,11 @@
                     "children": [
                         {
                             "type": "text",
-                            "text": "$data.data_type.name"
+                            "text": "$parent.data_type.name"
                         },
                         {
                             "type": "text",
-                            "text": "$data.data_type.value"
+                            "text": "$parent.data_type.value"
                         }
                     ]
                 },
@@ -55,11 +55,11 @@
                     "children": [
                         {
                             "type": "text",
-                            "text": "$data.db_name.name"
+                            "text": "$parent.db_name.name"
                         },
                         {
                             "type": "text",
-                            "text": "$data.db_name.value"
+                            "text": "$parent.db_name.value"
                         }
                     ]
                 },
@@ -68,11 +68,11 @@
                     "children": [
                         {
                             "type": "text",
-                            "text": "$data.table_name.name"
+                            "text": "$parent.table_name.name"
                         },
                         {
                             "type": "text",
-                            "text": "$data.table_name.value"
+                            "text": "$parent.table_name.value"
                         }
                     ]
                 },
@@ -81,11 +81,11 @@
                     "children": [
                         {
                             "type": "text",
-                            "text": "$data.description.name"
+                            "text": "$parent.description.name"
                         },
                         {
                             "type": "text",
-                            "text": "$data.description.value"
+                            "text": "$parent.description.value"
                         }
                     ]
                 },
@@ -94,11 +94,11 @@
                     "children": [
                         {
                             "type": "text",
-                            "text": "$data.frequency.name"
+                            "text": "$parent.frequency.name"
                         },
                         {
                             "type": "text",
-                            "text": "$data.frequency.value"
+                            "text": "$parent.frequency.value"
                         }
                     ]
                 },
@@ -107,11 +107,11 @@
                     "children": [
                         {
                             "type": "text",
-                            "text": "$data.hi_ref.name"
+                            "text": "$parent.hi_ref.name"
                         },
                         {
                             "type": "list",
-                            "resource": "$data.hi_ref.value",
+                            "resource": "$parent.hi_ref.value",
                             "iterator": [
                                 {
                                     "type": "text",
@@ -134,16 +134,15 @@
                             "type": "table",
                             "colSpan": 24,
                             "model": "customTable",
-                            "data": {
-                                "dataSource": [],
-                                "columns": []
-                            },
-                            "dataSource": "$data.body",
-                            "columns": "$data.head",
+                            "dataSource": "$parent.body",
+                            "columns": "$parent.head",
                             "columnsMapping": {
                                 "dataIndex": "$iterator.key",
                                 "title": "$iterator.value",
                                 "key": "$iterator.key"
+                            },
+                            "dataSourceMapping": {
+                                "key": "$iterator.field_index"
                             }
                         }
                     ]

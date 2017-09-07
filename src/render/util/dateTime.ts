@@ -1,4 +1,12 @@
 import * as moment from 'moment';
+import * as _ from 'lodash';
+import {runInContext} from './vm';
+
+const isValidTimeStr = /\$now((?:\s*(\+|-)\s*)?(\d+)(s|m|h|d|M|Y|w))*/;
+
+export function isTimeString(timeStr: string): boolean {
+    return isValidTimeStr.test(timeStr);
+}
 
 /**
  * 时间表达式解析器
@@ -6,7 +14,7 @@ import * as moment from 'moment';
  * @param {string} timeStr
  * @returns {moment.Moment}
  */
-export function parseTimeString(timeStr: string): moment.Moment {
+export function parseTimeString(timeStr: string): string {
     const validTimeKeyWords = {
         's': 'seconds',
         'm': 'minutes',
@@ -17,46 +25,47 @@ export function parseTimeString(timeStr: string): moment.Moment {
         'Y': 'years'
     };
 
-    // maybe this is fixed date value
-    if (timeStr.indexOf('now') < 0) {
-        let date = moment(timeStr);
-
-        if (!date.isValid()) {
-            console.error(`inValid timeString: ${timeStr}, unknown date format`);
-            return moment();
-        }
-
-        return date;
-    }
-
-    const startOfNow = /^\s*now/;
-
-    if (!startOfNow.test(timeStr)) {
-        console.error(`inValid timeString: ${timeStr}, now should be in the first`);
-        return moment();
-    }
-
     const timeTokenRegex = /(?:\s*(\+|-)\s*)?(\d+)(s|m|h|d|M|Y|w)/g;
-    let pattern = timeTokenRegex.exec(timeStr);
-    let nowTime = moment();
+    return timeStr.replace(isValidTimeStr, (match) => {
+        let pattern = timeTokenRegex.exec(match);
+        let nowTime = moment();
 
-    while (pattern) {
-        let operator = pattern[1] || '+';
-        let count = parseInt(pattern[2], 10);
-        let method = validTimeKeyWords[pattern[3]];
+        while (pattern) {
+            let operator = pattern[1] || '+';
+            let count = parseInt(pattern[2], 10);
+            let method = validTimeKeyWords[pattern[3]];
 
-        switch (operator) {
-            case '-':
-                nowTime = nowTime.subtract(count, method);
-                break;
+            switch (operator) {
+                case '-':
+                    nowTime = nowTime.subtract(count, method);
+                    break;
 
-            default:
-            case '+':
-                nowTime = nowTime.add(count, method);
-                break;
+                default:
+                case '+':
+                    nowTime = nowTime.add(count, method);
+                    break;
+            }
+            pattern = timeTokenRegex.exec(timeStr);
         }
-        pattern = timeTokenRegex.exec(timeStr);
-    }
 
-    return nowTime;
+        return nowTime.valueOf().toString();
+    });
+}
+
+export function compileTimeExpression<Config>(props: Config, format: string = 'YYYY-MM-DD HH:mm:ss') {
+    let copy = _.cloneDeep(props);
+
+    _.each(copy, (val, name) => {
+        if (isTimeString(val)) {
+            let ret = parseTimeString(val);
+            let timestamps = runInContext(ret, {});
+            let time = moment(timestamps);
+
+            if (time.isValid()) {
+                copy[name] = time.format(format);
+            }
+        }
+    });
+
+    return copy;
 }

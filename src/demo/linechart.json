@@ -59,10 +59,11 @@
                             "treeId": "$data.treeId[0]"
                         }
                     },
+                    "$nowFormat": "YYYYMMDD",
                     "data": {
                         "treeId": "1",
                         "fields": "click",
-                        "date": "20170904",
+                        "date": "$now",
                         "category": "$response.data.categories",
                         "series": "$response.data.series"
                     },

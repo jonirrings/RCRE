@@ -32,6 +32,8 @@ export class BasicConfig extends ColConfig {
 
     hidden?: boolean;
 
+    $nowFormat?: string;
+
     children?: BasicConfig[];
 }
 

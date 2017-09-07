@@ -14,6 +14,7 @@ import {Spin} from 'antd';
 import {compileValueExpress, filterExpressionData, isExpression} from '../../util/vm';
 import {request} from '../../services/api';
 import {AxiosRequestConfig, AxiosResponse} from 'axios';
+import {compileTimeExpression} from '../../util/dateTime';
 
 class Container extends BasicContainer<ContainerProps, {}> {
     static WrappedComponent: string;
@@ -154,6 +155,8 @@ class Container extends BasicContainer<ContainerProps, {}> {
                 $global: this.context.$global
             });
         }
+
+        infoData = compileTimeExpression(infoData, this.props.info.$nowFormat);
 
         _.each(infoData, (item, key) => {
             if (!isExpression(item)) {
