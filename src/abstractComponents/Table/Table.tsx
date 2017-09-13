@@ -31,6 +31,8 @@ export class TableConfig extends BasicConfig {
     @IsDefined()
     columns: TableColumnsItem[];
 
+    columnControls?: FormItemConfig[];
+
     columnsMapping?: TableColumnsItem;
 
     dataSourceMapping?: TableDataSourceItem;
@@ -47,24 +49,33 @@ export default class AbstractTable extends BasicContainer<TablePropsInterface, {
     }
 
     render() {
-        let columns = this.props.info.columns;
-        let dataSource = this.props.info.dataSource;
+        let info = this.props.info;
+        let columns = info.columns;
+        let dataSource = info.dataSource;
 
-        if (this.props.info.columnsMapping && !isExpression(columns)) {
-            columns = _.map(columns, (co, index) => this.applyMapping(co, this.props.info.columnsMapping, index)!);
+        if (info.columnsMapping && !isExpression(columns)) {
+            columns = _.map(columns, (co, index) => this.applyMapping(co, info.columnsMapping, index)!);
         }
 
-        if (this.props.info.dataSourceMapping && !isExpression(dataSource)) {
+        if (info.dataSourceMapping && !isExpression(dataSource)) {
             dataSource = _.map(dataSource, (da, index) =>
-                this.applyMapping(da, this.props.info.dataSourceMapping, index)!);
+                this.applyMapping(da, info.dataSourceMapping, index)!);
         }
 
         if (!isExpression(columns)) {
-            columns = columns.map(co => this.renderColumnControls(co));   
+            if (info.columnControls && _.isArray(info.columnControls)) {
+                columns.push({
+                    title: '操作',
+                    key: 'operation',
+                    controls: info.columnControls
+                });
+            }
+
+            columns = columns.map(co => this.renderColumnControls(co));
         }
 
         let childProps = Object.assign({}, this.props, {
-            info: Object.assign(this.props.info, {
+            info: Object.assign(info, {
                 columns: columns,
                 dataSource: dataSource
             })
@@ -93,7 +104,8 @@ export default class AbstractTable extends BasicContainer<TablePropsInterface, {
 
     private renderControl(info: FormItemConfig, depth: number, index: number, source: TableDataSourceItem) {
         let compiled = compileValueExpress(info, {
-            $dataSource: source
+            $dataSource: source,
+            $index: index
         });
 
         let childProps = {

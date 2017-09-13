@@ -4,6 +4,8 @@ import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../r
 import Col, {hasColProps} from '../../render/core/Layout/Col/Col';
 import Trigger from '../../render/core/Trigger/Trigger';
 
+// import PopConform from '../PopConfirm/PopConfirm';
+
 export class ButtonConfig extends BasicConfig {
     /**
      * 按钮的文字
@@ -59,20 +61,20 @@ export class ButtonConfig extends BasicConfig {
      * @public
      */
     @IsBoolean()
-    loading: boolean;
+    loading?: boolean;
 
     /**
      * 按钮背景透明
      * @public
      */
     @IsBoolean()
-    ghost: boolean;
+    ghost?: boolean;
 
     /**
      * 是否禁用
      * @public
      */
-    disabled: boolean;
+    disabled?: boolean;
 }
 
 export class ButtonPropsInterface extends BasicContainerPropsInterface {

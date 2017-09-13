@@ -5,24 +5,29 @@
             "type": "row",
             "children": [
                 {
-                    "type": "container",
+                    "type": "form",
                     "model": "listQuery",
                     "colSpan": 6,
                     "data": {
                     },
-                    "children": [
+                    "controls": [
                         {
                             "type": "row",
                             "colSpan": 12,
                             "children": [
                                 {
                                     "type": "input",
-                                    "childModel": "table_name",
+                                    "name": "table_name",
                                     "label": "表名称"
                                 },
                                 {
+                                    "type": "input",
+                                    "name": "applicant",
+                                    "label": "申请人"
+                                },
+                                {
                                     "type": "select",
-                                    "childModel": "status",
+                                    "name": "approval_status",
                                     "label": "状态",
                                     "options": [
                                         {
@@ -80,15 +85,6 @@
             },
             "children": [
                 {
-                    "type": "text",
-                    "text": "$parent.option_desc",
-                    "style": {
-                        "fontSize": 16,
-                        "margin": "10px 0",
-                        "display": "block"
-                    }
-                },
-                {
                     "type": "row",
                     "children": [
                         {
@@ -102,9 +98,37 @@
                             },
                             "dataSourceMapping": {
                                 "key": "$iterator.field_index"
-                            }
+                            },
+                            "columnControls": [
+                                {
+                                    "type": "button",
+                                    "text": "审批",
+                                    "disabled": "$dataSource.approval_status != 0"
+                                }
+                            ]
                         }
                     ]
+                },
+                {
+                    "type": "text",
+                    "text": "审批操作步骤：",
+                    "display": {
+                        "display": "block"
+                    }
+                },
+                {
+                    "type": "text",
+                    "text": "1、登录udw平台,查找到对应的表,点击“申请权限”；",
+                    "display": {
+                        "display": "block"
+                    }
+                },
+                {
+                    "type": "text",
+                    "text": "2、在“获权者”中填入当前申请人，多人申请时以逗号分隔；",
+                    "display": {
+                        "display": "block"
+                    }
                 }
             ]
         }

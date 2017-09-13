@@ -22,6 +22,7 @@ import Footer, {FooterPropsInterface} from '../core/Layout/Layout/Footer';
 import Content, {ContentPropsInterface} from '../core/Layout/Layout/Content';
 import List, {ListPropsInterface} from '../../abstractComponents/List/List';
 import Hr, {HrPropsInterface} from '../../abstractComponents/Plain/Hr';
+import PopConfirm, {PopConfirmPropsInterface} from '../../abstractComponents/PopConfirm/PopConfirm';
 import * as _ from 'lodash';
 
 export type ComponentLoaderMapVal = {
@@ -153,6 +154,10 @@ const config = {
     hr: {
         component: Hr,
         componentInterface: HrPropsInterface
+    },
+    popConfirm: {
+        component: PopConfirm,
+        componentInterface: PopConfirmPropsInterface
     }
 };
 
