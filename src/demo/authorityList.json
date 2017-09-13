@@ -1,28 +1,28 @@
 {
-    "title": "权限查看",
+    "title": "权限审批列表",
     "body": [
         {
             "type": "row",
             "children": [
                 {
-                    "type": "form",
+                    "type": "container",
                     "model": "listQuery",
                     "colSpan": 6,
                     "data": {
                     },
-                    "controls": [
+                    "children": [
                         {
                             "type": "row",
                             "colSpan": 12,
                             "children": [
                                 {
                                     "type": "input",
-                                    "name": "table_name",
+                                    "childModel": "table_name",
                                     "label": "表名称"
                                 },
                                 {
                                     "type": "select",
-                                    "name": "status",
+                                    "childModel": "status",
                                     "label": "状态",
                                     "options": [
                                         {

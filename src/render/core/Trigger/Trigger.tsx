@@ -50,7 +50,7 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
         let children = createElement(Component, componentInterface, childProps, this.props.children);
 
         if (this.context.form && this.props.info.type !== 'form') {
-            children = this.wrapWithFormItem(children);
+            children = this.wrapWithFormItem(children, childProps);
         }
 
         return children;
@@ -151,13 +151,12 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
             mergeProps[method] = (event: React.MouseEvent<HTMLInputElement>) => {
                 let target = event.currentTarget;
                 let value = target.value;
-
                 this.handleTrigger(item, triggerType)(this.props.info.model!, value);
             };
         }
     }
 
-    private wrapWithFormItem(children: React.ReactElement<T>) {
-        return createElement(AbstractFormItem, FormItemPropsInterface, this.props, children);
+    private wrapWithFormItem(children: React.ReactElement<T>, childProps: TriggerPropsInterface) {
+        return createElement(AbstractFormItem, FormItemPropsInterface, childProps, children);
     }
 }

@@ -187,12 +187,6 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
             $setData: this.props.$setData,
             $setDataList: this.props.$setDataList
         }, childElements);
-
-        // if (typeof info.colSpan !== 'undefined') {
-        //     return React.createElement(Col, {
-        //         info: this.props.info
-        //     }, children);
-        // }
         
         return children;
     }
