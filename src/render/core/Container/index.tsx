@@ -117,7 +117,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
         }
 
         return (
-            <Spin spinning={this.props.$data.get('$loading')}>
+            <Spin spinning={!!this.props.$data.get('$loading')}>
                 {retComponent}
             </Spin>
         );

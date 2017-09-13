@@ -10,7 +10,6 @@ export default class AntText extends React.Component<TextPropsInterface, {}> {
         let info = this.props.info;
         const defaultTextStyle = {
             padding: '0 10px',
-            textAlign: 'center',
             lineHeight: '25px'
         };
 
