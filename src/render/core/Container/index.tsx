@@ -204,7 +204,8 @@ class Container extends BasicContainer<ContainerProps, {}> {
                 let property = _.cloneDeep(this.parseProperty);
                 let compiledRet = compileValueExpress(property, {
                     $data: this.props.$data.toObject(),
-                    $query: this.context.$query
+                    $query: this.context.$query,
+                    $global: this.context.$global
                 });
 
                 Object.assign(initialLoad.data, compiledRet);

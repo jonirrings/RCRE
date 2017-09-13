@@ -18,6 +18,7 @@ export default class AntText extends React.Component<TextPropsInterface, {}> {
             case 'link':
                 return (
                     <a
+                        style={Object.assign(defaultTextStyle, this.props.info.style)}
                         href={this.props.info.href}
                     >
                         {this.props.info.text}

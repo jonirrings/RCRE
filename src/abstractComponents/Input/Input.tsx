@@ -54,6 +54,13 @@ export class InputConfig extends BasicFormItemConfig {
      */
     @IsString()
     addonAfter: string;
+
+    /**
+     * 禁用状态下是否需要展示数据(提交也会带上)
+     * @public
+     * @default false
+     */
+    displayDisabledText: boolean;
 }
 
 export class InputPropsInterface extends FormItemPropsInterface {
@@ -78,7 +85,7 @@ class AbstractInput extends BasicFormItem<InputPropsInterface, InputStateInterfa
     render() {
         let props = this.props;
 
-        if (props.info.disabled) {
+        if (props.info.disabled && !props.info.displayDisabledText) {
             this.handleChange('');
         }
 

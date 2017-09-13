@@ -18,6 +18,7 @@ let layoutConfig = require('./demo/layout.json');
 let searchConfig = require('./demo/searchList.json');
 let treeEditConfig = require('./demo/treeEdit.json');
 let todomvcConfig = require('./demo/todomvc.json');
+let approvalConfig = require('./demo/approvel.json');
 
 interface AppStateInterface {
     code: string;
@@ -28,7 +29,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(todomvcConfig)
+            code: jsonformat(approvalConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -59,6 +60,7 @@ class App extends React.Component<{}, AppStateInterface> {
             render() {
                 const globalOptions = {
                     pageId: '4567',
+                    username: 'dongtiancheng',
                     proxyServer: 'http://localhost:8800/proxy'
                 };
                 

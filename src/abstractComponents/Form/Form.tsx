@@ -7,7 +7,6 @@ import {BasicFormItemConfig} from './types';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsArray, IsDefined, IsString, IsUrl, Validate} from 'class-validator';
 import * as _ from 'lodash';
-import Col from '../../render/core/Layout/Col/Col';
 import {IsPageInfo} from '../../render/util/validators';
 import Trigger from '../../render/core/Trigger/Trigger';
 import {request} from '../../render/services/api';
@@ -172,8 +171,6 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
         } else if (info.controls && _.isPlainObject(info.controls)) {
             childElements = this.renderControl(info.controls, depth++, 0);
         }
-
-        console.log(this.props.$data);
         
         let compiled = compileValueExpress(info, {
             $data: this.props.$data.toObject(),
@@ -190,12 +187,12 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
             $setData: this.props.$setData,
             $setDataList: this.props.$setDataList
         }, childElements);
-        
-        if (typeof info.colSpan !== 'undefined') {
-            return React.createElement(Col, {
-                info: this.props.info
-            }, children);
-        }
+
+        // if (typeof info.colSpan !== 'undefined') {
+        //     return React.createElement(Col, {
+        //         info: this.props.info
+        //     }, children);
+        // }
         
         return children;
     }

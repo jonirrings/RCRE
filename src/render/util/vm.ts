@@ -35,10 +35,10 @@ export function compileValueExpress<Config, Source>(props: Config, pair: compile
             } else {
                 // TODO use class-validator to reflect types and set default values
             }
+        }
 
-            if (_.isPlainObject(val)) {
-                reference[name] = compileValueExpress(val, pair);
-            }
+        if (_.isPlainObject(val)) {
+            reference[name] = compileValueExpress(val, pair);
         }
     }
     

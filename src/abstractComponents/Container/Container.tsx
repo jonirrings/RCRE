@@ -99,6 +99,7 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
             if (isExpression(val)) {
                 let ret = runInContext(val, {
                     $parent: mirror,
+                    $query: self.context.$query,
                     $global: self.context.$global
                 });
                 

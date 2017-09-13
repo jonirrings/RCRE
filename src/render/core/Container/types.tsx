@@ -1,12 +1,11 @@
 import {IsString, Validate} from 'class-validator';
 import {IsPageInfo} from '../../util/validators';
 import {actionCreators} from './action';
-import AbstractCol, {ColConfig, ColPropsInterface, hasColProps} from '../Layout/Col/Col';
+import AbstractCol, {ColConfig, ColPropsInterface} from '../Layout/Col/Col';
 import {Map} from 'immutable';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {AxiosRequestConfig} from 'axios';
-import Col from '../../../render/core/Layout/Col/Col';
 
 export type rawJSONType = string | number | null | boolean | Object;
 export type originJSONType = rawJSONType | rawJSONType[];
@@ -95,11 +94,11 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends A
     }
 
     public renderChildren<Type>(children: React.ReactElement<Type>) {
-        if (hasColProps(this.props.info)) {
-            children = React.createElement(Col, {
-                info: this.props.info
-            }, children);
-        }
+        // if (hasColProps(this.props.info)) {
+        //     children = React.createElement(Col, {
+        //         info: this.props.info
+        //     }, children);
+        // }
         
         if (this.props.info.hidden) {
             return React.createElement('div', {
