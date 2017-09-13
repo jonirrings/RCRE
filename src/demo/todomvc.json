@@ -1,0 +1,15 @@
+{
+    "title": "TodoMVC",
+    "body": [
+        {
+            "type": "container",
+            "data": {
+                "list": []
+            },
+            "model": "mvc",
+            "children": [
+                
+            ]
+        }
+    ]
+}

@@ -17,8 +17,7 @@ let tableConfig = require('./demo/table.json');
 let layoutConfig = require('./demo/layout.json');
 let searchConfig = require('./demo/searchList.json');
 let treeEditConfig = require('./demo/treeEdit.json');
-// let treeAddConfig = require('./demo/treeAdd.json');
-// let submitConfig = require('./demo/submit.json');
+let todomvcConfig = require('./demo/todomvc.json');
 
 interface AppStateInterface {
     code: string;
@@ -29,7 +28,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(lineChartConfig)
+            code: jsonformat(todomvcConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -75,6 +74,7 @@ class App extends React.Component<{}, AppStateInterface> {
                     <a onClick={this.changeConfig(searchConfig)}>Search</a>
                     <a onClick={this.changeConfig(lineChartConfig)}>LineChart</a>
                     <a onClick={this.changeConfig(treeEditConfig)}>treeEdit</a>
+                    <a onClick={this.changeConfig(todomvcConfig)}>todomvcConfig</a>
                     <a onClick={this.changeConfig(treeConfig)}>树</a>
                     <a onClick={this.changeConfig(tableConfig)}>Table</a>
                 </div>
