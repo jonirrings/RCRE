@@ -33,6 +33,12 @@ export class FormConfig extends BasicConfig {
 
     @Validate(IsPageInfo, [SubmitConfig])
     submit: SubmitConfig;
+
+    /**
+     * 当data的数据满足一下字段要求的时候, 自动进行提交
+     * @public
+     */
+    autoSubmitIfReady?: string[];
 }
 
 export class FormPropsInterface extends BasicContainerPropsInterface {
@@ -74,7 +80,7 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
         };
     }
 
-    handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    handleSubmit() {
         let submitConfig = this.props.info.submit;
 
         if (!_.isPlainObject(submitConfig)) {
@@ -130,6 +136,14 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
     render() {
         let controls = this.props.info.controls;
         let controlChildren;
+
+        if (this.props.info.autoSubmitIfReady && _.isArray(this.props.info.autoSubmitIfReady)) {
+            let dataKeys = Object.keys(this.props.$data.toObject()).sort();
+            let submitList = this.props.info.autoSubmitIfReady.sort();
+            if (_.isEqual(dataKeys, submitList)) {
+                this.handleSubmit();
+            }
+        }
 
         if (controls && controls.length > 0) {
             controlChildren = controls.map((control, index) => this.renderControl(control, 0, index));

@@ -1,0 +1,50 @@
+{
+    "title": "规则模板新增页",
+    "body": [
+        {
+            "type": "form",
+            "model": "listQuery",
+            "colSpan": 6,
+            "data": {
+            },
+            "controls": [
+                {
+                    "type": "input",
+                    "name": "rule_desc",
+                    "label": "规则描述",
+                    "required": true
+                },
+                {
+                    "type": "input",
+                    "name": "rule_expr",
+                    "label": "表达式",
+                    "required": true
+                },
+                {
+                    "type": "select",
+                    "name": "status",
+                    "label": "状态",
+                    "options": [
+                        {
+                            "key": "待审批",
+                            "value": "0"
+                        },
+                        {
+                            "key": "审批中",
+                            "value": "1"
+                        },
+                        {
+                            "key": "已审批",
+                            "value": "2"
+                        }
+                    ]
+                },
+                {
+                    "type": "button",
+                    "htmlType": "submit",
+                    "text": "提交"
+                }
+            ]
+        }
+    ]
+}

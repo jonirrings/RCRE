@@ -69,7 +69,9 @@ class Container extends BasicContainer<ContainerProps, {}> {
     }
 
     componentDidUpdate() {
-        this.mergeOriginData(this.props);
+        if (this.props.info.initialLoad) {
+            this.mergeOriginData(this.props);
+        }
     }
 
     render() {

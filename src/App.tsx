@@ -21,6 +21,8 @@ let todomvcConfig = require('./demo/todomvc.json');
 let approvalConfig = require('./demo/approvel.json');
 let authListConfig = require('./demo/authList.json');
 let authorifyListConfig = require('./demo/authorityList.json');
+let ruleTemplateListConfig = require('./demo/ruleTemplateList.json');
+let addRuleTemplateConfig = require('./demo/addRuleTemplate.json');
 
 interface AppStateInterface {
     code: string;
@@ -31,7 +33,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(authorifyListConfig)
+            code: jsonformat(addRuleTemplateConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -84,6 +86,8 @@ class App extends React.Component<{}, AppStateInterface> {
                     <a onClick={this.changeConfig(tableConfig)}>Table</a>
                     <a onClick={this.changeConfig(authListConfig)}>authListConfig</a>
                     <a onClick={this.changeConfig(authorifyListConfig)}>authorifyListConfig</a>
+                    <a onClick={this.changeConfig(ruleTemplateListConfig)}>ruleTemplateListConfig</a>
+                    <a onClick={this.changeConfig(addRuleTemplateConfig)}>addRuleTemplateConfig</a>
                 </div>
                 <div className="App">
                     <Preview code={this.state.code}/>
