@@ -8,6 +8,7 @@
                     "type": "form",
                     "model": "listQuery",
                     "colSpan": 6,
+                    "rcre.name": "",
                     "data": {
                     },
                     "controls": [

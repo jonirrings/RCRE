@@ -83,7 +83,6 @@
                             "type": "input",
                             "name": "message",
                             "colSpan": 10,
-                            "disabled": "$data.count != 0",
                             "displayDisabledText": true
                         }
                     ]

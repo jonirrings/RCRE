@@ -7,6 +7,15 @@
             "colSpan": 6,
             "data": {
             },
+            "submit": {
+                "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/dataquality/datarule/addruletemplate",
+                "method": "GET",
+                "data": {
+                    "rule_desc": "$data.rule_desc",
+                    "rule_expr": "$data.rule_expr",
+                    "status": "!!$data.status ? 1 : 0"
+                }
+            },
             "controls": [
                 {
                     "type": "input",

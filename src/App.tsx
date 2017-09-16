@@ -33,7 +33,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(addRuleTemplateConfig)
+            code: jsonformat(basicConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);

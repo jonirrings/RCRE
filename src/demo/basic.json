@@ -5,18 +5,19 @@
         {
             "type": "button",
             "data": {
-                "text": "点击把请求拿到的数据的数据到下面的组件",
-                "json": "$response.data"
+                "ooo": "$response.option_desc",
+                "pppp": "1 + 1"
             },
             "model": "simpleButton",
-            "initialLoad": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8094/",
-            "label": "$data.text",
+            "initialLoad": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/udwmeta/userapproval/userapprovalinfo",
+            "text": "$data.ooo",
+            "htmlType": "submit",
             "trigger": [
                 {
                     "eventType": "click",
                     "target": "test",
                     "ship": {
-                        "text": "$data.json"
+                        "iiier": "$data.pppp"
                     }
                 }
             ]
