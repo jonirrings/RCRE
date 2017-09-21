@@ -13,7 +13,12 @@ RCRE设计了一套可靠的JSON配置规则, 可以很好的抽象页面的布�
 RCRE借鉴了Redux单一对象状态管理的思想, 如果你有redux开发经验, 那么理解RCRE的json配置将变得跟打开你的mac一样简单.
 
 ## 安装
-RCRE引擎提供2种方式来进行安装.
+最简单的安装方式, 就是通过npm. 目前rcre 发布在公司内pnpm镜像源上, 需要预先对npm进行配置
 
-+ 通过打包工具来和你的当前项目进行融合
-+ 将RCRE单独挂载在window下直接运行(需要先安装React和ReactDOM)
+```bash
+npm config set @miskit:registry http://pnpm.baidu.com
+```
+然后再安装即可
+```bash
+npm install @miskit/rcre-core --save
+```
