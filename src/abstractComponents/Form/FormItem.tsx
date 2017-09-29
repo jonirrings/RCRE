@@ -83,7 +83,10 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
             return;
         }
 
-        this.context.formOnChange(runTimeKey, value);
+        if (this.context.form) {
+            this.context.formOnChange(runTimeKey, value);    
+        }
+        
         this.props.onChange(runTimeKey, value);
     }
 
