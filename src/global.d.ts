@@ -7,6 +7,8 @@ declare interface Window {
     RCRE_VERSION: any;
 }
 
+declare var __VERSION__: any;
+
 declare module 'json-format' {
     function parse(obj: any): string;
 

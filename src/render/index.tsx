@@ -7,8 +7,6 @@ import configureStore from './data/store';
 import {actionCreators} from './core/Container/action';
 import {Provider} from 'react-redux';
 
-let RCREPackage = require('../../package.json');
-
 import './index.css';
 
 type globalOptions = {
@@ -89,4 +87,4 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
 window.RCRE = Render;
 window.RCRE_React = React;
 window.RCRE_ReactDOM = ReactDOM;
-window.RCRE_VERSION = RCREPackage.version;
+window.RCRE_VERSION = __VERSION__;
