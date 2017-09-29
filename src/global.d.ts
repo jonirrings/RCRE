@@ -4,6 +4,7 @@ declare interface Window {
     RCRE: any;
     RCRE_React: any;
     RCRE_ReactDOM: any;
+    RCRE_VERSION: any;
 }
 
 declare module 'json-format' {
