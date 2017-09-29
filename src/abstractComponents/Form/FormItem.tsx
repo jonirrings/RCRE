@@ -55,6 +55,8 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
         driver: PropTypes.object,
         form: PropTypes.bool,
         abstractContainer: PropTypes.bool,
+        formOnChange: PropTypes.func,
+        injectChildElement: PropTypes.func,
         $setData: PropTypes.func
     };
 
@@ -81,6 +83,7 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
             return;
         }
 
+        this.context.formOnChange(runTimeKey, value);
         this.props.onChange(runTimeKey, value);
     }
 
@@ -139,7 +142,7 @@ class AbstractFormItem<T extends FormItemPropsInterface>
 
     componentDidMount() {
         if (this.context.form && this.props.info.name) {
-            this.props.injectChildElement(this.validateFormItem);
+            this.context.injectChildElement(this.validateFormItem);
         }
     }
 

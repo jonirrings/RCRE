@@ -1,9 +1,11 @@
 import * as React from 'react';
 import {BasicFormItemConfig, BasicFormItemPropsInterface} from '../Form/types';
-import {IsArray, IsBoolean, IsDefined, IsString, Validate} from 'class-validator';
+import {IsBoolean, IsDefined, IsString, Validate} from 'class-validator';
 import {IsPageInfo, IsValidEnums} from '../../render/util/validators';
 import {BasicFormItem} from '../Form/FormItem';
 import Trigger from '../../render/core/Trigger/Trigger';
+import {isExpression, runInContext} from '../../render/util/vm';
+import * as _ from 'lodash';
 
 export class SelectConfig extends BasicFormItemConfig {
     /**
@@ -50,9 +52,13 @@ export class SelectConfig extends BasicFormItemConfig {
      * 下拉框列表
      */
     @IsDefined()
-    @IsArray()
         // TODO Option validate
     options: OptionConfig[];
+
+    /**
+     * 下拉框字段重写
+     */
+    optionsMapping: OptionConfig;
 }
 
 export class OptionConfig {
@@ -92,12 +98,42 @@ class AbstractSelect extends BasicFormItem<SelectPropsInterface, {}> {
     }
 
     render() {
-        let children = React.createElement(Trigger, Object.assign({}, this.props, {
+        let info = _.cloneDeep(this.props.info);
+
+        if (info.optionsMapping && !isExpression(info.options)) {
+            info.options = info.options.map((item, index) => this.applyMapping(item, info.optionsMapping, index));
+        }
+
+        if (isExpression(info.options)) {
+            info.options = [];
+        }
+
+        let childProps = Object.assign({}, this.props, {
             value: this.getChildValue(),
-            onChange: this.handleChange
-        }));
+            onChange: this.handleChange,
+            info: info
+        });
+
+        let children = React.createElement(Trigger, childProps);
 
         return this.renderChildren(children);
+    }
+
+    private applyMapping<T>(data: T, mappingConfig: T, index: number): T {
+        let copy = data;
+
+        _.each<T>(mappingConfig, (expression: keyof T, key: string) => {
+            let ret = runInContext(expression, {
+                $iterator: copy,
+                $index: index
+            });
+
+            if (!_.isNil(ret)) {
+                copy[key] = ret;
+            }
+        });
+
+        return copy;
     }
 }
 

@@ -1,6 +1,4 @@
 import * as React from 'react';
-import componentLoader from '../../render/util/componentLoader';
-import createElement from '../../render/util/createElement';
 import {Map} from 'immutable';
 import * as PropsTypes from 'prop-types';
 import {BasicFormItemConfig} from './types';
@@ -12,6 +10,7 @@ import Trigger from '../../render/core/Trigger/Trigger';
 import {request} from '../../render/services/api';
 import {compileValueExpress} from '../../render/util/vm';
 import {notification} from 'antd';
+import {createChild} from '../../render/util/createChild';
 
 class SubmitConfig {
     @IsUrl()
@@ -53,7 +52,9 @@ export class FormStatesInterface {
 
 class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterface> {
     static childContextTypes = {
-        form: PropsTypes.bool
+        form: PropsTypes.bool,
+        injectChildElement: PropsTypes.func,
+        formOnChange: PropsTypes.func,
     };
 
     private childInstance: Map<string, any>;
@@ -76,7 +77,9 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
         return {
             // 指代, form组件内的组件, 只要这个参数存在, 内部组件就不能存在container组件
             // 整个form的数据要高度统一
-            form: true 
+            form: true,
+            injectChildElement: this.injectChildElement,
+            formOnChange: this.props.onChange
         };
     }
 
@@ -162,19 +165,6 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
     }
 
     private renderControl(info: BasicFormItemConfig, depth: number, index: number): JSX.Element {
-        let type = info.type;
-        let componentInfo = componentLoader.getAbstractComponent(type);
-
-        if (!componentInfo) {
-            console.error(`can not find component of type ${type}`);
-            return <div key={Math.random()}/>;
-        }
-
-        let {
-            component,
-            componentInterface
-        } = componentInfo;
-        
         // TODO There are some HTML elements which is impossible to have childNodes, like input
         // At this point, are warning should to printing if user try to generate a children of an input element
         let childElements;
@@ -190,17 +180,16 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
             $data: this.props.$data.toObject(),
             $global: this.context.$global
         });
-        
-        let children = createElement(component, componentInterface, {
+
+        let children = createChild(info, {
             // TODO collection enough info to generate unique key, to prevent updating from React diff algorithm
             key: `${info.type}_${depth}_${index}`,
             info: compiled,
             onChange: this.props.onChange,
-            injectChildElement: this.injectChildElement,
             $data: this.props.$data,
             $setData: this.props.$setData,
             $setDataList: this.props.$setDataList
-        }, childElements);
+        }, false, false, childElements);
         
         return children;
     }

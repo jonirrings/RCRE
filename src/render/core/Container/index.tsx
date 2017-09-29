@@ -94,7 +94,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
         let compiled = compileValueExpress<BasicConfig, Object>(info, {
             $data: this.props.$data.toObject(),
             $global: this.context.$global
-        });
+        }, ['control']);
 
         let {
             component,

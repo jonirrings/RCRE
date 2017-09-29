@@ -23,7 +23,9 @@ export type compilePairType<S> = {
     [s: string]: S
 };
 
-export function compileValueExpress<Config, Source>(props: Config, pair: compilePairType<Source>): Config {
+export function compileValueExpress<Config, Source>(props: Config,
+                                                    pair: compilePairType<Source>,
+                                                    blackList: string[] = []): Config {
     let copy = _.cloneDeep(props);
 
     function parseExpression(reference: Object, val: any, name: string | number) {
@@ -37,8 +39,8 @@ export function compileValueExpress<Config, Source>(props: Config, pair: compile
             }
         }
 
-        if (_.isPlainObject(val)) {
-            reference[name] = compileValueExpress(val, pair);
+        if (_.isPlainObject(val) && typeof name === 'string' && blackList.indexOf(name) < 0) {
+            reference[name] = compileValueExpress(val, pair, blackList);
         }
     }
     

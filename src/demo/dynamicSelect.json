@@ -1,0 +1,154 @@
+{
+    "title": "字段规则检查报告",
+    "body": [
+        {
+            "type": "row",
+            "children": [
+                {
+                    "type": "form",
+                    "model": "query",
+                    "data": {
+                        "date": "$now"
+                    },
+                    "$nowFormat": "YYYYMMDD",
+                    "colSpan": 8,
+                    "controls": [
+                        {
+                            "label": "日期",
+                            "type": "datepicker",
+                            "name": "date",
+                            "format": "YYYYMMDD"
+                        },
+                        {
+                            "label": "表名",
+                            "type": "input",
+                            "name": "tb_name",
+                            "trigger": [
+                                {
+                                    "eventType": "change",
+                                    "target": "check_schema_resource",
+                                    "ship": {
+                                        "tb_name": "$data.tb_name"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "container",
+                            "model": "check_type_resource",
+                            "colSpan": 24,
+                            "data": {
+                                "options": "$response.data"
+                            },
+                            "initialLoad": {
+                                "url": "http://cp01-yjk.epc.baidu.com:8203/rulecheck/rlreport/checktype",
+                                "method": "GET",
+                                "data": {}
+                            },
+                            "children": [
+                                {
+                                    "label": "检查类型",
+                                    "type": "select",
+                                    "name": "check_type",
+                                    "optionsMapping": {
+                                        "key": "$iterator.name",
+                                        "value": "$iterator.id"
+                                    },
+                                    "options": "$parent.options"
+                                }
+                            ]
+                        },
+                        {
+                            "label": "place_id",
+                            "type": "input",
+                            "name": "place_id"
+                        },
+                        {
+                            "type": "container",
+                            "model": "check_schema_resource",
+                            "colSpan": 24,
+                            "data": {
+                                "options": "$response.data"
+                            },
+                            "initialLoad": {
+                                "url": "http://cp01-yjk.epc.baidu.com:8203/rulecheck/rlreport/getschema",
+                                "method": "GET",
+                                "data": {
+                                    "tb_name": "$data.tb_name"
+                                }
+                            },
+                            "children": [
+                                {
+                                    "label": "字段",
+                                    "type": "select",
+                                    "name": "check_schema",
+                                    "optionsMapping": {
+                                        "key": "$iterator.name",
+                                        "value": "$iterator.id"
+                                    },
+                                    "options": "$parent.options"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "button",
+                            "text": "查询",
+                            "trigger": [
+                                {
+                                    "eventType": "click",
+                                    "target": "tableList",
+                                    "ship": {
+                                        "date": "$data.date",
+                                        "tb_name": "$data.tb_name",
+                                        "check_type": "$data.check_type",
+                                        "place_id": "$data.place_id",
+                                        "check_schema": "$data.check_schema"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "row",
+            "children": [
+                {
+                    "type": "table",
+                    "data": {
+                        "columns": "$response.data.head",
+                        "body": "$response.data.body"
+                    },
+                    "model": "tableList",
+                    "initialLoad": {
+                        "url": "http://cp01-yjk.epc.baidu.com:8203/rulecheck/rlreport/table",
+                        "method": "GET",
+                        "data": {
+                            "tb_name": "$data.tb_name",
+                            "date": "$data.date",
+                            "check_type": "$data.check_type",
+                            "place_id": "$data.place_id",
+                            "check_schema": "$data.check_schema"
+                        }
+                    },
+                    "columns": "$data.columns",
+                    "columnsMapping": {
+                        "dataIndex": "$iterator.id",
+                        "title": "$iterator.name",
+                        "key": "$iterator.id"
+                    },
+                    "dataSource": "$data.body",
+                    "columnControls": [
+                        {
+                            "type": "text",
+                            "text": "下载",
+                            "textType": "link",
+                            "href": "http://cp01-yjk.epc.baidu.com:8203/rulecheck/rlreport/printlog?tb_name={{$resource.table_name}}&place_id={{$resource.place_id"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

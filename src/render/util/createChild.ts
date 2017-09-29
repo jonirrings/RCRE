@@ -8,7 +8,8 @@ import createElement from './createElement';
 export function createChild(item: BasicConfig,
                             childProps: Object,
                             inForm: boolean = false,
-                            abstractContainer: boolean = false) {
+                            abstractContainer: boolean = false,
+                            childElements: React.ReactNode = null) {
     if (!_.isPlainObject(item)) {
         console.error('invalid Item Object', item);
         return React.createElement('div', {}, 'invalid Item Object');
@@ -37,5 +38,5 @@ export function createChild(item: BasicConfig,
         componentInterface = componentInfo.componentInterface;
     }
 
-    return createElement(component, componentInterface, childProps);
+    return createElement(component, componentInterface, childProps, childElements);
 }

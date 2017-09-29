@@ -23,6 +23,7 @@ let authListConfig = require('./demo/authList.json');
 let authorifyListConfig = require('./demo/authorityList.json');
 let ruleTemplateListConfig = require('./demo/ruleTemplateList.json');
 let addRuleTemplateConfig = require('./demo/addRuleTemplate.json');
+let dynamicSelectConfig = require('./demo/dynamicSelect.json');
 
 interface AppStateInterface {
     code: string;
@@ -33,7 +34,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(basicConfig)
+            code: jsonformat(dynamicSelectConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -88,6 +89,7 @@ class App extends React.Component<{}, AppStateInterface> {
                     <a onClick={this.changeConfig(authorifyListConfig)}>authorifyListConfig</a>
                     <a onClick={this.changeConfig(ruleTemplateListConfig)}>ruleTemplateListConfig</a>
                     <a onClick={this.changeConfig(addRuleTemplateConfig)}>addRuleTemplateConfig</a>
+                    <a onClick={this.changeConfig(dynamicSelectConfig)}>dynamicSelectConfig</a>
                 </div>
                 <div className="App">
                     <Preview code={this.state.code}/>
