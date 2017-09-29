@@ -3,6 +3,12 @@ RCRE 引擎更新日志
 
 RCRE按单周进行版本迭代, 每周至少发布一个新的版本
 
+[v0.1.1]
+> 2017-09-29
+- AbstractSelect组件支持Options属性mapping
+- 支持在Form组件的内部嵌入AbstractContainer来加载数据
+- 添加dynamicSelect.json实例
+
 [v0.1.0]
 > 2017-09-20
 - 支持抽象, 实体组件
