@@ -1,46 +1,23 @@
-数据模型设计
-============
+RCRE数据流设计思想
+================
 
-从render的层面上看, 能够持有数据的组件分为2个
+## 核心概念
 
-+ Container
-+ Control
++ 持有数据的组件
++ 静态变量解析
 
-### Control组件的性质
 
-+ Control组件是依托于Container组件而存在的
-+ Control组件获取数据直接通过$data来从依附的Container组件获取.
-+ Control组件不具备单独获取数据的能力
+## 触发Container数据组件更新的三种情况
 
-### Container组件的性质
+1. Container组件初始化, 通过initialLoad来加载数据, 并更新
+2. 外部组件通过Trigger组件, 写入到当前Container组件的store对象中, 需要触发Container更新. 
+同时或许会触发initialLoad, 发送请求之后再次更新组件
+3. 组件的父级组件的数据模型发生改变, 组件组件传递给字级的$parent属性发生更改, 需要触发initiaLoad,
+发送请求之后再次更新组件
 
-+ Container组件是一个独立的数据容器
-+ Container组件存在上下层级依赖关系, 单个Container组件可以访问父级, 可以访问字级的数据模型
-+ 父级-->字级是一对多的关系. 父级的Container组件, 可以通过`$child.${child.name}`来访问字级的数据模型
-+ 对于字级 ---> 父级这样的访问, 字级组件直接通过`$parent`来访问父级的数据模型
-+ `$remote`是纯针对于API服务的
-+ Container的data的属性值需要支持嵌入JS表达式的方式来赋值
-```
-                            +------------+
-                            | API Server |
-                            +-------+----+
-                                    ^
-                                    |
-       +-----------------------+    |       +-----------------------+ 
-       |      Container        |    |       |      Container        | 
-       +-------+-------+-------+    |       +-------+-------+-------+ 
-    +->| $data |Control|Control|    |  +--->| $data |Control|Control| 
-    |  +-------+-------+-------+    |  |    +-------+-------+-------+ 
-    |  |$parent|$child |$remote+--->+  |    |$parent|$child |$remote| 
-    |  +-------+---+---+-------+       |    +---+---+-------+-------+ 
-    |              |                   |        | 
-    |              +---->---------->---+        |
-    |                                           |
-    +------<------------<--------------<--------+
 
-```
+## 表单元素受控场景
 
-### 特殊场景
-跨Container的数据联动
-
-一般这种场景, 都是需要container需要进行数据交换的
+1. Form > FormItem > Input
+2. Form > FormItem > AbstractContainer > Input
+3. AbstractContainer > Input
