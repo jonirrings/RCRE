@@ -1,22 +1,32 @@
 import * as _ from 'lodash';
 
 export function runInContext(code: string, context: Object) {
-    let f: any;
-    try {
-        let params: string[] = [];
-        let source: Object[] = [];
-        _.each(context, (value, name) => {
-            params.push(name);
-            source.push(value);
-        });
-        params.push(`return ${code}`);
-        f = new Function(...params);
-        return f.apply(context, source);
-    } catch (e) {
-        // console.error(e, f);
-        return null;
-        // TODO better error report   
+    if (!_.isPlainObject(context)) {
+        throw new TypeError('context argument must be an object');
     }
+    
+    if (typeof code === 'string') {
+        if (!/^\s+function/.test(code)) {
+            code = `function() { return (${code})}`;
+        }
+    }
+    
+    if (!code) {
+        throw new TypeError('code must be a evaluable string');
+    }
+    
+    let func = new Function('context', `
+        var scope = this;
+        var window = scope;
+        var global = scope;
+        with (scope) {
+            return (${code}).call(context);
+        }
+    `);
+    
+    // console.log(func.toString());
+    
+    return func.call(context);
 }
 
 export type compilePairType<S> = {
