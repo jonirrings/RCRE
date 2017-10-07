@@ -24,9 +24,29 @@ export function runInContext(code: string, context: Object) {
         }
     `);
     
-    // console.log(func.toString());
-    
     return func.call(context);
+}
+
+export function safePointer(obj: Object, keys: (string|number)[]) {
+    let target = obj;
+
+    if (!Array.isArray(keys) && typeof keys !== 'string') {
+        return target;
+    }
+
+    let sequence = keys || [keys];
+
+    while (sequence.length > 0) {
+        let key = sequence.shift();
+
+        if (_.isObjectLike(target) && !_.isNil(key) && key in target) {
+            target = target[key];
+        } else {
+            return null;
+        }
+    }
+
+    return target;
 }
 
 export type compilePairType<S> = {
