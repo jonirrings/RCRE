@@ -57,41 +57,32 @@ export function compileValueExpress<Config, Source>(props: Config,
                                                     pair: compilePairType<Source>,
                                                     blackList: string[] = []): Config {
     let copy = _.cloneDeep(props);
-
-    function parseExpression(reference: Object, val: any, name: string | number) {
-        if (isExpression(val)) {
-            let parseRet = runInContext(val, pair);
-
-            if (!_.isNil(parseRet)) {
-                reference[name] = parseRet;
-            } else {
-                // TODO use class-validator to reflect types and set default values
+    
+    function parseExpression(reference: Object) {
+        _.each(reference, (item, key) => {
+            if (blackList.indexOf(key) >= 0) {
+                return;
             }
-        }
-
-        if (_.isPlainObject(val) && typeof name === 'string' && blackList.indexOf(name) < 0) {
-            reference[name] = compileValueExpress(val, pair, blackList);
-        }
+            
+            if (isExpression(item)) {
+                let ret;
+                try {
+                    ret = runInContext(item, pair);
+                } catch (e) {
+                    ret = null;
+                }
+                
+                reference[key] = ret;
+            }
+            
+            if (_.isPlainObject(item) || _.isArray(item)) {
+                parseExpression(item);
+            }
+        });
     }
     
-    _.each(copy, (item, key) => {
-        if (isExpression(item)) {
-            let parseRet = runInContext(item, pair);
-
-            if (!_.isNil(parseRet)) {
-                copy[key] = parseRet;
-            } else {
-                // TODO use class-validator to reflect types and set default values
-            }
-        } else if (_.isPlainObject(item) || _.isArray(item)) {
-            _.each(item, (val, name) => {
-                parseExpression(item, val, name);
-            });
-        } else {
-            copy[key] = item;
-        }
-    });
-
+    parseExpression(copy);
+    
     return copy;
 }
 

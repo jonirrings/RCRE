@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import {BasicContainer, BasicContainerPropsInterface, ContainerProps} from './types';
+import {BasicConfig, BasicContainer, BasicContainerPropsInterface, ContainerProps} from './types';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {actionCreators, IAction, SET_DATA_LIST_PAYLOAD, SET_DATA_PAYLOAD} from './action';
@@ -103,7 +103,6 @@ class Container extends BasicContainer<ContainerProps, {}> {
                     newValue: val
                 });
             });
-
             this.props.setDataList(payloads, model);
         }
 
@@ -180,11 +179,6 @@ class Container extends BasicContainer<ContainerProps, {}> {
         // if (this.props.$data) {
         //     info.data = this.props.$data.toObject();
         // }
-
-        // let compiled = compileValueExpress<BasicConfig, Object>(info, {
-        //     $data: this.props.$data.toObject(),
-        //     $global: this.context.$global
-        // }, ['control']);
         
         if (!info.children) {
             const errText = {
@@ -196,18 +190,23 @@ class Container extends BasicContainer<ContainerProps, {}> {
             });
         }
         
+        let childElements = info.children.map((child, index) => {
+            let compiled = compileValueExpress<BasicConfig, Object>(child, {
+                $data: this.props.$data.toObject(),
+                $global: this.context.$global
+            }, ['data', 'children']);
+            
+            return createChild<BasicContainerPropsInterface>(child, {
+                key: `${child.type}_${index}`,
+                info: compiled,
+                $data: this.props.$data,
+                onChange: this.handleChange
+            });
+        });
+        
         return (
             <div className="rcre-container">
-                {
-                    info.children.map((child, index) => {
-                        return createChild<BasicContainerPropsInterface>(child, {
-                            key: `${child.type}_${index}`,
-                            info: child,
-                            $data: this.props.$data,
-                            onChange: this.handleChange
-                        });
-                    })
-                }
+                {childElements}
             </div>
         );
     }
@@ -235,7 +234,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
 }, dispatch);
 
 const mergeProps = (stateProps: any, dispatchProps: any, ownProps: any): any => {
-    let parentProps = ownProps.$data;
+    let parentProps = ownProps.$data || Map({});
     
     return Object.assign({}, ownProps, stateProps, dispatchProps, {
         $parent: parentProps

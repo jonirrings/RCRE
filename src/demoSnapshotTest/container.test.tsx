@@ -25,17 +25,23 @@ describe('Container SnapShot Test', () => {
             ]
         };
         
-        const element = <Render code={JSON.stringify(json)} />;
+        class RCRE extends React.Component {
+            render() {
+                return <Render code={JSON.stringify(json)} />;
+            }
+        }
+
+        const element = <RCRE />;
         const component = renderer.create(element);
         let tree = component.toJSON();
         expect(tree).toMatchSnapshot();
-        
+
         let state: any = store.getState();
         expect(state.container).toBeInstanceOf(Map);
         expect(state.container.get('textField')).toBeInstanceOf(Map);
         expect(state.container.get('textField').size).toBe(0);
     });
-    
+
     it('$parent props parse', () => {
         const json = {
             body: [
@@ -68,12 +74,47 @@ describe('Container SnapShot Test', () => {
         const component = renderer.create(element);
         let tree = component.toJSON();
         expect(tree).toMatchSnapshot();
-        
+
         let state: any = store.getState();
         expect(state.container).toBeInstanceOf(Map);
         expect(state.container.get('textField')).toBeInstanceOf(Map);
         expect(state.container.get('textField').size).toBe(1);
         expect(state.container.get('textField').get('name')).toBe(1);
         expect(state.container.get('innerTextField').get('name')).toBe(1);
+    });
+
+    it('container child props parse', () => {
+        store.dispatch(actionCreators.clearData());
+        const json = {
+            body: [
+                {
+                    type: 'container',
+                    model: 'textField',
+                    data: {
+                        name: 1
+                    },
+                    children: [
+                        {
+                            type: 'container',
+                            model: 'innerTextField',
+                            data: {
+                                name: '$parent.name'
+                            },
+                            children: [
+                                {
+                                    type: 'text',
+                                    text: '$data.text'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
+        
+        const element = <Render code={JSON.stringify(json)} />;
+        const component = renderer.create(element);
+        let tree = component.toJSON();
+        expect(tree).toMatchSnapshot();
     });
 });

@@ -17,23 +17,21 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
             }
             
             return state
-                .set(actions.model, state.get(actions.model)
-                    .set(actions.payload.type, actions.payload.newValue));
-
+                .set(actions.model, 
+                    state.get(actions.model).set(actions.payload.type, actions.payload.newValue)
+                );
         case TRIGGER_LIST_DATA:
         case SET_DATA_LIST:
             let payloadList = actions.payload;
-            let dataState = state.get(actions.model);
+            let dataObj = {};
             payloadList.forEach(item => {
                 let keyName = item.type;
-                let val = item.newValue;
-                dataState = dataState.set(keyName, val);
+                dataObj[keyName] = item.newValue;
             });
-            return state.set(actions.model, dataState);
+            return state.set(actions.model, Map(dataObj));
         case INIT_DATA:
             let model = actions.payload.model;
             let data = actions.payload.data;
-            
             if (state.has(model) && state.get(model).size !== 0) {
                 console.error(`find exist model of model: ${model}`);
                 return state;
@@ -44,7 +42,6 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
         case REMOVE_DATA:
             let delKey = actions.payload.model;
             return state.set(delKey, Map({}));
-        // only for dev
         case CLEAR_DATA:
             state = Map({});
             return state;

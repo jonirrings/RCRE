@@ -68,7 +68,7 @@ export class BasicContainerPropsInterface {
 
 export class ContainerProps extends BasicContainerPropsInterface {
     public $data: Map<string, any>;
-    public $parent?: Map<string, any>;
+    public $parent: Map<string, any>;
 
     /**
      * 写入数据到数据模型

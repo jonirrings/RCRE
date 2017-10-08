@@ -16,7 +16,7 @@
                     "children": [
                         {
                             "type": "text",
-                            "text": "helloworld"
+                            "text": "$data.name"
                         }
                     ]
                 }
