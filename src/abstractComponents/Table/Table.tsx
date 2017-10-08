@@ -115,7 +115,7 @@ export default class AbstractTable extends BasicContainer<TablePropsInterface, {
             $data: Map(source)
         };
 
-        return createChild(info, childProps, this.context.form, this.context.abstractContainer);
+        return createChild(info, childProps);
     }
 
     private renderColumnControls(item: TableColumnsItem) {

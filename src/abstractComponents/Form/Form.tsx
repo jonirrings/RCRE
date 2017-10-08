@@ -189,7 +189,7 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
             $data: this.props.$data,
             $setData: this.props.$setData,
             $setDataList: this.props.$setDataList
-        }, false, false, childElements);
+        }, childElements);
         
         return children;
     }

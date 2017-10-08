@@ -72,7 +72,7 @@ export default class AbstractRow extends React.Component<RowPropsInterface, {}> 
                 return createChild(item, Object.assign({}, this.props, {
                     info: item,
                     key: index
-                }), this.context.form, this.context.abstractContainer);
+                }));
             });
         }
 

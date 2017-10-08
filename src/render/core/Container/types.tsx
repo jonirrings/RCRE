@@ -1,7 +1,6 @@
 import {IsString, Validate} from 'class-validator';
 import {IsPageInfo} from '../../util/validators';
 import {actionCreators} from './action';
-import AbstractCol, {ColConfig, ColPropsInterface} from '../Layout/Col/Col';
 import {Map} from 'immutable';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
@@ -17,7 +16,7 @@ export type defaultData = {
 export interface RequestConfig extends AxiosRequestConfig {
 }
 
-export class BasicConfig extends ColConfig {
+export class BasicConfig {
     @IsString()
     // @IsDefined()
     type: string;
@@ -42,7 +41,7 @@ export class BasicTriggerEvent {
     name: string;
 }
 
-export class BasicContainerPropsInterface extends ColPropsInterface {
+export class BasicContainerPropsInterface {
     @Validate(IsPageInfo, [BasicConfig])
     info: BasicConfig;
     
@@ -56,23 +55,40 @@ export class BasicContainerPropsInterface extends ColPropsInterface {
      */
     $data: Map<string, any>;
 
-    $setData: typeof actionCreators.setData;
+    /**
+     * React组件Key
+     */
+    key: string | number;
 
-    $setDataList: typeof actionCreators.setDataList;
-
+    $setData?: typeof actionCreators.setData;
+    $setDataList?: typeof actionCreators.setDataList;
     $triggerEvent?: typeof BasicTriggerEvent;
-    
-    $removeData: typeof actionCreators.removeData;
+    $removeData?: typeof actionCreators.removeData;
 }
 
 export class ContainerProps extends BasicContainerPropsInterface {
     public $data: Map<string, any>;
     public $parent?: Map<string, any>;
-    public setData: typeof actionCreators.setData;
-    public setDataList: typeof actionCreators.setDataList;
-    public initData: typeof actionCreators.initData;
-    public removeData: typeof actionCreators.removeData;
-    public requestAPI: () => void;
+
+    /**
+     * 写入数据到数据模型
+     */
+    setData: typeof actionCreators.setData;
+
+    /**
+     * 批量写入一组数据
+     */
+    setDataList: typeof actionCreators.setDataList;
+    
+    /**
+     * 清空当前数据模型
+     */
+    removeData: typeof actionCreators.removeData;
+
+    /**
+     * 初始化数据
+     */
+    initData: typeof actionCreators.initData;
 }
 
 export const BasicContextTypes = {
@@ -86,7 +102,7 @@ export const BasicContextTypes = {
     $query: PropTypes.object
 };
 
-export class BasicContainer<T extends BasicContainerPropsInterface, P> extends AbstractCol<T, P> {
+export class BasicContainer<T extends BasicContainerPropsInterface, P> extends React.Component<T, P> {
     static contextTypes = BasicContextTypes;
     
     constructor() {
@@ -94,12 +110,6 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends A
     }
 
     public renderChildren<Type>(children: React.ReactElement<Type>) {
-        // if (hasColProps(this.props.info)) {
-        //     children = React.createElement(Col, {
-        //         info: this.props.info
-        //     }, children);
-        // }
-        
         if (this.props.info.hidden) {
             return React.createElement('div', {
                 style: {

@@ -2,7 +2,6 @@ import * as React from 'react';
 import {IsNumber, Max, Min} from 'class-validator';
 import {Col} from 'antd';
 import createElement from '../../../util/createElement';
-import {BasicConfig} from '../../Container/types';
 
 export class ColConfig {
     /**
@@ -57,14 +56,6 @@ class AntColProps {
 
 export class ColPropsInterface {
     info: ColConfig;
-}
-
-export function hasColProps(info: BasicConfig) {
-    return typeof info.colSpan !== 'undefined' ||
-        typeof info.colOrder !== 'undefined' ||
-        typeof info.colOffset !== 'undefined' ||
-        typeof info.colPull !== 'undefined' ||
-        typeof info.colPush !== 'undefined';
 }
 
 export default class AbstractCol<T extends ColPropsInterface, P> extends React.Component<T, P> {

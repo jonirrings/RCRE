@@ -1,20 +1,18 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import componentLoader from '../../util/componentLoader';
-import createElement from '../../util/createElement';
-import {BasicConfig, BasicContainer, BasicContainerPropsInterface, ContainerProps} from './types';
+import {BasicContainer, BasicContainerPropsInterface, ContainerProps} from './types';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {actionCreators, IAction, SET_DATA_LIST_PAYLOAD, SET_DATA_PAYLOAD} from './action';
 import {RootState} from '../../data/reducers';
 import {Map} from 'immutable';
 import ParamsInjector from '../../util/injector';
-import Col, {hasColProps} from '../Layout/Col/Col';
-import {Spin} from 'antd';
+// // import {Spin} from 'antd';
 import {compileValueExpress, filterExpressionData, isExpression} from '../../util/vm';
 import {request} from '../../services/api';
 import {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {compileTimeExpression} from '../../util/dateTime';
+import {createChild} from '../../util/createChild';
 
 class Container extends BasicContainer<ContainerProps, {}> {
     static WrappedComponent: string;
@@ -30,11 +28,10 @@ class Container extends BasicContainer<ContainerProps, {}> {
     }
 
     componentWillMount() {
-        if ((this.props.info.data && !this.props.info.model) || (!this.props.info.data && this.props.info.model)) {
-            console.error(`model and data need to be exist of type: ${this.props.info.type}`);
+        if (this.props.info.model && !this.props.info.data) {
+            this.props.info.data = {};
         }
-
-        console.log('mount form');
+        
         if (this.props.info.data && this.props.info.model) {
             this.setDataIntoStore(this.props.info.model, this.props);
             setTimeout(() => {
@@ -72,79 +69,6 @@ class Container extends BasicContainer<ContainerProps, {}> {
         if (this.props.info.initialLoad) {
             this.mergeOriginData(this.props);
         }
-    }
-
-    render() {
-        let {
-            type
-        } = this.props.info;
-
-        let componentInfo = componentLoader.getAbstractComponent(type);
-
-        if (!componentInfo) {
-            return <pre>{`can not find component of type: ${type}`}</pre>;
-        }
-
-        let info = _.cloneDeep(this.props.info);
-
-        if (this.props.$data) {
-            info.data = this.props.$data.toObject();
-        }
-
-        let compiled = compileValueExpress<BasicConfig, Object>(info, {
-            $data: this.props.$data.toObject(),
-            $global: this.context.$global
-        }, ['control']);
-
-        let {
-            component,
-            componentInterface
-        } = componentInfo;
-
-        let childProps = {
-            info: compiled,
-            $data: this.props.$data,
-            $setData: this.props.setData,
-            $setDataList: this.props.setDataList,
-            $removeData: this.props.removeData,
-            onChange: this.handleChange
-        };
-
-        let retComponent = createElement<BasicContainerPropsInterface>(component, componentInterface, childProps);
-
-        if (hasColProps(this.props.info)) {
-            retComponent = React.createElement(Col, {
-                info: this.props.info
-            }, retComponent);
-        }
-
-        return (
-            <Spin spinning={!!this.props.$data.get('$loading')}>
-                {retComponent}
-            </Spin>
-        );
-    }
-
-    private handleChange(key: string, value: any) {
-        this.props.setData({
-            type: key,
-            newValue: value
-        }, this.props.info.model!);
-    }
-
-    public mergeOriginData(props: ContainerProps) {
-        let injector = new ParamsInjector(props, this.loadData);
-
-        injector.finished((payloads: SET_DATA_PAYLOAD[]) => {
-            this.props.setData({
-                type: '$loading',
-                newValue: false
-            }, this.props.info.model!);
-
-            if (payloads.length > 0) {
-                this.props.setDataList(payloads, this.props.info.model!);
-            }
-        });
     }
 
     private setDataIntoStore(model: string, nextProps: ContainerProps, merge?: boolean) {
@@ -185,6 +109,21 @@ class Container extends BasicContainer<ContainerProps, {}> {
 
     }
 
+    public mergeOriginData(props: ContainerProps) {
+        let injector = new ParamsInjector(props, this.loadData);
+
+        injector.finished((payloads: SET_DATA_PAYLOAD[]) => {
+            this.props.setData({
+                type: '$loading',
+                newValue: false
+            }, this.props.info.model!);
+
+            if (payloads.length > 0) {
+                this.props.setDataList(payloads, this.props.info.model!);
+            }
+        });
+    }
+    
     private loadData() {
         let initialLoad = this.props.info.initialLoad;
         let requestConfig: AxiosRequestConfig = {};
@@ -234,6 +173,52 @@ class Container extends BasicContainer<ContainerProps, {}> {
                 return Promise.resolve(ret);
             });
     }
+
+    render() {
+        let info = _.cloneDeep(this.props.info);
+
+        // if (this.props.$data) {
+        //     info.data = this.props.$data.toObject();
+        // }
+
+        // let compiled = compileValueExpress<BasicConfig, Object>(info, {
+        //     $data: this.props.$data.toObject(),
+        //     $global: this.context.$global
+        // }, ['control']);
+        
+        if (!info.children) {
+            const errText = {
+                type: 'text',
+                text: 'children props must be specific in Container Component'
+            };
+            return createChild(errText, {
+                $data: this.props.$data
+            });
+        }
+        
+        return (
+            <div className="rcre-container">
+                {
+                    info.children.map((child, index) => {
+                        return createChild<BasicContainerPropsInterface>(child, {
+                            key: `${child.type}_${index}`,
+                            info: child,
+                            $data: this.props.$data,
+                            onChange: this.handleChange
+                        });
+                    })
+                }
+            </div>
+        );
+    }
+
+    private handleChange(key: string, value: any) {
+        this.props.setData({
+            type: key,
+            newValue: value
+        }, this.props.info.model!);
+    }
+    
 }
 
 const mapStateToProps = (state: RootState, ownProps: any) => {
@@ -249,4 +234,12 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
     removeData: actionCreators.removeData
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Container);
+const mergeProps = (stateProps: any, dispatchProps: any, ownProps: any): any => {
+    let parentProps = ownProps.$data;
+    
+    return Object.assign({}, ownProps, stateProps, dispatchProps, {
+        $parent: parentProps
+    });
+};
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Container);

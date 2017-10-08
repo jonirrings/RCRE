@@ -1,0 +1,26 @@
+{
+    "body": [
+        {
+            "type": "container",
+            "model": "textField",
+            "data": {
+                "name": 1
+            },
+            "children": [
+                {
+                    "type": "container",
+                    "model": "innerTextField",
+                    "data": {
+                        "name": "$parent.name"
+                    },
+                    "children": [
+                        {
+                            "type": "text",
+                            "text": "helloworld"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

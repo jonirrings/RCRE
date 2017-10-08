@@ -141,7 +141,3 @@ describe('safePointer', () => {
         expect(ret).toBe(2);
     });
 });
-
-describe('compileValueExpress', () => {
-     
-});

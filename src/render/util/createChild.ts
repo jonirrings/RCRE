@@ -1,14 +1,11 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import {BasicConfig, BasicContainerPropsInterface} from '../core/Container/types';
-import Container from '../core/Container/index';
+import {BasicConfig} from '../core/Container/types';
 import componentLoader from '../util/componentLoader';
 import createElement from './createElement';
 
-export function createChild(item: BasicConfig,
-                            childProps: Object,
-                            inForm: boolean = false,
-                            abstractContainer: boolean = false,
+export function createChild<T>(item: BasicConfig,
+                            childProps: T,
                             childElements: React.ReactNode = null) {
     if (!_.isPlainObject(item)) {
         console.error('invalid Item Object', item);
@@ -17,26 +14,15 @@ export function createChild(item: BasicConfig,
 
     let component: React.ComponentClass<any>;
     let componentInterface;
+
+    let componentInfo = componentLoader.getAbstractComponent(item.type);
     
-    // if (item.hidden) {
-    //     return React.createElement('div', {
-    //         key: Math.random()
-    //     });
-    // }
-
-    if (item.data && !inForm && !abstractContainer) {
-        component = Container;
-        componentInterface = BasicContainerPropsInterface;
-    } else {
-        let componentInfo = componentLoader.getAbstractComponent(item.type);
-
-        if (!componentInfo) {
-            return React.createElement('pre', {}, `can not find component of type ${item.type}`);
-        }
-
-        component = componentInfo.component;
-        componentInterface = componentInfo.componentInterface;
+    if (!componentInfo) {
+        return React.createElement('pre', {}, `can not find component of type ${item.type}`);
     }
 
-    return createElement(component, componentInterface, childProps, childElements);
+    component = componentInfo.component;
+    componentInterface = componentInfo.componentInterface;
+
+    return createElement<T>(component, componentInterface, childProps, childElements);
 }

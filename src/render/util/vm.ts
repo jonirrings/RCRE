@@ -117,8 +117,10 @@ export function compileStaticTemplate<Source>(rawString: string, pair: compilePa
             return expression;
         }
 
-        let ret = runInContext(expression, pair);
+        console.log(expression, pair);
+        // let ret = runInContext(expression, pair);
 
+        let ret = null;
         if (!ret) {
             return expression;
         }

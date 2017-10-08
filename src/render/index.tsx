@@ -18,7 +18,7 @@ interface RenderPropsInterface {
     global?: globalOptions;
 }
 
-let store = configureStore();
+export const store = configureStore();
 
 export class Render extends React.Component<RenderPropsInterface, {}> {
     static defaultProps = {
@@ -87,4 +87,3 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
 window.RCRE = Render;
 window.RCRE_React = React;
 window.RCRE_ReactDOM = ReactDOM;
-window.RCRE_VERSION = __VERSION__;

@@ -1,0 +1,14 @@
+{
+    "body": [
+        {
+            "type": "container",
+            "model": "textField",
+            "children": [
+                {
+                    "type": "text",
+                    "text": "helloworld"
+                }
+            ]
+        }
+    ]
+}

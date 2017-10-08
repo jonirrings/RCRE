@@ -25,6 +25,9 @@ let ruleTemplateListConfig = require('./demo/ruleTemplateList.json');
 let addRuleTemplateConfig = require('./demo/addRuleTemplate.json');
 let dynamicSelectConfig = require('./demo/dynamicSelect.json');
 
+// let basicContainerConfig = require('./demo/container/basic.json');
+let nestContainerConfig = require('./demo/container/nestContainer.json');
+
 interface AppStateInterface {
     code: string;
 }
@@ -34,7 +37,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(dynamicSelectConfig)
+            code: jsonformat(nestContainerConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);

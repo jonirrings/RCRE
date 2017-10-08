@@ -1,6 +1,4 @@
 import * as React from 'react';
-import * as _ from 'lodash';
-import WrappedContainer from './Container/index';
 import {BasicConfig} from './Container/types';
 import {IsDefined, IsString} from 'class-validator';
 import themeDriver from '../../drivers/index';
@@ -95,21 +93,17 @@ class Page extends React.Component<PageProps, {}> {
     render() {
         let body;
 
-        if (typeof this.props.body === 'string') {
-            body = this.props.body;
-        } else if (Array.isArray(this.props.body)) {
-            body = this.props.body.map((item, index) => {
-                return createChild(item, {
-                    info: item,
-                    key: index
-                });
-            });
-        } else if (_.isPlainObject(this.props.body)) {
-            body = React.createElement(WrappedContainer, {
-                info: this.props.body
-            });
+        if (!Array.isArray(this.props.body)) {
+            return <p>body props is not array</p>;
         }
 
+        body = this.props.body.map((item, index) => {
+            return createChild(item, {
+                info: item,
+                key: index
+            });
+        });
+        
         let pageHeader = this.props.title ? (
             <div className="page-header">
                 <h1>{this.props.title}</h1>

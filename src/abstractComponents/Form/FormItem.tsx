@@ -2,7 +2,6 @@ import * as React from 'react';
 import {BasicFormItemConfig, BasicFormItemPropsInterface} from './types';
 import {IsBoolean, IsString, Validate} from 'class-validator';
 import {IsPageInfo} from '../../render/util/validators';
-import Col, {ColConfig, hasColProps} from '../../render/core/Layout/Col/Col';
 import * as PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './FormItem.css';
@@ -91,12 +90,6 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
     }
 
     public renderChildren<Type>(children: React.ReactElement<Type>) {
-        if (hasColProps(this.props.info)) {
-            children = React.createElement(Col, {
-                info: this.props.info
-            }, children);
-        }
-
         if (this.props.info.hidden) {
             return React.createElement('div', {
                 style: {
@@ -158,18 +151,12 @@ class AbstractFormItem<T extends FormItemPropsInterface>
         let child = (
             <div className={errorClass}>
                 {this.renderLabel(this.props.info)}
-                {
-                    this.wrapColumn(this.props.info, [
-                        this.addChangeProxyToChildren(this.props.children),
-                        this.renderExplain(this.props.info)
-                    ], {
-                        colSpan: 16
-                    })
-                }
+                {this.addChangeProxyToChildren(this.props.children)}
+                {this.renderExplain(this.props.info)}
             </div>
         );
 
-        return this.wrapColumn(this.props.info, child);
+        return child;
     }
 
     private renderLabel(info: FormItemConfig) {
@@ -185,19 +172,6 @@ class AbstractFormItem<T extends FormItemPropsInterface>
         }
 
         return '';
-    }
-
-    private wrapColumn
-    (info: FormItemConfig, children: React.ReactNode, options: ColConfig = {}) {
-        return React.createElement(Col, {
-            info: {
-                colSpan: options.colSpan || info.colSpan,
-                colOrder: options.colOrder || info.colOrder,
-                colOffset: options.colOffset || info.colOffset,
-                colPush: options.colPush || info.colPush,
-                colPull: options.colPull || info.colPull
-            }
-        }, children);
     }
 
     private validateFormItem(value?: any): boolean {
