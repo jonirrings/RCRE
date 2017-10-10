@@ -41,7 +41,7 @@ ReactDOM.render(
     <Render code={JSON.stringify(json)}/>,
     document.getElementById('app') as HTMLElement
 );
-//
+
 // console.log(store.getState());
 //
 // store.dispatch(actionCreators.clearData());

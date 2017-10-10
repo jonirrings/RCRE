@@ -38,10 +38,10 @@ class Container extends BasicContainer<ContainerProps, {}> {
                 this.props.info.data = {};
             }
 
-            // this.props.info.data is readonly
+            // to keep it safe, this.props.info should be readonly
+            Object.freeze(this.props.info);
 
             this.syncInitData(this.props.info.model, this.props);
-
             // this.setDataIntoStore(this.props.info.model, this.props);
             // if (this.props.info.initialLoad && !this.props.info.hidden) {
             //     this.mergeOriginData(this.props);
@@ -97,14 +97,9 @@ class Container extends BasicContainer<ContainerProps, {}> {
             return <div className="err-text">children props must be specific in Container Component</div>;
         }
 
-        // console.log(this.props.info.model, this.props.$data);
-
+        // Container Component no long compile expression string for child
+        // instead, AbstractComponent should compile it by themSelf
         let childElements = info.children.map((child, index) => {
-            // let compiled = compileValueExpress<BasicConfig, Object>(child, {
-            //     $data: this.props.$data.toObject(),
-            //     $global: this.context.$global
-            // }, ['data', 'children']);
-
             return createChild<BasicContainerPropsInterface>(child, {
                 key: `${child.type}_${index}`,
                 info: child,
