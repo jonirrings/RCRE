@@ -1,39 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Container SnapShot Test $parent props parse 1`] = `
-<div
-  className="rcre-render"
->
-  <div
-    className="page-container"
-  >
-    
-    <div
-      className="page-body"
-    >
-      <div
-        className="rcre-container"
-      >
-        <div
-          className="rcre-container"
-        >
-          <span
-            style={
-              Object {
-                "lineHeight": "25px",
-                "padding": "0 10px",
-              }
-            }
-          >
-            helloworld
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
 exports[`Container SnapShot Test container child props parse 1`] = `
 <div
   className="rcre-render"
@@ -60,36 +26,6 @@ exports[`Container SnapShot Test container child props parse 1`] = `
             }
           />
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Container SnapShot Test simple snapshot 1`] = `
-<div
-  className="rcre-render"
->
-  <div
-    className="page-container"
-  >
-    
-    <div
-      className="page-body"
-    >
-      <div
-        className="rcre-container"
-      >
-        <span
-          style={
-            Object {
-              "lineHeight": "25px",
-              "padding": "0 10px",
-            }
-          }
-        >
-          helloworld
-        </span>
       </div>
     </div>
   </div>

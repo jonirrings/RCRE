@@ -91,13 +91,43 @@ export function isExpression(str: any) {
 }
 
 export function filterExpressionData(obj: Object) {
-    _.each(obj, (val, name) => {
-        if (isExpression(val)) {
-            delete obj[name];
-        }
-    });
+    let copy = _.cloneDeep(obj);
 
-    return obj;
+    function walker(o: Object) {
+        _.each(o, (val, name) => {
+            if (isExpression(val)) {
+                delete o[name];
+            }
+
+            if (_.isObjectLike(val)) {
+                filterExpressionData(val);
+            }
+        });
+    }
+
+    walker(copy);
+
+    return copy;
+}
+
+export function keepExpressionData(obj: Object) {
+    let copy = _.cloneDeep(obj);
+
+    function walker(o: Object) {
+        _.each(o, (val, name) => {
+            if (!isExpression(val)) {
+                delete o[name];
+            }
+
+            if (_.isObjectLike(val)) {
+                filterExpressionData(val);
+            }
+        });
+    }
+
+    walker(copy);
+
+    return copy;
 }
 
 export function compileStaticTemplate<Source>(rawString: string, pair: compilePairType<Source>) {
