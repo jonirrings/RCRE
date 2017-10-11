@@ -20,7 +20,7 @@ const json = {
             },
             dataProvider: {
                 mode: 'ajax',
-                initialLoad: {
+                config: {
                     url: 'http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/dataquality/datarule/ruledetaillist',
                     method: 'GET'
                 }

@@ -3,6 +3,8 @@ export const SET_DATA_LIST = 'SET_DATA_LIST';
 export const TRIGGER_LIST_DATA = 'TRIGGER_LIST_DATA';
 export const CLEAR_DATA = 'CLEAR_DATA';
 export const REMOVE_DATA = 'REMOVE_DATA';
+export const SYNC_LOAD_DATA_SUCCESS = 'SYNC_LOAD_DATA_SUCCESS';
+export const SYNC_LOAD_DATA_FAIL = 'SYNC_LOAD_DATA_FAIL';
 export const ASYNC_LOAD_DATA_PROGRESS = 'ASYNC_LOAD_DATA_PROGRESS';
 export const ASYNC_LOAD_DATA_SUCCESS = 'ASYNC_LOAD_DATA_SUCCESS';
 export const ASYNC_LOAD_DATA_FAIL = 'ASYNC_LOAD_DATA_FAIL';
@@ -28,6 +30,16 @@ export type ASYNC_LOAD_DATA_FAIL_PAYLOAD = {
     model: string;
     providerMode: string;
     error: any;
+};
+export type SYNC_LOAD_DATA_SUCCESS_PAYLOAD = {
+    model: string;
+    providerMode: string;
+    data: any
+};
+export type SYNC_LOAD_DATA_FAIL_PAYLOAD = {
+    model: string;
+    providerMode: string;
+    error: any
 };
 
 export type IActions = {
@@ -64,6 +76,14 @@ export type IActions = {
     ASYNC_LOAD_DATA_FAIL: {
         type: typeof ASYNC_LOAD_DATA_FAIL,
         payload: ASYNC_LOAD_DATA_FAIL_PAYLOAD
+    },
+    SYNC_LOAD_DATA_SUCCESS: {
+        type: typeof SYNC_LOAD_DATA_SUCCESS,
+        payload: SYNC_LOAD_DATA_SUCCESS_PAYLOAD
+    },
+    SYNC_LOAD_DATA_FAIL: {
+        type: typeof SYNC_LOAD_DATA_FAIL,
+        payload: SYNC_LOAD_DATA_FAIL_PAYLOAD
     }
 };
 
@@ -102,6 +122,14 @@ export const actionCreators = {
     }),
     asyncLoadDataFail: (payload: ASYNC_LOAD_DATA_FAIL_PAYLOAD) => ({
         type: ASYNC_LOAD_DATA_FAIL as typeof ASYNC_LOAD_DATA_FAIL,
+        payload
+    }),
+    syncLoadDataSuccess: (payload: SYNC_LOAD_DATA_SUCCESS_PAYLOAD) => ({
+        type: SYNC_LOAD_DATA_SUCCESS as typeof SYNC_LOAD_DATA_SUCCESS,
+        payload
+    }),
+    syncLoadDataFail: (payload: SYNC_LOAD_DATA_FAIL_PAYLOAD) => ({
+        type: SYNC_LOAD_DATA_FAIL as typeof SYNC_LOAD_DATA_FAIL,
         payload
     })
 };

@@ -1,6 +1,6 @@
 import {Map} from 'immutable';
 import {actionCreators} from '../Container/action';
-import {ContainerProps, RequestConfig} from '../Container/types';
+import {ContainerProps} from '../Container/types';
 import {AjaxDataProvider} from './providers/ajax';
 import {providerLoaderInstance} from './loader';
 import * as _ from 'lodash';
@@ -12,15 +12,7 @@ providerLoaderInstance.registerProvider('ajax', new AjaxDataProvider(), true);
  */
 export interface ProviderSourceConfig {
     mode: string;
-    initialLoad?: RequestConfig;
-}
-
-/**
- * 经过验证的 Provider 对象数据源配置
- */
-export interface ValidProviderSourceConfig {
-    mode: string;
-    initialLoad: RequestConfig;
+    config: any;
 }
 
 /**
@@ -53,6 +45,16 @@ export interface ProviderActions {
      * 异步加载失败
      */
     asyncLoadDataFail: typeof actionCreators.asyncLoadDataFail;
+
+    /**
+     * 同步加载成功
+     */
+    syncLoadDataSuccess: typeof actionCreators.syncLoadDataSuccess;
+
+    /**
+     * 同步加载失败
+     */
+    syncLoadDataFail: typeof actionCreators.syncLoadDataFail;
 }
 
 export interface BasicSyncProviderInterface {
@@ -103,26 +105,25 @@ export class DataProvider {
         }
         
         let async = providerInfo.async;
+        let provider = providerInfo.provider;
+
+        let checkStatus = provider.configCheck(providerConfig);
+
+        if (!checkStatus) {
+            return;
+        }
+
+        let parsedConfig = provider.parse(providerConfig, props);
+
+        // 如果provider数据配置和上次相同, 就必须阻止以后的操作.
+        // 不然就会死循环
+        // 参考流程图: src/doc/graphic/dataFlow.png
+        if (_.isEqual(this.previousProviderConfig, parsedConfig)) {
+            return;
+        }
+        this.previousProviderConfig = parsedConfig;
         
         if (async) {
-            let provider: BasicAsyncProviderInterface = providerInfo.provider;
-            
-            let checkStatus = provider.configCheck(providerConfig);
-            
-            if (!checkStatus) {
-                return;
-            }
-            
-            let parsedConfig = provider.parse(providerConfig, props);
-            
-            // 如果provider数据配置和上次相同, 就必须阻止以后的操作.
-            // 不然就会死循环
-            // 参考流程图: src/doc/graphic/dataFlow.png
-            if (_.isEqual(this.previousProviderConfig, parsedConfig)) {
-                return;
-            }
-            this.previousProviderConfig = parsedConfig;
-            
             actions.asyncLoadDataProgress({
                 model: props.info.model!,
                 providerMode: providerConfig.mode
@@ -156,6 +157,13 @@ export class DataProvider {
                     providerMode: providerConfig.mode,
                     data: ret
                 });
+            }
+        } else {
+            let ret;
+            try {
+                ret = await provider.run(parsedConfig);
+            } catch (e) {
+                   
             }
         }
     }

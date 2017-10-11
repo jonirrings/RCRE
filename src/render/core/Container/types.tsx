@@ -101,6 +101,16 @@ export class ContainerProps extends BasicContainerPropsInterface {
      * 异步加载数据失败
      */
     asyncLoadDataFail: typeof actionCreators.asyncLoadDataFail;
+
+    /**
+     * 同步加载数据成功
+     */
+    syncLoadDataSuccess: typeof actionCreators.syncLoadDataSuccess;
+
+    /**
+     * 同步加载数据失败
+     */
+    syncLoadDataFail: typeof actionCreators.syncLoadDataFail;
 }
 
 export const BasicContextTypes = {
