@@ -18,6 +18,13 @@ const json = {
             data: {
                 name: 1
             },
+            dataProvider: {
+                mode: 'ajax',
+                initialLoad: {
+                    url: 'http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/dataquality/datarule/ruledetaillist',
+                    method: 'GET'
+                }
+            },
             children: [
                 {
                     type: 'container',
@@ -38,7 +45,7 @@ const json = {
 };
 
 ReactDOM.render(
-    <Render code={JSON.stringify(json)}/>,
+    <Render code={JSON.stringify(json)} global={{proxy: 'http://localhost:8800/proxy'}}/>,
     document.getElementById('app') as HTMLElement
 );
 

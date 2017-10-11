@@ -5,6 +5,7 @@ import {Map} from 'immutable';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {AxiosRequestConfig} from 'axios';
+import {ContainerConfig} from '../../../abstractComponents/Container/Container';
 
 export type rawJSONType = string | number | null | boolean | Object;
 export type originJSONType = rawJSONType | rawJSONType[];
@@ -14,14 +15,13 @@ export type defaultData = {
 };
 
 export interface RequestConfig extends AxiosRequestConfig {
+    retCheckPattern?: string;
 }
 
 export class BasicConfig {
     @IsString()
     // @IsDefined()
     type: string;
-
-    initialLoad?: string | RequestConfig;
     
     @IsString()
     model?: string;
@@ -67,8 +67,10 @@ export class BasicContainerPropsInterface {
 }
 
 export class ContainerProps extends BasicContainerPropsInterface {
-    public $data: Map<string, any>;
-    public $parent: Map<string, any>;
+    info: ContainerConfig;
+    
+    $data: Map<string, any>;
+    $parent: Map<string, any>;
 
     /**
      * 写入数据到数据模型
@@ -86,9 +88,19 @@ export class ContainerProps extends BasicContainerPropsInterface {
     removeData: typeof actionCreators.removeData;
 
     /**
-     * 初始化数据
+     * 异步加载数据中
      */
-    initData: typeof actionCreators.initData;
+    asyncLoadDataProgress: typeof actionCreators.asyncLoadDataProgress;
+
+    /**
+     * 异步加载数据成功
+     */
+    asyncLoadDataSuccess: typeof actionCreators.asyncLoadDataSuccess;
+
+    /**
+     * 异步加载数据失败
+     */
+    asyncLoadDataFail: typeof actionCreators.asyncLoadDataFail;
 }
 
 export const BasicContextTypes = {

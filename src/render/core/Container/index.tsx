@@ -8,11 +8,12 @@ import {RootState} from '../../data/reducers';
 import {Map} from 'immutable';
 // import ParamsInjector from '../../util/injector';
 // // import {Spin} from 'antd';
-import {compileValueExpress, isExpression, keepExpressionData} from '../../util/vm';
+import {compileValueExpress, keepExpressionData} from '../../util/vm';
 // import {request} from '../../services/api';
 // import {AxiosRequestConfig, AxiosResponse} from 'axios';
 // import {compileTimeExpression} from '../../util/dateTime';
 import {createChild} from '../../util/createChild';
+import {DataProvider} from '../DataProvider/Controller';
 
 // First Init Life Circle:
 // ComponentWillMount -> Render -> ComponentDidMount
@@ -23,16 +24,15 @@ class Container extends BasicContainer<ContainerProps, {}> {
     static WrappedComponent: string;
     static displayName: string;
 
-    // private parseProperty = {};
-    // private prevRequestData = {};
+    dataProvider: DataProvider;
 
     constructor() {
         super();
-        // this.loadData = this.loadData.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.dataProvider = new DataProvider();
     }
 
-    componentWillMount() {
+    async componentWillMount() {
         if (this.props.info.model) {
             if (!this.props.info.data) {
                 this.props.info.data = {};
@@ -40,8 +40,25 @@ class Container extends BasicContainer<ContainerProps, {}> {
 
             // to keep it safe, this.props.info should be readonly
             Object.freeze(this.props.info);
-
-            this.syncInitData(this.props.info.model, this.props);
+            
+            if (Array.isArray(this.props.info.dataProvider)) {
+                this.props.info.dataProvider.forEach(provider => {
+                    this.dataProvider.requestForData(provider, {
+                        setDataList: this.props.setDataList,
+                        asyncLoadDataProgress: this.props.asyncLoadDataProgress,
+                        asyncLoadDataSuccess: this.props.asyncLoadDataSuccess,
+                        asyncLoadDataFail: this.props.asyncLoadDataFail
+                    }, this.props, this.context);
+                });
+            } else if (_.isPlainObject(this.props.info.dataProvider)) {
+                let provider = this.props.info.dataProvider;
+                this.dataProvider.requestForData(provider!, {
+                    setDataList: this.props.setDataList,
+                    asyncLoadDataProgress: this.props.asyncLoadDataProgress,
+                    asyncLoadDataSuccess: this.props.asyncLoadDataSuccess,
+                    asyncLoadDataFail: this.props.asyncLoadDataFail
+                }, this.props, this.context);
+            }
             // this.setDataIntoStore(this.props.info.model, this.props);
             // if (this.props.info.initialLoad && !this.props.info.hidden) {
             //     this.mergeOriginData(this.props);
@@ -54,6 +71,25 @@ class Container extends BasicContainer<ContainerProps, {}> {
     componentWillReceiveProps(nextProps: ContainerProps) {
         if (this.props.$parent !== nextProps.$parent) {
             this.syncUpdateData(this.props.info.model!, nextProps);   
+        }
+
+        if (Array.isArray(this.props.info.dataProvider)) {
+            this.props.info.dataProvider.forEach(provider => {
+                this.dataProvider.requestForData(provider, {
+                    setDataList: this.props.setDataList,
+                    asyncLoadDataProgress: this.props.asyncLoadDataProgress,
+                    asyncLoadDataSuccess: this.props.asyncLoadDataSuccess,
+                    asyncLoadDataFail: this.props.asyncLoadDataFail
+                }, this.props, this.context);
+            });
+        } else if (_.isPlainObject(this.props.info.dataProvider)) {
+            let provider = this.props.info.dataProvider;
+            this.dataProvider.requestForData(provider!, {
+                setDataList: this.props.setDataList,
+                asyncLoadDataProgress: this.props.asyncLoadDataProgress,
+                asyncLoadDataSuccess: this.props.asyncLoadDataSuccess,
+                asyncLoadDataFail: this.props.asyncLoadDataFail
+            }, this.props, this.context);
         }
     }
 
@@ -115,32 +151,32 @@ class Container extends BasicContainer<ContainerProps, {}> {
         );
     }
 
-    /**
-     * Init data when ComponentWillMount
-     * This function will call this.props.initData function to init data
-     * All expression string will be ignored
-     *
-     * @param {string} model The Component Model Key
-     * @param {ContainerProps} props
-     */
-    private syncInitData(model: string, props: ContainerProps) {
-        if (!props.info.data) {
-            props.info.data = {};
-        }
-
-        let initData = {};
-
-        _.each(props.info.data, (item, key) => {
-            if (!isExpression(item)) {
-                initData[key] = item;
-            }
-        });
-
-        this.props.initData({
-            model: model,
-            data: initData
-        });
-    }
+    // /**
+    //  * Init data when ComponentWillMount
+    //  * This function will call this.props.initData function to init data
+    //  * All expression string will be ignored
+    //  *
+    //  * @param {string} model The Component Model Key
+    //  * @param {ContainerProps} props
+    //  */
+    // private syncInitData(model: string, props: ContainerProps) {
+    //     if (!props.info.data) {
+    //         props.info.data = {};
+    //     }
+    //
+    //     let initData = {};
+    //
+    //     _.each(props.info.data, (item, key) => {
+    //         if (!isExpression(item)) {
+    //             initData[key] = item;
+    //         }
+    //     });
+    //
+    //     this.props.initData({
+    //         model: model,
+    //         data: initData
+    //     });
+    // }
 
     /**
      * Update data When ComponentWillReceiveProps
@@ -291,8 +327,10 @@ const mapStateToProps = (state: RootState, ownProps: any) => {
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
     setData: actionCreators.setData,
     setDataList: actionCreators.setDataList,
-    initData: actionCreators.initData,
-    removeData: actionCreators.removeData
+    removeData: actionCreators.removeData,
+    asyncLoadDataProgress: actionCreators.asyncLoadDataProgress,
+    asyncLoadDataSuccess: actionCreators.asyncLoadDataSuccess,
+    asyncLoadDataFail: actionCreators.asyncLoadDataFail
 }, dispatch);
 
 const mergeProps = (stateProps: any, dispatchProps: any, ownProps: any): any => {

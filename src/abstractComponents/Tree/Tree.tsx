@@ -1,9 +1,8 @@
 import * as React from 'react';
 import {
     BasicConfig,
-    BasicContainer,
+    BasicContainer, BasicContainerPropsInterface,
     BasicTriggerEvent,
-    ContainerProps,
     defaultData
 } from '../../render/core/Container/types';
 import createElement from '../../render/util/createElement';
@@ -122,7 +121,7 @@ export class TreeConfig extends BasicConfig {
     childMapping?: TreeNodeMappingConfig;
 }
 
-export class TreePropsInterface extends ContainerProps {
+export class TreePropsInterface extends BasicContainerPropsInterface {
     info: TreeConfig;
 
     onCheck: (checkedKeys: Array<string>) => void;

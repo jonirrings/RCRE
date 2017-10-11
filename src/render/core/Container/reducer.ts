@@ -1,7 +1,10 @@
 import {Map} from 'immutable';
 import {Reducer} from 'redux';
 import {IRootAction} from '../../data/actions';
-import {CLEAR_DATA, INIT_DATA, REMOVE_DATA, SET_DATA, SET_DATA_LIST, TRIGGER_LIST_DATA} from './action';
+import {
+    ASYNC_LOAD_DATA_PROGRESS, ASYNC_LOAD_DATA_SUCCESS, CLEAR_DATA, REMOVE_DATA, SET_DATA, SET_DATA_LIST,
+    TRIGGER_LIST_DATA
+} from './action';
 
 type stateItem = Map<string, any>;
 export type IState = Map<string, stateItem>;
@@ -29,16 +32,49 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
                 dataObj[keyName] = item.newValue;
             });
             return state.set(actions.model, Map(dataObj));
-        case INIT_DATA:
-            let model = actions.payload.model;
-            let data = actions.payload.data;
-            if (state.has(model) && state.get(model).size !== 0) {
-                console.error(`find exist model of model: ${model}`);
-                return state;
+            
+        case ASYNC_LOAD_DATA_PROGRESS:
+        {
+            let payload = actions.payload;
+            let model = payload.model;
+            let providerMode = '$' + payload.providerMode;
+            
+            if (!state.has(model)) {
+                return state.set(model, Map({
+                    [providerMode]: {
+                        $loading: true
+                    }
+                }));
             }
             
-            return state.set(model, Map(data));
+            let existState = state.get(model);
+            return state.set(model, existState.set(providerMode, {
+                $loading: true
+            }));
+        }
+        case ASYNC_LOAD_DATA_SUCCESS:
+        {
+            let payload = actions.payload;
+            let model = payload.model;
+            let providerMode = '$' + payload.providerMode;
+            let data = payload.data;
             
+            if (!state.has(model)) {
+                return state.set(model, Map({
+                    ['$' + providerMode]: {
+                        $loading: false,
+                        $data: data
+                    }
+                }));
+            }
+            
+            let existState = state.get(model);
+            
+            return state.set(model, existState.set(providerMode, {
+                $loading: false,
+                $data: data
+            }));
+        }
         case REMOVE_DATA:
             let delKey = actions.payload.model;
             return state.set(delKey, Map({}));

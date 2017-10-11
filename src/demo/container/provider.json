@@ -1,0 +1,15 @@
+{
+    "body": [
+        {
+            "type": "container",
+            "model": "demo",
+            "dataProvider": {
+                "mode": "ajax",
+                "initialLoad": {
+                    "url": "http://cp01-yjk.epc.baidu.com:8203/rulecheck/rlreport/checktype",
+                    "method": "GET"
+                }
+            }
+        }
+    ]
+}

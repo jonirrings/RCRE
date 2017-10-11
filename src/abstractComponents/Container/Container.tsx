@@ -1,15 +1,19 @@
 import * as React from 'react';
-import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
+import {
+    BasicConfig, BasicContainer, BasicContainerPropsInterface
+} from '../../render/core/Container/types';
 import {Validate} from 'class-validator';
 import {IsPageInfo} from '../../render/util/validators';
 import './Container.css';
 import {createChild} from '../../render/util/createChild';
 import Container from '../../render/core/Container/index';
+import {ProviderSourceConfig} from '../../render/core/DataProvider/Controller';
 
 export class ContainerConfig extends BasicConfig {
     style?: React.CSSProperties;
-    
     children?: BasicConfig[];
+
+    dataProvider?: ProviderSourceConfig | ProviderSourceConfig[];
 }
 
 export class ContainerPropsInterface extends BasicContainerPropsInterface {

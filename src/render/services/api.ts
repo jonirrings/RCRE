@@ -1,7 +1,6 @@
-import axios, {AxiosRequestConfig} from 'axios';
-import {notification} from 'antd';
+import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 
-export function request(url: string, config: AxiosRequestConfig, proxy?: string) {
+export async function request(url: string, config: AxiosRequestConfig, proxy?: string): Promise<AxiosResponse> {
     if (proxy) {
         let proxyOptions: AxiosRequestConfig = {
             url: proxy!,
@@ -22,10 +21,5 @@ export function request(url: string, config: AxiosRequestConfig, proxy?: string)
         config.method = 'GET';
     }
 
-    return axios(url, config).catch(err => {
-        notification.error({
-            message: '接口调用失败',
-            description: `${err.message}`
-        });
-    });
+    return await axios(url, config);
 }

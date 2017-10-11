@@ -28,23 +28,25 @@ app.get('/proxy', (req, res) => {
     let method: string = req.query.method;
     let data: string = req.query.data;
 
-    try {
-        data = JSON.parse(data);
-    } catch (e) {
-        return res.json({
-            errno: 400,
-            errmsg: 'data should be json format'
-        });
-    }
-
     let options: CoreOptions = {};
+    
+    if (data) {
+        try {
+            data = JSON.parse(data);
+        } catch (e) {
+            return res.json({
+                errno: 400,
+                errmsg: 'data should be json format'
+            });
+        }
 
-    if (/get/i.test(method)) {
-        options.qs = data;
-    } else if (/post/i.test(method)) {
-        options.body = data;
+        if (/get/i.test(method)) {
+            options.qs = data;
+        } else if (/post/i.test(method)) {
+            options.body = data;
+        }
     }
-
+    
     return request(url, options).pipe(res);
 });
 

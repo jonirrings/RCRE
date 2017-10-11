@@ -30,8 +30,6 @@ export class PageProps {
 
     $setDataList: typeof actionCreators.setDataList;
 
-    $initData: typeof actionCreators.initData;
-
     $triggerListData: typeof actionCreators.triggerListData;
 }
 
@@ -83,7 +81,6 @@ class Page extends React.Component<PageProps, {}> {
             $store: this.props.$store,
             $global: this.props.global,
             $setDataList: this.props.$setDataList,
-            $initData: this.props.$initData,
             $triggerListData: this.props.$triggerListData,
             $location,
             $query
@@ -129,7 +126,6 @@ const mapStateToProps = (state: RootState, ownProps: any) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
     $setDataList: actionCreators.setDataList,
-    $initData: actionCreators.initData,
     $triggerListData: actionCreators.triggerListData
 }, dispatch);
 
