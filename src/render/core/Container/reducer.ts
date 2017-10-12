@@ -2,7 +2,10 @@ import {Map} from 'immutable';
 import {Reducer} from 'redux';
 import {IRootAction} from '../../data/actions';
 import {
+    ASYNC_LOAD_DATA_FAIL,
     ASYNC_LOAD_DATA_PROGRESS, ASYNC_LOAD_DATA_SUCCESS, CLEAR_DATA, REMOVE_DATA, SET_DATA, SET_DATA_LIST,
+    SYNC_LOAD_DATA_FAIL,
+    SYNC_LOAD_DATA_SUCCESS,
     TRIGGER_LIST_DATA
 } from './action';
 
@@ -37,43 +40,83 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
         {
             let payload = actions.payload;
             let model = payload.model;
-            let providerMode = '$' + payload.providerMode;
             
             if (!state.has(model)) {
                 return state.set(model, Map({
-                    [providerMode]: {
-                        $loading: true
-                    }
+                    $loading: true
                 }));
             }
             
             let existState = state.get(model);
-            return state.set(model, existState.set(providerMode, {
-                $loading: true
-            }));
+            
+            existState = existState.set('$loading', true);
+            
+            return state.set(model, existState);
         }
         case ASYNC_LOAD_DATA_SUCCESS:
         {
             let payload = actions.payload;
             let model = payload.model;
-            let providerMode = '$' + payload.providerMode;
             let data = payload.data;
             
             if (!state.has(model)) {
-                return state.set(model, Map({
-                    ['$' + providerMode]: {
-                        $loading: false,
-                        $data: data
-                    }
-                }));
+                state = state.set(model, Map({}));
             }
             
             let existState = state.get(model);
             
-            return state.set(model, existState.set(providerMode, {
-                $loading: false,
-                $data: data
-            }));
+            existState = existState.set('$loading', true);
+            existState = existState.merge(Map(data));
+            
+            return state.set(model, existState);
+        }
+        case ASYNC_LOAD_DATA_FAIL:
+        {
+            let payload = actions.payload;
+            let model = payload.model;
+            let error = payload.error;
+            
+            if (!state.has(model)) {
+                state = state.set(model, Map({}));
+            }
+            
+            let existState = state.get(model);
+            
+            existState = existState.set('$loading', true);
+            existState = existState.set('$error', error);
+            
+            return state.set(model, existState);
+        }
+        case SYNC_LOAD_DATA_SUCCESS:
+        {
+            let payload = actions.payload;
+            let model = payload.model;
+            let data = payload.data;
+            
+            if (!state.has(model)) {
+                state = state.set(model, Map({}));
+            }
+            
+            let existState = state.get(model);
+            
+            existState = existState.merge(Map(data));
+            
+            return state.set(model, existState);
+        }
+        case SYNC_LOAD_DATA_FAIL:
+        {
+            let payload = actions.payload;
+            let model = payload.model;
+            let error = payload.error;
+            
+            if (!state.has(model)) {
+                state = state.set(model, Map({}));
+            }
+            
+            let existState = state.get(model);
+            
+            existState = existState.set('$error', error);
+            return state.set(model, existState);
         }
         case REMOVE_DATA:
             let delKey = actions.payload.model;

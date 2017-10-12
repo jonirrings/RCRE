@@ -1,18 +1,19 @@
-import {Map} from 'immutable';
 import {actionCreators} from '../Container/action';
 import {ContainerProps} from '../Container/types';
 import {AjaxDataProvider} from './providers/ajax';
 import {providerLoaderInstance} from './loader';
 import * as _ from 'lodash';
+import {InitDataProvider} from './providers/init';
 
 providerLoaderInstance.registerProvider('ajax', new AjaxDataProvider(), true);
+providerLoaderInstance.registerProvider('init', new InitDataProvider(), false);
 
 /**
  * Provider 对象数据源配置
  */
 export interface ProviderSourceConfig {
     mode: string;
-    config: any;
+    config?: any;
 }
 
 /**
@@ -61,14 +62,14 @@ export interface BasicSyncProviderInterface {
     configCheck(provider: ProviderSourceConfig): boolean;
     retCheck(ret: Object, provider: ProviderSourceConfig): boolean;
     parse(provider: ProviderSourceConfig, config: ContainerProps): ProviderSourceConfig;
-    run (provider: ProviderSourceConfig, options?: ProviderGlobalOptions): Promise<Map<string, any>>;
+    run (provider: ProviderSourceConfig, options?: ProviderGlobalOptions): Promise<any>;
 }
 
 export interface BasicAsyncProviderInterface {
     configCheck(provider: ProviderSourceConfig): boolean;
     retCheck(ret: Object, provider: ProviderSourceConfig): boolean;
     parse(provider: ProviderSourceConfig, config: ContainerProps): ProviderSourceConfig;
-    run (provider: ProviderSourceConfig, options?: ProviderGlobalOptions): Promise<Map<string, any>>;
+    run (provider: ProviderSourceConfig, options?: ProviderGlobalOptions): Promise<any>;
 }
 
 /**
@@ -163,7 +164,21 @@ export class DataProvider {
             try {
                 ret = await provider.run(parsedConfig);
             } catch (e) {
-                   
+                actions.syncLoadDataFail({
+                    model: props.info.model!,
+                    providerMode: providerConfig.mode,
+                    error: e.message
+                });
+            }
+            
+            let isRetValid = provider.retCheck(ret, providerConfig);
+            
+            if (isRetValid) {
+                actions.syncLoadDataSuccess({
+                    model: props.info.model!,
+                    providerMode: providerConfig.mode,
+                    data: ret
+                });
             }
         }
     }

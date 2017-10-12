@@ -50,6 +50,15 @@ class Container extends BasicContainer<ContainerProps, {}> {
                 syncLoadDataFail: this.props.syncLoadDataFail
             };
             
+            // 用于初始化的内置Provider
+            const initProvider = {
+                mode: 'init',
+                config: this.props.info.data
+            };
+            
+            // 故意不用await, 因为不需要await来进行等待
+            this.dataProvider.requestForData(initProvider, providerActions, this.props, this.context);
+            
             if (Array.isArray(this.props.info.dataProvider)) {
                 this.props.info.dataProvider.forEach(provider => {
                     this.dataProvider.requestForData(provider, providerActions, this.props, this.context);
