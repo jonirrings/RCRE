@@ -3,6 +3,7 @@ import {IsPageInfo} from '../../render/util/validators';
 import {IsDefined, IsString, Validate} from 'class-validator';
 import * as React from 'react';
 import Trigger from '../../render/core/Trigger/Trigger';
+import componentLoader from '../../render/util/componentLoader';
 
 export class BreadcrumbItem {
     @IsString()
@@ -35,3 +36,5 @@ export default class AbstractBreadcrumb extends BasicContainer<BreadcrumbPropsIn
         return this.renderChildren(children);
     }
 }
+
+componentLoader.addComponent('breadcrumb', AbstractBreadcrumb, BreadcrumbPropsInterface);

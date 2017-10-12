@@ -2,6 +2,7 @@ import * as React from 'react';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsDefined, IsString} from 'class-validator';
 import Trigger from '../../render/core/Trigger/Trigger';
+import componentLoader from '../../render/util/componentLoader';
 
 export class PopConfirmConfig extends BasicConfig {
     /**
@@ -57,5 +58,7 @@ class AbstractPopConfirm extends BasicContainer<PopConfirmPropsInterface, {}> {
         return React.createElement(Trigger, props);
     }
 }
+
+componentLoader.addComponent('popConfirm', AbstractPopConfirm, PopConfirmPropsInterface);
 
 export default AbstractPopConfirm;

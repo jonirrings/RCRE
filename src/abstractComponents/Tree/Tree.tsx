@@ -12,6 +12,7 @@ import {IsArrayString, IsCheckedKeys} from '../../render/util/validators';
 import * as _ from 'lodash';
 import {runInContext} from '../../render/util/vm';
 import Trigger from '../../render/core/Trigger/Trigger';
+import componentLoader from '../../render/util/componentLoader';
 
 export class TreeConfig extends BasicConfig {
     /**
@@ -215,5 +216,7 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
         return this.renderChildren(React.createElement(Trigger, treeProps, children));
     }
 }
+
+componentLoader.addComponent('tree', AbstractTree, TreePropsInterface);
 
 export default AbstractTree;

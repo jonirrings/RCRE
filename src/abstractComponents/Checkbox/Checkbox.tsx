@@ -5,6 +5,7 @@ import {BasicFormItem} from '../Form/FormItem';
 import Trigger from '../../render/core/Trigger/Trigger';
 import * as React from 'react';
 import * as _ from 'lodash';
+import componentLoader from '../../render/util/componentLoader';
 
 export class CheckboxConfig extends BasicFormItemConfig {
     /**
@@ -51,5 +52,7 @@ class AbstractCheckbox extends BasicFormItem<CheckboxPropsInterface, {}> {
         return this.renderChildren(children);
     }
 }
+
+componentLoader.addComponent('checkbox', AbstractCheckbox, CheckboxPropsInterface);
 
 export default AbstractCheckbox;

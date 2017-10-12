@@ -55,7 +55,8 @@ export type compilePairType<S> = {
 
 export function compileValueExpress<Config, Source>(props: Config,
                                                     pair: compilePairType<Source>,
-                                                    blackList: string[] = []): Config {
+                                                    blackList: string[] = [],
+                                                    isDeep: boolean = false): Config {
     let copy = _.cloneDeep(props);
     
     function parseExpression(reference: Object) {
@@ -75,7 +76,7 @@ export function compileValueExpress<Config, Source>(props: Config,
                 reference[key] = ret;
             }
             
-            if (_.isPlainObject(item) || _.isArray(item)) {
+            if (!isDeep && (_.isPlainObject(item) || _.isArray(item))) {
                 parseExpression(item);
             }
         });

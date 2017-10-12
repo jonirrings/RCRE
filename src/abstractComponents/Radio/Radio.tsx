@@ -4,6 +4,7 @@ import {IsPageInfo} from '../../render/util/validators';
 import {BasicFormItem} from '../Form/FormItem';
 import * as React from 'react';
 import Trigger from '../../render/core/Trigger/Trigger';
+import componentLoader from '../../render/util/componentLoader';
 
 export class RadioConfig extends BasicFormItemConfig {
     /**
@@ -46,5 +47,7 @@ class AbstractRadio extends BasicFormItem<RadioPropsInterface, {}> {
         return this.renderChildren(children);
     }
 }
+
+componentLoader.addComponent('radio', AbstractRadio, RadioPropsInterface);
 
 export default AbstractRadio;

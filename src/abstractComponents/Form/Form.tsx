@@ -11,6 +11,7 @@ import {request} from '../../render/services/api';
 import {compileValueExpress} from '../../render/util/vm';
 import {notification} from 'antd';
 import {createChild} from '../../render/util/createChild';
+import componentLoader from '../../render/util/componentLoader';
 
 class SubmitConfig {
     @IsUrl()
@@ -212,5 +213,7 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
         this.formItemStatus.push(validator);
     }
 }
+
+componentLoader.addComponent('form', AbstractForm, FormPropsInterface);
 
 export default AbstractForm;

@@ -4,6 +4,7 @@ import {BasicFormItemConfig, BasicFormItemPropsInterface} from '../Form/types';
 import {IsBoolean, IsNumber, IsString, Validate} from 'class-validator';
 import {IsValidEnums} from '../../render/util/validators';
 import Trigger from '../../render/core/Trigger/Trigger';
+import componentLoader from '../../render/util/componentLoader';
 
 export class DatePickerConfig extends BasicFormItemConfig {
     /**
@@ -85,3 +86,5 @@ export default class AbstractDatepicker extends BasicFormItem<DatePickerPropsInt
         return this.renderChildren(children);
     }
 }
+
+componentLoader.addComponent('datepicker', AbstractDatepicker, DatePickerPropsInterface);

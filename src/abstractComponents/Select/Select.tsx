@@ -6,6 +6,7 @@ import {BasicFormItem} from '../Form/FormItem';
 import Trigger from '../../render/core/Trigger/Trigger';
 import {isExpression, runInContext} from '../../render/util/vm';
 import * as _ from 'lodash';
+import componentLoader from '../../render/util/componentLoader';
 
 export class SelectConfig extends BasicFormItemConfig {
     /**
@@ -136,5 +137,7 @@ class AbstractSelect extends BasicFormItem<SelectPropsInterface, {}> {
         return copy;
     }
 }
+
+componentLoader.addComponent('select', AbstractSelect, SelectPropsInterface);
 
 export default AbstractSelect;

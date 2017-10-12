@@ -5,9 +5,10 @@ import {TableRowSelection} from 'antd/lib/table/Table';
 import Trigger from '../../render/core/Trigger/Trigger';
 import * as React from 'react';
 import * as _ from 'lodash';
-import {compileValueExpress, isExpression, runInContext} from '../../render/util/vm';
+import {compileValueExpress, runInContext} from '../../render/util/vm';
 import {FormItemConfig} from '../Form/FormItem';
 import {createChild} from '../../render/util/createChild';
+import componentLoader from '../../render/util/componentLoader';
 import {Map} from 'immutable';
 
 export class TableDataSourceItem {
@@ -49,30 +50,38 @@ export default class AbstractTable extends BasicContainer<TablePropsInterface, {
     }
 
     render() {
-        let info = this.props.info;
-        let columns = info.columns;
-        let dataSource = info.dataSource;
+        console.log(this.props.$data);
+        let info = _.cloneDeep(this.props.info);
 
-        if (info.columnsMapping && !isExpression(columns)) {
+        let compiled = compileValueExpress(info, {
+            $data: this.props.$data.toObject()
+        });
+
+        if (!compiled.columns) {
+            compiled.columns = [];
+        }
+
+        if (!compiled.dataSource) {
+            compiled.dataSource = [];
+        }
+
+        let columns = compiled.columns;
+        let dataSource = compiled.dataSource;
+
+        if (info.columnsMapping) {
             columns = _.map(columns, (co, index) => this.applyMapping(co, info.columnsMapping, index)!);
         }
 
-        if (info.dataSourceMapping && !isExpression(dataSource)) {
+        if (info.dataSourceMapping) {
             dataSource = _.map(dataSource, (da, index) =>
                 this.applyMapping(da, info.dataSourceMapping, index)!);
         }
-
-        if (!isExpression(columns)) {
-            if (info.columnControls && _.isArray(info.columnControls)) {
-                columns.push({
-                    title: '操作',
-                    key: 'operation',
-                    controls: info.columnControls
-                });
-            }
-
-            columns = columns.map(co => this.renderColumnControls(co));
+        
+        if (info.columnControls && _.isArray(info.columnControls)) {
+            columns = columns.concat(info.columnControls);
         }
+
+        columns = columns.map(co => this.renderColumnControls(co));
 
         let childProps = Object.assign({}, this.props, {
             info: Object.assign(info, {
@@ -89,10 +98,15 @@ export default class AbstractTable extends BasicContainer<TablePropsInterface, {
         let copy = data;
 
         _.each<T>(mappingConfig, (expression: keyof T, key: string) => {
-            let ret = runInContext(expression, {
-                $iterator: copy,
-                $index: index
-            });
+            let ret;
+            try {
+                ret = runInContext(expression, {
+                    $iterator: copy,
+                    $index: index
+                });
+            } catch (e) {
+                ret = null;
+            }
 
             if (!_.isNil(ret)) {
                 copy[key] = ret;
@@ -124,7 +138,9 @@ export default class AbstractTable extends BasicContainer<TablePropsInterface, {
         if (copy.controls) {
             let controls = copy.controls;
             copy.render = (source) => {
-                return controls.map((info, index) => this.renderControl(info, 0, index, source));
+                let ret = controls.map((info, index) => this.renderControl(info, 0, index, source));
+                console.log(ret);
+                return ret;
             };
 
             delete copy.controls;
@@ -133,3 +149,5 @@ export default class AbstractTable extends BasicContainer<TablePropsInterface, {
         return copy;
     }
 }
+
+componentLoader.addComponent('table', AbstractTable, TablePropsInterface);

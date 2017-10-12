@@ -41,12 +41,16 @@ export class AjaxDataProvider implements BasicAsyncProviderInterface {
     retCheck(ret: Object, provider: AjaxProviderSourceConfig) {
         let pattern = provider.config.retCheckPattern;
         if (!pattern) {
-            return true;
+            return _.isPlainObject(ret);
         }
         
-        return runInContext(pattern, {
-            $response: ret 
-        });
+        try {
+            return runInContext(pattern, {
+                $response: ret
+            });   
+        } catch (e) {
+            return false;
+        }
     }
 
     async run(provider: AjaxProviderSourceConfig, options: ProviderGlobalOptions = {}) {

@@ -20,6 +20,7 @@ export class InitDataProvider implements BasicSyncProviderInterface {
 
     async run (provider: ProviderSourceConfig, options?: ProviderGlobalOptions) {
          let data = provider.config;
+         console.log(data);
          return filterExpressionData(data);
     }
 }

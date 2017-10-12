@@ -5,6 +5,7 @@ import {BasicFormItemConfig} from '../Form/types';
 import * as React from 'react';
 import Trigger from '../../render/core/Trigger/Trigger';
 import {onContainerItemChange} from '../../render/core/Container/types';
+import componentLoader from '../../render/util/componentLoader';
 
 export class InputConfig extends BasicFormItemConfig {
     /**
@@ -98,5 +99,7 @@ class AbstractInput extends BasicFormItem<InputPropsInterface, InputStateInterfa
         return this.renderChildren(children);
     }
 }
+
+componentLoader.addComponent('input', AbstractInput, InputPropsInterface);
 
 export default AbstractInput;

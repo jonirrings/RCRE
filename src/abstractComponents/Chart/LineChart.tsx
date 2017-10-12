@@ -3,6 +3,7 @@ import {IsArray, IsBoolean, IsString, Validate} from 'class-validator';
 import {IsArrayString} from '../../render/util/validators';
 import * as React from 'react';
 import Trigger from '../../render/core/Trigger/Trigger';
+import componentLoader from '../../render/util/componentLoader';
 
 export class LineChartConfig extends BasicConfig {
     /**
@@ -94,3 +95,5 @@ export default class AbstractLineChart extends BasicContainer<LineChartPropsInte
         return this.renderChildren(children); 
     }
 }
+
+componentLoader.addComponent('linechart', AbstractLineChart, LineChartPropsInterface);

@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import {BasicConfig} from '../core/Container/types';
 import componentLoader from '../util/componentLoader';
 import createElement from './createElement';
+import '../../abstractComponents/index';
 
 export function createChild<T>(item: BasicConfig,
                             childProps: T,
@@ -17,7 +18,7 @@ export function createChild<T>(item: BasicConfig,
 
     let componentInfo = componentLoader.getAbstractComponent(item.type);
     
-    if (!componentInfo) {
+    if (!componentInfo || !componentInfo.component || !componentInfo.componentInterface) {
         return React.createElement('pre', {}, `can not find component of type ${item.type}`);
     }
 

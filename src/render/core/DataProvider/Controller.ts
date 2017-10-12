@@ -150,7 +150,7 @@ export class DataProvider {
                 actions.asyncLoadDataFail({
                     model: props.info.model!,
                     providerMode: providerConfig.mode,
-                    error: 'ret data is not valid'
+                    error: `model: ${props.info.model} mode: ${providerConfig.mode} data is not valid`
                 });
             } else {
                 actions.asyncLoadDataSuccess({

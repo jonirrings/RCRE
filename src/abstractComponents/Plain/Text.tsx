@@ -1,11 +1,10 @@
 import * as React from 'react';
 import {IsDefined, IsJSON, IsString, IsUrl, Validate} from 'class-validator';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
-// import {compileStaticTemplate, isExpression} from '../../render/util/vm';
-// import Trigger from '../../render/core/Trigger/Trigger';
 import {IsValidEnums} from '../../render/util/validators';
 import {compileValueExpress} from '../../render/util/vm';
 import Trigger from '../../render/core/Trigger/Trigger';
+import componentLoader from '../../render/util/componentLoader';
 
 export class TextConfig extends BasicConfig {
     @IsString()
@@ -43,5 +42,7 @@ class Text extends BasicContainer<TextPropsInterface, {}> {
         return this.renderChildren(children);
     }
 }
+
+componentLoader.addComponent('text', Text, TextPropsInterface);
 
 export default Text;

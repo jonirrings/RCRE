@@ -70,7 +70,7 @@ class App extends React.Component<{}, AppStateInterface> {
                 const globalOptions = {
                     pageId: '4567',
                     username: 'dongtiancheng',
-                    proxyServer: 'http://localhost:8800/proxy'
+                    proxy: 'http://localhost:8800/proxy'
                 };
                 
                 return <Render code={this.props.code} global={globalOptions}/>;

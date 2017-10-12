@@ -2,6 +2,7 @@ import * as React from 'react';
 import {IsBoolean, IsDefined, IsString} from 'class-validator';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import Trigger from '../../render/core/Trigger/Trigger';
+import componentLoader from '../../render/util/componentLoader';
 
 export class ButtonConfig extends BasicConfig {
     /**
@@ -103,5 +104,7 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
         return this.renderChildren(children);
     }
 }
+
+componentLoader.addComponent('button', AbstractButton, ButtonPropsInterface);
 
 export default AbstractButton;

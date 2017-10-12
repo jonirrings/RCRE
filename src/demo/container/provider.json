@@ -5,11 +5,60 @@
             "model": "demo",
             "dataProvider": {
                 "mode": "ajax",
-                "initialLoad": {
+                "config": {
                     "url": "http://cp01-yjk.epc.baidu.com:8203/rulecheck/rlreport/checktype",
                     "method": "GET"
                 }
-            }
+            },
+            "data": {
+                "columns": [
+                    {
+                        "title": "姓名",
+                        "dataIndex": "name"
+                    },
+                    {
+                        "title": "年龄",
+                        "dataIndex": "age"
+                    }
+                ],
+                "dataSource": [
+                    {
+                        "name": "andycall",
+                        "age": 21
+                    },
+                    {
+                        "name": "dongtiancheng",
+                        "age": 21
+                    }
+                ]
+            },
+            "children": [
+                {
+                    "type": "text",
+                    "text": "1234"
+                },
+                {
+                    "type": "table",
+                    "columns": "$data.columns",
+                    "dataSource": "$data.dataSource",
+                    "columnControls": [
+                        {
+                            "title": "下来框",
+                            "dataIndex": "dropdown",
+                            "controls": [
+                                {
+                                    "type": "text",
+                                    "text": "text"
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "text"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
