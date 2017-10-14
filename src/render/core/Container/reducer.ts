@@ -65,7 +65,7 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
             
             let existState = state.get(model);
             
-            existState = existState.set('$loading', true);
+            existState = existState.set('$loading', false);
             existState = existState.merge(Map(data));
             
             return state.set(model, existState);
@@ -82,7 +82,7 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
             
             let existState = state.get(model);
             
-            existState = existState.set('$loading', true);
+            existState = existState.set('$loading', false);
             existState = existState.set('$error', error);
             
             return state.set(model, existState);

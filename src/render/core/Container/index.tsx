@@ -105,6 +105,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
     }
     
     shouldComponentUpdate(nextProps: ContainerProps) {
+        // 判断Container数据是否有更新.
         return this.props.$data !== nextProps.$data;
     }
 

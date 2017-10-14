@@ -3,14 +3,19 @@
         {
             "type": "container",
             "model": "demo",
-            "dataProvider": {
+            "dataProvider": [{
                 "mode": "ajax",
                 "config": {
                     "url": "http://cp01-yjk.epc.baidu.com:8203/rulecheck/rlreport/checktype",
-                    "method": "GET"
+                    "method": "GET",
+                    "data": {
+                        "name": "$data.name"
+                    },
+                    "retCheckPattern": "$response.data.err == 0"
                 }
-            },
+            }],
             "data": {
+                "name": "1",
                 "columns": [
                     {
                         "title": "姓名",
@@ -24,6 +29,10 @@
                 "dataSource": [
                     {
                         "name": "andycall",
+                        "age": 21
+                    },
+                    {
+                        "name": "dongtiancheng",
                         "age": 21
                     },
                     {
