@@ -131,15 +131,5 @@ describe('Container SnapShot Test', () => {
 
         const wrapper = render(element);
         console.log(wrapper);
-
-        // await new Promise((resolve, reject) => {
-        //     setTimeout(() => {
-        //        
-        //     }, 10);
-        //     store.dispatch(actionCreators.clearData());
-        //
-
-        //     resolve();
-        // });
     });
 });

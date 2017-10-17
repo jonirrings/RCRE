@@ -1,5 +1,6 @@
 import {IsArray, IsDefined, IsString} from 'class-validator';
 import {BasicConfig, BasicContainerPropsInterface} from '../../render/core/Container/types';
+import {Map} from 'immutable';
 
 export class BasicFormItemConfig extends BasicConfig {
     /**
@@ -42,6 +43,8 @@ export class BasicFormItemConfig extends BasicConfig {
 export class BasicFormItemPropsInterface extends BasicContainerPropsInterface {
     info: BasicFormItemConfig;
     value: string;
+    
+    $data: Map<string, any>;
 
     injectChildElement: (fn: (value?: any) => boolean) => void;
 }

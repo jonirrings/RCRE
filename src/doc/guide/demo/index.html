@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>RCRE DEMO</title>
+    <link rel="stylesheet" href="http://miskit.cdn.bcebos.com/miskit/rcre_0.10.1.css">
+</head>
+<body>
+    <div id="main"></div>
+</body>
+<script src="https://cdn.bootcss.com/react/15.6.1/react.min.js"></script>
+<script src="https://cdn.bootcss.com/react/15.6.1/react-dom.min.js"></script>
+<script src="http://miskit.cdn.bcebos.com/miskit/rcre_0.10.1.js"></script>
+<script>
+    var config = {
+        "title": "helloworld",
+        "body": [
+            {
+                "type": "text",
+                "text": "helloworld"
+            }
+        ]
+    };
+    
+    var engine = React.createElement(RCRE, {
+        code: JSON.stringify(config)
+    });
+    var dom = document.getElementById('main');
+    
+    ReactDOM.render(engine, dom);
+</script>
+</html>

@@ -111,10 +111,7 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
         let data = submitConfig.data;
         let method = submitConfig.method;
         
-        data = compileValueExpress(data, {
-            $data: this.props.$data.toObject(),
-            $global: this.context.$global
-        });
+        data = compileValueExpress(data, this.getRuntimeContext());
         
         return request(url, {
             url: url,
@@ -141,7 +138,7 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
         let controls = this.props.info.controls;
         let controlChildren;
 
-        if (this.props.info.autoSubmitIfReady && _.isArray(this.props.info.autoSubmitIfReady)) {
+        if (this.props.info.autoSubmitIfReady && _.isArray(this.props.info.autoSubmitIfReady) && this.props.$data) {
             let dataKeys = Object.keys(this.props.$data.toObject()).sort();
             let submitList = this.props.info.autoSubmitIfReady.sort();
             if (_.isEqual(dataKeys, submitList)) {
@@ -177,11 +174,13 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
             childElements = this.renderControl(info.controls, depth++, 0);
         }
         
-        let compiled = compileValueExpress(info, {
-            $data: this.props.$data.toObject(),
-            $global: this.context.$global
-        });
+        // let compiled = compileValueExpress(info, {
+        //     $data: this.props.$data.toObject(),
+        //     $global: this.context.$global
+        // });
 
+        let compiled = this.getPropsInfo(info);
+        
         let children = createChild(info, {
             // TODO collection enough info to generate unique key, to prevent updating from React diff algorithm
             key: `${info.type}_${depth}_${index}`,

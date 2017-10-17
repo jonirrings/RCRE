@@ -50,23 +50,18 @@ export default class AbstractTable extends BasicContainer<TablePropsInterface, {
     }
 
     render() {
-        console.log(this.props.$data);
-        let info = _.cloneDeep(this.props.info);
+        let info = this.getPropsInfo<TableConfig>(this.props.info);
 
-        let compiled = compileValueExpress(info, {
-            $data: this.props.$data.toObject()
-        });
-
-        if (!compiled.columns) {
-            compiled.columns = [];
+        if (!info.columns) {
+            info.columns = [];
         }
 
-        if (!compiled.dataSource) {
-            compiled.dataSource = [];
+        if (!info.dataSource) {
+            info.dataSource = [];
         }
 
-        let columns = compiled.columns;
-        let dataSource = compiled.dataSource;
+        let columns = info.columns;
+        let dataSource = info.dataSource;
 
         if (info.columnsMapping) {
             columns = _.map(columns, (co, index) => this.applyMapping(co, info.columnsMapping, index)!);

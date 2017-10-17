@@ -16,6 +16,8 @@ let version = repoInfo.version;
 
 let jsName = `rcre_${version}.js`;
 let cssName = `rcre_${version}.css`;
+let lastestJs = 'rcre_lastest.js';
+let lastestCss = 'rcre_lastest.css';
 let repoVersion = 'rcre_version.json';
 
 let jsFile = fs.readFileSync(DIST_JS);
@@ -34,10 +36,16 @@ BOS.getString(repoVersion).then(str => {
     });
 }).then(() => BOS.putString(jsName, jsFile, {
     'Content-Type': 'application/javascript'
-}).then(() => BOS.putString(cssName, cssFile, {
+})).then(() => BOS.putString(cssName, cssFile, {
+    'Content-Type': 'text/css'
+})).then(() => BOS.putString(jsName, lastestJs, {
+    'Content-Type': 'application/javascript'
+})).then(() => BOS.putString(cssName, lastestCss, {
     'Content-Type': 'text/css'
 })).then(() => {
     console.log(`http://miskit.cdn.bcebos.com/miskit/${jsName}`);
     console.log(`http://miskit.cdn.bcebos.com/miskit/${cssName}`);
+    console.log(`http://miskit.cdn.bcebos.com/miskit/${lastestJs}`);
+    console.log(`http://miskit.cdn.bcebos.com/miskit/${lastestCss}`);
     console.log('upload success');
-}));
+});

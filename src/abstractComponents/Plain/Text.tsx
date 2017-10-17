@@ -2,7 +2,6 @@ import * as React from 'react';
 import {IsDefined, IsJSON, IsString, IsUrl, Validate} from 'class-validator';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsValidEnums} from '../../render/util/validators';
-import {compileValueExpress} from '../../render/util/vm';
 import Trigger from '../../render/core/Trigger/Trigger';
 import componentLoader from '../../render/util/componentLoader';
 
@@ -31,12 +30,10 @@ class Text extends BasicContainer<TextPropsInterface, {}> {
     }
 
     render() {
-        let compiledInfo = compileValueExpress(this.props.info, {
-            $data: this.props.$data.toObject()
-        });
+        let info = this.getPropsInfo<TextConfig>(this.props.info);
 
         let children = React.createElement(Trigger, Object.assign({}, this.props, {
-            info: compiledInfo
+            info: info
         }));
 
         return this.renderChildren(children);

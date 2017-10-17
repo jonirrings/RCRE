@@ -4,8 +4,10 @@ import {actionCreators} from './action';
 import {Map} from 'immutable';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
+import * as _ from 'lodash';
 import {AxiosRequestConfig} from 'axios';
 import {ContainerConfig} from '../../../abstractComponents/Container/Container';
+import {compileValueExpress} from '../../util/vm';
 
 export type rawJSONType = string | number | null | boolean | Object;
 export type originJSONType = rawJSONType | rawJSONType[];
@@ -53,7 +55,7 @@ export class BasicContainerPropsInterface {
     /**
      * 当前Container的数据模型对象
      */
-    $data: Map<string, any>;
+    $data?: Map<string, any>;
 
     /**
      * React组件Key
@@ -130,7 +132,40 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
     constructor() {
         super();
     }
-
+    
+    public getRuntimeContext() {
+        let context = {
+            $data: {},
+            $query: {},
+            $global: {}
+        };
+        
+        if (this.props.$data) {
+            context.$data = this.props.$data.toObject();
+        }
+        
+        if (this.context.$query) {
+            context.$query = this.context.$query;
+        }
+        
+        if (this.context.$global) {
+            context.$global = this.context.$global;
+        }
+        
+        return context;
+    }
+    
+    public getPropsInfo<InfoType>(info: InfoType) {
+        let $data = this.props.$data;
+        info = _.cloneDeep(info);
+        
+        if ($data) {
+            info = compileValueExpress(info, this.getRuntimeContext());
+        }
+        
+        return info;
+    }
+    
     public renderChildren<Type>(children: React.ReactElement<Type>) {
         if (this.props.info.hidden) {
             return React.createElement('div', {

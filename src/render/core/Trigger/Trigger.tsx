@@ -64,11 +64,14 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
             console.error('your must provide href attribute to finish jumping...');
             return;
         }
-
-        let compiledHref = compileStaticTemplate(href, {
-            $resource: this.props.$data.toObject(),
-            $global: this.context.$global
-        });
+        
+        let compiledHref = '';
+        if (this.props.$data) {
+            compiledHref = compileStaticTemplate(href, {
+                $resource: this.props.$data.toObject(),
+                $global: this.context.$global
+            });   
+        }
 
         location.href = isRaw ? compiledHref : encodeURIComponent(compiledHref);
     }

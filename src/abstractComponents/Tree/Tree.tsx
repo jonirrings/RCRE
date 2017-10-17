@@ -157,7 +157,8 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
             children: []
         };
 
-        if (info.childMapping) {
+        let $data = this.props.$data;
+        if (info.childMapping && $data) {
             _.each<TreeNodeMappingConfig>(info.childMapping, (item: keyof TreeNodeMappingConfig, key: string) => {
                 retObj[key] = runInContext(item, {
                     $iterator: {
@@ -165,7 +166,7 @@ class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
                         key: data.key,
                         children: data.children
                     },
-                    $data: this.props.$data.toObject()
+                    $data: $data!.toObject()
                 });
             });
         }
