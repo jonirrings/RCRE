@@ -38,9 +38,9 @@ BOS.getString(repoVersion).then(str => {
     'Content-Type': 'application/javascript'
 })).then(() => BOS.putString(cssName, cssFile, {
     'Content-Type': 'text/css'
-})).then(() => BOS.putString(jsName, lastestJs, {
+})).then(() => BOS.putString(lastestJs, jsFile, {
     'Content-Type': 'application/javascript'
-})).then(() => BOS.putString(cssName, lastestCss, {
+})).then(() => BOS.putString(lastestCss, cssFile, {
     'Content-Type': 'text/css'
 })).then(() => {
     console.log(`http://miskit.cdn.bcebos.com/miskit/${jsName}`);
