@@ -7,8 +7,8 @@ const path = require('path');
 const fs = require('fs');
 const repoInfo = require('../../package.json');
 
-const DIST_JS = path.join(__dirname, '../../build/main.js');
-const DIST_CSS = path.join(__dirname, '../../build/main.css');
+const DIST_JS = path.join(__dirname, '../../build/full/fullBundle.js');
+const DIST_CSS = path.join(__dirname, '../../build/full/fullBundle.css');
 
 let BOS = require('./utils/uploadToBos');
 
@@ -37,5 +37,7 @@ BOS.getString(repoVersion).then(str => {
 }).then(() => BOS.putString(cssName, cssFile, {
     'Content-Type': 'text/css'
 })).then(() => {
+    console.log(`http://miskit.cdn.bcebos.com/miskit/${jsName}`);
+    console.log(`http://miskit.cdn.bcebos.com/miskit/${cssName}`);
     console.log('upload success');
 }));
