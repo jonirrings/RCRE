@@ -24,5 +24,10 @@
 
 ## 集成在React项目中
 
+目前RCRE项目已经打包并发布在http://pnpm.baidu.com. 可以直接通过npm工具进行安装
 
+```shell
+npm install @miskit/rcre-core --save --registry=http://pnpm.baidu.com
+```
 
+这有一个完整的样例. 采用webpack进行构建. 目前FIS3构建理论上也可以运行, 不过由于时间有限, 暂时只提供基于webpack的构建demo. [rcre-integration-react](http://icode.baidu.com/repo/baidu%2Fnative-ads%2Frcre-integration-react/files/master/tree/)
