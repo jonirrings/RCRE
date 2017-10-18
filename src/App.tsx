@@ -10,23 +10,23 @@ import 'bootstrap/dist/css/bootstrap-theme.css';
 import 'font-awesome/css/font-awesome.css';
 import './App.css';
 
-let basicConfig = require('./demo/basic.json');
-let lineChartConfig = require('./demo/linechart.json');
-let treeConfig = require('./demo/tree.json');
-let tableConfig = require('./demo/table.json');
-let layoutConfig = require('./demo/layout.json');
-let searchConfig = require('./demo/searchList.json');
-let treeEditConfig = require('./demo/treeEdit.json');
-let todomvcConfig = require('./demo/todomvc.json');
-let approvalConfig = require('./demo/approvel.json');
-let authListConfig = require('./demo/authList.json');
-let authorifyListConfig = require('./demo/authorityList.json');
-let ruleTemplateListConfig = require('./demo/ruleTemplateList.json');
-let addRuleTemplateConfig = require('./demo/addRuleTemplate.json');
-let dynamicSelectConfig = require('./demo/dynamicSelect.json');
+// let basicConfig = require('./demo/basic.json');
+// let lineChartConfig = require('./demo/linechart.json');
+// let treeConfig = require('./demo/tree.json');
+// let tableConfig = require('./demo/table.json');
+// let layoutConfig = require('./demo/layout.json');
+// let searchConfig = require('./demo/searchList.json');
+// let treeEditConfig = require('./demo/treeEdit.json');
+// let todomvcConfig = require('./demo/todomvc.json');
+// let approvalConfig = require('./demo/approvel.json');
+// let authListConfig = require('./demo/authList.json');
+// let authorifyListConfig = require('./demo/authorityList.json');
+// let ruleTemplateListConfig = require('./demo/ruleTemplateList.json');
+// let addRuleTemplateConfig = require('./demo/addRuleTemplate.json');
+// let dynamicSelectConfig = require('./demo/dynamicSelect.json');
 
-// let basicContainerConfig = require('./demo/container/basic.json');
-// let nestContainerConfig = require('./demo/container/nestContainer.json');
+let basicContainerConfig = require('./demo/container/basic.json');
+let nestContainerConfig = require('./demo/container/nestContainer.json');
 let dataProviderConfig = require('./demo/container/provider.json');
 
 interface AppStateInterface {
@@ -38,7 +38,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(dataProviderConfig)
+            code: jsonformat(basicContainerConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -77,23 +77,25 @@ class App extends React.Component<{}, AppStateInterface> {
             }
         }
 
+        let configList = [
+            ['basicContainer', basicContainerConfig],
+            ['nestContainer', nestContainerConfig],
+            ['ajaxDataProvider', dataProviderConfig]
+        ];
+        
         return (
             <div>
                 <div className="config-panel">
-                    <a onClick={this.changeConfig(basicConfig)}>Basic</a>
-                    <a onClick={this.changeConfig(layoutConfig)}>Layout</a>
-                    <a onClick={this.changeConfig(searchConfig)}>Search</a>
-                    <a onClick={this.changeConfig(lineChartConfig)}>LineChart</a>
-                    <a onClick={this.changeConfig(treeEditConfig)}>treeEdit</a>
-                    <a onClick={this.changeConfig(todomvcConfig)}>todomvcConfig</a>
-                    <a onClick={this.changeConfig(approvalConfig)}>approvalConfig</a>
-                    <a onClick={this.changeConfig(treeConfig)}>树</a>
-                    <a onClick={this.changeConfig(tableConfig)}>Table</a>
-                    <a onClick={this.changeConfig(authListConfig)}>authListConfig</a>
-                    <a onClick={this.changeConfig(authorifyListConfig)}>authorifyListConfig</a>
-                    <a onClick={this.changeConfig(ruleTemplateListConfig)}>ruleTemplateListConfig</a>
-                    <a onClick={this.changeConfig(addRuleTemplateConfig)}>addRuleTemplateConfig</a>
-                    <a onClick={this.changeConfig(dynamicSelectConfig)}>dynamicSelectConfig</a>
+                    {
+                        configList.map(item => {
+                            let name = item[0];
+                            let value = item[1];
+                            
+                            return (
+                                <a key={name} onClick={this.changeConfig(value)}>{name}</a>
+                            );
+                        })
+                    }
                 </div>
                 <div className="App">
                     <Preview code={this.state.code}/>

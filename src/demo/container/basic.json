@@ -2,14 +2,19 @@
     "body": [
         {
             "type": "container",
-            "model": "textField",
+            "model": "demo",
             "data": {
-                "name": 1
+                "name": "andycall",
+                "age": "#ES{1 + 1}"
             },
             "children": [
                 {
                     "type": "text",
                     "text": "helloworld"
+                },
+                {
+                    "type": "text",
+                    "text": "another text"
                 }
             ]
         }

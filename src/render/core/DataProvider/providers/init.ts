@@ -1,6 +1,6 @@
 import {BasicSyncProviderInterface, ProviderGlobalOptions, ProviderSourceConfig} from '../Controller';
 import {ContainerProps} from '../../Container/types';
-import {filterExpressionData} from '../../../util/vm';
+import {compileValueExpress, filterExpressionData} from '../../../util/vm';
 import * as _ from 'lodash';
 
 export class InitDataProvider implements BasicSyncProviderInterface {
@@ -20,6 +20,7 @@ export class InitDataProvider implements BasicSyncProviderInterface {
 
     run (provider: ProviderSourceConfig, options?: ProviderGlobalOptions) {
          let data = provider.config;
+         data = compileValueExpress(data, {});
          return filterExpressionData(data);
     }
 }
