@@ -6,16 +6,16 @@
             "dataProvider": [{
                 "mode": "ajax",
                 "config": {
-                    "url": "http://cp01-yjk.epc.baidu.com:8203/rulecheck/rlreport/checktype",
+                    "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/udwmeta/tablemeta/table",
                     "method": "GET",
                     "data": {
-                        "name": "$data.name"
+                        "query": "#ES{$data.name}"
                     },
-                    "retCheckPattern": "$response.data.err == 0"
+                    "retCheckPattern": "#ES{$response.data.err == 0}"
                 }
             }],
             "data": {
-                "name": "1",
+                "name": "test",
                 "columns": [
                     {
                         "title": "姓名",
@@ -48,8 +48,8 @@
                 },
                 {
                     "type": "table",
-                    "columns": "$data.columns",
-                    "dataSource": "$data.dataSource",
+                    "columns": "#ES{$data.columns}",
+                    "dataSource": "#ES{$data.dataSource}",
                     "columnControls": [
                         {
                             "title": "下来框",

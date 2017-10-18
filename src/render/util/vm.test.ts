@@ -1,4 +1,4 @@
-import {runInContext, safePointer} from './vm';
+import {runInContext, safePointer, parseExpressString, compileValueExpress} from './vm';
 
 describe('runInContext', () => {
     it('1 + 1 == 2', () => {
@@ -121,12 +121,12 @@ describe('safePointer', () => {
         let target = {
             list: [1, 2, 3, 4, 5]
         };
-        
+
         let ret = safePointer(target, ['list', 0]);
-        
+
         expect(ret).toBe(1);
     });
-    
+
     it('work correct with nest object and arrays', () => {
         let target = {
             list: [{
@@ -135,9 +135,208 @@ describe('safePointer', () => {
                 }
             }]
         };
-        
+
         let ret = safePointer(target, ['list', 0, 'name', 'age']);
-        
+
         expect(ret).toBe(2);
+    });
+});
+
+describe('parseExpressString', () => {
+    it('#ES{1 + 1}', () => {
+        let context = {};
+        let ret = parseExpressString('#ES{1 + 1}', context);
+        expect(ret).toBe(2);
+    });
+
+    it('#ES{1} + #ES{2}', () => {
+        let context = {};
+        let ret = parseExpressString('#ES{1} + #ES{2}', context);
+        expect(ret).toBe(3);
+    });
+
+    it('#ES{"1"} + #ES{1}', () => {
+        let context = {};
+        let ret = parseExpressString('#ES{"1"} + #ES{1}', context);
+        expect(ret).toBe('11');
+    });
+
+    it('#ES{1}es', () => {
+        let context = {};
+        let ret = parseExpressString('#ES{1}es', context);
+        expect(ret).toBe('1es');
+    });
+
+    it('#ES{[1,2,3,4][0]}', () => {
+        let context = {};
+        let ret = parseExpressString('#ES{[1,2,3,4][0]}', context);
+        expect(ret).toBe(1);
+    });
+
+    it('#ES{[1,"2",3,4][1]}', () => {
+        let context = {};
+        let ret = parseExpressString('#ES{[1,"2",3,4][1]}', context);
+        expect(ret).toBe('2');
+    });
+
+    it('#ES{{name: 1}}["name"]', () => {
+        let context = {};
+        let ret = parseExpressString('#ES{{name: 1}}["name"]', context);
+        expect(ret).toBe(1);
+    });
+
+    it('#ES{$data}', () => {
+        let context = {
+            $data: {
+                name: 1
+            }
+        };
+
+        let ret = parseExpressString('#ES{$data}', context);
+        expect(JSON.stringify(ret)).toBe('{"name":1}');
+    });
+
+    it('#ES{$data["$data"]}', () => {
+        let context = {
+            $data: {
+                name: 1
+            }
+        };
+
+        let ret = parseExpressString('#ES{$data["$data"]}', context);
+        expect(ret).toBe('');
+    });
+
+    it('#ES{$data["name"]}', () => {
+        let context = {
+            $data: {
+                name: 1
+            }
+        };
+
+        let ret = parseExpressString('#ES{$data["name"]}', context);
+        expect(ret).toBe(1);
+    });
+
+    it('#ES{{arr: [{name: 1}, {name: 2}]}["arr"]}', () => {
+        let context = {
+            arr: [
+                {
+                    name: 1
+                },
+                {
+                    name: 2
+                }
+            ]
+        };
+
+        let ret = parseExpressString('#ES{arr[0]}', context);
+        expect(JSON.stringify(ret)).toBe(JSON.stringify(context.arr[0]));
+    });
+
+    it('#ES{$data[0]["name"][1]["age"]}', () => {
+        let context = {
+            $data: [
+                {
+                    name: [
+                        {},
+                        {
+                            age: 10
+                        }
+                    ]
+                }
+            ]
+        };
+
+        let ret = parseExpressString('#ES{$data[0]["name"][1]["age"]}', context);
+        expect(ret).toBe(10);
+    });
+
+    it('#ES{1 + (function(){ return 1})()}', () => {
+        let context = {};
+        let ret = parseExpressString('#ES{1 + (function(){ return 1})()}', context);
+        expect(ret).toBe(2);
+    });
+
+    it(`#ES{1 + (function(){
+        function add(a, b) {
+            return a + b;
+        }
+    
+        return add(1, 2) + add(3, 4)
+    })()}`, () => {
+        let context = {};
+        let ret = parseExpressString(`#ES{1 + (function(){
+        function add(a, b) {
+            return a + b;
+        }
+    
+        return add(1, 2) + add(3, 4)
+    })()}`, context);
+        expect(ret).toBe(11);
+    });
+});
+
+describe('compileValueExpress', () => {
+    it('{name: "#ES{1 + 1}"}', () => {
+        let info = {
+            name: '#ES{1 + 1}'
+        };
+
+        let ret = compileValueExpress(info, {});
+        expect(typeof ret).toBe('object');
+        expect(ret.name).toBe(2);
+    });
+
+    it('{$data: [{name: 1}, {name: 2}]}', () => {
+        let context = {
+            $data: [
+                {
+                    name: 1
+                },
+                {
+                    name: 2
+                }
+            ],
+            arr: [1, 2, 3]
+        };
+
+        let ret = compileValueExpress({
+            result: '#ES{$data}',
+            data: '#ES{$data}'
+        }, context);
+
+
+        expect(JSON.stringify(ret)).toBe(JSON.stringify({result: context.$data, data: context.$data}));
+    });
+
+    it('nest compiled', () => {
+        let context = {
+            '$data': {
+                'name': 'test',
+                'columns': [{'title': '姓名', 'dataIndex': 'name'}, {'title': '年龄', 'dataIndex': 'age'}],
+                'dataSource': [{'name': 'andycall', 'age': 21}, {
+                    'name': 'dongtiancheng',
+                    'age': 21
+                }, {'name': 'dongtiancheng', 'age': 21}]
+            },
+            '$query': {},
+            '$global': {'pageId': '4567', 'username': 'dongtiancheng', 'proxy': 'http://localhost:8800/proxy'}
+        };
+
+        let info = {
+            'type': 'table',
+            'columns': '#ES{$data.columns}',
+            'dataSource': '#ES{$data.dataSource}',
+            'columnControls': [{
+                'title': '下来框',
+                'dataIndex': 'dropdown',
+                'controls': [{'type': 'text', 'text': 'text'}, {'type': 'text', 'text': 'text'}]
+            }]
+        };
+        
+        let ret = compileValueExpress(info, context);
+        
+        console.log(ret);
     });
 });

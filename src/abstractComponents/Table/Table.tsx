@@ -51,12 +51,12 @@ export default class AbstractTable extends BasicContainer<TablePropsInterface, {
 
     render() {
         let info = this.getPropsInfo<TableConfig>(this.props.info);
-
-        if (!info.columns) {
+        
+        if (!info.columns || !Array.isArray(info.columns)) {
             info.columns = [];
         }
 
-        if (!info.dataSource) {
+        if (!info.dataSource || !Array.isArray(info.dataSource)) {
             info.dataSource = [];
         }
 

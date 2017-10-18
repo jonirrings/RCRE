@@ -6,12 +6,7 @@ import {bindActionCreators, Dispatch} from 'redux';
 import {actionCreators, IAction, SET_DATA_LIST_PAYLOAD} from './action';
 import {RootState} from '../../data/reducers';
 import {Map} from 'immutable';
-// import ParamsInjector from '../../util/injector';
-// // import {Spin} from 'antd';
 import {compileValueExpress, keepExpressionData} from '../../util/vm';
-// import {request} from '../../services/api';
-// import {AxiosRequestConfig, AxiosResponse} from 'axios';
-// import {compileTimeExpression} from '../../util/dateTime';
 import {createChild} from '../../util/createChild';
 import {DataProvider} from '../DataProvider/Controller';
 
@@ -35,7 +30,9 @@ class Container extends BasicContainer<ContainerProps, {}> {
     async componentWillMount() {
         if (this.props.info.model) {
             if (!this.props.info.data) {
-                this.props.info.data = {};
+                this.props.info.data = {
+                    $loading: false
+                };
             }
 
             // to keep it safe, this.props.info should be readonly
@@ -55,24 +52,14 @@ class Container extends BasicContainer<ContainerProps, {}> {
                 mode: 'init',
                 config: this.props.info.data
             };
-            
-            // 故意不用await, 因为不需要await来进行等待
-            this.dataProvider.requestForData(initProvider, providerActions, this.props, this.context);
-            
-            if (Array.isArray(this.props.info.dataProvider)) {
-                this.props.info.dataProvider.forEach(provider => {
-                    this.dataProvider.requestForData(provider, providerActions, this.props, this.context);
-                });
-            } else if (_.isPlainObject(this.props.info.dataProvider)) {
-                let provider = this.props.info.dataProvider;
-                this.dataProvider.requestForData(provider!, providerActions, this.props, this.context);
-            }
+
+            await this.dataProvider.requestForData(initProvider, providerActions, this.props, this.context);
         } else {
             console.error('Container Component Should have model property');
         }
     }
 
-    componentWillReceiveProps(nextProps: ContainerProps) {
+    async componentWillReceiveProps(nextProps: ContainerProps) {
         if (this.props.$parent !== nextProps.$parent) {
             this.syncUpdateData(this.props.info.model!, nextProps);   
         }
@@ -87,12 +74,12 @@ class Container extends BasicContainer<ContainerProps, {}> {
         };
 
         if (Array.isArray(this.props.info.dataProvider)) {
-            this.props.info.dataProvider.forEach(provider => {
-                this.dataProvider.requestForData(provider, providerActions, this.props, this.context);
-            });
+            for (let provider of this.props.info.dataProvider) {
+                await this.dataProvider.requestForData(provider, providerActions, nextProps, this.context);
+            }
         } else if (_.isPlainObject(this.props.info.dataProvider)) {
             let provider = this.props.info.dataProvider;
-            this.dataProvider.requestForData(provider!, providerActions, this.props, this.context);
+            await this.dataProvider.requestForData(provider!, providerActions, nextProps, this.context);
         }
     }
 

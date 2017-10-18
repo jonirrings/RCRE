@@ -13,7 +13,7 @@ export class ProviderLoader {
     
     public registerProvider(
         mode: string, 
-        provider: BasicAsyncProviderInterface & BasicSyncProviderInterface, 
+        provider: BasicAsyncProviderInterface | BasicSyncProviderInterface, 
         async: boolean
     ) {
         if (this.providerMap.has(mode)) {

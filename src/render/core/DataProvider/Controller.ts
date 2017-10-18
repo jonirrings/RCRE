@@ -62,7 +62,7 @@ export interface BasicSyncProviderInterface {
     configCheck(provider: ProviderSourceConfig): boolean;
     retCheck(ret: Object, provider: ProviderSourceConfig): boolean;
     parse(provider: ProviderSourceConfig, config: ContainerProps): ProviderSourceConfig;
-    run (provider: ProviderSourceConfig, options?: ProviderGlobalOptions): Promise<any>;
+    run (provider: ProviderSourceConfig, options?: ProviderGlobalOptions): any;
 }
 
 export interface BasicAsyncProviderInterface {
@@ -105,7 +105,7 @@ export class DataProvider {
             throw new Error('can not find exact data provider of mode:' + mode);
         }
         
-        let async = providerInfo.async;
+        let isAsync = providerInfo.async;
         let provider = providerInfo.provider;
 
         let checkStatus = provider.configCheck(providerConfig);
@@ -124,7 +124,7 @@ export class DataProvider {
         }
         this.previousProviderConfig = parsedConfig;
         
-        if (async) {
+        if (isAsync) {
             actions.asyncLoadDataProgress({
                 model: props.info.model!,
                 providerMode: providerConfig.mode

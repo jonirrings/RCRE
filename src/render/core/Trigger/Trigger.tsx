@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import {BasicContainer, BasicContainerPropsInterface} from '../Container/types';
 import createElement from '../../util/createElement';
 import {TriggerConfig, TriggerItem, validEventTrigger} from './types';
-import {compileStaticTemplate, compileValueExpress} from '../../util/vm';
+import {compileValueExpress, parseExpressString} from '../../util/vm';
 import {Map} from 'immutable';
 import {SET_DATA_LIST_PAYLOAD} from '../Container/action';
 import AbstractFormItem, {FormItemPropsInterface} from '../../../abstractComponents/Form/FormItem';
@@ -67,7 +67,7 @@ export default class Trigger<T extends TriggerPropsInterface> extends BasicConta
         
         let compiledHref = '';
         if (this.props.$data) {
-            compiledHref = compileStaticTemplate(href, {
+            compiledHref = parseExpressString(href, {
                 $resource: this.props.$data.toObject(),
                 $global: this.context.$global
             });   

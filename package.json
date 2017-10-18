@@ -119,7 +119,7 @@
         "plugin": "node scripts/bin/react-scripts-ts plugin",
         "test": "node scripts/bin/react-scripts-ts test --env=jsdom",
         "proxyServer": "TS_NODE_PROJECT=`pwd`/scripts PORT=8800 ts-node scripts/proxy.ts",
-        "precommit": "echo 1"
+        "postcommit": "npm run build && npm run plugin && npm version patch"
     },
     "license": "MIT"
 }

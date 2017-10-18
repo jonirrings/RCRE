@@ -5,7 +5,7 @@ import {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {ContainerProps, RequestConfig} from '../../Container/types';
 import {request} from '../../../services/api';
 import * as _ from 'lodash';
-import {compileValueExpress, runInContext} from '../../../util/vm';
+import {compileValueExpress, parseExpressString} from '../../../util/vm';
 
 export interface AjaxProviderSourceConfig extends ProviderSourceConfig {
     config: RequestConfig;
@@ -44,13 +44,9 @@ export class AjaxDataProvider implements BasicAsyncProviderInterface {
             return _.isPlainObject(ret);
         }
         
-        try {
-            return runInContext(pattern, {
-                $response: ret
-            });   
-        } catch (e) {
-            return false;
-        }
+        return parseExpressString(pattern, {
+            $response: ret
+        }) === true;
     }
 
     async run(provider: AjaxProviderSourceConfig, options: ProviderGlobalOptions = {}) {

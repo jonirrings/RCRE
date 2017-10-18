@@ -1,5 +1,14 @@
 import * as _ from 'lodash';
 
+// TODO Use Token parser for better parse
+
+/**
+ * 安全运行沙箱
+ * 
+ * @param {string} code
+ * @param {Object} context
+ * @returns {any}
+ */
 export function runInContext(code: string, context: Object) {
     if (!_.isPlainObject(context)) {
         throw new TypeError('context argument must be an object');
@@ -27,6 +36,58 @@ export function runInContext(code: string, context: Object) {
     return func.call(context);
 }
 
+/**
+ * 解析ExpressString
+ * 
+ * @param {string} str
+ * @param {Object} context
+ * @returns {any}
+ */
+export function parseExpressString(str: string, context: Object) {
+    const ESPattern = /#ES\{([^#]+)\}/g;
+    if (!isExpression(str)) {
+        return str;
+    }
+     
+    str = str.replace(ESPattern, (total, code) => {
+        let result = null;
+        try {
+            result = runInContext(code, context);
+        } catch (e) {}
+        
+        if (_.isNil(result)) {
+            return '';
+        }
+        
+        if (_.isObjectLike(result)) {
+            return JSON.stringify(result);
+        }
+        
+        if (typeof result === 'function') {
+            return result.toString();
+        }
+        
+        if (typeof result === 'string') {
+            return '"' + result + '"';
+        }
+        
+        return result;
+    });
+    
+    try {
+        return runInContext(str, {});   
+    } catch (e) {
+        return str;
+    }
+}
+
+/**
+ * 安全属性指针
+ * 
+ * @param {Object} obj
+ * @param {(string | number)[]} keys
+ * @returns {any}
+ */
 export function safePointer(obj: Object, keys: (string|number)[]) {
     let target = obj;
 
@@ -61,22 +122,17 @@ export function compileValueExpress<Config, Source>(props: Config,
     
     function parseExpression(reference: Object) {
         _.each(reference, (item, key) => {
+            // console.log(item);
             if (blackList.indexOf(key) >= 0) {
                 return;
             }
             
             if (isExpression(item)) {
-                let ret;
-                try {
-                    ret = runInContext(item, pair);
-                } catch (e) {
-                    ret = null;
-                }
-                
-                reference[key] = ret;
+                console.log(item, pair, parseExpressString(item, pair));
+                reference[key] = parseExpressString(item, pair);
             }
             
-            if (!isDeep && (_.isPlainObject(item) || _.isArray(item))) {
+            if (isDeep && (_.isPlainObject(item) || _.isArray(item))) {
                 parseExpression(item);
             }
         });
@@ -88,7 +144,8 @@ export function compileValueExpress<Config, Source>(props: Config,
 }
 
 export function isExpression(str: any) {
-    return typeof str === 'string' && str.indexOf('$') >= 0;
+    const ESPattern = /#ES\{([^#]+)\}/g;
+    return ESPattern.test(str);
 }
 
 export function filterExpressionData(obj: Object) {
@@ -129,24 +186,4 @@ export function keepExpressionData(obj: Object) {
     walker(copy);
 
     return copy;
-}
-
-export function compileStaticTemplate<Source>(rawString: string, pair: compilePairType<Source>) {
-    const templateRegex = /{{([^}]+)}}/g;
-
-    return rawString.replace(templateRegex, (str, expression) => {
-        if (!isExpression(expression)) {
-            return expression;
-        }
-
-        console.log(expression, pair);
-        // let ret = runInContext(expression, pair);
-
-        let ret = null;
-        if (!ret) {
-            return expression;
-        }
-
-        return ret;
-    });
 }

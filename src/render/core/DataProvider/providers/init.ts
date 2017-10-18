@@ -18,9 +18,8 @@ export class InitDataProvider implements BasicSyncProviderInterface {
         return !_.isEmpty(ret);
     }
 
-    async run (provider: ProviderSourceConfig, options?: ProviderGlobalOptions) {
+    run (provider: ProviderSourceConfig, options?: ProviderGlobalOptions) {
          let data = provider.config;
-         console.log(data);
          return filterExpressionData(data);
     }
 }
