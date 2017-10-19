@@ -143,7 +143,8 @@ class Container extends BasicContainer<ContainerProps, {}> {
 
         if (!_.isEmpty(updateExpression)) {
             let updateData = compileValueExpress(updateExpression, {
-                $parent: props.$parent.toObject()
+                $parent: props.$parent.toObject(),
+                $data: props.$data.toObject()
             });
 
             let payloads: SET_DATA_LIST_PAYLOAD = [];

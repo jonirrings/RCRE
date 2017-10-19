@@ -128,7 +128,6 @@ export function compileValueExpress<Config, Source>(props: Config,
             }
             
             if (isExpression(item)) {
-                console.log(item, pair, parseExpressString(item, pair));
                 reference[key] = parseExpressString(item, pair);
             }
             

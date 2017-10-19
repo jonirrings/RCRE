@@ -20,7 +20,9 @@ export class InitDataProvider implements BasicSyncProviderInterface {
 
     run (provider: ProviderSourceConfig, options?: ProviderGlobalOptions) {
          let data = provider.config;
-         data = compileValueExpress(data, {});
+         data = compileValueExpress(data, {
+             $data: filterExpressionData(_.cloneDeep(data))
+         });
          return filterExpressionData(data);
     }
 }

@@ -167,6 +167,18 @@ describe('parseExpressString', () => {
         expect(ret).toBe('1es');
     });
 
+    it('#ES{1 + 1}es', () => {
+        let context = {};
+        let ret = parseExpressString('#ES{1 + 1}es', context);
+        expect(ret).toBe('2es');
+    });
+
+    it('you are the #ES{1 + 1}th', () => {
+        let context = {};
+        let ret = parseExpressString('you are the #ES{1 + 1}th', context);
+        expect(ret).toBe('you are the 2th');
+    });
+
     it('#ES{[1,2,3,4][0]}', () => {
         let context = {};
         let ret = parseExpressString('#ES{[1,2,3,4][0]}', context);
@@ -232,6 +244,30 @@ describe('parseExpressString', () => {
 
         let ret = parseExpressString('#ES{arr[0]}', context);
         expect(JSON.stringify(ret)).toBe(JSON.stringify(context.arr[0]));
+    });
+
+    it('#ES{{arr: [{name: 1}, {name: 2}]}["arr"].length}', () => {
+        let context = {
+            arr: [
+                {
+                    name: 1
+                },
+                {
+                    name: 2
+                }
+            ]
+        };
+
+        let ret = parseExpressString('#ES{arr.length}', context);
+        expect(ret).toBe(2);
+    });
+
+    it('#ES{Object.keys({name: 1, age: 2})}', () => {
+        let context = {};
+        let ret = parseExpressString('#ES{Object.keys({name: 1, age: 2})}', context);
+        expect(ret.length).toBe(2);
+        expect(ret[0]).toBe('name');
+        expect(ret[1]).toBe('age');
     });
 
     it('#ES{$data[0]["name"][1]["age"]}', () => {
@@ -337,6 +373,9 @@ describe('compileValueExpress', () => {
         
         let ret = compileValueExpress(info, context);
         
-        console.log(ret);
+        expect(Array.isArray(ret.columns)).toBe(true);
+        expect(ret.columns.length).toBe(2);
+        expect(Array.isArray(ret.dataSource)).toBe(true);
+        expect(ret.dataSource.length).toBe(3);
     });
 });

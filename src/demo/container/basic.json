@@ -5,7 +5,7 @@
             "model": "demo",
             "data": {
                 "name": "andycall",
-                "age": "#ES{1 + 1}"
+                "age": "#ES{$data.name} + ' and andylaw'"
             },
             "children": [
                 {
