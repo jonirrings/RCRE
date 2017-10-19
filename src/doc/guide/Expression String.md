@@ -70,7 +70,7 @@ you are the #ES{1 + 1}th ==> you are the 2th
 Expression String还可以内嵌匿名函数进行运算, 这在一些特殊的场景下是非常有效的.
 
 ```
-#ES{1 + (function(){function add(a, b) {return a + b;}return add(1, 2) + add(3, 4)})()} ==> 11
+#ES{1 + (function(){function add(a, b) {return a + b;}return add(1, 2) + add(3, 4)})} ==> 11
 ```
 
 这个例子在Expression String内部嵌入了一个自运行匿名函数, 匿名函数内部再调用闭包内部的1个函数. 最终执行得的最终结果为`11`
@@ -122,9 +122,5 @@ RCRE提供了一些内置的变量, 来方便开发者在Expression String中对
 
 这里例子最终运行的结果在Redux devTools中看到的应该是这个样子:
 
-![QQ20171019-153652](/private/tmp/QQ20171019-153652.png)
-
-### $query
-
-当业务需要通过地址栏的的search参数来获取数据. `$query`就是用来解决这个场景的工具. RCRE会自动为你解析地址栏的所有参数, 并嵌入$query这个对象进行使用.
+![QQ20171019-153652](https://ws4.sinaimg.cn/large/006tKfTcly1fknsuxibtcj30vm09ldgf.jpg)
 
