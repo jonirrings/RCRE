@@ -70,7 +70,7 @@ you are the #ES{1 + 1}th ==> you are the 2th
 Expression String还可以内嵌匿名函数进行运算, 这在一些特殊的场景下是非常有效的.
 
 ```
-#ES{1 + (function(){function add(a, b) {return a + b;}return add(1, 2) + add(3, 4)})} ==> 11
+#ES{1 + (function(){function add(a, b) {return a + b;}return add(1, 2) + add(3, 4)})()} ==> 11
 ```
 
 这个例子在Expression String内部嵌入了一个自运行匿名函数, 匿名函数内部再调用闭包内部的1个函数. 最终执行得的最终结果为`11`
