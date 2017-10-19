@@ -10,6 +10,7 @@ import {Map} from 'immutable';
 import {createChild} from '../../util/createChild';
 import {DataProvider} from '../DataProvider/Controller';
 import {ContainerPropsInterface} from '../../../abstractComponents/Container/Container';
+import {compileValueExpress} from '../../util/vm';
 
 // First Init Life Circle:
 // ComponentWillMount -> Render -> ComponentDidMount
@@ -182,11 +183,26 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
 }, dispatch);
 
 const mergeProps = 
-    (stateProps: Object, dispatchProps: ContainerProps, ownProps: ContainerPropsInterface): ContainerProps => {
+    (stateProps: {
+        $data: Map<string, any>
+    }, dispatchProps: ContainerProps, ownProps: ContainerPropsInterface): ContainerProps => {
     let parentProps = ownProps.$data || Map({});
-
+    let stateData = stateProps.$data;
+        
+    if (_.isObject(ownProps.info.parentMapping)) {
+        let parentMappingRet = compileValueExpress(ownProps.info.parentMapping, {
+            $parent: parentProps.toObject()
+        });
+        
+        if (parentMappingRet) {
+            stateData = stateData.merge(Map(parentMappingRet));   
+        }
+    } else {
+        stateData = stateData.merge(parentProps);   
+    }
+    
     return Object.assign({}, ownProps, stateProps, dispatchProps, {
-        $parent: parentProps
+        $data: stateData
     });
 };
 

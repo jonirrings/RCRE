@@ -28,6 +28,8 @@ export class BasicConfig {
     hidden?: boolean;
 
     $nowFormat?: string;
+    
+    parentMapping?: Object;
 
     children?: BasicConfig[];
 }

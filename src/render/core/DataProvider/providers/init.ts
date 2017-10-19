@@ -17,7 +17,6 @@ export class InitDataProvider implements BasicSyncProviderInterface {
         let data = provider.config;
         
         provider.config = compileValueExpress(data, {
-            $parent: props.$parent.toObject(),
             $data: filterExpressionData(_.cloneDeep(data))
         });
         

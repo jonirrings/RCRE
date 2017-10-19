@@ -10,7 +10,7 @@
                 {
                     "type": "container",
                     "model": "innerTextField",
-                    "data": {
+                    "parentMapping": {
                         "name": "#ES{$parent.name}"
                     },
                     "children": [
