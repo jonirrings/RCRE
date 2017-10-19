@@ -1,4 +1,8 @@
-import {BasicSyncProviderInterface, ProviderGlobalOptions, ProviderSourceConfig} from '../Controller';
+import {
+    BasicSyncProviderInterface,
+    ProviderGlobalOptions,
+    ProviderSourceConfig
+} from '../Controller';
 import {ContainerProps} from '../../Container/types';
 import {compileValueExpress, filterExpressionData} from '../../../util/vm';
 import * as _ from 'lodash';
@@ -9,7 +13,14 @@ export class InitDataProvider implements BasicSyncProviderInterface {
         return true;
     }
 
-    parse(provider: ProviderSourceConfig, props: ContainerProps) {
+    parse(provider: ProviderSourceConfig, props: ContainerProps, context: any) {
+        let data = provider.config;
+        
+        provider.config = compileValueExpress(data, {
+            $parent: props.$parent.toObject(),
+            $data: filterExpressionData(_.cloneDeep(data))
+        });
+        
         // 初始化只初始化纯字面量
         return provider;
     }
@@ -18,11 +29,13 @@ export class InitDataProvider implements BasicSyncProviderInterface {
         return !_.isEmpty(ret);
     }
 
+    retParse(ret: Object, provider: ProviderSourceConfig, props: ContainerProps, context: any) {
+        return ret;
+    }
+
     run (provider: ProviderSourceConfig, options?: ProviderGlobalOptions) {
          let data = provider.config;
-         data = compileValueExpress(data, {
-             $data: filterExpressionData(_.cloneDeep(data))
-         });
+        
          return filterExpressionData(data);
     }
 }

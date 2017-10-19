@@ -5,7 +5,6 @@ import {Map} from 'immutable';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as _ from 'lodash';
-import {AxiosRequestConfig} from 'axios';
 import {ContainerConfig} from '../../../abstractComponents/Container/Container';
 import {compileValueExpress} from '../../util/vm';
 
@@ -15,10 +14,6 @@ export type originJSONType = rawJSONType | rawJSONType[];
 export type defaultData = {
     [s: string]: originJSONType
 };
-
-export interface RequestConfig extends AxiosRequestConfig {
-    retCheckPattern?: string;
-}
 
 export class BasicConfig {
     @IsString()

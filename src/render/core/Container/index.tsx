@@ -3,12 +3,13 @@ import * as _ from 'lodash';
 import {BasicContainer, BasicContainerPropsInterface, ContainerProps} from './types';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
-import {actionCreators, IAction, SET_DATA_LIST_PAYLOAD} from './action';
+import {actionCreators, IAction} from './action';
 import {RootState} from '../../data/reducers';
 import {Map} from 'immutable';
-import {compileValueExpress, keepExpressionData} from '../../util/vm';
+// import {compileValueExpress, keepExpressionData} from '../../util/vm';
 import {createChild} from '../../util/createChild';
 import {DataProvider} from '../DataProvider/Controller';
+import {ContainerPropsInterface} from '../../../abstractComponents/Container/Container';
 
 // First Init Life Circle:
 // ComponentWillMount -> Render -> ComponentDidMount
@@ -60,10 +61,6 @@ class Container extends BasicContainer<ContainerProps, {}> {
     }
 
     async componentWillReceiveProps(nextProps: ContainerProps) {
-        if (this.props.$parent !== nextProps.$parent) {
-            this.syncUpdateData(this.props.info.model!, nextProps);   
-        }
-
         const providerActions = {
             setDataList: this.props.setDataList,
             asyncLoadDataProgress: this.props.asyncLoadDataProgress,
@@ -125,38 +122,38 @@ class Container extends BasicContainer<ContainerProps, {}> {
         );
     }
 
-    /**
-     * Update data When ComponentWillReceiveProps
-     * This function will parse the expression string in data property from JSON
-     * including $parent and $response
-     * Then call this.props.setDataList to update data
-     *
-     * @param {string} model
-     * @param {ContainerProps} props
-     */
-    private syncUpdateData(model: string, props: ContainerProps) {
-        if (!props.info.data) {
-            props.info.data = {};
-        }
-
-        let updateExpression = keepExpressionData(props.info.data);
-
-        if (!_.isEmpty(updateExpression)) {
-            let updateData = compileValueExpress(updateExpression, {
-                $parent: props.$parent.toObject(),
-                $data: props.$data.toObject()
-            });
-
-            let payloads: SET_DATA_LIST_PAYLOAD = [];
-            _.each(updateData, (val, name) => {
-                payloads.push({
-                    type: name,
-                    newValue: val
-                });
-            });
-            this.props.setDataList(payloads, model);
-        }
-    }
+    // /**
+    //  * Update data When ComponentWillReceiveProps
+    //  * This function will parse the expression string in data property from JSON
+    //  * including $parent and $response
+    //  * Then call this.props.setDataList to update data
+    //  *
+    //  * @param {string} model
+    //  * @param {ContainerProps} props
+    //  */
+    // private syncUpdateData(model: string, props: ContainerProps) {
+    //     if (!props.info.data) {
+    //         props.info.data = {};
+    //     }
+    //
+    //     let updateExpression = keepExpressionData(props.info.data);
+    //
+    //     if (!_.isEmpty(updateExpression)) {
+    //         let updateData = compileValueExpress(updateExpression, {
+    //             $parent: props.$parent.toObject(),
+    //             $data: props.$data.toObject()
+    //         });
+    //
+    //         let payloads: SET_DATA_LIST_PAYLOAD = [];
+    //         _.each(updateData, (val, name) => {
+    //             payloads.push({
+    //                 type: name,
+    //                 newValue: val
+    //             });
+    //         });
+    //         this.props.setDataList(payloads, model);
+    //     }
+    // }
     
     private handleChange(key: string, value: any) {
         this.props.setData({
@@ -184,7 +181,8 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
     syncLoadDataFail: actionCreators.syncLoadDataFail
 }, dispatch);
 
-const mergeProps = (stateProps: any, dispatchProps: any, ownProps: any): any => {
+const mergeProps = 
+    (stateProps: Object, dispatchProps: ContainerProps, ownProps: ContainerPropsInterface): ContainerProps => {
     let parentProps = ownProps.$data || Map({});
 
     return Object.assign({}, ownProps, stateProps, dispatchProps, {

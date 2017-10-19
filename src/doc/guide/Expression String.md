@@ -77,7 +77,7 @@ Expression String还可以内嵌匿名函数进行运算, 这在一些特殊的�
 
 在RCRE的`filter`函数支持之前, 对于特殊的数据处理方案, 可以采用内嵌匿名函数的方式来进行一些特殊的数据处理.
 
-## 对象和内置函数
+### 对象和内置函数
 
 Expression String一样可以操作javaScript对象.
 
@@ -100,7 +100,7 @@ RCRE提供了一些内置的变量, 来方便开发者在Expression String中对
     "model": "demo",
     "data": {
         "name": "andycall",
-        "age": "#ES{$data.name} and andylaw"
+        "age": "#ES{$data.name} + ' and andylaw'"
     },
     "children": [
         {
@@ -114,10 +114,17 @@ RCRE提供了一些内置的变量, 来方便开发者在Expression String中对
     ]
 }
 ```
+这个例子中, `container`组件会在初始化时候, 对`data`属性中的字段进行Expression String解析. 并在执行环境中嵌入`$data`属性. 执行过程中`$data`中是一个含有非Expression String的值的常规对象. 所以执行`#ES{$data.name} + ' and andylaw'`的时候, `$data`的值为
+```json
+{"name": "andycall"}
+```
+> 而含有`#ES{}`这样的字符串会在初始化的时候临时忽略掉, 所以目前功能还不支持`$data`递归调用自身.
 
+这里例子最终运行的结果在Redux devTools中看到的应该是这个样子:
 
+![QQ20171019-153652](/private/tmp/QQ20171019-153652.png)
 
+### $query
 
-
-
+当业务需要通过地址栏的的search参数来获取数据. `$query`就是用来解决这个场景的工具. RCRE会自动为你解析地址栏的所有参数, 并嵌入$query这个对象进行使用.
 

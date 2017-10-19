@@ -16,6 +16,11 @@ export interface ProviderSourceConfig {
     config?: any;
 }
 
+export interface ProviderCommonConfig {
+    retCheckPattern?: string;
+    retMapping?: Object;
+}
+
 /**
  * Provider 对象全局配置
  */
@@ -61,15 +66,26 @@ export interface ProviderActions {
 export interface BasicSyncProviderInterface {
     configCheck(provider: ProviderSourceConfig): boolean;
     retCheck(ret: Object, provider: ProviderSourceConfig): boolean;
-    parse(provider: ProviderSourceConfig, config: ContainerProps): ProviderSourceConfig;
+    retParse(ret: Object, provider: ProviderSourceConfig, props: ContainerProps, context: any): Object;
+    parse(provider: ProviderSourceConfig, config: ContainerProps, context: any): ProviderSourceConfig;
     run (provider: ProviderSourceConfig, options?: ProviderGlobalOptions): any;
 }
 
 export interface BasicAsyncProviderInterface {
     configCheck(provider: ProviderSourceConfig): boolean;
     retCheck(ret: Object, provider: ProviderSourceConfig): boolean;
-    parse(provider: ProviderSourceConfig, config: ContainerProps): ProviderSourceConfig;
+    retParse(ret: Object, provider: ProviderSourceConfig, props: ContainerProps, context: any): Object;
+    parse(provider: ProviderSourceConfig, config: ContainerProps, context: any): ProviderSourceConfig;
     run (provider: ProviderSourceConfig, options?: ProviderGlobalOptions): Promise<any>;
+}
+
+export function getCommonExpressionStringVariable(props: ContainerProps, context: any) {
+    return {
+        $data: props.$data.toObject,
+        $query: context.$query,
+        $location: context.$location,
+        $global: context.$global
+    };
 }
 
 /**
@@ -114,7 +130,7 @@ export class DataProvider {
             return;
         }
 
-        let parsedConfig = provider.parse(providerConfig, props);
+        let parsedConfig = provider.parse(providerConfig, props, context);
 
         // 如果provider数据配置和上次相同, 就必须阻止以后的操作.
         // 不然就会死循环
@@ -145,6 +161,8 @@ export class DataProvider {
             }
             
             let isRetValid = provider.retCheck(ret, providerConfig);
+            
+            ret = provider.retParse(ret, providerConfig, props, context);
             
             if (!isRetValid) {
                 actions.asyncLoadDataFail({

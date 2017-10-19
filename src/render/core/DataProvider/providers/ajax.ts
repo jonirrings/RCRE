@@ -1,14 +1,15 @@
 import {
-    BasicAsyncProviderInterface, ProviderGlobalOptions, ProviderSourceConfig
+    BasicAsyncProviderInterface, getCommonExpressionStringVariable, ProviderCommonConfig, ProviderGlobalOptions,
+    ProviderSourceConfig
 } from '../Controller';
 import {AxiosRequestConfig, AxiosResponse} from 'axios';
-import {ContainerProps, RequestConfig} from '../../Container/types';
+import {ContainerProps} from '../../Container/types';
 import {request} from '../../../services/api';
 import * as _ from 'lodash';
 import {compileValueExpress, parseExpressString} from '../../../util/vm';
 
 export interface AjaxProviderSourceConfig extends ProviderSourceConfig {
-    config: RequestConfig;
+    config: ProviderCommonConfig & AxiosRequestConfig;
 }
 
 export class AjaxDataProvider implements BasicAsyncProviderInterface {
@@ -28,12 +29,10 @@ export class AjaxDataProvider implements BasicAsyncProviderInterface {
         return true;
     }
     
-    parse(provider: AjaxProviderSourceConfig, props: ContainerProps) {
+    parse(provider: AjaxProviderSourceConfig, props: ContainerProps, context: any) {
         let copy = _.cloneDeep(provider);
         
-        copy.config = compileValueExpress(copy.config, {
-            $data: props.$data.toObject()
-        });
+        copy.config = compileValueExpress(copy.config, getCommonExpressionStringVariable(props, context));
         
         return copy;
     }
@@ -47,6 +46,16 @@ export class AjaxDataProvider implements BasicAsyncProviderInterface {
         return parseExpressString(pattern, {
             $response: ret
         }) === true;
+    }
+
+    retParse(ret: Object, provider: ProviderSourceConfig, props: ContainerProps, context: any) {
+        let retMapping = provider.config.retMapping;
+        
+        if (!retMapping) {
+            return ret;
+        }
+        
+        return compileValueExpress(retMapping, getCommonExpressionStringVariable(props, context));
     }
 
     async run(provider: AjaxProviderSourceConfig, options: ProviderGlobalOptions = {}) {

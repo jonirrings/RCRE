@@ -11,12 +11,12 @@
                     "type": "container",
                     "model": "innerTextField",
                     "data": {
-                        "name": "$parent.name"
+                        "name": "#ES{$parent.name}"
                     },
                     "children": [
                         {
                             "type": "text",
-                            "text": "$data.name"
+                            "text": "#ES{$data.name}"
                         }
                     ]
                 }
