@@ -79,15 +79,6 @@ export interface BasicAsyncProviderInterface {
     run (provider: ProviderSourceConfig, options?: ProviderGlobalOptions): Promise<any>;
 }
 
-export function getCommonExpressionStringVariable(props: ContainerProps, context: any) {
-    return {
-        $data: props.$data.toObject,
-        $query: context.$query,
-        $location: context.$location,
-        $global: context.$global
-    };
-}
-
 /**
  * DataProvider 是一个数据源控制器
  * 它通过为Container组件提供一个单一, 简单的API调用. 来对各种各样的数据获取操作进行封装

@@ -1,5 +1,7 @@
 import {
-    BasicAsyncProviderInterface, getCommonExpressionStringVariable, ProviderCommonConfig, ProviderGlobalOptions,
+    BasicAsyncProviderInterface,
+    ProviderCommonConfig,
+    ProviderGlobalOptions,
     ProviderSourceConfig
 } from '../Controller';
 import {AxiosRequestConfig, AxiosResponse} from 'axios';
@@ -10,6 +12,16 @@ import {compileValueExpress, parseExpressString} from '../../../util/vm';
 
 export interface AjaxProviderSourceConfig extends ProviderSourceConfig {
     config: ProviderCommonConfig & AxiosRequestConfig;
+}
+
+export function getCommonExpressionStringVariable(props: ContainerProps, context: any, $output: Object = {}) {
+    return {
+        $data: props.$data.toObject,
+        $query: context.$query,
+        $location: context.$location,
+        $global: context.$global,
+        $output: $output
+    };
 }
 
 export class AjaxDataProvider implements BasicAsyncProviderInterface {
@@ -54,8 +66,8 @@ export class AjaxDataProvider implements BasicAsyncProviderInterface {
         if (!retMapping) {
             return ret;
         }
-        
-        return compileValueExpress(retMapping, getCommonExpressionStringVariable(props, context));
+
+        return compileValueExpress(retMapping, getCommonExpressionStringVariable(props, context, ret));
     }
 
     async run(provider: AjaxProviderSourceConfig, options: ProviderGlobalOptions = {}) {

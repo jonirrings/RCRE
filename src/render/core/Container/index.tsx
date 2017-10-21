@@ -122,39 +122,6 @@ class Container extends BasicContainer<ContainerProps, {}> {
             </div>
         );
     }
-
-    // /**
-    //  * Update data When ComponentWillReceiveProps
-    //  * This function will parse the expression string in data property from JSON
-    //  * including $parent and $response
-    //  * Then call this.props.setDataList to update data
-    //  *
-    //  * @param {string} model
-    //  * @param {ContainerProps} props
-    //  */
-    // private syncUpdateData(model: string, props: ContainerProps) {
-    //     if (!props.info.data) {
-    //         props.info.data = {};
-    //     }
-    //
-    //     let updateExpression = keepExpressionData(props.info.data);
-    //
-    //     if (!_.isEmpty(updateExpression)) {
-    //         let updateData = compileValueExpress(updateExpression, {
-    //             $parent: props.$parent.toObject(),
-    //             $data: props.$data.toObject()
-    //         });
-    //
-    //         let payloads: SET_DATA_LIST_PAYLOAD = [];
-    //         _.each(updateData, (val, name) => {
-    //             payloads.push({
-    //                 type: name,
-    //                 newValue: val
-    //             });
-    //         });
-    //         this.props.setDataList(payloads, model);
-    //     }
-    // }
     
     private handleChange(key: string, value: any) {
         this.props.setData({
