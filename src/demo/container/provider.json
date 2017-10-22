@@ -15,6 +15,13 @@
                         "data": {
                             "name": "#ES{$data.name}"
                         }
+                    },
+                    "retCheckPattern": "#ES{$output.errno === 0}",
+                    "retMapping": {
+                        "errno": "#ES{$output.errno}",
+                        "errmsg": "#ES{$output.errmsg}",
+                        "externalName": "#ES{$data.name}",
+                        "data": "#ES{$output.data}"
                     }
                 }
             ],
@@ -23,6 +30,11 @@
                     "type": "text",
                     "hidden": "#ES{$data.$loading === false}",
                     "text": "loading..."
+                },
+                {
+                    "type": "text",
+                    "hidden": "#ES{!$data.$error}",
+                    "text": "ERROR: #ES{$data.$error}"
                 },
                 {
                     "type": "text",

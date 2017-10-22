@@ -14,11 +14,8 @@ providerLoaderInstance.registerProvider('init', new InitDataProvider(), false);
 export interface ProviderSourceConfig {
     mode: string;
     config?: any;
-}
-
-export interface ProviderCommonConfig {
-    retCheckPattern?: string;
     retMapping?: Object;
+    retCheckPattern?: string;
 }
 
 /**
@@ -181,6 +178,8 @@ export class DataProvider {
             }
             
             let isRetValid = provider.retCheck(ret, providerConfig);
+
+            ret = provider.retParse(ret, providerConfig, props, context);
             
             if (isRetValid) {
                 actions.syncLoadDataSuccess({

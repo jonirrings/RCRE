@@ -65,11 +65,13 @@ DataProvider支持获取各种来源的数据, 在这里例子里, 我们是需�
 
 `config`的参数配置一栏如下: 
 
-| 参数名    | 类型     | 备注                                    |
-| ------ | ------ | ------------------------------------- |
-| url    | string | 请求的地址                                 |
-| method | string | 请求的方法                                 |
-| data   | Object | 请求附带的数据, 参数值可以通过Expression String动态赋值 |
+| 参数名             | 类型                | 备注                                    |
+| --------------- | ----------------- | ------------------------------------- |
+| url             | string            | 请求的地址                                 |
+| method          | string            | 请求的方法                                 |
+| data            | Object            | 请求附带的数据, 参数值可以通过Expression String动态赋值 |
+| retCheckPattern | Expression String | 使用Expression String验证数据返回是否合法         |
+| retMapping      | Object            | 使用一个普通对象来对返回值进行数据映射                   |
 
 ```json
 {
@@ -156,7 +158,7 @@ Expression String一样可以应用在请求发送之前, 这样就可以在发�
 
 
 
-![QQ20171022-001021@2x](/private/tmp/QQ20171022-001021@2x.png)
+![QQ20171022-001021@2x](https://ws2.sinaimg.cn/large/006tKfTcly1fkqtta17jsj30zu0qmwg1.jpg)
 
 **同步扩展的运行阶段**
 
@@ -174,7 +176,7 @@ Expression String一样可以应用在请求发送之前, 这样就可以在发�
 
 `Container`组件初始化的时候, 会自动触发一个SYNC_LOAD_DATA_SUCCESS来初始化`data`属性中的数据.
 
-![QQ20171022-085110@2x](/private/tmp/QQ20171022-085110@2x.png)
+![QQ20171022-085110@2x](https://ws4.sinaimg.cn/large/006tKfTcly1fkqttada4aj30wa0i23zz.jpg)
 
 所有的异步DataProvider扩展, 都会默认写入一个`$loading`这个默认属性, 我们可以通过这个属性来捕捉当前组件的运行状态.
 
@@ -232,3 +234,83 @@ Expression String一样可以应用在请求发送之前, 这样就可以在发�
 
  在RCRE中, 每一个组件都有一个`hidden`属性, 如何`hidden`为false, 这个组件就会隐藏. 所以我们可以通过Expression String来计算出hidden的值, 从而能动态控制Text组件的显示和隐藏.
 
+
+
+## 返回值校验
+
+外部的数据往往是不可信的, 不稳定可靠的. 我们需要对DataProvider扩展返回的数据进行数据校验. 比如验证ajax接口返回的errno是否等于0.
+
+返回值校验需要使用DataProvider提供的`retCheckPattern`属性.
+
+`retChechPattern`是一个Expression String, 这个Expression String中会嵌入一个`$output`变量. 
+
+这个`$output`实际上就代表着数据的原始返回值.
+
+这个Expression String的返回值可以依靠JavaScript隐性转换的逻辑.
+
+也就是说, 返回值只要不是
+
++ 0
++ false
++ null
++ undefined
++ ''
+
+之外, 其他的值都会被当作是true
+
+在上面的例子中, 添加一个接口的验证只需要添加这个就可以了.
+
+```json
+"dataProvider": [
+    {
+        "mode": "ajax",
+        "config": {
+            "url": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8899/",
+            "method": "GET",
+            "data": {
+                "name": "#ES{$data.name}"
+            }
+        },
+        "retCheckPattern": "#ES{$output.errno === 0}"
+    }
+]
+```
+
+## 返回值映射
+
+DataProvider获取的值是没必要都写入到数据模型中的, 数据字段多过可能还会导致数据被覆盖这样的情况.
+
+我们可以手动告诉RCRE, 可以将接口的哪些字段写入到数据模型中. 我们就可以使用`retMapping`这个属性. 
+
+`retMapping`是一个普通javaScript对象. 对象的每个属性值都是一个Expression String, 这个Expression String会嵌入以下变量. 
+
++ $data 当前container组件的数据模型
++ $output DataProvider返回值
+
+例如:
+
+```json
+"dataProvider": [
+    {
+        "mode": "ajax",
+        "config": {
+            "url": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8899/",
+            "method": "GET",
+            "data": {
+                "name": "#ES{$data.name}"
+            }
+        },
+        "retCheckPattern": "#ES{$output.errno === 0}",
+        "retMapping": {
+            "errno": "#ES{$output.errno}",
+            "errmsg": "#ES{$output.errmsg}",
+            "externalName": "#ES{$data.name}",
+            "data": "#ES{$output.data}"
+        }
+    }
+]
+```
+
+这个例子中, RCRE会解析Expression String, 并写入数据`errno`, `errmsg'`, `externalName`和`data`到数据模型中.
+
+![QQ20171022-104206@2x](https://ws2.sinaimg.cn/large/006tKfTcly1fkqttau5otj31by0ieq4y.jpg)

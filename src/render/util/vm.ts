@@ -44,7 +44,7 @@ export function runInContext(code: string, context: Object) {
  * @returns {any}
  */
 export function parseExpressString(str: string, context: Object) {
-    const ESPattern = /#ES\{([^#]+)\}/g;
+    const ESPattern = /#ES\{([^#]+)\}/g; // #ES{'#' + 1} is not supported
     if (!isExpression(str)) {
         return str;
     }

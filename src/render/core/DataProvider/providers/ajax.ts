@@ -1,6 +1,5 @@
 import {
     BasicAsyncProviderInterface,
-    ProviderCommonConfig, 
     ProviderGlobalOptions,
     ProviderSourceConfig
 } from '../Controller';
@@ -8,10 +7,10 @@ import {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {ContainerProps} from '../../Container/types';
 import {request} from '../../../services/api';
 import * as _ from 'lodash';
-import {compileValueExpress, parseExpressString} from '../../../util/vm';
+import {compileValueExpress, isExpression, parseExpressString} from '../../../util/vm';
 
 export interface AjaxProviderSourceConfig extends ProviderSourceConfig {
-    config: ProviderCommonConfig & AxiosRequestConfig;
+    config: AxiosRequestConfig;
 }
 
 export function getCommonExpressionStringVariable(props: ContainerProps, context: any, $output: Object = {}) {
@@ -50,20 +49,20 @@ export class AjaxDataProvider implements BasicAsyncProviderInterface {
     }
     
     retCheck(ret: Object, provider: AjaxProviderSourceConfig) {
-        let pattern = provider.config.retCheckPattern;
-        if (!pattern) {
+        let pattern = provider.retCheckPattern;
+        if (!pattern || !isExpression(pattern)) {
             return _.isPlainObject(ret);
         }
         
-        return parseExpressString(pattern, {
-            $response: ret
-        }) === true;
+        return !!parseExpressString(pattern, {
+            $output: ret
+        });
     }
 
     retParse(ret: Object, provider: ProviderSourceConfig, props: ContainerProps, context: any) {
-        let retMapping = provider.config.retMapping;
+        let retMapping = provider.retMapping;
         
-        if (!retMapping) {
+        if (!retMapping || !_.isPlainObject(retMapping)) {
             return ret;
         }
 
