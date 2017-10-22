@@ -47,7 +47,7 @@ export class BasicContainerPropsInterface {
     /**
      * 内部组件的数据触发通用接口
      */
-    onChange: onContainerItemChange;
+    onChange?: onContainerItemChange;
 
     /**
      * 当前Container的数据模型对象
@@ -57,7 +57,7 @@ export class BasicContainerPropsInterface {
     /**
      * React组件Key
      */
-    key: string | number;
+    key?: string | number;
 
     $setData?: typeof actionCreators.setData;
     $setDataList?: typeof actionCreators.setDataList;

@@ -1,8 +1,4 @@
-import {
-    BasicSyncProviderInterface,
-    ProviderGlobalOptions,
-    ProviderSourceConfig
-} from '../Controller';
+import {BasicSyncProviderInterface, ProviderGlobalOptions, ProviderSourceConfig} from '../Controller';
 import {ContainerProps} from '../../Container/types';
 import {compileValueExpress, filterExpressionData} from '../../../util/vm';
 import * as _ from 'lodash';
@@ -15,7 +11,6 @@ export class InitDataProvider implements BasicSyncProviderInterface {
 
     parse(provider: ProviderSourceConfig, props: ContainerProps, context: any) {
         let data = provider.config;
-        
         provider.config = compileValueExpress(data, {
             $data: filterExpressionData(_.cloneDeep(data))
         });
