@@ -10,13 +10,32 @@
                 {
                     "type": "container",
                     "model": "innerTextField",
+                    "data": {
+                        "name": 2
+                    },
                     "parentMapping": {
-                        "name": "#ES{$parent.name}"
+                        "name": "#ES{$data.name}"
                     },
                     "children": [
                         {
                             "type": "text",
                             "text": "#ES{$data.name}"
+                        },
+                        {
+                            "type": "container",
+                            "model": "deepinnerText",
+                            "data": {
+                                "name": 3
+                            },
+                            "parentMapping": {
+                                "name": "#ES{$data.name + $parent.name}"
+                            },
+                            "children": [
+                                {
+                                    "type": "text",
+                                    "text": "#ES{$data.name}"
+                                }
+                            ]
                         }
                     ]
                 }

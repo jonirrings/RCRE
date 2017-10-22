@@ -38,7 +38,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(dataProviderConfig)
+            code: jsonformat(nestContainerConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);

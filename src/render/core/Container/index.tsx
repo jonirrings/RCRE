@@ -158,7 +158,8 @@ const mergeProps =
         
     if (_.isObject(ownProps.info.parentMapping)) {
         let parentMappingRet = compileValueExpress(ownProps.info.parentMapping, {
-            $parent: parentProps.toObject()
+            $parent: parentProps.toObject(),
+            $data: stateProps.$data.toObject()
         });
         
         if (parentMappingRet) {
