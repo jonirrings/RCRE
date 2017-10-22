@@ -38,7 +38,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(nestContainerConfig)
+            code: jsonformat(dataProviderConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -70,7 +70,7 @@ class App extends React.Component<{}, AppStateInterface> {
                 const globalOptions = {
                     pageId: '4567',
                     username: 'dongtiancheng',
-                    proxy: 'http://localhost:8800/proxy'
+                    // proxy: 'http://localhost:8800/proxy'
                 };
                 
                 return <Render code={this.props.code} global={globalOptions}/>;

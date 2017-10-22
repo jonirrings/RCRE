@@ -40,7 +40,7 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
         
         let childElement = React.createElement(Container, this.props, children);
         
-        return this.renderChildren(childElement);
+        return this.renderChildren(this.props.info, childElement);
     }
 
     private renderChild(info: BasicConfig, depth: number, index: number) {

@@ -10,11 +10,11 @@
             "children": [
                 {
                     "type": "text",
-                    "text": "helloworld"
+                    "text": "#ES{$data.name}"
                 },
                 {
                     "type": "text",
-                    "text": "another text"
+                    "text": "#ES{$data.age}"
                 }
             ]
         }

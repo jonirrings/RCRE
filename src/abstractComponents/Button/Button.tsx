@@ -101,7 +101,7 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
 
         let children = React.createElement(Trigger, props);
 
-        return this.renderChildren(children);
+        return this.renderChildren(props.info, children);
     }
 }
 

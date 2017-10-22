@@ -163,8 +163,8 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
         return info;
     }
     
-    public renderChildren<Type>(children: React.ReactElement<Type>) {
-        if (this.props.info.hidden) {
+    public renderChildren<Type>(info: BasicConfig, children: React.ReactElement<Type>) {
+        if (info.hidden) {
             return React.createElement('div', {
                 style: {
                     display: 'none'

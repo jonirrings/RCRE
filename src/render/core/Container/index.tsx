@@ -31,7 +31,7 @@ class Container extends BasicContainer<ContainerProps, {}> {
 
     async componentWillMount() {
         if (this.props.info.model) {
-            if (!this.props.info.data) {
+            if (_.isEmpty(this.props.info.data)) {
                 this.props.info.data = {
                     $loading: false
                 };

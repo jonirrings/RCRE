@@ -159,7 +159,7 @@ class AbstractForm extends BasicContainer<FormPropsInterface, FormStatesInterfac
             controlChildren
         ]);
 
-        return this.renderChildren(children);
+        return this.renderChildren(this.props.info, children);
     }
 
     private renderControl(info: BasicFormItemConfig, depth: number, index: number): JSX.Element {

@@ -1,6 +1,6 @@
 import {
     BasicAsyncProviderInterface,
-    ProviderCommonConfig,
+    ProviderCommonConfig, 
     ProviderGlobalOptions,
     ProviderSourceConfig
 } from '../Controller';
@@ -16,7 +16,7 @@ export interface AjaxProviderSourceConfig extends ProviderSourceConfig {
 
 export function getCommonExpressionStringVariable(props: ContainerProps, context: any, $output: Object = {}) {
     return {
-        $data: props.$data.toObject,
+        $data: props.$data.toObject(),
         $query: context.$query,
         $location: context.$location,
         $global: context.$global,
@@ -44,7 +44,7 @@ export class AjaxDataProvider implements BasicAsyncProviderInterface {
     parse(provider: AjaxProviderSourceConfig, props: ContainerProps, context: any) {
         let copy = _.cloneDeep(provider);
         
-        copy.config = compileValueExpress(copy.config, getCommonExpressionStringVariable(props, context));
+        copy.config = compileValueExpress(copy.config, getCommonExpressionStringVariable(props, context), [], true);
         
         return copy;
     }

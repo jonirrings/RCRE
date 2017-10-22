@@ -6,7 +6,6 @@ import './Datepicker/Datepicker';
 import './DropDown/DropDown';
 import './Form/Form';
 import './Input/Input';
-import './List/List';
 import './Plain/Text';
 import './Radio/Radio';
 import './Select/Select';

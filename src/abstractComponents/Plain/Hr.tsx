@@ -32,7 +32,7 @@ class Hr extends BasicContainer<HrPropsInterface, {}> {
             <hr style={Object.assign({}, defaultTextStyle, this.props.info.style)} />
         );
 
-        return this.renderChildren(children);
+        return this.renderChildren(this.props.info, children);
     }
 }
 

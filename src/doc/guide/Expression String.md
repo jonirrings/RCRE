@@ -124,3 +124,35 @@ RCRE提供了一些内置的变量, 来方便开发者在Expression String中对
 
 ![QQ20171019-153652](https://ws4.sinaimg.cn/large/006tKfTcly1fknsuxibtcj30vm09ldgf.jpg)
 
+
+## 数据模型映射字级组件
+`container`组件是字级组件的数据提供方. 在渲染字级组件的时候, 也会把数据对象以`$data`的方式传递给字级组件.
+
+在子级组件上, 任何属性都已经使用Expression String来计算结果.
+
+例如:
+我想使用2个Text组件把数据模型中的`name`和`age`都展现出来.
+```json
+{
+    "type": "container",
+    "model": "demo",
+    "data": {
+        "name": "andycall",
+        "age": "#ES{$data.name} + ' and andylaw'"
+    },
+    "children": [
+        {
+            "type": "text",
+            "text": "#ES{$data.name}"
+        },
+        {
+            "type": "text",
+            "text": "#ES{$data.age}"
+        }
+    ]
+}
+```
+
+只需要在子组件中直接使用Expression String语法, RCRE会自动帮你把Expression String转换成计算之后的值. 
+
+而且除了`type`, `data`, `children`这些内置的属性之外, 其余的属性都是可以使用Expression String来动态计算的.

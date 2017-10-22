@@ -86,7 +86,7 @@ export default class AbstractTable extends BasicContainer<TablePropsInterface, {
         });
 
         let children = React.createElement(Trigger, childProps);
-        return this.renderChildren(children);
+        return this.renderChildren(info, children);
     }
 
     private applyMapping<T>(data: T, mappingConfig: T, index: number): T {

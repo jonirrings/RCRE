@@ -1,6 +1,8 @@
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
+import * as _ from 'lodash';
 
 export async function request(url: string, config: AxiosRequestConfig, proxy?: string): Promise<AxiosResponse> {
+    config = _.cloneDeep(config);
     if (proxy) {
         let proxyOptions: AxiosRequestConfig = {
             url: proxy!,

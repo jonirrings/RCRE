@@ -3,69 +3,36 @@
         {
             "type": "container",
             "model": "demo",
-            "dataProvider": [{
-                "mode": "ajax",
-                "config": {
-                    "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/udwmeta/tablemeta/table",
-                    "method": "GET",
-                    "data": {
-                        "query": "#ES{$data.name}"
-                    },
-                    "retCheckPattern": "#ES{$response.data.err == 0}"
-                }
-            }],
             "data": {
-                "name": "test",
-                "columns": [
-                    {
-                        "title": "姓名",
-                        "dataIndex": "name"
-                    },
-                    {
-                        "title": "年龄",
-                        "dataIndex": "age"
-                    }
-                ],
-                "dataSource": [
-                    {
-                        "name": "andycall",
-                        "age": 21
-                    },
-                    {
-                        "name": "dongtiancheng",
-                        "age": 21
-                    },
-                    {
-                        "name": "dongtiancheng",
-                        "age": 21
-                    }
-                ]
+                "name": "andycall"
             },
+            "dataProvider": [
+                {
+                    "mode": "ajax",
+                    "config": {
+                        "url": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8899/",
+                        "method": "GET",
+                        "data": {
+                            "name": "#ES{$data.name}"
+                        }
+                    }
+                }
+            ],
             "children": [
                 {
                     "type": "text",
-                    "text": "1234"
+                    "hidden": "#ES{$data.$loading === false}",
+                    "text": "loading..."
                 },
                 {
-                    "type": "table",
-                    "columns": "#ES{$data.columns}",
-                    "dataSource": "#ES{$data.dataSource}",
-                    "columnControls": [
-                        {
-                            "title": "下来框",
-                            "dataIndex": "dropdown",
-                            "controls": [
-                                {
-                                    "type": "text",
-                                    "text": "text"
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "text"
-                                }
-                            ]
-                        }
-                    ]
+                    "type": "text",
+                    "hidden": "#ES{$data.$loading === true}",
+                    "text": "errno: #ES{$data.errno}"
+                },
+                {
+                    "type": "text",
+                    "hidden": "#ES{$data.$loading === true}",
+                    "text": "status: #ES{$data.errmsg}"
                 }
             ]
         }
