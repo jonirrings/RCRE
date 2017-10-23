@@ -20,7 +20,9 @@ export default class AntCheckbox extends React.Component<CheckboxPropsInterface,
     handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         let checked = event.target.checked;
 
-        this.props.onChange(checked);
+        if (this.props.onChange) {
+            this.props.onChange(checked);
+        }
     }
     
     render() {

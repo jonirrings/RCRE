@@ -21,7 +21,9 @@ export default class AntDatePicker extends React.Component<DatePickerPropsInterf
     }
 
     handleChange(dates: moment.Moment, dateStrings: string) {
-        this.props.onChange(dateStrings);
+        if (this.props.onChange) {
+            this.props.onChange(dateStrings);
+        }
     }
 
     private mapOptions(props: DatePickerConfig): DatePickerProps {

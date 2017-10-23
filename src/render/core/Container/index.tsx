@@ -17,7 +17,7 @@ import {compileValueExpress} from '../../util/vm';
 
 // Component Update Life Circle: 
 // componentWillReceiveProps -> shouldComponentUpdate -> ComponentWillUpdate -> Render -> ComponentDidMount
-class Container extends BasicContainer<ContainerProps, {}> {
+export class Container extends BasicContainer<ContainerProps, {}> {
     static WrappedComponent: string;
     static displayName: string;
 
@@ -149,7 +149,7 @@ const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
     syncLoadDataFail: actionCreators.syncLoadDataFail
 }, dispatch);
 
-const mergeProps = 
+export const mergeProps = 
     (stateProps: {
         $data: Map<string, any>
     }, dispatchProps: ContainerProps, ownProps: ContainerPropsInterface): ContainerProps => {

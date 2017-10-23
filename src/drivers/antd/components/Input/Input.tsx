@@ -28,7 +28,9 @@ class AntInput extends React.Component<InputPropsInterface, {}> {
         let target = event.currentTarget;
         let value = target.value;
 
-        this.props.onChange(value);
+        if (this.props.onChange) {
+            this.props.onChange(value);
+        }
     }
     
     render() {

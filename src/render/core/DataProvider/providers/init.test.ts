@@ -49,7 +49,8 @@ describe('InitDataProvider', () => {
             }
         };
 
-        let ret = dataProvider.parse(config, containerProps, {});
+        let parsed = dataProvider.parse(config, containerProps, {});
+        let ret = dataProvider.run(parsed);
         let check = dataProvider.retCheck(ret, config);
 
         expect(check).toBe(true);
@@ -69,13 +70,14 @@ describe('InitDataProvider', () => {
             }
         };
 
-        let ret = dataProvider.parse(config, containerProps, {});
+        let parsed = dataProvider.parse(config, containerProps, {});
+        let ret = dataProvider.run(parsed);
         let check = dataProvider.retCheck(ret, config);
 
         expect(check).toBe(true);
 
-        let parsed = dataProvider.retParse(ret, config, containerProps, {});
-        expect(parsed).toBe(ret);
+        let parseRet = dataProvider.retParse(ret, config, containerProps, {});
+        expect(parseRet).toBe(ret);
     });
 
     it('run', () => {

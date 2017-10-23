@@ -52,7 +52,9 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
     }
 
     handleChange(type: string, val: any) {
-        this.props.onChange(type, val);
+        if (this.props.onChange) {
+            this.props.onChange(type, val);   
+        }
     }
 }
 

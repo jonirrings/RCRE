@@ -86,7 +86,9 @@ export class BasicFormItem<T extends BasicFormItemPropsInterface, P> extends Rea
             this.context.formOnChange(runTimeKey, value);    
         }
         
-        this.props.onChange(runTimeKey, value);
+        if (this.props.onChange) {
+            this.props.onChange(runTimeKey, value);   
+        }
     }
 
     public renderChildren<Type>(children: React.ReactElement<Type>) {
@@ -226,7 +228,9 @@ class AbstractFormItem<T extends FormItemPropsInterface>
                 onChange: (value: any, event?: React.ChangeEvent<HTMLElement>) => {
                     this.validateFormItem(value);
 
-                    oldOnChange(value, event);
+                    if (oldOnChange) {
+                        oldOnChange(value, event);   
+                    }
                 }
             });
             return React.cloneElement(child, cloneProps);

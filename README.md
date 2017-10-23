@@ -24,3 +24,11 @@ npm config set @miskit:registry http://pnpm.baidu.com
 ```bash
 npm install @miskit/rcre-core --save
 ```
+
+## 教程
+
+1. [Helloworld](./src/doc/guide/Helloworld.md)
+2. [持有数据的组件](./src/doc/guide/持有数据的组件.md)
+3. [Expression String](./src/doc/guide/Expression%20String.md)
+4. [DataProvider](./src/doc/guide/DataProvider.md)
+5. [嵌套的Container组件](./src/doc/guide/嵌套的Container组件.md)

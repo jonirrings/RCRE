@@ -25,7 +25,7 @@ export function getCommonExpressionStringVariable(props: ContainerProps, context
 
 export class AjaxDataProvider implements BasicAsyncProviderInterface {
     configCheck(provider: AjaxProviderSourceConfig) {
-        if (!provider.config) {
+        if (!provider || !provider.config) {
             console.error('initialLoad Config is required for ajax call');
             return false;
         }
