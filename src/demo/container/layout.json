@@ -1,26 +1,20 @@
 {
     "body": [
         {
-            "type": "container",
-            "model": "layout",
-            "data": {
-                "name": 1
-            },
+            "type": "row",
+            "showBorder": true,
             "children": [
                 {
-                    "type": "row",
-                    "children": [
-                        {
-                            "type": "text",
-                            "text": "helloworld",
-                            "gridPosition": "middle-right",
-                            "gridCount": 1
-                        },
-                        {
-                            "type": "input",
-                            "gridCount": 2
-                        }
-                    ]
+                    "type": "text",
+                    "text": "A",
+                    "gridCount": 5,
+                    "gridPosition": "middle-center",
+                    "gridLeft": 10,
+                    "gridTop": -20
+                },
+                {
+                    "type": "text",
+                    "text": "CCCC"
                 }
             ]
         }

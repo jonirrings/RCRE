@@ -11,6 +11,8 @@ export type gridPositionItems = 'top-left' | 'top-center' | 'top-right' |
 export class GridItem extends BasicConfig {
     gridCount?: number;
     gridPosition?: gridPositionItems;
+    gridLeft?: number;
+    gridTop?: number;
 }
 
 type alignCenterItems =
@@ -92,7 +94,12 @@ export class RowConfig extends BasicConfig {
      * 每行最小高度
      */
     minHeight?: string;
-    
+
+    /**
+     * 测试使用, 显示网格
+     */
+    showBorder?: boolean;
+
     children: GridItem[];
 }
 
@@ -121,26 +128,32 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
             }
         });
 
-        return Math.floor((12 - cookedGridCount) / unCookedCount);
+        return (12 - cookedGridCount) / unCookedCount;
     }
 
     render() {
         let info = this.getPropsInfo(this.props.info);
         let children = info.children;
-        
+
         if (!_.isArray(children)) {
             return <div>children props is required in Row Component</div>;
         }
 
         const defaultGridCount = this.getDefaultGridCount(children);
-        
+
         let childElements = children.map((childInfo, index) => {
             let gridCount = childInfo.gridCount || defaultGridCount;
             let positionStyle = getCssCombo(childInfo.gridPosition);
             const gridStyles = {
                 width: `${100 / 12 * gridCount}%`,
                 display: 'flex',
+                border: info.showBorder ? `1px dashed blue` : '',
                 ...positionStyle
+            };
+            const innerGridStyle = {
+                marginTop: `${childInfo.gridTop || 0}px`,
+                marginLeft: `${childInfo.gridLeft || 0}px`,
+                width: '100%'
             };
             let child = createChild(childInfo, {
                 info: childInfo,
@@ -149,16 +162,20 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
             });
             return (
                 <div key={`grid_${childInfo.type}_${index}`} style={gridStyles}>
-                    {child}
+                    <div style={innerGridStyle}>
+                        {child}
+                    </div>
                 </div>
             );
         });
-        
+
         const rowStyles = {
             display: 'flex',
-            minHeight: info.minHeight || '30px'
+            width: '100%',
+            minHeight: info.minHeight || '30px',
+            border: info.showBorder ? '1px dashed #333' : ''
         };
-        
+
         return (
             <div style={rowStyles}>
                 {childElements}
