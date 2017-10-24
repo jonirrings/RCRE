@@ -11,6 +11,16 @@ RCRE设计了一套可靠的JSON配置规则, 可以很好的抽象页面的布�
 
 有了RCRE渲染引擎, 写了页面仅仅是写个JSON一样简单, 无需再像前端工程师一样去关心构建工具, 前端开发框架等问题. 
 
+
+## 教程
+
+1. [Helloworld](./src/doc/guide/Helloworld.md)
+2. [持有数据的组件](./src/doc/guide/持有数据的组件.md)
+3. [Expression String](./src/doc/guide/Expression%20String.md)
+4. [DataProvider](./src/doc/guide/DataProvider.md)
+5. [嵌套的Container组件](./src/doc/guide/嵌套的Container组件.md)
+6. [布局系统](./src/doc/guide/布局系统.md)
+
 ## 起源
 RCRE借鉴了Redux单一对象状态管理的思想, 如果你有redux开发经验, 那么理解RCRE的json配置将变得跟打开你的mac一样简单.
 
@@ -24,11 +34,3 @@ npm config set @miskit:registry http://pnpm.baidu.com
 ```bash
 npm install @miskit/rcre-core --save
 ```
-
-## 教程
-
-1. [Helloworld](./src/doc/guide/Helloworld.md)
-2. [持有数据的组件](./src/doc/guide/持有数据的组件.md)
-3. [Expression String](./src/doc/guide/Expression%20String.md)
-4. [DataProvider](./src/doc/guide/DataProvider.md)
-5. [嵌套的Container组件](./src/doc/guide/嵌套的Container组件.md)
