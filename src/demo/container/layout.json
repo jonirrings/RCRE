@@ -12,18 +12,13 @@
                     "children": [
                         {
                             "type": "text",
-                            "text": "hello"
+                            "text": "helloworld",
+                            "gridPosition": "middle-right",
+                            "gridCount": 1
                         },
                         {
-                            "type": "text",
-                            "text": "world"
-                        },
-                        {
-                            "type": "button",
-                            "text": "click"
-                        },
-                        {
-                            "type": "input"
+                            "type": "input",
+                            "gridCount": 2
                         }
                     ]
                 }

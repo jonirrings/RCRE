@@ -4,6 +4,8 @@ import {BasicConfig} from '../core/Container/types';
 import componentLoader from '../util/componentLoader';
 import createElement from './createElement';
 import '../../abstractComponents/index';
+import '../core/Layout/Grid/Grid';
+import '../core/Layout/Row/Row';
 
 export function createChild<T>(item: BasicConfig,
                             childProps: T,
