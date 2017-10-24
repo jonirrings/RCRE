@@ -12,6 +12,8 @@ import {actionCreators, IAction} from './Container/action';
 import * as URL from 'url';
 import * as querystring from 'querystring';
 
+import './Layout/Row/Row';
+
 export class PageProps {
     @IsString()
     title?: string;

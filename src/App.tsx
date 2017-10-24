@@ -28,6 +28,7 @@ import './App.css';
 let basicContainerConfig = require('./demo/container/basic.json');
 let nestContainerConfig = require('./demo/container/nestContainer.json');
 let dataProviderConfig = require('./demo/container/provider.json');
+let layoutConfig = require('./demo/container/layout.json');
 
 interface AppStateInterface {
     code: string;
@@ -38,7 +39,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(nestContainerConfig)
+            code: jsonformat(layoutConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -80,7 +81,8 @@ class App extends React.Component<{}, AppStateInterface> {
         let configList = [
             ['basicContainer', basicContainerConfig],
             ['nestContainer', nestContainerConfig],
-            ['ajaxDataProvider', dataProviderConfig]
+            ['ajaxDataProvider', dataProviderConfig],
+            ['layoutConfig', layoutConfig]
         ];
         
         return (

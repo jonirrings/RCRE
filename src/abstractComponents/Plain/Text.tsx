@@ -31,8 +31,7 @@ class Text extends BasicContainer<TextPropsInterface, {}> {
 
     render() {
         let info = this.getPropsInfo<TextConfig>(this.props.info);
-
-        console.log(info);
+        
         let children = React.createElement(Trigger, Object.assign({}, this.props, {
             info: info
         }));

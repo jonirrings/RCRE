@@ -9,8 +9,7 @@ export default class AntText extends React.Component<TextPropsInterface, {}> {
     render() {
         let info = this.props.info;
         const defaultTextStyle = {
-            padding: '0 10px',
-            lineHeight: '25px'
+            padding: '0 10px'
         };
 
         switch (info.textType) {

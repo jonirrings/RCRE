@@ -1,0 +1,33 @@
+{
+    "body": [
+        {
+            "type": "container",
+            "model": "layout",
+            "data": {
+                "name": 1
+            },
+            "children": [
+                {
+                    "type": "row",
+                    "children": [
+                        {
+                            "type": "text",
+                            "text": "hello"
+                        },
+                        {
+                            "type": "text",
+                            "text": "world"
+                        },
+                        {
+                            "type": "button",
+                            "text": "click"
+                        },
+                        {
+                            "type": "input"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
