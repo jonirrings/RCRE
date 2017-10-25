@@ -5,7 +5,7 @@ import {Map} from 'immutable';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as _ from 'lodash';
-import {ContainerConfig} from '../../../abstractComponents/Container/Container';
+import {ContainerConfig} from '../../../components/Container/Container';
 import {compileValueExpress} from '../../util/vm';
 
 export type rawJSONType = string | number | null | boolean | Object;
@@ -59,10 +59,10 @@ export class BasicContainerPropsInterface {
      */
     key?: string | number;
 
-    $setData?: typeof actionCreators.setData;
-    $setDataList?: typeof actionCreators.setDataList;
-    $triggerEvent?: typeof BasicTriggerEvent;
-    $removeData?: typeof actionCreators.removeData;
+    /**
+     * 底层组件设置数据模型值使用
+     */
+    $setData?: (name: string, value: any) => void;
 }
 
 export class ContainerProps extends BasicContainerPropsInterface {
@@ -130,34 +130,34 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
         super();
     }
     
-    public getRuntimeContext() {
-        let context = {
+    public getRuntimeContext(props: T = this.props, context: any = this.context) {
+        let runtime = {
             $data: {},
             $query: {},
             $global: {}
         };
         
-        if (this.props.$data) {
-            context.$data = this.props.$data.toObject();
+        if (props.$data) {
+            runtime.$data = props.$data.toObject();
         }
         
-        if (this.context.$query) {
-            context.$query = this.context.$query;
+        if (context.$query) {
+            runtime.$query = context.$query;
         }
         
-        if (this.context.$global) {
-            context.$global = this.context.$global;
+        if (context.$global) {
+            runtime.$global = context.$global;
         }
         
-        return context;
+        return runtime;
     }
     
-    public getPropsInfo<InfoType>(info: InfoType) {
+    public getPropsInfo<InfoType>(info: InfoType, props?: T) {
         let $data = this.props.$data;
         info = _.cloneDeep(info);
         
         if ($data) {
-            info = compileValueExpress(info, this.getRuntimeContext());
+            info = compileValueExpress(info, this.getRuntimeContext(props));
         }
         
         return info;

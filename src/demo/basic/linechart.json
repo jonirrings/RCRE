@@ -1,0 +1,40 @@
+{
+    "body": [
+        {
+            "type": "container",
+            "model": "linechart",
+            "dataProvider": [
+                {
+                    "mode": "ajax",
+                    "config": {
+                        "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/realtime/product/chart",
+                        "method": "GET",
+                        "data": {
+                            "date": "20171025",
+                            "fields": "click",
+                            "treeId": "1"
+                        }
+                    },
+                    "retMapping": {
+                        "category": "#ES{$output.data.categories}",
+                        "series": "#ES{$output.data.series}"
+                    }
+                }
+            ],
+            "children": [
+                {
+                    "type": "row",
+                    "children": [
+                        {
+                            "type": "linechart",
+                            "gridCount": 12,
+                            "gridPosition": "middle-center",
+                            "categories": "#ES{$data.category}",
+                            "series": "#ES{$data.series}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

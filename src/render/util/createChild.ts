@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import {BasicConfig} from '../core/Container/types';
 import componentLoader from '../util/componentLoader';
 import createElement from './createElement';
-import '../../abstractComponents/index';
+import '../../components/index';
 import '../core/Layout/Row/Row';
 
 export function createChild<T>(item: BasicConfig,

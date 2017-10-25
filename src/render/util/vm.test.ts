@@ -216,7 +216,7 @@ describe('parseExpressString', () => {
         };
 
         let ret = parseExpressString('#ES{$data["$data"]}', context);
-        expect(ret).toBe('');
+        expect(ret).toBe(null);
     });
 
     it('#ES{$data["name"]}', () => {

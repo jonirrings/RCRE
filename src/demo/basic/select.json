@@ -1,0 +1,31 @@
+{
+    "body": [
+        {
+            "type": "container",
+            "model": "select",
+            "data": {
+                "options": [
+                    {
+                        "key": "一",
+                        "value": "1"
+                    },
+                    {
+                        "key": "二",
+                        "value": "2"
+                    },
+                    {
+                        "key": "三",
+                        "value": "3"
+                    }
+                ]
+            },
+            "children": [
+                {
+                    "type": "select",
+                    "name": "select",
+                    "options": "#ES{$data.options}"
+                }       
+            ]
+        }
+    ]
+}

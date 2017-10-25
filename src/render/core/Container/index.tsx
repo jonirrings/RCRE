@@ -9,7 +9,7 @@ import {Map} from 'immutable';
 // import {compileValueExpress, keepExpressionData} from '../../util/vm';
 import {createChild} from '../../util/createChild';
 import {DataProvider} from '../DataProvider/Controller';
-import {ContainerPropsInterface} from '../../../abstractComponents/Container/Container';
+import {ContainerPropsInterface} from '../../../components/Container/Container';
 import {compileValueExpress} from '../../util/vm';
 
 // First Init Life Circle:
@@ -112,7 +112,12 @@ export class Container extends BasicContainer<ContainerProps, {}> {
                 key: `${child.type}_${index}`,
                 info: child,
                 $data: this.props.$data,
-                onChange: this.handleChange
+                $setData: (name: string, value: any) => {
+                    this.props.setData({
+                        type: name,
+                        newValue: value
+                    }, this.props.info.model!);
+                }
             });
         });
 

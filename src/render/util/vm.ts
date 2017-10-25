@@ -56,7 +56,7 @@ export function parseExpressString(str: string, context: Object) {
         } catch (e) {}
         
         if (_.isNil(result)) {
-            return '';
+            return null;
         }
         
         if (_.isObjectLike(result)) {

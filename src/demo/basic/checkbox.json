@@ -1,0 +1,19 @@
+{
+    "body": [
+        {
+            "type": "container",
+            "model": "checkbox",
+            "data": {
+                "box": false
+            },
+            "children": [
+                {
+                    "type": "checkbox",
+                    "name": "box",
+                    "text": "helloworld",
+                    "disabled": "#ES{$data.box}"
+                }
+            ]
+        }
+    ]   
+}

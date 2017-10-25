@@ -1,0 +1,14 @@
+{
+    "body": [
+        {
+            "type": "container",
+            "model": "form",
+            "children": [
+                {
+                    "type": "input",
+                    "name": "text"
+                }
+            ]
+        }
+    ]
+}

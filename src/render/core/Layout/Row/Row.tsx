@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import componentLoader from '../../../util/componentLoader';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../Container/types';
 import {createChild} from '../../../util/createChild';
+import {CSSProperties} from 'react';
 
 export type gridPositionItems = 'top-left' | 'top-center' | 'top-right' |
     'middle-left' | 'middle-center' | 'middle-right' |
@@ -100,6 +101,16 @@ export class RowConfig extends BasicConfig {
      */
     showBorder?: boolean;
 
+    /**
+     * CSS Class
+     */
+    className?: string;
+
+    /**
+     * 内联CSS属性
+     */
+    style?: CSSProperties;
+
     children: GridItem[];
 }
 
@@ -173,11 +184,12 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
             display: 'flex',
             width: '100%',
             minHeight: info.minHeight || '30px',
-            border: info.showBorder ? '1px dashed #333' : ''
+            border: info.showBorder ? '1px dashed #333' : '',
+            ...info.style
         };
 
         return (
-            <div style={rowStyles}>
+            <div style={rowStyles} className={info.className}>
                 {childElements}
             </div>
         );

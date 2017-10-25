@@ -1,5 +1,4 @@
 import AntTheme from './antd/index';
-import RcreTheme from './rcre/index';
 import {ComponentLoader} from '../render/util/componentLoader';
 import * as React from 'react';
 import {each} from 'lodash';
@@ -52,6 +51,5 @@ export class DriverController {
 
 let driver = new DriverController();
 driver.registerTheme('antd', AntTheme);
-driver.registerTheme('rcre', RcreTheme);
 
 export default driver;

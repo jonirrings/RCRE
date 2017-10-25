@@ -25,10 +25,15 @@ import './App.css';
 // let addRuleTemplateConfig = require('./demo/addRuleTemplate.json');
 // let dynamicSelectConfig = require('./demo/dynamicSelect.json');
 
-let basicContainerConfig = require('./demo/container/basic.json');
-let nestContainerConfig = require('./demo/container/nestContainer.json');
-let dataProviderConfig = require('./demo/container/provider.json');
-let layoutConfig = require('./demo/container/layout.json');
+let basicContainerConfig = require('./demo/basic/basic.json');
+let nestContainerConfig = require('./demo/basic/nestContainer.json');
+let dataProviderConfig = require('./demo/basic/provider.json');
+let layoutConfig = require('./demo/basic/layout.json');
+let inputConfig = require('./demo/basic/input.json');
+let lineChartConfig = require('./demo/basic/linechart.json');
+let checkboxConfig = require('./demo/basic/checkbox.json');
+let selectConfig = require('./demo/basic/select.json');
+let radioConfig = require('./demo/basic/radio.json');
 
 interface AppStateInterface {
     code: string;
@@ -39,7 +44,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(layoutConfig)
+            code: jsonformat(radioConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -71,7 +76,7 @@ class App extends React.Component<{}, AppStateInterface> {
                 const globalOptions = {
                     pageId: '4567',
                     username: 'dongtiancheng',
-                    // proxy: 'http://localhost:8800/proxy'
+                    proxy: 'http://localhost:8800/proxy'
                 };
                 
                 return <Render code={this.props.code} global={globalOptions}/>;
@@ -82,7 +87,12 @@ class App extends React.Component<{}, AppStateInterface> {
             ['basicContainer', basicContainerConfig],
             ['nestContainer', nestContainerConfig],
             ['ajaxDataProvider', dataProviderConfig],
-            ['layoutConfig', layoutConfig]
+            ['layoutConfig', layoutConfig],
+            ['inputConfig', inputConfig],
+            ['lineChartConfig', lineChartConfig],
+            ['checkboxConfig', checkboxConfig],
+            ['selectConfig', selectConfig],
+            ['radioConfig', radioConfig]
         ];
         
         return (
