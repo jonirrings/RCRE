@@ -163,8 +163,8 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
             };
             const innerGridStyle = {
                 marginTop: `${childInfo.gridTop || 0}px`,
-                marginLeft: `${childInfo.gridLeft || 0}px`,
-                width: '100%'
+                marginLeft: `${childInfo.gridLeft || 0}px`
+                // width: '100%'
             };
             let child = createChild(childInfo, {
                 info: childInfo,
