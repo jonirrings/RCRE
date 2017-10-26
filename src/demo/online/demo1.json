@@ -1,0 +1,119 @@
+{
+    "title": "helloworld",
+    "body": [
+        {
+            "type": "container",
+            "model": "demo",
+            "dataProvider": [
+                {
+                    "mode": "ajax",
+                    "config": {
+                        "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/realtime/channel/chart",
+                        "method": "GET",
+                        "data": {
+                            "date": "20171026",
+                            "fields": "pv",
+                            "product": "8",
+                            "placeId": "1504243449802"
+                        }
+                    }
+                }
+            ],
+            "children": [
+                {
+                    "type": "row",
+                    "showBorder": true,
+                    "children": [
+                        {
+                            "type": "text",
+                            "text": "数据指标",
+                            "gridCount": 3,
+                            "gridPosition": "middle-center",
+                            "style": {
+                                "fontSize": 20,
+                                "fontWeight": "bold"
+                            }
+                        },
+                        {
+                            "type": "row",
+                            "showBorder": true,
+                            "children": [
+                                {
+                                    "type": "radio",
+                                    "text": "afd请求数",
+                                    "name": "afdRequest"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "text",
+                            "text": "#ES{String($data.afdRequest)}"
+                        }
+                    ]
+                },
+                {
+                    "type": "row",
+                    "showBorder": true,
+                    "children": [
+                        {
+                            "type": "text",
+                            "text": "时间颗粒",
+                            "gridCount": 3,
+                            "gridPosition": "middle-center",
+                            "style": {
+                                "fontSize": 20,
+                                "fontWeight": "bold"
+                            }
+                        },
+                        {
+                            "type": "row",
+                            "showBorder": true,
+                            "children": [
+                                {
+                                    "type": "radio",
+                                    "text": "分钟",
+                                    "name": "min"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "text",
+                            "text": "#ES{String($data.afdRequest)}"
+                        }
+                    ]
+                },
+                {
+                    "type": "row",
+                    "showBorder": true,
+                    "children": [
+                        {
+                            "type": "text",
+                            "text": "当时实时数据趋势",
+                            "gridPosition": "middle-left",
+                            "gridLeft": 100,
+                            "style": {
+                                "fontSize": 20,
+                                "fontWeight": "bold"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "text": "loading..."
+                        }
+                    ]
+                },
+                {
+                    "type": "row",
+                    "showBorder": true,
+                    "children": [
+                        {
+                            "type": "lineChart",
+                            "categories": "#ES{$data.data.categories}",
+                            "series": "#ES{$data.data.series}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
