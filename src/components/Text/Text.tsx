@@ -49,6 +49,11 @@ class Text extends BasicContainer<TextPropsInterface, {}> {
         };
 
         let children;
+        let text = info.text;
+        
+        if (typeof text === 'boolean') {
+            text = String(text);
+        }
         
         switch (info.textType) {
             case 'link':
@@ -57,7 +62,7 @@ class Text extends BasicContainer<TextPropsInterface, {}> {
                         style={Object.assign(defaultTextStyle, info.style)}
                         href={info.href}
                     >
-                        {info.text}
+                        {text}
                     </a>
                 );
                 break;
@@ -67,7 +72,7 @@ class Text extends BasicContainer<TextPropsInterface, {}> {
                     <span
                         style={Object.assign(defaultTextStyle, info.style)}
                     >
-                        {info.text}
+                        {text}
                     </span>
                 );
         }

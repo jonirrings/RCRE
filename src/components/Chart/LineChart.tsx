@@ -230,4 +230,4 @@ export default class LineChart extends BasicContainer<LineChartPropsInterface, {
     }
 }
 
-componentLoader.addComponent('linechart', LineChart, LineChartPropsInterface);
+componentLoader.addComponent('lineChart', LineChart, LineChartPropsInterface);
