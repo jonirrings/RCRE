@@ -169,6 +169,7 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
             let child = createChild(childInfo, {
                 info: childInfo,
                 $data: this.props.$data,
+                $setData: this.props.$setData,
                 onChange: this.props.onChange
             });
             return (

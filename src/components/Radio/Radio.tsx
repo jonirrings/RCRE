@@ -92,8 +92,7 @@ export class AbstractRadio extends BasicContainer<RadioPropsInterface, {}> {
         }
 
         if (!this.props.$data) {
-            console.log('Checkbox Element is out of RCRE control, please put it inside container component');
-            return <Radio/>;
+            return <div>Radio Element is out of RCRE control, please put it inside container component</div>;
         }
 
         let $data = this.props.$data;

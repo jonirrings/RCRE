@@ -8,10 +8,15 @@
             },
             "children": [
                 {
-                    "type": "radio",
-                    "name": "box",
-                    "text": "helloworld",
-                    "disabled": "#ES{$data.box}"
+                    "type": "row",
+                    "children": [
+                        {
+                            "type": "radio",
+                            "name": "box",
+                            "text": "helloworld",
+                            "disabled": "#ES{$data.box}"
+                        }       
+                    ]
                 }
             ]
         }
