@@ -2,8 +2,8 @@ import {actionCreators} from '../Container/action';
 import {ContainerProps} from '../Container/types';
 import {AjaxDataProvider} from './providers/ajax';
 import {providerLoaderInstance} from './loader';
-import * as _ from 'lodash';
 import {InitDataProvider} from './providers/init';
+import * as _ from 'lodash';
 
 providerLoaderInstance.registerProvider('ajax', new AjaxDataProvider(), true);
 providerLoaderInstance.registerProvider('init', new InitDataProvider(), false);
@@ -16,6 +16,8 @@ export interface ProviderSourceConfig {
     config?: any;
     retMapping?: Object;
     retCheckPattern?: string;
+    
+    __previousConfig?: ProviderSourceConfig | null;
 }
 
 /**
@@ -111,6 +113,7 @@ export class DataProvider {
         
         let isAsync = providerInfo.async;
         let provider = providerInfo.provider;
+        let previousConfig = providerConfig.__previousConfig;
 
         let checkStatus = provider.configCheck(providerConfig);
 
@@ -119,14 +122,14 @@ export class DataProvider {
         }
 
         let parsedConfig = provider.parse(providerConfig, props, context);
-
+        
         // 如果provider数据配置和上次相同, 就必须阻止以后的操作.
         // 不然就会死循环
         // 参考流程图: src/doc/graphic/dataFlow.png
-        if (_.isEqual(this.previousProviderConfig, parsedConfig)) {
+        if (previousConfig && _.isEqual(previousConfig.mode, parsedConfig.mode) && _.isEqual(previousConfig.config, parsedConfig.config)) {
             return;
         }
-        this.previousProviderConfig = parsedConfig;
+        providerConfig.__previousConfig = parsedConfig;
         
         if (isAsync) {
             actions.asyncLoadDataProgress({

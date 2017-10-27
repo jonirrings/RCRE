@@ -52,7 +52,8 @@ export class Container extends BasicContainer<ContainerProps, {}> {
             // 用于初始化的内置Provider
             const initProvider = {
                 mode: 'init',
-                config: this.props.info.data
+                config: this.props.info.data,
+                __previousConfig: null
             };
 
             await this.dataProvider.requestForData(initProvider, providerActions, this.props, this.context);
@@ -73,7 +74,7 @@ export class Container extends BasicContainer<ContainerProps, {}> {
 
         if (Array.isArray(this.props.info.dataProvider)) {
             for (let provider of this.props.info.dataProvider) {
-                await this.dataProvider.requestForData(provider, providerActions, nextProps, this.context);
+                this.dataProvider.requestForData(provider, providerActions, nextProps, this.context);
             }
         } else if (_.isPlainObject(this.props.info.dataProvider)) {
             let provider = this.props.info.dataProvider;
