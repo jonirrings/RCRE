@@ -31,7 +31,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(onlineDemo1)
+            code: jsonformat(radioConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);

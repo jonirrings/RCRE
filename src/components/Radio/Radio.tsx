@@ -5,6 +5,21 @@ import componentLoader from '../../render/util/componentLoader';
 import {Radio} from 'antd';
 import {RadioProps} from 'antd/lib/radio/radio';
 import {CSSProperties} from 'react';
+import {RadioGroupProps} from 'antd/lib/radio/group';
+
+const RadioGroup = Radio.Group;
+
+export class RadioOptionItem {
+    /**
+     * 多组单选按钮的文字
+     */
+    label: string;
+
+    /**
+     * 多组单选按钮的值
+     */
+    value: string;
+}
 
 export class RadioConfig extends BasicConfig {
     /**
@@ -36,7 +51,7 @@ export class RadioConfig extends BasicConfig {
     prefixCls?: string;
     
     /**
-     * 文字
+     * 单个选择框的文字
      * @public
      * @default ''
      */
@@ -44,11 +59,21 @@ export class RadioConfig extends BasicConfig {
     text?: string;
 
     /**
+     * 多组单选按钮.
+     */
+    options?: RadioOptionItem[];
+
+    /**
      * CSS class
      */
     @IsString()
     className?: string;
 
+    /**
+     * RadioGroup中, 按钮的大小
+     */
+    size: 'large' | 'default' | 'small';
+    
     /**
      * 内联CSS属性
      */
@@ -60,12 +85,12 @@ export class RadioPropsInterface extends BasicContainerPropsInterface {
     info: RadioConfig;
 }
 
-//
 export class AbstractRadio extends BasicContainer<RadioPropsInterface, {}> {
     constructor() {
         super();
         
         this.handleChange = this.handleChange.bind(this);
+        this.handleRadioGroupChange = this.handleRadioGroupChange.bind(this);
     }
 
     private mapOptions(info: RadioConfig): RadioProps {
@@ -77,10 +102,24 @@ export class AbstractRadio extends BasicContainer<RadioPropsInterface, {}> {
         };
     }
     
+    private mapRadioGroupOptions(info: RadioConfig): RadioGroupProps {
+        return {
+            size: info.size,
+            name: info.name,
+        };
+    }
+    
     private handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         let checked = event.target.checked;
         if (this.props.$setData) {
             this.props.$setData(this.props.info.name, checked);
+        }
+    }
+    
+    private handleRadioGroupChange(event: React.ChangeEvent<HTMLInputElement>) {
+        let value = event.target.value;
+        if (this.props.$setData) {
+            this.props.$setData(this.props.info.name, value);
         }
     }
 
@@ -98,15 +137,28 @@ export class AbstractRadio extends BasicContainer<RadioPropsInterface, {}> {
         let $data = this.props.$data;
         let value = $data.get(info.name);
         
-        let radioProps = this.mapOptions(info);
-        return React.createElement(Radio, {
-            checked: value,
-            onChange: this.handleChange,
-            // TODO Trigger Interface inject
-            onMouseEnter: () => {},
-            onMouseLeave: () => {},
-            ...radioProps
-        }, info.text);
+        // 单个Radio选择模式
+        if (info.options) {
+            let radioGroupProps = this.mapRadioGroupOptions(info);
+            return React.createElement(RadioGroup, {
+                value: value,
+                onChange: this.handleRadioGroupChange,
+                onMouseEnter: () => {},
+                onMouseLeave: () => {},
+                options: info.options,
+                ...radioGroupProps
+            });
+        } else {
+            let radioProps = this.mapOptions(info);
+            return React.createElement(Radio, {
+                checked: value,
+                onChange: this.handleChange,
+                // TODO Trigger Interface inject
+                onMouseEnter: () => {},
+                onMouseLeave: () => {},
+                ...radioProps
+            }, info.text);   
+        }
     }
 }
 

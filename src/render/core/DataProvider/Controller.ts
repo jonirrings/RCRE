@@ -126,7 +126,8 @@ export class DataProvider {
         // 如果provider数据配置和上次相同, 就必须阻止以后的操作.
         // 不然就会死循环
         // 参考流程图: src/doc/graphic/dataFlow.png
-        if (previousConfig && _.isEqual(previousConfig.mode, parsedConfig.mode) && _.isEqual(previousConfig.config, parsedConfig.config)) {
+        if (previousConfig && _.isEqual(previousConfig.mode, parsedConfig.mode) 
+            && _.isEqual(previousConfig.config, parsedConfig.config)) {
             return;
         }
         providerConfig.__previousConfig = parsedConfig;
