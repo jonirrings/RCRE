@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import {runInContext} from './vm';
 
-const isValidTimeStr = /\$now((?:\s*(\+|-)\s*)?(\d+)(s|m|h|d|M|Y|w))*/;
+const isValidTimeStr = /^\$now((?:\s*(\+|-)\s*)?(\d+)(s|m|h|d|M|Y|w))*$/;
 
 export function isTimeString(timeStr: string): boolean {
     return isValidTimeStr.test(timeStr);
@@ -24,32 +24,36 @@ export function parseTimeString(timeStr: string): string {
         'M': 'months',
         'Y': 'years'
     };
+    
+    const isValid = isTimeString(timeStr);
+    
+    if (!isValid) {
+        return timeStr;
+    }
 
     const timeTokenRegex = /(?:\s*(\+|-)\s*)?(\d+)(s|m|h|d|M|Y|w)/g;
-    return timeStr.replace(isValidTimeStr, (match) => {
-        let pattern = timeTokenRegex.exec(match);
-        let nowTime = moment();
+    let pattern = timeTokenRegex.exec(timeStr);
+    let nowTime = moment();
 
-        while (pattern) {
-            let operator = pattern[1] || '+';
-            let count = parseInt(pattern[2], 10);
-            let method = validTimeKeyWords[pattern[3]];
+    while (pattern) {
+        let operator = pattern[1] || '+';
+        let count = parseInt(pattern[2], 10);
+        let method = validTimeKeyWords[pattern[3]];
 
-            switch (operator) {
-                case '-':
-                    nowTime = nowTime.subtract(count, method);
-                    break;
+        switch (operator) {
+            case '-':
+                nowTime = nowTime.subtract(count, method);
+                break;
 
-                default:
-                case '+':
-                    nowTime = nowTime.add(count, method);
-                    break;
-            }
-            pattern = timeTokenRegex.exec(timeStr);
+            default:
+            case '+':
+                nowTime = nowTime.add(count, method);
+                break;
         }
+        pattern = timeTokenRegex.exec(timeStr);
+    }
 
-        return nowTime.valueOf().toString();
-    });
+    return nowTime.valueOf().toString();
 }
 
 export function compileTimeExpression<Config>(props: Config, format: string = 'YYYY-MM-DD HH:mm:ss') {

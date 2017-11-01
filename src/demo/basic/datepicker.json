@@ -1,0 +1,20 @@
+{
+    "body": [
+        {
+            "type": "container",
+            "model": "datepicker",
+            "data": {
+                "test": 1509555336829
+            },
+            "children": [
+                {
+                    "type": "datePicker",
+                    "name": "test",
+                    "placeholder": "请选择日期",
+                    "startTime": "#ES{$data.test}",
+                    "allowClear": true
+                }
+            ]
+        }
+    ]
+}

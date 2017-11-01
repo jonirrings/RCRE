@@ -19,6 +19,7 @@ let lineChartConfig = require('./demo/basic/linechart.json');
 let checkboxConfig = require('./demo/basic/checkbox.json');
 let selectConfig = require('./demo/basic/select.json');
 let radioConfig = require('./demo/basic/radio.json');
+let datePickerConfig = require('./demo/basic/datepicker.json');
 
 let onlineDemo1 = require('./demo/online/demo1.json');
 
@@ -31,7 +32,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(radioConfig)
+            code: jsonformat(datePickerConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -79,7 +80,8 @@ class App extends React.Component<{}, AppStateInterface> {
             ['lineChartConfig', lineChartConfig],
             ['checkboxConfig', checkboxConfig],
             ['selectConfig', selectConfig],
-            ['radioConfig', radioConfig]
+            ['radioConfig', radioConfig],
+            ['datePickerConfig', datePickerConfig]
         ];
         
         let onlineConfig = [

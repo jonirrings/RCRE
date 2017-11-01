@@ -6,6 +6,7 @@ import './Chart/LineChart';
 import './Checkbox/Checkbox';
 import './Select/Select';
 import './Radio/Radio';
+import './Datepicker/Datepicker';
 // import './Breadcrumb/Breadcrumb';
 // import './Datepicker/Datepicker';
 // import './DropDown/DropDown';

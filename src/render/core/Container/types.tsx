@@ -5,6 +5,7 @@ import {Map} from 'immutable';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import {ContainerConfig} from '../../../components/Container/Container';
 import {compileValueExpress} from '../../util/vm';
 
@@ -134,7 +135,8 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
         let runtime = {
             $data: {},
             $query: {},
-            $global: {}
+            $global: {},
+            $now: moment()
         };
         
         if (props.$data) {

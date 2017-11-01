@@ -1,90 +1,169 @@
-// import * as React from 'react';
+import * as React from 'react';
+import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
+import {IsBoolean, IsDefined, IsNumber, IsString} from 'class-validator';
+import componentLoader from '../../render/util/componentLoader';
+import {DatePicker} from 'antd';
+import {CSSProperties} from 'react';
+import {DatePickerProps} from 'antd/lib/date-picker';
+import * as moment from 'moment';
 // import {BasicFormItem} from '../Form/FormItem';
 // import {BasicFormItemConfig, BasicFormItemPropsInterface} from '../Form/types';
 // import {IsBoolean, IsNumber, IsString, Validate} from 'class-validator';
 // import {IsValidEnums} from '../../render/util/validators';
 // import Trigger from '../../render/core/Trigger/Trigger';
-// import componentLoader from '../../render/util/componentLoader';
-//
-// export class DatePickerConfig extends BasicFormItemConfig {
-//     /**
-//      * 渲染模式
-//      * @public
-//      * @default 'datepicker'
-//      */
-//     @Validate(IsValidEnums, ['datepicker', 'datepicker+timepicker', 'timepicker'])
-//     mode?: 'datepicker' | 'datepicker+timepicker' | 'timepicker' | 'monthpicker';
-//
-//     /**
-//      * 是否禁用
-//      * @public
-//      * @default false
-//      */
-//     @IsBoolean()
-//     disabled: boolean;
-//
-//     /**
-//      * 开始时间
-//      * @public
-//      * @default null
-//      */
-//     @IsString()
-//     @IsNumber()
-//     startTime?: string;
-//
-//     /**
-//      * 时间间隔
-//      * @public
-//      * @default 0
-//      */
-//     @IsString()
-//     @IsNumber()
-//     timeRange?: number;
-//
-//     /**
-//      * 结束时间
-//      * @public
-//      * @default null
-//      */
-//     @IsString()
-//     @IsNumber()
-//     endTime?: string;
-//
-//     /**
-//      * 输入框提示文字
-//      * @public
-//      * @default ''
-//      */
-//     @IsString()
-//     placeholder: string;
-//
-//     /**
-//      * 日期输出格式
-//      * @public
-//      * @default 'YYYY-MM-DD HH:mm:ss'
-//      */
-//     format: string;
-// }
-//
-// export class DatePickerPropsInterface extends BasicFormItemPropsInterface {
-//     info: DatePickerConfig;
-// }
-//
-// export default class AbstractDatepicker extends BasicFormItem<DatePickerPropsInterface, {}> {
-//     constructor() {
-//         super();
-//     }
-//
-//     render() {
-//         let props = Object.assign({}, this.props, {
-//             value: this.getChildValue(),
-//             onChange: this.handleChange
-//         });
-//
-//         let children = React.createElement(Trigger, props);
-//
-//         return this.renderChildren(children);
-//     }
-// }
-//
-// componentLoader.addComponent('datepicker', AbstractDatepicker, DatePickerPropsInterface);
+
+export class DatePickerConfig extends BasicConfig {
+    /**
+     * Select的数据模型Key
+     */
+    @IsDefined()
+    name: string;
+
+    /**
+     * 是否禁用
+     * @public
+     * @default false
+     */
+    @IsBoolean()
+    disabled?: boolean;
+
+    /**
+     * 是否显示清除按钮
+     */
+    @IsBoolean()
+    allowClear?: boolean;
+
+    /**
+     * CSS样式
+     */
+    style?: CSSProperties;
+
+    /**
+     * CSS class
+     */
+    @IsString()
+    className?: string;
+    
+    /**
+     * 开始时间
+     * @public
+     * @default null
+     */
+    @IsString()
+    startTime?: string;
+
+    /**
+     * 结束时间
+     * @public
+     * @default null
+     */
+    @IsString()
+    @IsNumber()
+    endTime?: string;
+
+    /**
+     * 输入框提示文字
+     * @public
+     * @default ''
+     */
+    @IsString()
+    placeholder?: string;
+
+    /**
+     * 展示的日期格式，配置参考 moment.js
+     */
+    @IsString()
+    format?: string;
+
+    /**
+     * 是否展示“今天”按钮
+     */
+    @IsBoolean()
+    showToday?: boolean;
+
+    /**
+     * 增加时间选择功能
+     */
+    @IsBoolean()
+    showTime?: boolean;
+
+    /**
+     * 输入框高度
+     */
+    size: 'large' | 'smalll';
+}
+
+export class DatePickerPropsInterface extends BasicContainerPropsInterface {
+    info: DatePickerConfig;
+}
+
+export default class AbstractDatepicker extends BasicContainer<DatePickerPropsInterface, {}> {
+    constructor() {
+        super();
+        
+        this.handleChange = this.handleChange.bind(this);
+        this.disabledDate = this.disabledDate.bind(this);
+    }
+
+    private mapDatePickerOptions(info: DatePickerConfig): DatePickerProps {
+        return {
+            className: info.className,
+            showTime: info.showTime,
+            showToday: info.showToday,
+            placeholder: info.placeholder,
+        };
+    }
+   
+    private handleChange(date: moment.Moment, dateString: string) {
+        if (this.props.$setData) {
+            this.props.$setData(this.props.info.name, date);
+        }
+    }
+    
+    private disabledDate(info: DatePickerConfig) {
+        return (startValue: moment.Moment) => {
+            let startTime = info.startTime;
+            let endTime = info.endTime;
+            let flag = false;
+            
+            if (info.startTime) {
+                flag = startValue.valueOf() < moment(startTime).valueOf();
+            }
+            
+            if (info.endTime && !flag) {
+                flag = startValue.valueOf() > moment(endTime).valueOf();
+            }
+            
+            return flag;
+        };
+    }
+    
+    render() {
+        let info = this.getPropsInfo(this.props.info);
+        
+        if (!info.name) {
+            return <div>name property is required for DatePicker Element</div>;
+        }
+
+        if (!this.props.$data) {
+            return <div>DatePicker Element is out of RCRE control, please put it inside container component</div>;
+        }
+
+        let value = this.props.$data.get(info.name);
+        
+        if (typeof value === 'string' || typeof value === 'number') {
+            value = moment(value);
+        }
+        
+        let datePickerOptions = this.mapDatePickerOptions(info);
+        
+        return React.createElement(DatePicker, {
+            value: value,
+            onChange: this.handleChange,
+            disabledDate: this.disabledDate(info),
+            ...datePickerOptions
+        });
+    }
+}
+
+componentLoader.addComponent('datePicker', AbstractDatepicker, DatePickerPropsInterface);
