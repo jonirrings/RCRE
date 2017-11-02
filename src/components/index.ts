@@ -7,6 +7,7 @@ import './Checkbox/Checkbox';
 import './Select/Select';
 import './Radio/Radio';
 import './Datepicker/Datepicker';
+import './Datepicker/TimePicker';
 // import './Breadcrumb/Breadcrumb';
 // import './Datepicker/Datepicker';
 // import './DropDown/DropDown';

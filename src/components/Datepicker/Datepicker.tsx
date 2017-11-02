@@ -6,11 +6,6 @@ import {DatePicker} from 'antd';
 import {CSSProperties} from 'react';
 import {DatePickerProps} from 'antd/lib/date-picker';
 import * as moment from 'moment';
-// import {BasicFormItem} from '../Form/FormItem';
-// import {BasicFormItemConfig, BasicFormItemPropsInterface} from '../Form/types';
-// import {IsBoolean, IsNumber, IsString, Validate} from 'class-validator';
-// import {IsValidEnums} from '../../render/util/validators';
-// import Trigger from '../../render/core/Trigger/Trigger';
 
 export class DatePickerConfig extends BasicConfig {
     /**
@@ -50,7 +45,8 @@ export class DatePickerConfig extends BasicConfig {
      * @default null
      */
     @IsString()
-    startTime?: string;
+    @IsNumber()
+    startTime?: string | number;
 
     /**
      * 结束时间
@@ -59,7 +55,7 @@ export class DatePickerConfig extends BasicConfig {
      */
     @IsString()
     @IsNumber()
-    endTime?: string;
+    endTime?: string | number; 
 
     /**
      * 输入框提示文字

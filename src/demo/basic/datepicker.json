@@ -13,6 +13,11 @@
                     "placeholder": "请选择日期",
                     "startTime": "#ES{$data.test}",
                     "allowClear": true
+                },
+                {
+                    "type": "timePicker",
+                    "name": "test",
+                    "placeholder": "请选择时间"
                 }
             ]
         }
