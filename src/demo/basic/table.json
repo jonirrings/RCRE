@@ -1,0 +1,32 @@
+{
+    "body": [
+        {
+            "type": "container",
+            "model": "tableSource",
+            "children": [
+                {
+                    "type": "table",
+                    "columns": [
+                        {
+                            "title": "test",
+                            "dataIndex": "test",
+                            "controls": [
+                                {
+                                    "type": "text",
+                                    "text": "#ES{$row.test}",
+                                    "textType": "link",
+                                    "href": "http://www.baidu.com"
+                                }
+                            ]
+                        }
+                    ],
+                    "dataSource": [
+                        {
+                            "test": "1"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

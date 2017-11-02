@@ -56,6 +56,16 @@ export class BasicContainerPropsInterface {
     $data?: Map<string, any>;
 
     /**
+     * 通过表格组件, 渲染之后, 获取到的每一行的数据
+     */
+    $row?: Map<string, any>;
+
+    /**
+     * 通过表格组件, 渲染之后, 获取到的第几行
+     */
+    $index?: number;
+
+    /**
      * React组件Key
      */
     key?: string | number;
@@ -136,11 +146,21 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
             $data: {},
             $query: {},
             $global: {},
+            $row: {},
+            $index: -1,
             $now: moment()
         };
         
         if (props.$data) {
             runtime.$data = props.$data.toObject();
+        }
+        
+        if (props.$row) {
+            runtime.$row = props.$row.toObject();    
+        }
+        
+        if (props.$index) {
+            runtime.$index = props.$index;
         }
         
         if (context.$query) {
@@ -155,13 +175,8 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
     }
     
     public getPropsInfo<InfoType>(info: InfoType, props?: T) {
-        let $data = this.props.$data;
         info = _.cloneDeep(info);
-        
-        if ($data) {
-            info = compileValueExpress(info, this.getRuntimeContext(props));
-        }
-        
+        info = compileValueExpress(info, this.getRuntimeContext(props));
         return info;
     }
     

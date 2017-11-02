@@ -20,6 +20,7 @@ let checkboxConfig = require('./demo/basic/checkbox.json');
 let selectConfig = require('./demo/basic/select.json');
 let radioConfig = require('./demo/basic/radio.json');
 let datePickerConfig = require('./demo/basic/datepicker.json');
+let tableConfig = require('./demo/basic/table.json');
 
 let onlineDemo1 = require('./demo/online/demo1.json');
 
@@ -32,7 +33,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(datePickerConfig)
+            code: jsonformat(tableConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -81,7 +82,8 @@ class App extends React.Component<{}, AppStateInterface> {
             ['checkboxConfig', checkboxConfig],
             ['selectConfig', selectConfig],
             ['radioConfig', radioConfig],
-            ['datePickerConfig', datePickerConfig]
+            ['datePickerConfig', datePickerConfig],
+            ['tableConfig', tableConfig]
         ];
         
         let onlineConfig = [

@@ -197,7 +197,7 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
         }
 
         if (!this.props.$data) {
-            return <div>Select Element is out of RCRE control, please put it inside container component</div>
+            return <div>Select Element is out of RCRE control, please put it inside container component</div>;
         }
         
         let options: OptionConfig[] = info.options || [];
