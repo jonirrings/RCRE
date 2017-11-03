@@ -9,11 +9,15 @@
             "dataProvider": [
                 {
                     "mode": "ajax",
+                    "namespace": "table",
                     "config": {
-                        "url": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8899/",
+                        "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/realtime/channel/table",
                         "method": "GET",
                         "data": {
-                            "name": "#ES{$data.name}"
+                            "date": "20171026",
+                            "fields": "pv",
+                            "product": "8",
+                            "placeId": "1504243449802"
                         }
                     },
                     "retCheckPattern": "#ES{$output.errno === 0}",

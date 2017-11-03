@@ -20,6 +20,11 @@
                             ]
                         }
                     ],
+                    "columnsMapping": {
+                        "dataIndex": "$iterator.key",
+                        "title": "$iterator.value",
+                        "key": "$iterator.key"
+                    },
                     "dataSource": [
                         {
                             "test": "1"

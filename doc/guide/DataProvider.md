@@ -236,6 +236,45 @@ Expression String一样可以应用在请求发送之前, 这样就可以在发�
 
 
 
+## 命名空间
+
+在复杂的业务场景中, 一个`container`组件会使用多个接口, 多个接口之间的字段非常有可能会出现冲突.因此RCRE引入了命名空间这个功能, 来让每一个接口都含有一个独立的字段名称. 
+
+使用命名空间, 只需要在一个`dataProvider`的配置中添加`namespace`这个属性.
+
+例如:
+
+```json
+{
+    "mode": "ajax",
+    "namespace": "table",
+    "config": {
+        "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/realtime/channel/table",
+        "method": "GET",
+        "data": {
+            "date": "20171026",
+            "fields": "pv",
+            "product": "8",
+            "placeId": "1504243449802"
+        }
+    }
+}
+```
+
+配置了`namespace`之后, 我们再看下Redux的state中, 就可以发现
+
+![QQ20171103-170201@2x](https://ws1.sinaimg.cn/large/006tNc79ly1fl509htdjwj31ba0kwwgh.jpg)
+
+接口中所有的数据都会保存在`demo.table`下面. 
+
+不过需要注意一点的是, 在container组件的其他地方, 对接口的数据进行获取的时候, 就需要使用
+
+`#ES{$data.table}`来进行获取.
+
+例如在这个例子中, 获取`errmsg`的Expression String是这样的`#ES{$data.table.errmsg}`
+
+
+
 ## 返回值校验
 
 外部的数据往往是不可信的, 不稳定可靠的. 我们需要对DataProvider扩展返回的数据进行数据校验. 比如验证ajax接口返回的errno是否等于0.

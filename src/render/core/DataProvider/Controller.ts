@@ -14,6 +14,7 @@ providerLoaderInstance.registerProvider('init', new InitDataProvider(), false);
 export interface ProviderSourceConfig {
     mode: string;
     config?: any;
+    namespace?: string;
     retMapping?: Object;
     retCheckPattern?: string;
     
@@ -163,10 +164,19 @@ export class DataProvider {
                     error: `model: ${props.info.model} mode: ${providerConfig.mode} data is not valid`
                 });
             } else {
+                let response;
+                if (typeof providerConfig.namespace === 'string') {
+                    response = {
+                        [providerConfig.namespace]: ret
+                    };
+                } else {
+                    response = ret;
+                }
+                
                 actions.asyncLoadDataSuccess({
                     model: props.info.model!,
                     providerMode: providerConfig.mode,
-                    data: ret
+                    data: response
                 });
             }
         } else {
@@ -186,10 +196,25 @@ export class DataProvider {
             ret = provider.retParse(ret, providerConfig, props, context);
             
             if (isRetValid) {
+                let response;
+                if (typeof providerConfig.namespace === 'string') {
+                    response = {
+                        [providerConfig.namespace]: ret
+                    };
+                } else {
+                    response = ret;
+                }
+                
                 actions.syncLoadDataSuccess({
                     model: props.info.model!,
                     providerMode: providerConfig.mode,
-                    data: ret
+                    data: response
+                });
+            } else {
+                actions.syncLoadDataFail({
+                    model: props.info.model!,
+                    providerMode: providerConfig.mode,
+                    error: `model: ${props.info.model} mode: ${providerConfig.mode} data is not valid`
                 });
             }
         }
