@@ -231,12 +231,18 @@ export class AbstractTable extends BasicContainer<TablePropsInterface, TableStat
 
         let tableProps = this.mapTableOptions(info);
         
+        const tableStyle = {
+            width: '100%',
+            ...info.style
+        };
+        
         return (
             <TableDriver
+                {...tableProps}
                 rowKey={'test'}
                 columns={columns}
                 dataSource={dataSource}
-                {...tableProps}
+                style={tableStyle}
             />
         );
     }
