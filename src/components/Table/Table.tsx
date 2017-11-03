@@ -6,7 +6,9 @@ import {CSSProperties} from 'react';
 import {Table} from 'antd';
 import componentLoader from '../../render/util/componentLoader';
 import {Map} from 'immutable';
+import * as _ from 'lodash';
 import {createChild} from '../../render/util/createChild';
+import {compileValueExpress} from '../../render/util/vm';
 
 interface DataSource {
     [s: string]: any;
@@ -128,9 +130,7 @@ export class TableConfig extends BasicConfig {
     /**
      * 列属性映射
      */
-    columnsMapping?: {
-        [s: string]: any;
-    };
+    columnsMapping?: TableColumnsItem; 
 }
 
 export class TablePropsInterface extends BasicContainerPropsInterface {
@@ -181,7 +181,7 @@ export class AbstractTable extends BasicContainer<TablePropsInterface, TableStat
                             key: `${childInfo.type}_${index}`,
                             info: childInfo,
                             $data: this.props.$data,
-                            $row: Map(record),
+                            $item: Map(record),
                             $index: index
                         });
                     });
@@ -204,7 +204,7 @@ export class AbstractTable extends BasicContainer<TablePropsInterface, TableStat
     // }
 
     render() {
-        let info = this.getPropsInfo(this.props.info);
+        let info = this.getPropsInfo(this.props.info, this.props, ['columnsMapping']);
         let dataSource: DataSource[] = [];
         let columns: TableColumnsItem[] = [];
 
@@ -215,10 +215,17 @@ export class AbstractTable extends BasicContainer<TablePropsInterface, TableStat
         if (Array.isArray(info.dataSource)) {
             dataSource = info.dataSource;
         }
-
-        // if (info.columnsMapping) {
-        //
-        // }
+        
+        if (_.isPlainObject(info.columnsMapping)) {
+            columns = columns.map(co => {
+                let runTime = this.getRuntimeContext(this.props, this.context);
+                
+                return compileValueExpress(info.columnsMapping, {
+                    ...runTime,
+                    $item: co
+                })!;
+            });
+        }
         
         columns = this.renderColumnItem(columns);
 

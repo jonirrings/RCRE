@@ -3,27 +3,30 @@
         {
             "type": "container",
             "model": "tableSource",
+            "dataProvider": [
+                {
+                    "mode": "ajax",
+                    "namespace": "table",
+                    "config": {
+                        "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/realtime/channel/table",
+                        "method": "GET",
+                        "data": {
+                            "date": "20171026",
+                            "fields": "pv",
+                            "product": "8",
+                            "placeId": "1504243449802"
+                        }
+                    }
+                }
+            ],
             "children": [
                 {
                     "type": "table",
-                    "columns": [
-                        {
-                            "title": "test",
-                            "dataIndex": "test",
-                            "controls": [
-                                {
-                                    "type": "text",
-                                    "text": "#ES{$row.test}",
-                                    "textType": "link",
-                                    "href": "http://www.baidu.com"
-                                }
-                            ]
-                        }
-                    ],
+                    "columns": "#ES{$data.table.data.head}",
                     "columnsMapping": {
-                        "dataIndex": "$iterator.key",
-                        "title": "$iterator.value",
-                        "key": "$iterator.key"
+                        "dataIndex": "#ES{$item.key}",
+                        "title": "#ES{$item.value}",
+                        "key": "#ES{$item.key}"
                     },
                     "dataSource": [
                         {

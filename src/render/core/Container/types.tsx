@@ -18,18 +18,18 @@ export type defaultData = {
 
 export class BasicConfig {
     @IsString()
-    // @IsDefined()
+        // @IsDefined()
     type: string;
-    
+
     @IsString()
     model?: string;
-    
+
     data?: defaultData;
 
     hidden?: boolean;
 
     $nowFormat?: string;
-    
+
     parentMapping?: Object;
 
     children?: BasicConfig[];
@@ -44,7 +44,7 @@ export class BasicTriggerEvent {
 export class BasicContainerPropsInterface {
     @Validate(IsPageInfo, [BasicConfig])
     info: BasicConfig;
-    
+
     /**
      * 内部组件的数据触发通用接口
      */
@@ -58,7 +58,7 @@ export class BasicContainerPropsInterface {
     /**
      * 通过表格组件, 渲染之后, 获取到的每一行的数据
      */
-    $row?: Map<string, any>;
+    $item?: Map<string, any>;
 
     /**
      * 通过表格组件, 渲染之后, 获取到的第几行
@@ -78,7 +78,7 @@ export class BasicContainerPropsInterface {
 
 export class ContainerProps extends BasicContainerPropsInterface {
     info: ContainerConfig;
-    
+
     $data: Map<string, any>;
     $parent: Map<string, any>;
 
@@ -91,7 +91,7 @@ export class ContainerProps extends BasicContainerPropsInterface {
      * 批量写入一组数据
      */
     setDataList: typeof actionCreators.setDataList;
-    
+
     /**
      * 清空当前数据模型
      */
@@ -134,52 +134,56 @@ export const BasicContextTypes = {
     $query: PropTypes.object
 };
 
+type runTimeType = {
+    $data?: Object;
+    $query?: Object;
+    $global?: Object;
+    $item?: Object;
+    $index?: number;
+    $now?: moment.Moment;
+};
+
 export class BasicContainer<T extends BasicContainerPropsInterface, P> extends React.Component<T, P> {
     static contextTypes = BasicContextTypes;
-    
+
     constructor() {
         super();
     }
-    
+
     public getRuntimeContext(props: T = this.props, context: any = this.context) {
-        let runtime = {
-            $data: {},
-            $query: {},
-            $global: {},
-            $row: {},
-            $index: -1,
+        let runtime: runTimeType = {
             $now: moment()
         };
-        
+
         if (props.$data) {
             runtime.$data = props.$data.toObject();
         }
-        
-        if (props.$row) {
-            runtime.$row = props.$row.toObject();    
+
+        if (props.$item) {
+            runtime.$item = props.$item.toObject();
         }
-        
+
         if (props.$index) {
             runtime.$index = props.$index;
         }
-        
+
         if (context.$query) {
             runtime.$query = context.$query;
         }
-        
+
         if (context.$global) {
             runtime.$global = context.$global;
         }
-        
+
         return runtime;
     }
-    
-    public getPropsInfo<InfoType>(info: InfoType, props?: T) {
+
+    public getPropsInfo<InfoType>(info: InfoType, props?: T, blackList?: string[], isDeep?: boolean) {
         info = _.cloneDeep(info);
-        info = compileValueExpress(info, this.getRuntimeContext(props));
+        info = compileValueExpress(info, this.getRuntimeContext(props), blackList, isDeep);
         return info;
     }
-    
+
     public renderChildren<Type>(info: BasicConfig, children: React.ReactElement<Type>) {
         if (info.hidden) {
             return React.createElement('div', {
