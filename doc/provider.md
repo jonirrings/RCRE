@@ -9,7 +9,7 @@ DataProvider 是一个数据源控制器
 DataProvider会触发action来写入数据到redux store
 
 ## 逻辑视图
-![img](./graphic/dataFlow.png)
+![img](graphic/dataFlow.png)
 
 ## Provider抽象类
 DataProvider和各种Provider类类之间需要一个通用一致的协议来进行通讯.
