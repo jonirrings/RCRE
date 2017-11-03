@@ -198,10 +198,6 @@ export class AbstractTable extends BasicContainer<TablePropsInterface, TableStat
 
         return columns;
     }
-    
-    // private columnsMapping() {
-    //    
-    // }
 
     render() {
         let info = this.getPropsInfo(this.props.info, this.props, ['columnsMapping']);
@@ -219,11 +215,12 @@ export class AbstractTable extends BasicContainer<TablePropsInterface, TableStat
         if (_.isPlainObject(info.columnsMapping)) {
             columns = columns.map(co => {
                 let runTime = this.getRuntimeContext(this.props, this.context);
-                
-                return compileValueExpress(info.columnsMapping, {
+                let newObj = compileValueExpress(info.columnsMapping, {
                     ...runTime,
                     $item: co
                 })!;
+                
+                return Object.assign(co, newObj);
             });
         }
         

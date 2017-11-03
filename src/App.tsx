@@ -35,7 +35,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(tableConfig)
+            code: jsonformat(cascaderConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);

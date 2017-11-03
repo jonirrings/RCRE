@@ -3,33 +3,23 @@
         {
             "type": "container",
             "model": "cascaderData",
+            "dataProvider": [
+                {
+                    "mode": "ajax",
+                    "namespace": "chain",
+                    "config": {
+                        "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/realtime/channel/chain"
+                    }
+                }
+            ],
             "children": [
                 {
                     "type": "cascader",
                     "name": "place_id",
-                    "options": [{
-                        "value": "zhejiang",
-                        "label": "Zhejiang",
-                        "children": [{
-                            "value": "hangzhou",
-                            "label": "Hangzhou",
-                            "children": [{
-                                "value": "xihu",
-                                "label": "West Lake"
-                            }]
-                        }]
-                    }, {
-                        "value": "jiangsu",
-                        "label": "Jiangsu",
-                        "children": [{
-                            "value": "nanjing",
-                            "label": "Nanjing",
-                            "children": [{
-                                "value": "zhonghuamen",
-                                "label": "Zhong Hua Men"
-                            }]
-                        }]
-                    }]
+                    "options": "#ES{$data.chain.data}",
+                    "optionsMapping": {
+                        "label": "#ES{$item.name}"
+                    }
                 }
             ]
         }

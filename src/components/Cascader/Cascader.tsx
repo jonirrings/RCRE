@@ -5,6 +5,8 @@ import {IsBoolean, IsDefined, IsString} from 'class-validator';
 import {CSSProperties} from 'react';
 import {CascaderProps, CascaderOptionType} from 'antd/lib/cascader';
 import {Cascader} from 'antd';
+import {compileValueExpress} from '../../render/util/vm';
+import * as _ from 'lodash';
 
 export class CascaderConfig extends BasicConfig {
     /**
@@ -69,6 +71,11 @@ export class CascaderConfig extends BasicConfig {
      * 在选择框中显示搜索框
      */
     showSearch?: boolean;
+
+    /**
+     * options属性映射
+     */
+    optionsMapping?: CascaderOptionType;
 }
 
 export class CascaderPropsInterface extends BasicContainerPropsInterface {
@@ -103,9 +110,25 @@ export class AbstractCascader extends BasicContainer<CascaderPropsInterface, {}>
             this.props.$setData(this.props.info.name, value);
         }
     }
+    
+    private mapOptions(options: CascaderOptionType[], optionsMapping: CascaderOptionType) {
+        return options.map(op => {
+            let runTime = this.getRuntimeContext(this.props, this.context);
+            let newObj = compileValueExpress(optionsMapping, {
+                ...runTime,
+                $item: op
+            })!;
+            
+            if (_.isArray(op.children) && op.children.length > 0) {
+                op.children = this.mapOptions(op.children, optionsMapping);
+            }
+            
+            return Object.assign(op, newObj);
+        });
+    }
 
     render() {
-        let info = this.getPropsInfo(this.props.info);
+        let info = this.getPropsInfo(this.props.info, this.props, ['optionsMapping']);
 
         if (!info.name) {
             return <div>name property is required for Cascader Element</div>;
@@ -121,12 +144,17 @@ export class AbstractCascader extends BasicContainer<CascaderPropsInterface, {}>
 
         let $data = this.props.$data;
         let value = $data.get(info.name);
+        let options = info.options;
+        
+        if (_.isPlainObject(info.optionsMapping)) {
+            options = this.mapOptions(options, info.optionsMapping!);   
+        }
         
         let cascaderOptions = this.mapCascaderOptions(info); 
         
         return React.createElement(Cascader, {
             ...cascaderOptions,
-            options: info.options,
+            options: options,
             value: value,
             onChange: this.handleChange 
         });
