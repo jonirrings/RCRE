@@ -159,6 +159,7 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
             runtime.$row = props.$row.toObject();    
         }
         
+        
         if (props.$index) {
             runtime.$index = props.$index;
         }

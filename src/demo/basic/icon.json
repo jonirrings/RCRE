@@ -1,0 +1,12 @@
+{
+    "body": [
+        {
+            "type": "icon",
+            "icon": "smile",
+            "style": {
+                "color": "blue",
+                "font-size": "20px"
+            }
+        }
+    ]
+}
