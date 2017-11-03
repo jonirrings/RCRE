@@ -64,6 +64,11 @@ export class CascaderConfig extends BasicConfig {
      * 输入框大小，可选 `large` `default` `small`
      */
     size?: string;
+
+    /**
+     * 在选择框中显示搜索框
+     */
+    showSearch?: boolean;
 }
 
 export class CascaderPropsInterface extends BasicContainerPropsInterface {
@@ -88,6 +93,7 @@ export class AbstractCascader extends BasicContainer<CascaderPropsInterface, {}>
             disabled: info.disabled,
             allowClear: info.allowClear,
             expandTrigger: info.expandTrigger,
+            showSearch: info.showSearch,
             options: []
         };
     }
