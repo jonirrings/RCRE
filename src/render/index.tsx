@@ -6,6 +6,7 @@ import paramCheck from './util/paramCheck';
 import configureStore from './data/store';
 import {actionCreators} from './core/Container/action';
 import {Provider} from 'react-redux';
+import componentDriver from './util/componentLoader';
 
 import './index.css';
 
@@ -83,6 +84,8 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
         );
     }
 }
+
+export {componentDriver};
 
 window.RCRE = Render;
 window.RCRE_React = React;

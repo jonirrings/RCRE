@@ -21,6 +21,7 @@ let selectConfig = require('./demo/basic/select.json');
 let radioConfig = require('./demo/basic/radio.json');
 let datePickerConfig = require('./demo/basic/datepicker.json');
 let tableConfig = require('./demo/basic/table.json');
+let cascaderConfig = require('./demo/basic/cascader.json');
 
 let onlineDemo1 = require('./demo/online/demo1.json');
 
@@ -33,7 +34,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(tableConfig)
+            code: jsonformat(cascaderConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -83,7 +84,8 @@ class App extends React.Component<{}, AppStateInterface> {
             ['selectConfig', selectConfig],
             ['radioConfig', radioConfig],
             ['datePickerConfig', datePickerConfig],
-            ['tableConfig', tableConfig]
+            ['tableConfig', tableConfig],
+            ['cascaderConfig', cascaderConfig]
         ];
         
         let onlineConfig = [
