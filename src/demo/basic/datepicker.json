@@ -4,7 +4,7 @@
             "type": "container",
             "model": "datepicker",
             "data": {
-                "test": 1509555336829
+                "test": "2017-10-22"
             },
             "children": [
                 {
@@ -18,6 +18,10 @@
                     "type": "timePicker",
                     "name": "test",
                     "placeholder": "请选择时间"
+                },
+                {
+                    "type": "text",
+                    "text": "#ES{$data.test.format('YYYYMMDD')}"
                 }
             ]
         }

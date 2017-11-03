@@ -35,7 +35,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(cascaderConfig)
+            code: jsonformat(datePickerConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);

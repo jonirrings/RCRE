@@ -2,6 +2,7 @@ import {BasicSyncProviderInterface, ProviderGlobalOptions, ProviderSourceConfig}
 import {ContainerProps} from '../../Container/types';
 import {compileValueExpress, filterExpressionData} from '../../../util/vm';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 export class InitDataProvider implements BasicSyncProviderInterface {
     configCheck(provider: ProviderSourceConfig) {
@@ -11,9 +12,19 @@ export class InitDataProvider implements BasicSyncProviderInterface {
 
     parse(provider: ProviderSourceConfig, props: ContainerProps, context: any) {
         let data = provider.config;
-        provider.config = compileValueExpress(data, {
+        let config = compileValueExpress(data, {
             $data: filterExpressionData(_.cloneDeep(data))
         });
+        
+        _.each(config, (val, name) => {
+            let date = moment(val);
+            
+            if (date.isValid()) {
+                config[name] = date;
+            }
+        });
+        
+        provider.config = config; 
         
         // 初始化只初始化纯字面量
         return provider;
