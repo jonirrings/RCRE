@@ -1,7 +1,7 @@
-import * as React from 'react';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../Container/types';
 import {createChild} from '../../util/createChild';
 import {Map} from 'immutable';
+import {CallbackController} from './CallbackController';
 
 export class TriggerPropsInterface extends BasicContainerPropsInterface {
     info: BasicConfig;
@@ -33,23 +33,22 @@ export class TriggerPropsInterface extends BasicContainerPropsInterface {
 }
 
 export class Trigger extends BasicContainer<TriggerPropsInterface, {}> {
+    callbackController: CallbackController;
+    
     constructor() {
         super();
+        
+        this.callbackController = new CallbackController();
     }
 
     render() {
         let info = this.props.info;
 
-        let element = createChild<BasicContainerPropsInterface>(info, {
+        return createChild<BasicContainerPropsInterface>(info, {
             info: info,
             $data: this.props.$data,
-            $setData: this.props.$setData
+            $setData: this.props.$setData,
+            callbackController: this.callbackController
         });
-
-        return (
-            <div>
-                {element}
-            </div>
-        );
     }
 }

@@ -125,7 +125,7 @@ export class Container extends BasicContainer<ContainerProps, {}> {
         });
 
         const containerStyle = {
-            display: 'flex'
+            
         };
         
         return (

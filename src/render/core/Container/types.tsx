@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import {ContainerConfig} from '../../../components/Container/Container';
 import {compileValueExpress} from '../../util/vm';
+import {CallbackController} from '../Trigger/CallbackController';
 
 export type rawJSONType = string | number | null | boolean | Object;
 export type originJSONType = rawJSONType | rawJSONType[];
@@ -96,6 +97,11 @@ export class BasicContainerPropsInterface {
      * 底层组件设置数据模型值使用
      */
     $setData?: (name: string, value: any) => void;
+
+    /**
+     * 回调函数控制器
+     */
+    callbackController?: CallbackController;
 }
 
 export class ContainerProps extends BasicContainerPropsInterface {
