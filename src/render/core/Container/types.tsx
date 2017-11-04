@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import {ContainerConfig} from '../../../components/Container/Container';
 import {compileValueExpress} from '../../util/vm';
+import {CSSProperties} from 'react';
 
 export type rawJSONType = string | number | null | boolean | Object;
 export type originJSONType = rawJSONType | rawJSONType[];
@@ -17,22 +18,48 @@ export type defaultData = {
 };
 
 export class BasicConfig {
+    /**
+     * 组件类型
+     */
     @IsString()
-        // @IsDefined()
     type: string;
 
+    /**
+     * 数据模型Key
+     */
     @IsString()
     model?: string;
 
+    /**
+     * 初始化数据
+     */
     data?: defaultData;
 
+    /**
+     * 是否隐藏
+     */
     hidden?: boolean;
 
-    $nowFormat?: string;
-
+    /**
+     * 父级属性映射
+     */
     parentMapping?: Object;
 
+    /**
+     * 子级元素
+     */
     children?: BasicConfig[];
+
+    /**
+     * CSS class
+     */
+    @IsString()
+    className?: string;
+
+    /**
+     * 内联CSS属性
+     */
+    style?: CSSProperties;
 }
 
 export type onContainerItemChange = (value: any, event?: React.ChangeEvent<HTMLElement>) => void;

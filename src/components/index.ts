@@ -11,3 +11,4 @@ import './Datepicker/TimePicker';
 import './Table/Table';
 import './Cascader/Cascader';
 import './Icon/Icon';
+import './Affix/Affix';
