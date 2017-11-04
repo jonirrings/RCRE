@@ -1,7 +1,5 @@
 import * as React from 'react';
-import {
-    BasicConfig, BasicContainer, BasicContainerPropsInterface
-} from '../../render/core/Container/types';
+import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {Validate} from 'class-validator';
 import {IsPageInfo} from '../../render/util/validators';
 import './Container.css';
@@ -25,8 +23,6 @@ export class ContainerPropsInterface extends BasicContainerPropsInterface {
 export default class AbstractContainer extends BasicContainer<ContainerPropsInterface, {}> {
     constructor() {
         super();
-
-        this.handleChange = this.handleChange.bind(this);
     }
 
     render() {
@@ -46,15 +42,8 @@ export default class AbstractContainer extends BasicContainer<ContainerPropsInte
     private renderChild(info: BasicConfig, depth: number, index: number) {
         return createChild(info, {
             key: `${info.type}_${depth}_${index}`,
-            info: info,
-            onChange: this.handleChange
+            info: info
         });
-    }
-
-    handleChange(type: string, val: any) {
-        if (this.props.onChange) {
-            this.props.onChange(type, val);   
-        }
     }
 }
 

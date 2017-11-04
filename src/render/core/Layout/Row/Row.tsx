@@ -1,9 +1,9 @@
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import * as _ from 'lodash';
 import componentLoader from '../../../util/componentLoader';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../Container/types';
 import {createChild} from '../../../util/createChild';
-import {CSSProperties} from 'react';
 
 export type gridPositionItems = 'top-left' | 'top-center' | 'top-right' |
     'middle-left' | 'middle-center' | 'middle-right' |
@@ -170,8 +170,7 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
             let child = createChild(childInfo, {
                 info: childInfo,
                 $data: this.props.$data,
-                $setData: this.props.$setData,
-                onChange: this.props.onChange
+                $setData: this.props.$setData
             });
             return (
                 <div key={`grid_${childInfo.type}_${index}`} style={gridStyles}>

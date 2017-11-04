@@ -7,6 +7,29 @@
                 "name": "andycall",
                 "age": "#ES{$data.name} + ' and andylaw'"
             },
+            "dataCustomer": [
+                {
+                    "mode": "pass",
+                    "name": "passCustomer",
+                    "config": {
+                        "model": "demo",
+                        "assign": {
+                            "name": "#ES{$params[3]}"
+                        }
+                    }
+                },
+                {
+                    "mode": "submit",
+                    "name": "submitCustomer",
+                    "config": {
+                        "url": "http://baidu.com",
+                        "method": "POST",
+                        "data": {
+                            "name": "#ES{$params[2]}"
+                        }
+                    }
+                }
+            ],
             "children": [
                 {
                     "type": "text",
@@ -15,6 +38,22 @@
                 {
                     "type": "text",
                     "text": "#ES{$data.age}"
+                },
+                {
+                    "type": "button",
+                    "text": "click",
+                    "trigger": [
+                        {
+                            "event": "onClick",
+                            "targetCustomer": "passCustomer",
+                            "params": [
+                                "#ES{args[0]}",
+                                "#ES{$args[1]}",
+                                "2",
+                                "#ES{$data.name}"
+                            ]
+                        }
+                    ]
                 }
             ]
         }

@@ -17,6 +17,10 @@ export class InitDataProvider implements BasicSyncProviderInterface {
         });
         
         _.each(config, (val, name) => {
+            if (/^\d+$/.test(val) && !/^\d{13}$/.test(val)) {
+                return;
+            }
+            
             let date = moment(val);
             
             if (date.isValid()) {

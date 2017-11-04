@@ -35,7 +35,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(datePickerConfig)
+            code: jsonformat(nestContainerConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);

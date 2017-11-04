@@ -1,16 +1,15 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import {BasicContainer, BasicContainerPropsInterface, ContainerProps} from './types';
+import {BasicContainer, ContainerProps} from './types';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {actionCreators, IAction} from './action';
 import {RootState} from '../../data/reducers';
 import {Map} from 'immutable';
-// import {compileValueExpress, keepExpressionData} from '../../util/vm';
-import {createChild} from '../../util/createChild';
 import {DataProvider} from '../DataProvider/Controller';
 import {ContainerPropsInterface} from '../../../components/Container/Container';
 import {compileValueExpress} from '../../util/vm';
+import {Trigger} from '../Trigger/Trigger';
 
 // First Init Life Circle:
 // ComponentWillMount -> Render -> ComponentDidMount
@@ -25,7 +24,6 @@ export class Container extends BasicContainer<ContainerProps, {}> {
 
     constructor() {
         super();
-        this.handleChange = this.handleChange.bind(this);
         this.dataProvider = new DataProvider();
     }
 
@@ -109,33 +107,33 @@ export class Container extends BasicContainer<ContainerProps, {}> {
         // Container Component no long compile expression string for child
         // instead, AbstractComponent should compile it by themSelf
         let childElements = info.children.map((child, index) => {
-            return createChild<BasicContainerPropsInterface>(child, {
-                key: `${child.type}_${index}`,
-                info: child,
-                $data: this.props.$data,
-                $setData: (name: string, value: any) => {
-                    this.props.setData({
-                        type: name,
-                        newValue: value
-                    }, this.props.info.model!);
-                }
-            });
+            const setData = (name: string, value: any) => {
+                this.props.setData({
+                    type: name,
+                    newValue: value
+                }, this.props.info.model!);
+            };
+
+            return (
+                <Trigger
+                    info={child}
+                    $data={this.props.$data}
+                    $setData={setData}
+                    key={`${child.type}_${index}`}
+                />
+            );
         });
 
+        const containerStyle = {
+            display: 'flex'
+        };
+        
         return (
-            <div className="rcre-container">
+            <div className="rcre-container" style={containerStyle}>
                 {childElements}
             </div>
         );
     }
-    
-    private handleChange(key: string, value: any) {
-        this.props.setData({
-            type: key,
-            newValue: value
-        }, this.props.info.model!);
-    }
-
 }
 
 const mapStateToProps = (state: RootState, ownProps: any) => {

@@ -4,11 +4,11 @@ import {actionCreators} from './action';
 import {Map} from 'immutable';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import {ContainerConfig} from '../../../components/Container/Container';
 import {compileValueExpress} from '../../util/vm';
-import {CSSProperties} from 'react';
 
 export type rawJSONType = string | number | null | boolean | Object;
 export type originJSONType = rawJSONType | rawJSONType[];
@@ -71,11 +71,6 @@ export class BasicTriggerEvent {
 export class BasicContainerPropsInterface {
     @Validate(IsPageInfo, [BasicConfig])
     info: BasicConfig;
-
-    /**
-     * 内部组件的数据触发通用接口
-     */
-    onChange?: onContainerItemChange;
 
     /**
      * 当前Container的数据模型对象

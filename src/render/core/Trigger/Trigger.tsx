@@ -1,164 +1,55 @@
 import * as React from 'react';
-import {DriverController} from '../../../drivers/index';
-import {BasicContainer, BasicContainerPropsInterface} from '../Container/types';
-import createElement from '../../util/createElement';
-import {TriggerConfig} from './types';
-// import {compileValueExpress, parseExpressString} from '../../util/vm';
+import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../Container/types';
+import {createChild} from '../../util/createChild';
 import {Map} from 'immutable';
-// import {SET_DATA_LIST_PAYLOAD} from '../Container/action';
-// import AbstractFormItem, {FormItemPropsInterface} from '../../../components/Form/FormItem';
 
 export class TriggerPropsInterface extends BasicContainerPropsInterface {
-    info: TriggerConfig;
+    info: BasicConfig;
+
+    /**
+     * 当前Container的数据模型对象
+     */
+    $data: Map<string, any>;
+
+    /**
+     * 通过表格组件, 渲染之后, 获取到的每一行的数据
+     */
+    $item?: Map<string, any>;
+
+    /**
+     * 通过表格组件, 渲染之后, 获取到的第几行
+     */
+    $index?: number;
+
+    /**
+     * React组件Key
+     */
+    key: string | number;
+
+    /**
+     * 底层组件设置数据模型值使用
+     */
+    $setData: (name: string, value: any) => void;
 }
 
-export default class Trigger<T extends TriggerPropsInterface> extends BasicContainer<T, {}> {
-    static defaultProps = {
-        $data: Map({})
-    };
-
+export class Trigger extends BasicContainer<TriggerPropsInterface, {}> {
     constructor() {
         super();
-
-        // this.handleTrigger = this.handleTrigger.bind(this);
     }
 
     render() {
-        let driver: DriverController = this.context.driver;
-        let componentInfo = driver.getComponent(this.props.info.type);
+        let info = this.props.info;
 
-        if (!componentInfo) {
-            return React.createElement('pre', {}, 'can not find module ' + this.props.info.type);
-        }
+        let element = createChild<BasicContainerPropsInterface>(info, {
+            info: info,
+            $data: this.props.$data,
+            $setData: this.props.$setData
+        });
 
-        let Component = componentInfo.component;
-        let componentInterface = componentInfo.componentInterface;
-
-        let childProps = this.props;
-
-        // if (this.props.info.trigger) { 
-        //     let mergeProps = {};
-        //
-        //     _.each(this.props.info.trigger, (item, index) => {
-        //         this.bindTrigger(item, mergeProps, childProps);
-        //     });
-        //
-        //     childProps = Object.assign({}, childProps, mergeProps);
-        // }
-
-        let children = createElement(Component, componentInterface, childProps, this.props.children);
-
-        // if (this.context.form && this.props.info.type !== 'form') {
-        //     children = this.wrapWithFormItem(children, childProps);
-        // }
-
-        return children;
+        return (
+            <div>
+                {element}
+            </div>
+        );
     }
-
-    // private handleLinkTrigger(item: TriggerItem, model: string, value: any) {
-    //     let href = item.href;
-    //     let isRaw = item.isRaw;
-    //
-    //     if (!href) {
-    //         console.error('your must provide href attribute to finish jumping...');
-    //         return;
-    //     }
-    //    
-    //     let compiledHref = '';
-    //     if (this.props.$data) {
-    //         compiledHref = parseExpressString(href, {
-    //             $resource: this.props.$data.toObject(),
-    //             $global: this.context.$global
-    //         });
-    //     }
-    //
-    //     location.href = isRaw ? compiledHref : encodeURIComponent(compiledHref);
-    // }
-    //
-    // private handleDataTrigger(item: TriggerItem, model: string, value: any) {
-    //     let target = item.target;
-    //     let $store = this.context.$store;
-    //
-    //     if (!$store.has(target)) {
-    //         console.error('can not find target model of target: ' + target);
-    //         return;
-    //     }
-    //
-    //     let ship = item.ship;
-    //
-    //     if (!_.isPlainObject(ship)) {
-    //         console.error('you must provide ship to finish event trigger');
-    //         return;
-    //     }
-    //
-    //     if (!this.props.$data) {
-    //         console.error('can not find exist data model for trigger component');
-    //         return;
-    //     }
-    //
-    //     let compiled = compileValueExpress<Object, Object>(ship!, {
-    //         $data: this.props.$data.toObject(),
-    //         $global: this.context.$global,
-    //         $event: {
-    //             model: model,
-    //             value: value
-    //         }
-    //     });
-    //
-    //     let payload: SET_DATA_LIST_PAYLOAD = [];
-    //
-    //     _.each(compiled, (val, name) => {
-    //         payload.push({
-    //             type: name,
-    //             newValue: val
-    //         });
-    //     });
-    //
-    //     this.context.$triggerListData(payload, target);
-    // }
-    //
-    // private handleTrigger(item: TriggerItem,
-    //                       triggerType: 'data' | 'link' | undefined): (type: string, value: any) => void {
-    //     return (model: string, value: any) => {
-    //         switch (triggerType) {
-    //             case 'link':
-    //                 this.handleLinkTrigger(item, model, value);
-    //                 break;
-    //             case 'data':
-    //             default:
-    //                 this.handleDataTrigger(item, model, value);
-    //         }
-    //     };
-    // }
-    //
-    // private bindTrigger(item: TriggerItem, mergeProps: Object, childProps: Object) {
-    //     let eventType = item.eventType;
-    //     let triggerType = item.triggerType;
-    //     if (!validEventTrigger[eventType]) {
-    //         return;
-    //     }
-    //
-    //     let method = validEventTrigger[eventType];
-    //
-    //     if (childProps[method]) {
-    //         let oldFn = childProps[method];
-    //
-    //         mergeProps[method] = (value: any) => {
-    //             oldFn(value);
-    //             setTimeout(() => {
-    //                 this.handleTrigger(item, triggerType)(this.props.info.model!, value);
-    //             });
-    //         };
-    //     } else {
-    //         mergeProps[method] = (event: React.MouseEvent<HTMLInputElement>) => {
-    //             let target = event.currentTarget;
-    //             let value = target.value;
-    //             this.handleTrigger(item, triggerType)(this.props.info.model!, value);
-    //         };
-    //     }
-    // }
-    //
-    // private wrapWithFormItem(children: React.ReactElement<T>, childProps: TriggerPropsInterface) {
-    //     return createElement(AbstractFormItem, FormItemPropsInterface, childProps, children);
-    // }
 }
