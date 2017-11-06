@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import {ContainerConfig} from '../../../components/Container/Container';
 import {compileValueExpress} from '../../util/vm';
 import {CallbackController} from '../Trigger/CallbackController';
+import {TriggerEventItem} from '../Trigger/Trigger';
 
 export type rawJSONType = string | number | null | boolean | Object;
 export type originJSONType = rawJSONType | rawJSONType[];
@@ -61,6 +62,11 @@ export class BasicConfig {
      * 内联CSS属性
      */
     style?: CSSProperties;
+
+    /**
+     * 事件触发
+     */
+    trigger?: TriggerEventItem[];
 }
 
 export type onContainerItemChange = (value: any, event?: React.ChangeEvent<HTMLElement>) => void;
@@ -102,6 +108,11 @@ export class BasicContainerPropsInterface {
      * 回调函数控制器
      */
     callbackController?: CallbackController;
+
+    /**
+     * Trigger注入的通用事件处理函数, 所有事件处理都走这里
+     */
+    eventHandle?: (eventName: string, args: any[]) => void;
 }
 
 export class ContainerProps extends BasicContainerPropsInterface {
@@ -157,7 +168,6 @@ export const BasicContextTypes = {
     abstractContainer: PropTypes.bool,
     $store: PropTypes.object,
     $global: PropTypes.object,
-    $triggerListData: PropTypes.func,
     $location: PropTypes.object,
     $query: PropTypes.object
 };

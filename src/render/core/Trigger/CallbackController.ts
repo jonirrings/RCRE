@@ -4,7 +4,8 @@ import {Map} from 'immutable';
 type callbackItem = {
     name: string;
     targetCustomer: string;
-    params: string[] | number[] | boolean[];
+    params: (string | number | boolean)[];
+    debug: boolean;
 };
 
 export class CallbackController {
@@ -13,17 +14,25 @@ export class CallbackController {
     constructor() {
         this.store = Map({});
     }
-    
-    public registerCallback(name: string, targetCustomer: string, params: string[] | number[] | boolean[]): void {
-        if (!_.isString(name) || !_.isString(targetCustomer) || !_.isArray(params)) {
-            console.error('registerCallback should container name, targetCustomer and params');
+
+    public hasCallback(name: string): boolean {
+        return this.store.has(name);
+    }
+
+    public registerCallback(name: string,
+                            targetCustomer: string,
+                            params: (string | number | boolean)[],
+                            debug: boolean = false) {
+        if (!_.isString(name) || !_.isString(targetCustomer)) {
+            console.error('registerCallback should container name, targetCustomer');
         }
         
         if (!this.store.has(name)) {
             this.store = this.store.set(name, {
                 name,
                 targetCustomer,
-                params
+                params,
+                debug
             });
         } else {
             let item = this.store.get(name);
@@ -32,7 +41,8 @@ export class CallbackController {
                 item.push({
                     name,
                     targetCustomer,
-                    params
+                    params,
+                    debug
                 });
                 this.store = this.store.set(name, item);
             } else {
@@ -40,14 +50,15 @@ export class CallbackController {
                 array.push({
                     name,
                     targetCustomer,
-                    params
+                    params,
+                    debug
                 });
                 this.store = this.store.set(name, array);
             }
         }
     }
-    
-    public handleCallback() {
-        
+
+    public getCallbackInfo(name: string) {
+        return this.store.get(name);
     }
 }

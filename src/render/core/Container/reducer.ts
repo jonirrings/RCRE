@@ -1,12 +1,16 @@
 import {Map} from 'immutable';
 import {Reducer} from 'redux';
-import {IRootAction} from '../../data/actions';
 import {
     ASYNC_LOAD_DATA_FAIL,
-    ASYNC_LOAD_DATA_PROGRESS, ASYNC_LOAD_DATA_SUCCESS, CLEAR_DATA, REMOVE_DATA, SET_DATA, SET_DATA_LIST,
+    ASYNC_LOAD_DATA_PROGRESS,
+    ASYNC_LOAD_DATA_SUCCESS,
+    CLEAR_DATA,
+    IContainerAction,
+    REMOVE_DATA,
+    SET_DATA,
+    SET_DATA_LIST,
     SYNC_LOAD_DATA_FAIL,
-    SYNC_LOAD_DATA_SUCCESS,
-    TRIGGER_LIST_DATA
+    SYNC_LOAD_DATA_SUCCESS
 } from './action';
 
 type stateItem = Map<string, any>;
@@ -14,7 +18,7 @@ export type IState = Map<string, stateItem>;
 
 export const initialState: IState = Map<string, stateItem>({});
 
-export const reducer: Reducer<IState> = (state: IState = initialState, actions: IRootAction): IState => {
+export const reducer: Reducer<IState> = (state: IState = initialState, actions: IContainerAction): IState => {
     switch (actions.type) {
         case SET_DATA:
             if (!state.has(actions.model)) {
@@ -26,7 +30,6 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
                 .set(actions.model, 
                     state.get(actions.model).set(actions.payload.type, actions.payload.newValue)
                 );
-        case TRIGGER_LIST_DATA:
         case SET_DATA_LIST:
             let payloadList = actions.payload;
             let dataObj = {};

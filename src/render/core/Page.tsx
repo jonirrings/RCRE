@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import {Map} from 'immutable';
 import {RootState} from '../data/reducers';
 import {bindActionCreators, Dispatch} from 'redux';
-import {actionCreators, IAction} from './Container/action';
+import {actionCreators, IContainerAction} from './Container/action';
 import * as URL from 'url';
 import * as querystring from 'querystring';
 
@@ -29,8 +29,6 @@ export class PageProps {
     global: Object;
 
     $setDataList: typeof actionCreators.setDataList;
-
-    $triggerListData: typeof actionCreators.triggerListData;
 }
 
 class Page extends React.Component<PageProps, {}> {
@@ -45,7 +43,6 @@ class Page extends React.Component<PageProps, {}> {
         $global: PropsTypes.object,
         $setDataList: PropsTypes.func,
         $initData: PropsTypes.func,
-        $triggerListData: PropsTypes.func,
         $location: PropsTypes.object,
         $query: PropsTypes.object
     };
@@ -81,7 +78,6 @@ class Page extends React.Component<PageProps, {}> {
             $store: this.props.$store,
             $global: this.props.global,
             $setDataList: this.props.$setDataList,
-            $triggerListData: this.props.$triggerListData,
             $location,
             $query
         };
@@ -124,9 +120,8 @@ const mapStateToProps = (state: RootState, ownProps: any) => {
     };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
-    $setDataList: actionCreators.setDataList,
-    $triggerListData: actionCreators.triggerListData
+const mapDispatchToProps = (dispatch: Dispatch<IContainerAction>) => bindActionCreators({
+    $setDataList: actionCreators.setDataList
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Page);

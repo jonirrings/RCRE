@@ -3,13 +3,13 @@ import * as _ from 'lodash';
 import {BasicContainer, ContainerProps} from './types';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
-import {actionCreators, IAction} from './action';
+import {actionCreators, IContainerAction} from './action';
 import {RootState} from '../../data/reducers';
 import {Map} from 'immutable';
 import {DataProvider} from '../DataProvider/Controller';
 import {ContainerPropsInterface} from '../../../components/Container/Container';
 import {compileValueExpress} from '../../util/vm';
-import {Trigger} from '../Trigger/Trigger';
+import Trigger from '../Trigger/Trigger';
 
 // First Init Life Circle:
 // ComponentWillMount -> Render -> ComponentDidMount
@@ -111,12 +111,13 @@ export class Container extends BasicContainer<ContainerProps, {}> {
                 this.props.setData({
                     type: name,
                     newValue: value
-                }, this.props.info.model!);
+                }, this.props.info.model);
             };
 
             return (
                 <Trigger
                     info={child}
+                    model={this.props.info.model}
                     $data={this.props.$data}
                     $setData={setData}
                     key={`${child.type}_${index}`}
@@ -136,13 +137,13 @@ export class Container extends BasicContainer<ContainerProps, {}> {
     }
 }
 
-const mapStateToProps = (state: RootState, ownProps: any) => {
+const mapStateToProps = (state: RootState, ownProps: ContainerPropsInterface) => {
     return {
         $data: state.container.get(ownProps.info.model) || Map({})
     };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<IAction>) => bindActionCreators({
+const mapDispatchToProps = (dispatch: Dispatch<IContainerAction>) => bindActionCreators({
     setData: actionCreators.setData,
     setDataList: actionCreators.setDataList,
     removeData: actionCreators.removeData,

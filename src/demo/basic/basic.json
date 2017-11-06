@@ -7,29 +7,40 @@
                 "name": "andycall",
                 "age": "#ES{$data.name} + ' and andylaw'"
             },
-            "dataCustomer": [
-                {
-                    "mode": "pass",
-                    "name": "passCustomer",
-                    "config": {
-                        "model": "demo",
-                        "assign": {
-                            "name": "#ES{$params[3]}"
+            "dataCustomer": {
+                "customers": [
+                    {
+                        "mode": "pass",
+                        "name": "passCustomer",
+                        "config": {
+                            "model": "demo",
+                            "assign": {
+                                "name": "#ES{$params[3]}"
+                            }
+                        }
+                    },
+                    {
+                        "mode": "submit",
+                        "name": "submitCustomer",
+                        "config": {
+                            "url": "http://baidu.com",
+                            "method": "POST",
+                            "data": {
+                                "name": "#ES{$params[2]}"
+                            }
                         }
                     }
-                },
-                {
-                    "mode": "submit",
-                    "name": "submitCustomer",
-                    "config": {
-                        "url": "http://baidu.com",
-                        "method": "POST",
-                        "data": {
-                            "name": "#ES{$params[2]}"
-                        }
+                ],
+                "groups": [
+                    {
+                        "name": "group1",
+                        "steps": [
+                            "passCustomer",
+                            "submitCustomer"
+                        ]
                     }
-                }
-            ],
+                ]
+            },
             "children": [
                 {
                     "type": "text",
@@ -45,10 +56,9 @@
                     "trigger": [
                         {
                             "event": "onClick",
+                            "debug": true,
                             "targetCustomer": "passCustomer",
                             "params": [
-                                "#ES{args[0]}",
-                                "#ES{$args[1]}",
                                 "2",
                                 "#ES{$data.name}"
                             ]

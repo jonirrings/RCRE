@@ -8,7 +8,9 @@ describe('InitDataProvider', () => {
     beforeEach(() => {
         containerProps = {
             info: {
-                type: 'none'
+                type: 'none',
+                model: 'test',
+                children: []
             },
             $data: Map({}),
             $parent: Map({}),

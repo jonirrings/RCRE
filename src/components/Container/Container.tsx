@@ -9,9 +9,8 @@ import {ProviderSourceConfig} from '../../render/core/DataProvider/Controller';
 import componentLoader from '../../render/util/componentLoader';
 
 export class ContainerConfig extends BasicConfig {
-    style?: React.CSSProperties;
-    children?: BasicConfig[];
-
+    children: BasicConfig[];
+    model: string;
     dataProvider?: ProviderSourceConfig | ProviderSourceConfig[];
 }
 

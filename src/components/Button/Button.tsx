@@ -1,9 +1,9 @@
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import {IsBoolean, IsDefined, IsString} from 'class-validator';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {Button} from 'antd';
 import componentLoader from '../../render/util/componentLoader';
-import {CSSProperties} from 'react';
 import {ButtonProps} from 'antd/lib/button/button';
 
 export class ButtonConfig extends BasicConfig {
@@ -128,12 +128,26 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
         let buttonProps = this.mapButtonOptions(info);
         let children = React.createElement(Button, {
             // TODO: trigger Interface inject
-            onClick: () => {},
-            onMouseUp: () => {},
-            onMouseDown: () => {},
+            onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
+                this.commonEventHandler('onClick', event);
+            },
+            onMouseUp: (event: React.MouseEvent<HTMLButtonElement>) => {
+                this.commonEventHandler('onMouseUp', event);
+            },
+            onMouseDown: (event: React.MouseEvent<HTMLButtonElement>) => {
+                this.commonEventHandler('onMouseDown', event);
+            },
             ...buttonProps
         }, text);
         return this.renderChildren(info, children);
+    }
+
+    private commonEventHandler(eventName: string, event: React.MouseEvent<HTMLButtonElement>) {
+        if (this.props.eventHandle) {
+            this.props.eventHandle(eventName, [event]);
+        } else {
+            console.error('Event System only can work with container component');
+        }
     }
 }
 

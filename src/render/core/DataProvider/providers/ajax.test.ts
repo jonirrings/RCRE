@@ -9,7 +9,9 @@ describe('AjaxDataProvider', () => {
     beforeEach(() => {
         containerProps = {
             info: {
-                type: 'none'
+                type: 'none',
+                model: 'none',
+                children: []
             },
             $data: Map({}),
             $parent: Map({}),
