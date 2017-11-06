@@ -58,6 +58,11 @@ export class TriggerPropsInterface extends BasicContainerPropsInterface {
      * 父级的Container组件的model值
      */
     model: string;
+
+    /**
+     * 父级Container组件的dataCustomer
+     */
+    dataCustomer: DataCustomer;
 }
 
 interface TriggerProps extends TriggerPropsInterface {
@@ -74,13 +79,11 @@ interface TriggerProps extends TriggerPropsInterface {
 
 class Trigger extends BasicContainer<TriggerProps, {}> {
     callbackController: CallbackController;
-    dataCustomer: DataCustomer;
     
     constructor() {
         super();
         
         this.callbackController = new CallbackController();
-        this.dataCustomer = new DataCustomer();
         this.eventHandle = this.eventHandle.bind(this);
     }
 
@@ -133,7 +136,7 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
                 value: output
             });
 
-            this.dataCustomer.execCustomer(callbackInfo.targetCustomer);
+            this.props.dataCustomer.execCustomer(callbackInfo.targetCustomer);
         }
     }
 }

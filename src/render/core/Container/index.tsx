@@ -10,6 +10,7 @@ import {DataProvider} from '../DataProvider/Controller';
 import {ContainerPropsInterface} from '../../../components/Container/Container';
 import {compileValueExpress} from '../../util/vm';
 import Trigger from '../Trigger/Trigger';
+import {DataCustomer} from '../DataCustomer/Controller';
 
 // First Init Life Circle:
 // ComponentWillMount -> Render -> ComponentDidMount
@@ -21,10 +22,12 @@ export class Container extends BasicContainer<ContainerProps, {}> {
     static displayName: string;
 
     dataProvider: DataProvider;
+    dataCustomer: DataCustomer;
 
     constructor() {
         super();
         this.dataProvider = new DataProvider();
+        this.dataCustomer = new DataCustomer();
     }
 
     async componentWillMount() {
@@ -35,6 +38,10 @@ export class Container extends BasicContainer<ContainerProps, {}> {
                 };
             }
 
+            if (this.props.info.dataCustomer) {
+                this.dataCustomer.initCustomerConfig(this.props.info.dataCustomer);
+            }
+            
             // to keep it safe, this.props.info should be readonly
             Object.freeze(this.props.info);
             
@@ -119,6 +126,7 @@ export class Container extends BasicContainer<ContainerProps, {}> {
                     info={child}
                     model={this.props.info.model}
                     $data={this.props.$data}
+                    dataCustomer={this.dataCustomer}
                     $setData={setData}
                     key={`${child.type}_${index}`}
                 />

@@ -12,10 +12,28 @@ providerLoaderInstance.registerProvider('init', new InitDataProvider(), false);
  * Provider 对象数据源配置
  */
 export interface ProviderSourceConfig {
+    /**
+     * provider模式
+     */
     mode: string;
+    /**
+     * Provider配置
+     */
     config?: any;
+
+    /**
+     * Provider命名空间
+     */
     namespace?: string;
+
+    /**
+     * Provider返回值映射
+     */
     retMapping?: Object;
+
+    /**
+     * 返回值检查Expression String
+     */
     retCheckPattern?: string;
     
     __previousConfig?: ProviderSourceConfig | null;

@@ -1,19 +1,19 @@
 import {Map} from 'immutable';
-import {CustomerSourceConfig} from './Controller';
+import {BasicCustomerInstance} from './Controller';
 
 export class CustomerLoader {
-    private customerStore: Map<string, CustomerSourceConfig>;
+    private customerStore: Map<string, BasicCustomerInstance>;
 
     constructor() {
         this.customerStore = Map();
     }
 
-    public registerCustomer(customer: string, source: CustomerSourceConfig) {
+    public registerCustomer(customer: string, instance: BasicCustomerInstance) {
         if (this.customerStore.has(customer)) {
             throw new Error('find exist DataCustomer: ' + customer);
         }
 
-        this.customerStore = this.customerStore.set(customer, source);
+        this.customerStore = this.customerStore.set(customer, instance);
     }
 
     public getCustomer(customer: string) {

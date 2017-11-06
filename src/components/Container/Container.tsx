@@ -7,11 +7,28 @@ import {createChild} from '../../render/util/createChild';
 import Container from '../../render/core/Container/index';
 import {ProviderSourceConfig} from '../../render/core/DataProvider/Controller';
 import componentLoader from '../../render/util/componentLoader';
+import {CustomerSourceConfig} from '../../render/core/DataCustomer/Controller';
 
 export class ContainerConfig extends BasicConfig {
+    /**
+     * 字级组件
+     */
     children: BasicConfig[];
+
+    /**
+     * 数据模型Key
+     */
     model: string;
+
+    /**
+     * dataProvider配置
+     */
     dataProvider?: ProviderSourceConfig | ProviderSourceConfig[];
+
+    /**
+     * dataCustomer配置
+     */
+    dataCustomer?: CustomerSourceConfig[] | CustomerSourceConfig;
 }
 
 export class ContainerPropsInterface extends BasicContainerPropsInterface {
