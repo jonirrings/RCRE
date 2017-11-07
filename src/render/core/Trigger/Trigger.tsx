@@ -119,8 +119,9 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
             info: info,
             $data: this.props.$data,
             $setData: this.props.$setData,
-            callbackController: this.callbackController,
-            eventHandle: this.eventHandle
+            dataCustomer: this.props.dataCustomer,
+            eventHandle: this.eventHandle,
+            model: this.props.model
         });
     }
 
@@ -136,6 +137,8 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
         if (!(callbackInfo instanceof Array)) {
             callbackInfo = [callbackInfo];
         }
+        
+        console.log(callbackInfo, args);
 
         await this.execCallbackInfo(callbackInfo, args);
     }

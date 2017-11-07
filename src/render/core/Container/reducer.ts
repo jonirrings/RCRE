@@ -19,7 +19,6 @@ export type IState = Map<string, stateItem>;
 export const initialState: IState = Map<string, stateItem>({});
 
 export const reducer: Reducer<IState> = (state: IState = initialState, actions: IContainerAction): IState => {
-    console.log(1, actions.type);
     switch (actions.type) {
         case SET_DATA:
             if (!state.has(actions.model)) {

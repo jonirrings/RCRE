@@ -2,6 +2,7 @@ import {AjaxDataProvider, AjaxProviderSourceConfig} from './ajax';
 import {ContainerProps} from '../../Container/types';
 import {actionCreators} from '../../Container/action';
 import {Map} from 'immutable';
+import {DataCustomer} from '../../DataCustomer/Controller';
 
 describe('AjaxDataProvider', () => {
     let containerProps: ContainerProps;
@@ -15,6 +16,8 @@ describe('AjaxDataProvider', () => {
             },
             $data: Map({}),
             $parent: Map({}),
+            dataCustomer: new DataCustomer(),
+            model: 'none',
             setData: actionCreators.setData,
             setDataList: actionCreators.setDataList,
             removeData: actionCreators.removeData,

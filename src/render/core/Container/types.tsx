@@ -9,8 +9,8 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import {ContainerConfig} from '../../../components/Container/Container';
 import {compileValueExpress} from '../../util/vm';
-import {CallbackController} from '../Trigger/CallbackController';
 import {TriggerEventItem} from '../Trigger/Trigger';
+import {DataCustomer} from '../DataCustomer/Controller';
 
 export type rawJSONType = string | number | null | boolean | Object;
 export type originJSONType = rawJSONType | rawJSONType[];
@@ -110,14 +110,19 @@ export class BasicContainerPropsInterface {
     $setData?: (name: string, value: any) => void;
 
     /**
-     * 回调函数控制器
-     */
-    callbackController?: CallbackController;
-
-    /**
      * Trigger注入的通用事件处理函数, 所有事件处理都走这里
      */
     eventHandle?: (eventName: string, args: any[]) => void;
+
+    /**
+     * 来自Container的数据消耗者实例
+     */
+    dataCustomer?: DataCustomer;
+
+    /**
+     * 父级的数据模型Key
+     */
+    model?: string;
 }
 
 export class ContainerProps extends BasicContainerPropsInterface {

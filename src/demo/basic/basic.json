@@ -4,8 +4,7 @@
             "type": "container",
             "model": "demo",
             "data": {
-                "name": "andycall",
-                "age": "#ES{$data.name} + ' and andylaw'"
+                "count": 0
             },
             "dataCustomer": {
                 "customers": [
@@ -15,17 +14,7 @@
                         "config": {
                             "model": "demo",
                             "assign": {
-                                "name": "#ES{$trigger.passCustomer[1]}"
-                            }
-                        }
-                    },
-                    {
-                        "mode": "pass",
-                        "name": "testCustomer",
-                        "config": {
-                            "model": "demo",
-                            "assign": {
-                                "name": "helloworld"
+                                "count": "#ES{$trigger.passCustomer.count}"
                             }
                         }
                     }
@@ -39,31 +28,42 @@
             },
             "children": [
                 {
-                    "type": "text",
-                    "text": "#ES{$data.name}"
-                },
-                {
-                    "type": "text",
-                    "text": "#ES{$data.age}"
-                },
-                {
-                    "type": "button",
-                    "text": "click",
-                    "trigger": [
+                    "type": "row",
+                    "children": [
                         {
-                            "event": "onClick",
-                            "targetCustomer": "passCustomer",
-                            "params": [
-                                "2",
-                                "#ES{$data.name} + 'qweqwe'"
+                            "type": "text",
+                            "text": "#ES{$data.count}"
+                        }
+                    ]
+                },
+                {
+                    "type": "row",
+                    "children": [
+                        {
+                            "type": "button",
+                            "text": "+",
+                            "trigger": [
+                                {
+                                    "event": "onClick",
+                                    "targetCustomer": "passCustomer",
+                                    "params": {
+                                        "count": "#ES{$data.count + 1}"
+                                    }
+                                }
                             ]
                         },
                         {
-                            "event": "onClick",
-                            "targetCustomer": "testCustomer",
-                            "params": {
-                                "name": "helloworld"
-                            }
+                            "type": "button",
+                            "text": "-",
+                            "trigger": [
+                                {
+                                    "event": "onClick",
+                                    "targetCustomer": "passCustomer",
+                                    "params": {
+                                        "count": "#ES{$data.count - 1}"
+                                    }
+                                }
+                            ]
                         }
                     ]
                 }

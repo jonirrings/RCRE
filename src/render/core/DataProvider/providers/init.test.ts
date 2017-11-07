@@ -2,6 +2,7 @@ import {InitDataProvider} from './init';
 import {Map} from 'immutable';
 import {ContainerProps} from '../../Container/types';
 import {actionCreators} from '../../Container/action';
+import {DataCustomer} from '../../DataCustomer/Controller';
 
 describe('InitDataProvider', () => {
     let containerProps: ContainerProps;
@@ -14,6 +15,8 @@ describe('InitDataProvider', () => {
             },
             $data: Map({}),
             $parent: Map({}),
+            dataCustomer: new DataCustomer(),
+            model: 'none',
             setData: actionCreators.setData,
             setDataList: actionCreators.setDataList,
             removeData: actionCreators.removeData,
