@@ -132,8 +132,6 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
                 return state;
             }
             
-            console.log(data);
-            
             let exist = state.get(model);
             exist = exist.merge(data);
             return state.set(model, exist);

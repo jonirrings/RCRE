@@ -137,8 +137,6 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
         if (!(callbackInfo instanceof Array)) {
             callbackInfo = [callbackInfo];
         }
-        
-        console.log(callbackInfo, args);
 
         await this.execCallbackInfo(callbackInfo, args);
     }
