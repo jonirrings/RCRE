@@ -1,5 +1,5 @@
+import * as React from 'react';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../Container/types';
-import {createChild} from '../../util/createChild';
 import {Map} from 'immutable';
 import {CallbackController, callbackItem} from './CallbackController';
 import {compileValueExpress} from '../../util/vm';
@@ -115,14 +115,22 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
     render() {
         let info = this.props.info;
 
-        return createChild<BasicContainerPropsInterface>(info, {
-            info: info,
-            $data: this.props.$data,
-            $setData: this.props.$setData,
-            dataCustomer: this.props.dataCustomer,
-            eventHandle: this.eventHandle,
-            model: this.props.model
+        let children = React.Children.map(this.props.children, (child: React.ReactElement<any>) => {
+            return React.cloneElement(child, {
+                info: info,
+                $data: this.props.$data,
+                $setData: this.props.$setData,
+                dataCustomer: this.props.dataCustomer,
+                eventHandle: this.eventHandle,
+                model: this.props.model
+            });
         });
+
+        return (
+            <div>
+                {children}
+            </div>
+        );
     }
 
     private async eventHandle(eventName: string, args: any[]) {

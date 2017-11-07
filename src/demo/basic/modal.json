@@ -1,0 +1,64 @@
+{
+    "body": [
+        {
+            "type": "container",
+            "model": "test",
+            "data": {
+                "visible": false  
+            },
+            "dataCustomer": {
+                "customers": [
+                    {
+                        "mode": "pass",
+                        "name": "setModal",
+                        "config": {
+                            "model": "test",
+                            "assign": {
+                                "visible": "#ES{$trigger.setModal.visible}"
+                            }
+                        }
+                    }
+                ]
+            },
+            "children": [
+                {
+                    "type": "button",
+                    "text": "show Modal",
+                    "trigger": [
+                        {
+                            "event": "onClick",
+                            "targetCustomer": "setModal",
+                            "params": {
+                                "visible": "#ES{!$data.visible}"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "modal",
+                    "visible": "#ES{$data.visible}",
+                    "okText": "ok",
+                    "children": [
+                        {
+                            "type": "text",
+                            "text": "helloworld"
+                        },
+                        {
+                            "type": "button",
+                            "text": "close",
+                            "trigger": [
+                                {
+                                    "event": "onClick",
+                                    "targetCustomer": "setModal",
+                                    "params": {
+                                        "visible": "#ES{!$data.visible}"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

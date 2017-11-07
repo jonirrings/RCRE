@@ -88,7 +88,7 @@ export class DataCustomer {
     public initCustomerConfig(info: CustomerSourceConfig | CustomerSourceConfig[]) {
         if (info instanceof Array) {
             info.forEach(item => this.initCustomer(item));
-        } else {
+        } else if (info && info.customers) {
             this.initCustomer(info);
         }
     }
@@ -96,6 +96,11 @@ export class DataCustomer {
     private initCustomer(info: CustomerSourceConfig) {
         let customerList = info.customers;
         let groups = info.groups;
+        
+        if (!(customerList instanceof Array)) {
+            console.error('customers should be array');
+            return;
+        }
 
         customerList.forEach(customer => {
             let mode = customer.mode;
@@ -114,13 +119,15 @@ export class DataCustomer {
                 config: config
             });
         });
+        
+        if (groups instanceof Array) {
+            groups.forEach(group => {
+                let name = group.name;
+                let steps = group.steps;
 
-        groups.forEach(group => {
-            let name = group.name;
-            let steps = group.steps;
-
-            this.groups = this.groups.set(name, steps);
-        });
+                this.groups = this.groups.set(name, steps);
+            });   
+        }
     }
 
     public async execCustomer(customer: string, runTime: runTimeType) {

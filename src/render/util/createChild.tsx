@@ -1,12 +1,13 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import {BasicConfig} from '../core/Container/types';
+import {BasicConfig, BasicContainerPropsInterface} from '../core/Container/types';
 import componentLoader from '../util/componentLoader';
 import createElement from './createElement';
+import Trigger from '../core/Trigger/Trigger';
 import '../../components/index';
 import '../core/Layout/Row/Row';
 
-export function createChild<T>(item: BasicConfig,
+export function createChild<T extends BasicContainerPropsInterface>(item: BasicConfig,
                             childProps: T,
                             childElements: React.ReactNode = null) {
     if (!_.isPlainObject(item)) {
@@ -25,6 +26,19 @@ export function createChild<T>(item: BasicConfig,
 
     component = componentInfo.component;
     componentInterface = componentInfo.componentInterface;
-
-    return createElement<T>(component, componentInterface, childProps, childElements);
+    
+    let children = createElement<T>(component, componentInterface, childProps, childElements);
+    
+    if (item.trigger) {
+        return React.createElement(Trigger, {
+            info: childProps.info!,
+            $data: childProps.$data!,
+            $setData: childProps.$setData!,
+            model: childProps.model!,
+            key: childProps.key!,
+            dataCustomer: childProps.dataCustomer!
+        }, children);
+    }
+    
+    return children;
 }

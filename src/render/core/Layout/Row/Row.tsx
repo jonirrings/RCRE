@@ -4,7 +4,6 @@ import * as _ from 'lodash';
 import componentLoader from '../../../util/componentLoader';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../Container/types';
 import {createChild} from '../../../util/createChild';
-import Trigger from '../../Trigger/Trigger';
 
 export type gridPositionItems = 'top-left' | 'top-center' | 'top-right' |
     'middle-left' | 'middle-center' | 'middle-right' |
@@ -169,23 +168,23 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
                 ...positionStyle
             };
 
-            if (childInfo.trigger
-                && this.props.$data
-                && this.props.$setData 
-                && this.props.dataCustomer
-                && this.props.model
-            ) {
-                return (
-                    <Trigger
-                        info={childInfo}
-                        $data={this.props.$data}
-                        $setData={this.props.$setData}
-                        dataCustomer={this.props.dataCustomer}
-                        model={this.props.model}
-                        key={index}
-                    />
-                );
-            }
+            // if (childInfo.trigger
+            //     && this.props.$data
+            //     && this.props.$setData 
+            //     && this.props.dataCustomer
+            //     && this.props.model
+            // ) {
+            //     return (
+            //         <Trigger
+            //             info={childInfo}
+            //             $data={this.props.$data}
+            //             $setData={this.props.$setData}
+            //             dataCustomer={this.props.dataCustomer}
+            //             model={this.props.model}
+            //             key={index}
+            //         />
+            //     );
+            // }
 
             let child = createChild(childInfo, {
                 info: childInfo,

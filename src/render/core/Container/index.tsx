@@ -11,7 +11,6 @@ import {ContainerPropsInterface} from '../../../components/Container/Container';
 import {compileValueExpress} from '../../util/vm';
 import {DataCustomer} from '../DataCustomer/Controller';
 import {createChild} from '../../util/createChild';
-import Trigger from '../Trigger/Trigger';
 
 // First Init Life Circle:
 // ComponentWillMount -> Render -> ComponentDidMount
@@ -121,19 +120,6 @@ export class Container extends BasicContainer<ContainerProps, {}> {
                     newValue: value
                 }, this.props.info.model);
             };
-            
-            if (info.trigger) {
-                return (
-                    <Trigger 
-                        info={child}
-                        model={this.props.info.model}
-                        $data={this.props.$data}
-                        dataCustomer={this.dataCustomer}
-                        $setData={setData}
-                        key={`${child.type}_${index}`}
-                    />
-                );
-            }
             
             return createChild(child, {
                 info: child,
