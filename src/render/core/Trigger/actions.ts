@@ -1,24 +1,32 @@
-export const TRIGGER_SET_DATA = 'SET_DATA';
+export const TRIGGER_SET_DATA = 'TRIGGER_SET_DATA';
 
 export type TRIGGER_SET_DATA_PAYLOAD = {
-    key: string;
-    value: any;
+    /**
+     * 数据模型Key
+     */
+    model: string;
+    /**
+     * customer的名称
+     */
+    customer: string;
+    /**
+     * customer的数据
+     */
+    data: Object;
 };
 
 export type IActions = {
     TRIGGER_SET_DATA: {
         type: typeof TRIGGER_SET_DATA,
-        payload: TRIGGER_SET_DATA_PAYLOAD,
-        model: string;
+        payload: TRIGGER_SET_DATA_PAYLOAD[];
     }
 };
 
 export type ITriggerAction = IActions[keyof IActions];
 
 export const actionCreators = {
-    triggerSetData: (model: string, payload: TRIGGER_SET_DATA_PAYLOAD) => ({
+    triggerSetData: (payload: TRIGGER_SET_DATA_PAYLOAD[]) => ({
         type: TRIGGER_SET_DATA as typeof TRIGGER_SET_DATA,
-        payload,
-        model
+        payload
     })
 };

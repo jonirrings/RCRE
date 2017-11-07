@@ -85,6 +85,11 @@ export class BasicContainerPropsInterface {
     $data?: Map<string, any>;
 
     /**
+     * Trigger组件的数据模型对象
+     */
+    $trigger?: Map<string, any>;
+
+    /**
      * 通过表格组件, 渲染之后, 获取到的每一行的数据
      */
     $item?: Map<string, any>;
@@ -172,11 +177,12 @@ export const BasicContextTypes = {
     $query: PropTypes.object
 };
 
-type runTimeType = {
+export type runTimeType = {
     $data?: Object;
     $query?: Object;
     $global?: Object;
     $item?: Object;
+    $trigger?: Object;
     $index?: number;
     $now?: moment.Moment;
 };
@@ -203,6 +209,10 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
 
         if (props.$index) {
             runtime.$index = props.$index;
+        }
+        
+        if (props.$trigger) {
+            runtime.$trigger = props.$trigger.toObject();
         }
 
         if (context.$query) {

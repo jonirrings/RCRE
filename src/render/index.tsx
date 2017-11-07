@@ -8,6 +8,8 @@ import {actionCreators} from './core/Container/action';
 import {Provider} from 'react-redux';
 import componentDriver from './util/componentLoader';
 import {BasicContainer} from './core/Container/types';
+import {providerLoaderInstance as providerLoader} from './core/DataProvider/loader';
+import {customerLoaderInstance as customerLoader} from './core/DataCustomer/loader';
 
 import './index.css';
 
@@ -86,7 +88,7 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
     }
 }
 
-export {componentDriver, BasicContainer};
+export {componentDriver, BasicContainer, providerLoader, customerLoader};
 
 window.RCRE = Render;
 window.RCRE_React = React;

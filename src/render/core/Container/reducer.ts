@@ -4,7 +4,7 @@ import {
     ASYNC_LOAD_DATA_FAIL,
     ASYNC_LOAD_DATA_PROGRESS,
     ASYNC_LOAD_DATA_SUCCESS,
-    CLEAR_DATA,
+    CLEAR_DATA, DATA_CUSTOMER_PASS,
     IContainerAction,
     REMOVE_DATA,
     SET_DATA,
@@ -19,6 +19,7 @@ export type IState = Map<string, stateItem>;
 export const initialState: IState = Map<string, stateItem>({});
 
 export const reducer: Reducer<IState> = (state: IState = initialState, actions: IContainerAction): IState => {
+    console.log(1, actions.type);
     switch (actions.type) {
         case SET_DATA:
             if (!state.has(actions.model)) {
@@ -120,6 +121,23 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
             
             existState = existState.set('$error', error);
             return state.set(model, existState);
+        }
+        case DATA_CUSTOMER_PASS:
+        {
+            let payload = actions.payload;
+            let model = payload.model;
+            let data = payload.data;
+            
+            if (!state.has(model)) {
+                console.error(`model: ${model} is not exist`);
+                return state;
+            }
+            
+            console.log(data);
+            
+            let exist = state.get(model);
+            exist = exist.merge(data);
+            return state.set(model, exist);
         }
         case REMOVE_DATA:
             let delKey = actions.payload.model;

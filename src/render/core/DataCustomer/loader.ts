@@ -21,4 +21,4 @@ export class CustomerLoader {
     }
 }
 
-export const customerInstance = new CustomerLoader();
+export const customerLoaderInstance = new CustomerLoader();

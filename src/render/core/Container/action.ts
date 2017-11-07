@@ -7,6 +7,7 @@ export const SYNC_LOAD_DATA_FAIL = 'SYNC_LOAD_DATA_FAIL';
 export const ASYNC_LOAD_DATA_PROGRESS = 'ASYNC_LOAD_DATA_PROGRESS';
 export const ASYNC_LOAD_DATA_SUCCESS = 'ASYNC_LOAD_DATA_SUCCESS';
 export const ASYNC_LOAD_DATA_FAIL = 'ASYNC_LOAD_DATA_FAIL';
+export const DATA_CUSTOMER_PASS = 'DATA_CUSTOMER_PASS';
 export type SET_DATA_PAYLOAD = {
     type: string;
     newValue: any;
@@ -38,6 +39,10 @@ export type SYNC_LOAD_DATA_FAIL_PAYLOAD = {
     model: string;
     providerMode: string;
     error: any
+};
+export type DATA_CUSTOMER_PASS_PAYLOAD = {
+    model: string;
+    data: Object;
 };
 
 export type IActions = {
@@ -77,6 +82,10 @@ export type IActions = {
     SYNC_LOAD_DATA_FAIL: {
         type: typeof SYNC_LOAD_DATA_FAIL,
         payload: SYNC_LOAD_DATA_FAIL_PAYLOAD
+    },
+    DATA_CUSTOMER_PASS: {
+        type: typeof DATA_CUSTOMER_PASS,
+        payload: DATA_CUSTOMER_PASS_PAYLOAD
     }
 };
 
@@ -118,6 +127,10 @@ export const actionCreators = {
     }),
     syncLoadDataFail: (payload: SYNC_LOAD_DATA_FAIL_PAYLOAD) => ({
         type: SYNC_LOAD_DATA_FAIL as typeof SYNC_LOAD_DATA_FAIL,
+        payload
+    }),
+    dataCustomerPass: (payload: DATA_CUSTOMER_PASS_PAYLOAD) => ({
+        type: DATA_CUSTOMER_PASS as typeof DATA_CUSTOMER_PASS,
         payload
     })
 };

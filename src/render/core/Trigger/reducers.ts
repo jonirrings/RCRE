@@ -10,20 +10,23 @@ export const initialState: IState = Map<string, stateItem>({});
 export const reducer: Reducer<IState> = (state: IState = initialState, actions: ITriggerAction): IState => {
     switch (actions.type) {
         case TRIGGER_SET_DATA:
-            let model = actions.model;
-            if (!state.has(model)) {
-                state = state.set(model, Map({}));
-            }
-
             let payload = actions.payload;
-            let key = payload.key;
-            let value = payload.value;
-
-            let target = state.get(model);
             
-            target = target.set(key, value);
+            payload.forEach(pay => {
+                let model = pay.model;
+                if (!state.has(model)) {
+                    state = state.set(model, Map({}));
+                }
+                
+                let customer = pay.customer;
+                let data = pay.data;
+                let target = state.get(model);
 
-            return state.set(model, target);
+                target = target.set(customer, data);
+                state = state.set(model, target);
+            });
+            
+            return state;
 
         default:
             return state;

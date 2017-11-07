@@ -1,5 +1,9 @@
-import {customerInstance} from './loader';
+import {customerLoaderInstance} from './loader';
+import {PassCustomers} from './customers/pass';
 import {Map} from 'immutable';
+import {runTimeType} from '../Container/types';
+
+customerLoaderInstance.registerCustomer('pass', new PassCustomers());
 
 export class CustomerSourceConfig {
     /**
@@ -60,9 +64,14 @@ export interface CustomerSourceConfig {
 }
 
 export interface BasicCustomerInstance {
-    exec(config: CustomerSourceConfig): Promise<void>;
+    exec(config: any, runTime: runTimeType): Promise<void>;
 }
 
+/**
+ * DataCustomer是一个数据源输出端
+ * 它通过注入customer插件的形式, 把各种各样的数据消耗方加载进来
+ * 针对特殊的业务逻辑场景, 可以使用Group来使用链式调用
+ */
 export class DataCustomer {
     private customers: Map<string, {
         instance: BasicCustomerInstance;
@@ -84,10 +93,6 @@ export class DataCustomer {
         }
     }
 
-    public execCustomer(customer: string) {
-        console.log(customer, this.groups, this.customers);
-    }
-
     private initCustomer(info: CustomerSourceConfig) {
         let customerList = info.customers;
         let groups = info.groups;
@@ -97,7 +102,7 @@ export class DataCustomer {
             let name = customer.name;
             let config = customer.config;
 
-            let instance = customerInstance.getCustomer(mode);
+            let instance = customerLoaderInstance.getCustomer(mode);
 
             if (!instance) {
                 console.error('can not find customer of mode: ' + mode);
@@ -116,5 +121,33 @@ export class DataCustomer {
 
             this.groups = this.groups.set(name, steps);
         });
+    }
+
+    public async execCustomer(customer: string, runTime: runTimeType) {
+        if (!this.customers.has(customer)) {
+            console.error(`customer: ${customer} is not defined`);
+            return;
+        }
+        
+        if (!this.groups.has(customer)) {
+            let instance = this.customers.get(customer).instance;
+            let config = this.customers.get(customer).config;
+            
+            await instance.exec(config, runTime);
+        } else {
+            let groups = this.groups.get(customer);
+            
+            for (let name of groups) {
+                if (!this.customers.has(name)) {
+                    console.log(`customer: ${name} is not defined`);
+                    continue;
+                }
+                
+                let instance = this.customers.get(name).instance;
+                let config = this.customers.get(name).config;
+                
+                await instance.exec(config, runTime);
+            }
+        }
     }
 }

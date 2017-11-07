@@ -15,18 +15,17 @@
                         "config": {
                             "model": "demo",
                             "assign": {
-                                "name": "#ES{$params[3]}"
+                                "name": "#ES{$trigger.passCustomer[1]}"
                             }
                         }
                     },
                     {
-                        "mode": "submit",
-                        "name": "submitCustomer",
+                        "mode": "pass",
+                        "name": "testCustomer",
                         "config": {
-                            "url": "http://baidu.com",
-                            "method": "POST",
-                            "data": {
-                                "name": "#ES{$params[2]}"
+                            "model": "demo",
+                            "assign": {
+                                "name": "helloworld"
                             }
                         }
                     }
@@ -34,10 +33,7 @@
                 "groups": [
                     {
                         "name": "group1",
-                        "steps": [
-                            "passCustomer",
-                            "submitCustomer"
-                        ]
+                        "steps": ["passCustomer", "testCustomer"]
                     }
                 ]
             },
@@ -56,12 +52,18 @@
                     "trigger": [
                         {
                             "event": "onClick",
-                            "debug": true,
                             "targetCustomer": "passCustomer",
                             "params": [
                                 "2",
-                                "#ES{$data.name}"
+                                "#ES{$data.name} + 'qweqwe'"
                             ]
+                        },
+                        {
+                            "event": "onClick",
+                            "targetCustomer": "testCustomer",
+                            "params": {
+                                "name": "helloworld"
+                            }
                         }
                     ]
                 }

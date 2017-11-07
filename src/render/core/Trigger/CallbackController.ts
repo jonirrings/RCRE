@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import {Map} from 'immutable';
 
-type callbackItem = {
-    name: string;
+export type callbackItem = {
+    event: string;
     targetCustomer: string;
     params: (string | number | boolean)[];
     debug: boolean;
@@ -15,50 +15,51 @@ export class CallbackController {
         this.store = Map({});
     }
 
-    public hasCallback(name: string): boolean {
-        return this.store.has(name);
+    public hasCallback(event: string): boolean {
+        return this.store.has(event);
     }
 
-    public registerCallback(name: string,
+    public registerCallback(event: string,
                             targetCustomer: string,
                             params: (string | number | boolean)[],
                             debug: boolean = false) {
-        if (!_.isString(name) || !_.isString(targetCustomer)) {
-            console.error('registerCallback should container name, targetCustomer');
+        if (!_.isString(event) || !_.isString(targetCustomer)) {
+            console.error('registerCallback should have eventName, targetCustomer');
+            return;
         }
         
-        if (!this.store.has(name)) {
-            this.store = this.store.set(name, {
-                name,
+        if (!this.store.has(event)) {
+            this.store = this.store.set(event, {
+                event,
                 targetCustomer,
                 params,
                 debug
             });
         } else {
-            let item = this.store.get(name);
+            let item = this.store.get(event);
             
             if (item instanceof Array) {
                 item.push({
-                    name,
+                    event,
                     targetCustomer,
                     params,
                     debug
                 });
-                this.store = this.store.set(name, item);
+                this.store = this.store.set(event, item);
             } else {
                 let array = [item];
                 array.push({
-                    name,
+                    event,
                     targetCustomer,
                     params,
                     debug
                 });
-                this.store = this.store.set(name, array);
+                this.store = this.store.set(event, array);
             }
         }
     }
 
-    public getCallbackInfo(name: string) {
-        return this.store.get(name);
+    public getCallbackInfo(event: string) {
+        return this.store.get(event);
     }
 }

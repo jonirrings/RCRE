@@ -1,7 +1,7 @@
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../Container/types';
 import {createChild} from '../../util/createChild';
 import {Map} from 'immutable';
-import {CallbackController} from './CallbackController';
+import {CallbackController, callbackItem} from './CallbackController';
 import {compileValueExpress} from '../../util/vm';
 import {connect} from 'react-redux';
 import {RootState} from '../../data/reducers';
@@ -79,16 +79,17 @@ interface TriggerProps extends TriggerPropsInterface {
 
 class Trigger extends BasicContainer<TriggerProps, {}> {
     callbackController: CallbackController;
-    
+    taskQueue: any[];
+
     constructor() {
         super();
-        
+
         this.callbackController = new CallbackController();
+        this.taskQueue = [];
         this.eventHandle = this.eventHandle.bind(this);
     }
 
     componentWillMount() {
-        console.log(this.props);
         let trigger = this.props.info.trigger;
 
         if (trigger instanceof Array) {
@@ -98,6 +99,16 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
                 let params = tr.params;
                 this.callbackController.registerCallback(event, targetCustomer, params);
             });
+        }
+    }
+
+    async componentWillReceiveProps(nextProps: TriggerProps) {
+        if (this.props.$trigger !== nextProps.$trigger && this.taskQueue.length > 0) {
+            while (this.taskQueue.length > 0) {
+                let task = this.taskQueue.pop();
+                let runTime = this.getRuntimeContext(nextProps, this.context);
+                await this.props.dataCustomer.execCustomer(task, runTime);
+            }
         }
     }
 
@@ -113,7 +124,7 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
         });
     }
 
-    private eventHandle(eventName: string, args: any[]) {
+    private async eventHandle(eventName: string, args: any[]) {
         let isExist = this.callbackController.hasCallback(eventName);
 
         if (!isExist) {
@@ -123,21 +134,31 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
         let callbackInfo = this.callbackController.getCallbackInfo(eventName);
 
         if (!(callbackInfo instanceof Array)) {
-            let params = callbackInfo.params;
+            callbackInfo = [callbackInfo];
+        }
 
+        await this.execCallbackInfo(callbackInfo, args);
+    }
+
+    private async execCallbackInfo(callbackInfo: callbackItem[], args: any[]) {
+        let items = callbackInfo.map(info => {
+            let params = info.params;
             let runTime = this.getRuntimeContext(this.props, this.context);
             let output = compileValueExpress(params, {
                 args: args,
                 ...runTime
             });
 
-            this.props.triggerSetData(this.props.model, {
-                key: 'test',
-                value: output
-            });
+            this.taskQueue.push(info.targetCustomer);
 
-            this.props.dataCustomer.execCustomer(callbackInfo.targetCustomer);
-        }
+            return {
+                model: this.props.model,
+                customer: info.targetCustomer,
+                data: output
+            };
+        });
+
+        this.props.triggerSetData(items);
     }
 }
 
@@ -148,7 +169,8 @@ const mapStateToProps = (state: RootState, ownProps: TriggerPropsInterface) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<ITriggerAction>) => bindActionCreators({
-    triggerSetData: actionCreators.triggerSetData
+    triggerSetData: actionCreators.triggerSetData,
+
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trigger);
