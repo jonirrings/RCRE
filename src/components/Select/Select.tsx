@@ -7,6 +7,7 @@ import {compileValueExpress} from '../../render/util/vm';
 import {Select} from 'antd';
 import {OptionProps, SelectProps, SelectValue} from 'antd/lib/select';
 import {CSSProperties} from 'react';
+import * as _ from 'lodash';
 
 const Option = Select.Option;
 export class SelectConfig extends BasicConfig {

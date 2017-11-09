@@ -14,6 +14,7 @@ export class GridItem extends BasicConfig {
     gridPosition?: gridPositionItems;
     gridLeft?: number;
     gridTop?: number;
+    gridWidth?: number | string;
 }
 
 type alignCenterItems =
@@ -164,7 +165,7 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
             const innerGridStyle = {
                 marginTop: `${childInfo.gridTop || 0}px`,
                 marginLeft: `${childInfo.gridLeft || 0}px`,
-                width: '100%',
+                width: childInfo.gridWidth || '100%',
                 display: 'flex',
                 ...positionStyle
             };
