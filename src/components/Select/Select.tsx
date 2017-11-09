@@ -151,8 +151,10 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
         this.handleChange = this.handleChange.bind(this);
     }
 
-    private handleChange() {
-
+    private handleChange(value: SelectValue) {
+        if (this.props.$setData) {
+            this.props.$setData(this.props.info.name, value);
+        }
     }
 
     private applyMapping<T>(data: T, mappingConfig: T, index: number): T {
@@ -215,22 +217,38 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
         });
         
         let selectOptions = this.mapSelectOptions(info);
+        
+        let value = this.props.$data.get(info.name);
+        
         return React.createElement(Select, {
             onChange: this.handleChange,
+            value: value,
             style: {
                 width: '100%',
                 ...info.style
             },
-            onSelect: (value: SelectValue, option: Object) => {
+            onSelect: (val: SelectValue, option: Object) => {
+                this.commonEventHandler('onSelect', [val, option]);
             },
-            onDeselect: (value: SelectValue) => {
+            onDeselect: (val: SelectValue) => {
+                this.commonEventHandler('onDeselect', [val]);
             },
             onBlur: () => {
+                this.commonEventHandler('onBlur', []);
             },
             onFocus: () => {
+                this.commonEventHandler('onFocus', []);
             },
             ...selectOptions
         }, Options);
+    }
+    
+    private commonEventHandler(eventName: string, args: any[]) {
+        if (this.props.eventHandle) {
+            this.props.eventHandle(eventName, args);
+        } else {
+            console.error('Event System only can work with container component');
+        }
     }
 }
 

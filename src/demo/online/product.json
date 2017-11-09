@@ -7,14 +7,7 @@
                 "date": "#ES{$now}"
             },
             "dataProvider": [
-                {
-                    "mode": "ajax",
-                    "config": {
-                        "url": "http://cp01-rdqa-dev420-dongtiancheng-new.epc.baidu.com:8093/commongd/api/gd/gdProductList",
-                        "method": "GET"
-                    },
-                    "namespace": "productList"
-                }
+                
             ],
             "debug": true,
             "children": [
