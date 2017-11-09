@@ -168,7 +168,8 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
             context.$data = this.props.$data.toObject();
         }
 
-        return compileValueExpress(mappingConfig, context);
+        let newObj = compileValueExpress(mappingConfig, context);
+        return Object.assign(data, newObj);
     }
 
     private mapSelectOptions(info: SelectConfig): SelectProps {
@@ -234,19 +235,19 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
                 this.commonEventHandler('onDeselect', [val]);
             },
             onBlur: () => {
-                this.commonEventHandler('onBlur', []);
+                this.commonEventHandler('onBlur', [], true);
             },
             onFocus: () => {
-                this.commonEventHandler('onFocus', []);
+                this.commonEventHandler('onFocus', [], true);
             },
             ...selectOptions
         }, Options);
     }
     
-    private commonEventHandler(eventName: string, args: any[]) {
+    private commonEventHandler(eventName: string, args: any[], mute: boolean = false) {
         if (this.props.eventHandle) {
             this.props.eventHandle(eventName, args);
-        } else {
+        } else if (!mute) {
             console.error('Event System only can work with container component');
         }
     }

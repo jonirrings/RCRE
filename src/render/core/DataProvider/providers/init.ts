@@ -24,7 +24,7 @@ export class InitDataProvider implements BasicSyncProviderInterface {
             
             let date = moment(val);
             
-            if (date.isValid()) {
+            if (_.isString(date) && date.isValid()) {
                 config[name] = date;
             }
         });

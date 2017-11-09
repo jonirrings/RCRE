@@ -1,18 +1,37 @@
 {
+    "debug": true,
     "body": [
         {
             "type": "container",
             "model": "product",
             "data": {
-                "date": "#ES{$now}"
+                "date": "#ES{$now}",
+                "product": "all",
+                "client": "all",
+                "os": "all",
+                "page": "all",
+                "hiddenLineChart": false,
+                "lineChartSelected": "charge",
+                "productFilter":{"base":[{"type":1,"Kname":"产品线","key":"product","list":[{"Vname":"全部","value":"all"},{"Vname":"百度贴吧","value":"2"},{"Vname":"百度手机浏览器","value":"9"},{"Vname":"手机百度","value":"8"},{"Vname":"贴吧结合版","value":"17"},{"Vname":"大搜","value":"18"},{"Vname":"百度糯米","value":"19"},{"Vname":"百度图搜","value":"20"},{"Vname":"宝宝知道","value":"21"},{"Vname":"百度新闻","value":"7"},{"Vname":"汇川中间页","value":"22"},{"Vname":"百度小说","value":"23"},{"Vname":"百度BES","value":"24"}]},{"type":1,"Kname":"端","key":"client","list":[{"Vname":"全部","value":"all"},{"Vname":"PC","value":"0"},{"Vname":"WAP","value":"1"},{"Vname":"APP","value":"2"}]},{"type":1,"Kname":"操作系统","key":"os","list":[{"Vname":"全部","value":"all"},{"Vname":"其他","value":"3"},{"Vname":"Android","value":"2"},{"Vname":"IOS","value":"1"}]},{"type":1,"Kname":"页面","key":"page","list":[{"Vname":"全部","value":"all"},{"Vname":"列表页","value":"3"},{"Vname":"图文详情页","value":"4"},{"Vname":"看图页","value":"6"},{"Vname":"首页","value":"7"},{"Vname":"开机页","value":"8"},{"Vname":"酒店频道列表页","value":"16"},{"Vname":"百度旅游wap目的地页&游记详情页","value":"17"},{"Vname":"视频详情页","value":"18"},{"Vname":"无线大图页","value":"19"},{"Vname":"详情页","value":"11"},{"Vname":"图集详情页","value":"28"},{"Vname":"结果页","value":"26"},{"Vname":"视频列表页","value":"25"},{"Vname":"阅读页","value":"31"},{"Vname":"小说详情页","value":"32"},{"Vname":"小说阅读页","value":"33"},{"Vname":"内容联盟-列表页","value":"34"}]}],"table":[{"type":2,"Kname":"基础指标","key":"baseFields","list":[{"Vname":"AFD请求数","value":"pv"},{"Vname":"AFD关联请求数","value":"req_num"},{"Vname":"AFD吐物料次数","value":"epv"},{"Vname":"AFD吐物料个数","value":"res_num"},{"Vname":"库存数","value":"store"},{"Vname":"曝光数","value":"eshow"},{"Vname":"点击数","value":"click"},{"Vname":"消费","value":"charge"},{"Vname":"现金","value":"cash"}]},{"type":2,"Kname":"计算指标","key":"extFields","list":[{"Vname":"CTR","value":"CTR"},{"Vname":"CPM","value":"CPM"},{"Vname":"CPC","value":"CPC"},{"Vname":"PVR","value":"PVR"},{"Vname":"库存填充率","value":"fillRate"}]}],"downLoad":[{"type":2,"Kname":"下载维度","key":"dFields1","list":[{"Vname":"频道/目录","value":"first_dir"},{"Vname":"客户端版本","value":"app_version"}]},{"type":2,"Kname":"展开基础维度","key":"dFields2","list":[{"Vname":"产品线","value":"product"},{"Vname":"端","value":"client"},{"Vname":"操作系统","value":"os"},{"Vname":"页面","value":"page"}]}]}
             },
-            "dataProvider": [
-                
-            ],
-            "debug": true,
+            "dataCustomer": {
+                "customers": [
+                    {
+                        "mode": "pass",
+                        "name": "toggleLineChart",
+                        "config": {
+                            "model": "product",
+                            "assign": {
+                                "hiddenLineChart": "#ES{$trigger.toggleLineChart.hidden}"
+                            }
+                        }
+                    }
+                ]
+            },
             "children": [
                 {
                     "type": "row",
+                    "minHeight": 40,
                     "children": [
                         {
                             "type": "text",
@@ -28,10 +47,149 @@
                 },
                 {
                     "type": "row",
+                    "minHeight": 40,
                     "children": [
                         {
                             "type": "text",
-                            "text": "产品线"
+                            "text": "产品线",
+                            "gridCount": 0.5
+                        },
+                        {
+                            "type": "select",
+                            "name": "product",
+                            "gridCount": 1,
+                            "options": "#ES{$data.productFilter.base[0].list}",
+                            "optionsMapping": {
+                                "key": "#ES{$iterator.Vname}"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "text": "端",
+                            "gridCount": 0.3
+                        },
+                        {
+                            "type": "select",
+                            "name": "client",
+                            "gridCount": 1,
+                            "options": "#ES{$data.productFilter.base[1].list}",
+                            "optionsMapping": {
+                                "key": "#ES{$iterator.Vname}"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "text": "操作系统",
+                            "gridCount": 0.5
+                        },
+                        {
+                            "type": "select",
+                            "name": "os",
+                            "gridCount": 1,
+                            "options": "#ES{$data.productFilter.base[2].list}",
+                            "optionsMapping": {
+                                "key": "#ES{$iterator.Vname}"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "text": "页面",
+                            "gridCount": 0.4
+                        },
+                        {
+                            "type": "select",
+                            "name": "page",
+                            "gridCount": 1,
+                            "options": "#ES{$data.productFilter.base[3].list}",
+                            "optionsMapping": {
+                                "key": "#ES{$iterator.Vname}"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "row",
+                    "minHeight": 40,
+                    "children": [
+                        {
+                            "type": "button",
+                            "antd.type": "primary",
+                            "size": "large",
+                            "text": "查询",
+                            "gridCount": 0.5,
+                            "gridLeft": 5
+                        },
+                        {
+                            "type": "button",
+                            "antd.type": "primary",
+                            "size": "large",
+                            "text": "导出",
+                            "gridCount": 0.5
+                        },
+                        {
+                            "type": "text",
+                            "text": "隐藏趋势图",
+                            "gridCount": 1,
+                            "hidden": "#ES{$data.hiddenLineChart}",
+                            "trigger": [
+                                {
+                                    "event": "onClick",
+                                    "targetCustomer": "toggleLineChart",
+                                    "params": {
+                                        "hidden": true
+                                    }
+                                }
+                            ],
+                            "style": {
+                                "color": "#1ca8dd",
+                                "fontSize": 12,
+                                "cursor": "pointer"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "text": "显示趋势图",
+                            "gridCount": 1,
+                            "hidden": "#ES{!$data.hiddenLineChart}",
+                            "trigger": [
+                                {
+                                    "event": "onClick",
+                                    "targetCustomer": "toggleLineChart",
+                                    "params": {
+                                        "hidden": false
+                                    }
+                                }
+                            ],
+                            "style": {
+                                "color": "#1ca8dd",
+                                "fontSize": 12,
+                                "cursor": "pointer"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "row",
+                    "hidden": "#ES{$data.hiddenLineChart}",
+                    "children": [
+                        {
+                            "type": "row",
+                            "children": [
+                                {
+                                    "type": "text",
+                                    "text": "趋势图指标",
+                                    "gridCount": 0.7
+                                },
+                                {
+                                    "type": "select",
+                                    "name": "lineChartSelected",
+                                    "gridCount": 1,
+                                    "options": "#ES{$data.productFilter.table[0].list.concat($data.productFilter.table[1].list)}",
+                                    "optionsMapping": {
+                                        "key": "#ES{$iterator.Vname}"
+                                    }
+                                }
+                            ]
                         }
                     ]
                 }

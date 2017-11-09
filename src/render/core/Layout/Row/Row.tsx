@@ -153,6 +153,7 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
         const defaultGridCount = this.getDefaultGridCount(children);
 
         let childElements = children.map((childInfo, index) => {
+            childInfo = this.getPropsInfo(childInfo);
             let gridCount = childInfo.gridCount || defaultGridCount;
             let positionStyle = getCssCombo(childInfo.gridPosition);
             const gridStyles = {
@@ -168,24 +169,6 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
                 ...positionStyle
             };
 
-            // if (childInfo.trigger
-            //     && this.props.$data
-            //     && this.props.$setData 
-            //     && this.props.dataCustomer
-            //     && this.props.model
-            // ) {
-            //     return (
-            //         <Trigger
-            //             info={childInfo}
-            //             $data={this.props.$data}
-            //             $setData={this.props.$setData}
-            //             dataCustomer={this.props.dataCustomer}
-            //             model={this.props.model}
-            //             key={index}
-            //         />
-            //     );
-            // }
-
             let child = createChild(childInfo, {
                 info: childInfo,
                 $data: this.props.$data,
@@ -193,13 +176,16 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
                 dataCustomer: this.props.dataCustomer,
                 model: this.props.model
             });
-            return (
+            
+            let childElement = (
                 <div key={`grid_${childInfo.type}_${index}`} style={gridStyles}>
                     <div style={innerGridStyle}>
                         {child}
                     </div>
                 </div>
             );
+            
+            return this.renderChildren(childInfo, childElement);
         });
 
         const rowStyles = {
@@ -210,11 +196,13 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
             ...info.style
         };
 
-        return (
-            <div style={rowStyles} className={info.className}>
+        let rowElement = (
+            <div style={rowStyles} className={info.className} key={'row'}>
                 {childElements}
             </div>
         );
+        
+        return this.renderChildren(info, rowElement);
     }
 }
 
