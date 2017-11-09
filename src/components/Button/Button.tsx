@@ -2,9 +2,10 @@ import * as React from 'react';
 import {CSSProperties} from 'react';
 import {IsBoolean, IsDefined, IsString} from 'class-validator';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
-import {Button} from 'antd';
+import {Button, Popconfirm} from 'antd';
 import componentLoader from '../../render/util/componentLoader';
 import {ButtonProps} from 'antd/lib/button/button';
+import * as _ from 'lodash';
 
 export class ButtonConfig extends BasicConfig {
     /**
@@ -32,8 +33,22 @@ export class ButtonConfig extends BasicConfig {
     /**
      * 设置之后, 会弹出一个确认框, 来确认是否要触发click事件
      */
-    @IsString()
-    confirm?: string;
+    confirm?: {
+        /**
+         * 确认框的描述
+         */
+        title?: string;
+
+        /**
+         * 确认按钮文字
+         */
+        okText?: string;
+
+        /**
+         * 取消按钮文字
+         */
+        cancelText?: string;
+    };
 
     /**
      * 按钮的图标类型
@@ -124,21 +139,43 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
     render() {
         let info = this.getPropsInfo(this.props.info);
         let text = info.text;
-
-        let buttonProps = this.mapButtonOptions(info);
-        let children = React.createElement(Button, {
-            // TODO: trigger Interface inject
-            onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
-                this.commonEventHandler('onClick', event);
-            },
+        let mappedProps = this.mapButtonOptions(info);
+        let children;
+        
+        let buttonProps: ButtonProps = {
             onMouseUp: (event: React.MouseEvent<HTMLButtonElement>) => {
                 this.commonEventHandler('onMouseUp', event);
             },
             onMouseDown: (event: React.MouseEvent<HTMLButtonElement>) => {
                 this.commonEventHandler('onMouseDown', event);
             },
-            ...buttonProps
-        }, text);
+            ...mappedProps
+        };
+        
+        if (_.isPlainObject(info.confirm)) {
+            children = React.createElement(Popconfirm, {
+                title: info.confirm!.title,
+                okText: info.confirm!.okText,
+                cancelText: info.confirm!.cancelText,
+                onConfirm: (event: React.MouseEvent<HTMLButtonElement>) => {
+                    this.commonEventHandler('onConfirm', event);
+                },
+                onCancel: (event: React.MouseEvent<HTMLButtonElement>) => {
+                    this.commonEventHandler('onCancel', event);
+                }
+            }, React.createElement(Button, buttonProps, text));    
+        } else {
+            if (info.confirm) {
+                console.error('Button confirm props should be plain Object');
+            }
+            
+            buttonProps.onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+                this.commonEventHandler('onClick', event);
+            };
+
+            children = React.createElement(Button, buttonProps, text); 
+        }
+        
         return this.renderChildren(info, children);
     }
 

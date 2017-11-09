@@ -11,6 +11,7 @@ import 'font-awesome/css/font-awesome.css';
 import './App.css';
 
 let basicContainerConfig = require('./demo/basic/basic.json');
+let buttonConfig = require('./demo/basic/button.json');
 let nestContainerConfig = require('./demo/basic/nestContainer.json');
 let dataProviderConfig = require('./demo/basic/provider.json');
 let layoutConfig = require('./demo/basic/layout.json');
@@ -26,6 +27,7 @@ let iconConfig = require('./demo/basic/icon.json');
 let modalConfig = require('./demo/basic/modal.json');
 
 let onlineDemo1 = require('./demo/online/demo1.json');
+let product = require('./demo/online/product.json');
 
 interface AppStateInterface {
     code: string;
@@ -36,7 +38,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(modalConfig)
+            code: jsonformat(product)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -76,29 +78,32 @@ class App extends React.Component<{}, AppStateInterface> {
         }
 
         let configList = [
-            ['basicContainer', basicContainerConfig],
+            ['basic', basicContainerConfig],
+            ['button', buttonConfig],
             ['nestContainer', nestContainerConfig],
             ['ajaxDataProvider', dataProviderConfig],
-            ['layoutConfig', layoutConfig],
-            ['inputConfig', inputConfig],
-            ['lineChartConfig', lineChartConfig],
-            ['checkboxConfig', checkboxConfig],
-            ['selectConfig', selectConfig],
-            ['radioConfig', radioConfig],
-            ['datePickerConfig', datePickerConfig],
-            ['tableConfig', tableConfig],
-            ['cascaderConfig', cascaderConfig],
-            ['iconConfig', iconConfig],
-            ['modalConfig', modalConfig]
+            ['layout', layoutConfig],
+            ['input', inputConfig],
+            ['lineChart', lineChartConfig],
+            ['checkbox', checkboxConfig],
+            ['select', selectConfig],
+            ['radio', radioConfig],
+            ['datePicker', datePickerConfig],
+            ['table', tableConfig],
+            ['cascader', cascaderConfig],
+            ['icon', iconConfig],
+            ['modal', modalConfig]
         ];
         
         let onlineConfig = [
-            ['onlineDemo1', onlineDemo1]
+            ['onlineDemo1', onlineDemo1],
+            ['product', product]
         ];
         
         return (
             <div>
                 <div className="config-panel">
+                    <span>基础样例: </span>
                     {
                         configList.map(item => {
                             let name = item[0];
@@ -111,6 +116,7 @@ class App extends React.Component<{}, AppStateInterface> {
                     }
                 </div>
                 <div className="config-panel">
+                    <span>真实业务样例</span>
                     {
                         onlineConfig.map(item => {
                             let name = item[0];

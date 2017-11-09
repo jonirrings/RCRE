@@ -1,0 +1,66 @@
+{
+    "body": [
+        {
+            "type": "container",
+            "model": "buttonState",
+            "data": {
+                "state": "-"
+            },
+            "dataCustomer": {
+                "customers": [
+                    {
+                        "mode": "pass",
+                        "name": "confirmDataPass",
+                        "config": {
+                            "model": "buttonState",
+                            "assign": {
+                                "state": "#ES{$trigger.confirmDataPass.state}"
+                            }  
+                        }
+                    }
+                ]
+            },
+            "children": [
+                {
+                    "type": "row",
+                    "children": [
+                        {
+                            "type": "button",
+                            "text": "basic Button",
+                            "gridCount": 1
+                        },
+                        {
+                            "type": "button",
+                            "text": "confirmExample",
+                            "gridCount": 1,
+                            "confirm": {
+                                "title": "text"
+                            },
+                            "trigger": [
+                                {
+                                    "event": "onConfirm",
+                                    "targetCustomer": "confirmDataPass",
+                                    "params": {
+                                        "state": "confirmed"
+                                    }
+                                },
+                                {
+                                    "event": "onCancel",
+                                    "targetCustomer": "confirmDataPass",
+                                    "params": {
+                                        "state": "canceled"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "text",
+                            "gridCount": 1,
+                            "text": "confirm state: #ES{$data.state}"
+                        }       
+                    ]
+                }
+            ]
+        }
+    ]
+}
