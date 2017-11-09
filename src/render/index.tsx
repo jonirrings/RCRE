@@ -93,3 +93,7 @@ export {componentDriver, BasicContainer, providerLoader, customerLoader};
 window.RCRE = Render;
 window.RCRE_React = React;
 window.RCRE_ReactDOM = ReactDOM;
+window.RCRE_componentDriver = componentDriver;
+window.RCRE_BasicContainer = BasicContainer;
+window.RCRE_providerLoader = providerLoader;
+window.RCRE_customerLoader = customerLoader;
