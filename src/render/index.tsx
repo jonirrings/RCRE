@@ -90,6 +90,8 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
 
 export {componentDriver, BasicContainer, providerLoader, customerLoader};
 
+window.React = React;
+window.ReactDOM = ReactDOM;
 window.RCRE = Render;
 window.RCRE_React = React;
 window.RCRE_ReactDOM = ReactDOM;

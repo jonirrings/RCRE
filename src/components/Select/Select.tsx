@@ -224,10 +224,9 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
         
         // 当前的数据模型中的值在列表中已经不存在的时候, 就清空当前选择框的值
         if (!_.isNil(value) &&
-            !_.find(options, o => o.value === value) &&
-            this.props.$setData
+            !_.find(options, o => o.value === value)
         ) {
-            this.props.$setData(info.name, null);
+            value = null;
         }
         
         return React.createElement(Select, {

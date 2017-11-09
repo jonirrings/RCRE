@@ -5,6 +5,8 @@ declare interface Window {
     RCRE_React: any;
     RCRE_ReactDOM: any;
     RCRE_VERSION: any;
+    React: any;
+    ReactDOM: any;
 }
 
 declare var __VERSION__: any;

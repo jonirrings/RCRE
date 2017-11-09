@@ -98,6 +98,11 @@ export class RowConfig extends BasicConfig {
     minHeight?: string;
 
     /**
+     * 宽度
+     */
+    width: number | string;
+
+    /**
      * 测试使用, 显示网格
      */
     showBorder?: boolean;
@@ -191,7 +196,7 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
 
         const rowStyles = {
             display: 'flex',
-            width: '100%',
+            width: info.width || '100%',
             minHeight: info.minHeight || '30px',
             border: info.showBorder ? '1px dashed #333' : '',
             ...info.style
