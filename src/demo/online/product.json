@@ -3,8 +3,45 @@
         {
             "type": "container",
             "model": "product",
-            "children": [
+            "data": {
                 
+            },
+            "dataProvider": [
+                {
+                    "mode": "ajax",
+                    "config": {
+                        "url": "http://cp01-rdqa-dev420-dongtiancheng-new.epc.baidu.com:8093/commongd/api/gd/gdProductList",
+                        "method": "GET"
+                    },
+                    "namespace": "productList"
+                }
+            ],
+            "debug": true,
+            "children": [
+                {
+                    "type": "row",
+                    "children": [
+                        {
+                            "type": "text",
+                            "text": "日期",
+                            "gridCount": 0.5
+                        },
+                        {
+                            "type": "datePicker",
+                            "name": "date",
+                            "gridCount": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "row",
+                    "children": [
+                        {
+                            "type": "text",
+                            "text": "产品线"
+                        }
+                    ]
+                }
             ]
         }
     ]

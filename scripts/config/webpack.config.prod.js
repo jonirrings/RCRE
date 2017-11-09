@@ -23,6 +23,7 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const packageJSON = require('../../package.json');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -269,7 +270,9 @@ module.exports = {
 
         new webpack.DefinePlugin({
             __VERSION__: '\'' + packageJSON.version + '\''
-        })
+        }),
+
+        new UglifyJSPlugin()
     ],
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.
