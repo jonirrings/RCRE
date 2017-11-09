@@ -4,7 +4,7 @@
             "type": "container",
             "model": "product",
             "data": {
-                
+                "date": "#ES{$now}"
             },
             "dataProvider": [
                 {

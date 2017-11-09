@@ -192,43 +192,47 @@ export type runTimeType = {
     $now?: moment.Moment;
 };
 
+export function getRuntimeContext(props: BasicContainerPropsInterface, context: any) {
+    let runtime: runTimeType = {
+        $now: moment()
+    };
+
+    if (props.$data) {
+        runtime.$data = props.$data.toObject();
+    }
+
+    if (props.$item) {
+        runtime.$item = props.$item.toObject();
+    }
+
+    if (props.$index) {
+        runtime.$index = props.$index;
+    }
+
+    if (props.$trigger) {
+        runtime.$trigger = props.$trigger.toObject();
+    }
+
+    if (context.$query) {
+        runtime.$query = context.$query;
+    }
+
+    if (context.$global) {
+        runtime.$global = context.$global;
+    }
+
+    return runtime;
+}
+
 export class BasicContainer<T extends BasicContainerPropsInterface, P> extends React.Component<T, P> {
     static contextTypes = BasicContextTypes;
 
     constructor() {
         super();
     }
-
+    
     public getRuntimeContext(props: T = this.props, context: any = this.context) {
-        let runtime: runTimeType = {
-            $now: moment()
-        };
-
-        if (props.$data) {
-            runtime.$data = props.$data.toObject();
-        }
-
-        if (props.$item) {
-            runtime.$item = props.$item.toObject();
-        }
-
-        if (props.$index) {
-            runtime.$index = props.$index;
-        }
-        
-        if (props.$trigger) {
-            runtime.$trigger = props.$trigger.toObject();
-        }
-
-        if (context.$query) {
-            runtime.$query = context.$query;
-        }
-
-        if (context.$global) {
-            runtime.$global = context.$global;
-        }
-
-        return runtime;
+        return getRuntimeContext(props, context);
     }
 
     public getPropsInfo<InfoType>(info: InfoType, props?: T, blackList?: string[], isDeep?: boolean) {
