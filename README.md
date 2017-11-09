@@ -21,6 +21,9 @@ RCRE设计了一套可靠的JSON配置规则, 可以很好的抽象页面的布�
 5. [嵌套的Container组件](doc/guide/嵌套的Container组件.md)
 6. [布局系统](doc/guide/布局系统.md)
 
+## 组件文档
+1. [Button](doc/components/button.md)
+
 ## 起源
 RCRE借鉴了Redux单一对象状态管理的思想, 如果你有redux开发经验, 那么理解RCRE的json配置将变得跟打开你的mac一样简单.
 
