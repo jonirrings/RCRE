@@ -1,0 +1,58 @@
+{
+    "body": [
+        {
+            "type": "container",
+            "model": "submit",
+            "data": {
+                "name": 1
+            },
+            "dataCustomer": {
+                "customers": [
+                    {
+                        "mode": "pass",
+                        "name": "setStore",
+                        "config": {
+                            "model": "submit",
+                            "assign": {
+                                "output": "#ES{$trigger.submitForm.$output}"
+                            }
+                        }
+                    },
+                    {
+                        "mode": "submit",
+                        "name": "submitForm",
+                        "config": {
+                            "url": "http://localhost:8800/submit",
+                            "method": "POST",
+                            "data": "#ES{$trigger.submitForm}"
+                        }
+                    }
+                ],
+                "groups": [
+                    {
+                        "name": "group1",
+                        "steps": [
+                            "submitForm",
+                            "setStore"
+                        ]
+                    }
+                ]
+            },
+            "children": [
+                {
+                    "type": "button",
+                    "text": "submit",
+                    "trigger": [
+                        {
+                            "event": "onClick",
+                            "targetCustomer": "group1",
+                            "params": {
+                                "name": "#ES{$data.name}"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

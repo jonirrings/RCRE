@@ -50,6 +50,16 @@ app.get('/proxy', (req, res) => {
     return request(url, options).pipe(res);
 });
 
+app.post('/submit', (req, res) => {
+    res.json({
+        errno: 0,
+        errmsg: 'ok',
+        data: {
+            name: 1
+        }
+    });
+});
+
 // // catch 404 and forward to error handler
 app.use((req, res, next) => {
     let err = new Error('Not Found');

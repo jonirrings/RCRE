@@ -185,7 +185,7 @@ export const BasicContextTypes = {
 export type runTimeType = {
     $data?: Object;
     $query?: Object;
-    $global?: Object;
+    $global?: any;
     $item?: Object;
     $trigger?: Object;
     $index?: number;
@@ -198,11 +198,11 @@ export function getRuntimeContext(props: BasicContainerPropsInterface, context: 
     };
 
     if (props.$data) {
-        runtime.$data = props.$data.toObject();
+        runtime.$data = props.$data.toJS();
     }
 
     if (props.$item) {
-        runtime.$item = props.$item.toObject();
+        runtime.$item = props.$item.toJS();
     }
 
     if (props.$index) {
@@ -210,7 +210,7 @@ export function getRuntimeContext(props: BasicContainerPropsInterface, context: 
     }
 
     if (props.$trigger) {
-        runtime.$trigger = props.$trigger.toObject();
+        runtime.$trigger = props.$trigger.toJS();
     }
 
     if (context.$query) {

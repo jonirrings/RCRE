@@ -18,8 +18,8 @@ interface PassCustomerExecConfig {
 }
 
 export class PassCustomers implements BasicCustomerInstance {
-    async exec(config: PassCustomerExecConfig, runTime: runTimeType) {
-        let model = config.model;
+    async exec(config: PassCustomerExecConfig, runTime: runTimeType, model: string, customer: string) {
+        let targetContainerModel = config.model;
         let assign = config.assign;
         
         if (!_.isPlainObject(assign)) {
@@ -30,7 +30,7 @@ export class PassCustomers implements BasicCustomerInstance {
         let output = compileValueExpress(assign, runTime);
         
         store.dispatch(actionCreators.dataCustomerPass({
-            model: model,
+            model: targetContainerModel,
             data: output
         }));
     }
