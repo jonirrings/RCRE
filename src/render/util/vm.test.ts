@@ -230,6 +230,27 @@ describe('parseExpressString', () => {
         expect(ret).toBe(1);
     });
 
+    it('#ESfunc', () => {
+        let context = {
+            $data: {
+                list: [1, 2, 3, 4, 5, 6]
+            }
+        };
+
+        let ret = parseExpressString(`#ES{(function(source) {
+            var series = [];
+            source.forEach((item, index) => {
+                series.push({
+                    name: 'test',
+                    data: source[index]
+                });
+            });
+            return series;
+        })($data.list)}`, context);
+        
+        expect(ret.length).toBe(6);
+    });
+
     it('#ES{{arr: [{name: 1}, {name: 2}]}["arr"]}', () => {
         let context = {
             arr: [
@@ -370,9 +391,9 @@ describe('compileValueExpress', () => {
                 'controls': [{'type': 'text', 'text': 'text'}, {'type': 'text', 'text': 'text'}]
             }]
         };
-        
+
         let ret = compileValueExpress(info, context);
-        
+
         expect(Array.isArray(ret.columns)).toBe(true);
         expect(ret.columns.length).toBe(2);
         expect(Array.isArray(ret.dataSource)).toBe(true);
