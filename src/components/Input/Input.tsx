@@ -1,14 +1,16 @@
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import {IsBoolean, IsDefined, IsString, Validate} from 'class-validator';
 import {IsValidEnums} from '../../render/util/validators';
-import {Input, Icon} from 'antd';
+import {Icon, Input} from 'antd';
 import {
-    BasicConfig, BasicContainer, BasicContainerPropsInterface,
+    BasicConfig,
+    BasicContainer,
+    BasicContainerPropsInterface,
     onContainerItemChange
 } from '../../render/core/Container/types';
 import componentLoader from '../../render/util/componentLoader';
 import {InputProps} from 'antd/lib/input/Input';
-import {CSSProperties} from 'react';
 
 export class InputConfig extends BasicConfig {
     /**
@@ -179,11 +181,31 @@ class AbstractInput extends BasicContainer<InputPropsInterface, InputStateInterf
             value: value,
             onChange: this.handleChange,
             // TODO: Add Trigger interface
-            onPressEnter: () => {},
-            onKeyDown: () => {},
-            onClick: () => {},
-            onFocus: () => {},
-            onBlur: () => {},
+            onPressEnter: (event: React.KeyboardEvent<HTMLInputElement>) => {
+                this.commonEventHandler('onPressEnter', {
+                    event: event
+                });
+            },
+            onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => {
+                this.commonEventHandler('onKeyDown', {
+                    event: event
+                });
+            },
+            onClick: (event: React.MouseEvent<HTMLInputElement>) => {
+                this.commonEventHandler('onClick', {
+                    event: event
+                });
+            },
+            onFocus: (event: React.MouseEvent<HTMLInputElement>) => {
+                this.commonEventHandler('onFocus', {
+                    event: event
+                });
+            },
+            onBlur: (event: React.MouseEvent<HTMLInputElement>) => {
+                this.commonEventHandler('onBlur', {
+                    event: event
+                });
+            },
             ...inputProps
         });
     }

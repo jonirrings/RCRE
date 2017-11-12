@@ -89,14 +89,6 @@ export class AbstractTabs extends BasicContainer<TabsPropsInterface, {}> {
         let info = this.getPropsInfo(this.props.info);
         let tabsOptions = this.mapTabsOptions(info);
         let underContainerControl = !!this.props.$data;
-        
-        // if (!info.name) {
-        //     return <div>name property is required of Tabs Component</div>;
-        // }
-        //
-        // if (!this.props.$data) {
-        //     return <div>only container component rendered Tabs component work well </div>;
-        // }
 
         let tabs = info.tabs;
 
@@ -135,7 +127,10 @@ export class AbstractTabs extends BasicContainer<TabsPropsInterface, {}> {
                 }
             }),
             onEdit: ((targetKey, action) => {
-                this.commonEventHandler('onEdit', [targetKey, action]);
+                this.commonEventHandler('onEdit', {
+                    targetKey: targetKey,
+                    action: action
+                });
             }),
             onTabClick: () => {
                 this.commonEventHandler('onTabClick', []);

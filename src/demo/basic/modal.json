@@ -14,7 +14,8 @@
                         "config": {
                             "model": "test",
                             "assign": {
-                                "visible": "#ES{$trigger.setModal.visible}"
+                                "visible": "#ES{$trigger.setModal.visible}",
+                                "status": "#ES{$trigger.setModal.status}"
                             }
                         }
                     }
@@ -33,6 +34,10 @@
                             }
                         }
                     ]
+                },
+                {
+                    "type": "text",
+                    "text": "status: #ES{$data.status}"
                 },
                 {
                     "type": "modal",
@@ -55,6 +60,24 @@
                                     }
                                 }
                             ]
+                        }
+                    ],
+                    "trigger": [
+                        {
+                            "event": "onOk",
+                            "targetCustomer": "setModal",
+                            "params": {
+                                "visible": "#ES{!$data.visible}",
+                                "status": true
+                            }
+                        },
+                        {
+                            "event": "onCancel",
+                            "targetCustomer": "setModal",
+                            "params": {
+                                "visible": "#ES{!$data.visible}",
+                                "status": false
+                            }
                         }
                     ]
                 }

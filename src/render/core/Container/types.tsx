@@ -112,7 +112,7 @@ export class BasicContainerPropsInterface {
     /**
      * Trigger注入的通用事件处理函数, 所有事件处理都走这里
      */
-    eventHandle?: (eventName: string, args: any[]) => void;
+    eventHandle?: (eventName: string, args: Object) => void;
 
     /**
      * 来自Container的数据消耗者实例
@@ -265,9 +265,11 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
         };
     }
 
-    public commonEventHandler(eventName: string, event: any[], mute: boolean = true) {
+    public commonEventHandler(eventName: string, args: {
+        [s: string]: any
+    }, mute: boolean = true) {
         if (this.props.eventHandle) {
-            this.props.eventHandle(eventName, event);
+            this.props.eventHandle(eventName, args);
         } else if (!mute) {
             if (this.props.$data) {
                 console.error('If you want to handle event, you need to at trigger property');   

@@ -40,16 +40,8 @@ export class TextPropsInterface extends BasicContainerPropsInterface {
 class Text extends BasicContainer<TextPropsInterface, {}> {
     constructor() {
         super();
-        
-        this.handleClick = this.handleClick.bind(this);
     }
     
-    private handleClick(event: React.MouseEvent<HTMLSpanElement>) {
-        if (this.props.eventHandle) {
-            this.props.eventHandle('onClick', [event]);
-        }
-    }
-
     render() {
         let info = this.getPropsInfo<TextConfig>(this.props.info);
         const defaultTextStyle = {
@@ -69,7 +61,11 @@ class Text extends BasicContainer<TextPropsInterface, {}> {
                     <a
                         style={Object.assign(defaultTextStyle, info.style)}
                         href={info.href}
-                        onClick={this.handleClick}
+                        onClick={(event: React.MouseEvent<HTMLSpanElement>) => {
+                            this.commonEventHandler('onClick', {
+                                event: event
+                            });
+                        }}
                     >
                         {text}
                     </a>
@@ -79,8 +75,12 @@ class Text extends BasicContainer<TextPropsInterface, {}> {
             default:
                 children = (
                     <span
-                        onClick={this.handleClick}
                         style={Object.assign(defaultTextStyle, info.style)}
+                        onClick={(event: React.MouseEvent<HTMLSpanElement>) => {
+                            this.commonEventHandler('onClick', {
+                                event: event
+                            });
+                        }}
                     >
                         {text}
                     </span>

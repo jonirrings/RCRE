@@ -137,7 +137,7 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
         );
     }
 
-    private async eventHandle(eventName: string, args: any[]) {
+    private async eventHandle(eventName: string, args: Object) {
         let isExist = this.callbackController.hasCallback(eventName);
 
         if (!isExist) {
@@ -153,7 +153,7 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
         await this.execCallbackInfo(callbackInfo, args);
     }
 
-    private async execCallbackInfo(callbackInfo: callbackItem[], args: any[] = []) {
+    private async execCallbackInfo(callbackInfo: callbackItem[], args: Object = {}) {
         callbackInfo = callbackInfo.filter(info => {
             if (!info.targetCustomer) {
                 console.error('you should provider an targetCustomer props');

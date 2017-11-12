@@ -1,9 +1,9 @@
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsBoolean, IsDefined, IsNumber, IsString} from 'class-validator';
 import componentLoader from '../../render/util/componentLoader';
 import {DatePicker} from 'antd';
-import {CSSProperties} from 'react';
 import {DatePickerProps} from 'antd/lib/date-picker';
 import * as moment from 'moment';
 
@@ -157,6 +157,11 @@ export default class AbstractDatepicker extends BasicContainer<DatePickerPropsIn
             value: value,
             onChange: this.handleChange,
             disabledDate: this.disabledDate(info),
+            onOpenChange: (status: boolean) => {
+                this.commonEventHandler('onOpenChange', {
+                    status: status
+                }, false);
+            },
             ...datePickerOptions
         });
     }

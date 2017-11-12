@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsArray, IsBoolean, IsDefined, IsString, Validate} from 'class-validator';
 import {IsValidEnums} from '../../render/util/validators';
@@ -6,7 +7,6 @@ import componentLoader from '../../render/util/componentLoader';
 import {compileValueExpress} from '../../render/util/vm';
 import {Select} from 'antd';
 import {OptionProps, SelectProps, SelectValue} from 'antd/lib/select';
-import {CSSProperties} from 'react';
 import * as _ from 'lodash';
 
 const Option = Select.Option;
@@ -237,16 +237,21 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
                 ...info.style
             },
             onSelect: (val: SelectValue, option: Object) => {
-                this.commonEventHandler('onSelect', [val, option]);
+                this.commonEventHandler('onSelect', {
+                    val: val,
+                    option: option
+                });
             },
             onDeselect: (val: SelectValue) => {
-                this.commonEventHandler('onDeselect', [val]);
+                this.commonEventHandler('onDeselect', {
+                    val
+                });
             },
             onBlur: () => {
-                this.commonEventHandler('onBlur', [], true);
+                this.commonEventHandler('onBlur', {}, true);
             },
             onFocus: () => {
-                this.commonEventHandler('onFocus', [], true);
+                this.commonEventHandler('onFocus', {}, true);
             },
             ...selectOptions
         }, Options);

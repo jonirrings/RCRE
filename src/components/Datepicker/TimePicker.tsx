@@ -1,10 +1,10 @@
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsBoolean, IsDefined, IsString} from 'class-validator';
 import * as moment from 'moment';
 import {TimePicker} from 'antd';
 import {TimePickerProps} from 'antd/lib/time-picker';
-import {CSSProperties} from 'react';
 import componentLoader from '../../render/util/componentLoader';
 
 export class TimePickerConfig extends BasicConfig {
@@ -246,6 +246,11 @@ export class AbstractTimePicker extends BasicContainer<TimePickerPropsInterface,
         return React.createElement(TimePicker, {
             value: value,
             onChange: this.handleChange,
+            onOpenChange: (status: boolean) => {
+                this.commonEventHandler('onOpenChange', {
+                    status: status
+                }, false);
+            },
             // disabledHours: this.disabledHours(info),
             // disabledMinutes: this.disabledMinutes(info),
             // disabledSeconds: this.disabledSeconds(info),

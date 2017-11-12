@@ -1,9 +1,9 @@
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import componentLoader from '../../render/util/componentLoader';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsBoolean, IsDefined, IsString} from 'class-validator';
-import {CSSProperties} from 'react';
-import {CascaderProps, CascaderOptionType} from 'antd/lib/cascader';
+import {CascaderOptionType, CascaderProps} from 'antd/lib/cascader';
 import {Cascader} from 'antd';
 import {compileValueExpress} from '../../render/util/vm';
 import * as _ from 'lodash';
@@ -156,7 +156,12 @@ export class AbstractCascader extends BasicContainer<CascaderPropsInterface, {}>
             ...cascaderOptions,
             options: options,
             value: value,
-            onChange: this.handleChange 
+            onChange: this.handleChange,
+            onPopupVisibleChange: (popupVisible: boolean) => {
+                this.commonEventHandler('onPopupVisibleChange', {
+                    popupVisible: popupVisible
+                });
+            }
         });
     }
 }

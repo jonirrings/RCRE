@@ -144,10 +144,14 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
         
         let buttonProps: ButtonProps = {
             onMouseUp: (event: React.MouseEvent<HTMLButtonElement>) => {
-                this.commonEventHandler('onMouseUp', [event]);
+                this.commonEventHandler('onMouseUp', {
+                    event: event
+                });
             },
             onMouseDown: (event: React.MouseEvent<HTMLButtonElement>) => {
-                this.commonEventHandler('onMouseDown', [event]);
+                this.commonEventHandler('onMouseDown', {
+                    event: event
+                });
             },
             ...mappedProps
         };
@@ -158,10 +162,14 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
                 okText: info.confirm!.okText,
                 cancelText: info.confirm!.cancelText,
                 onConfirm: (event: React.MouseEvent<HTMLButtonElement>) => {
-                    this.commonEventHandler('onConfirm', [event]);
+                    this.commonEventHandler('onConfirm', {
+                        event: event
+                    });
                 },
                 onCancel: (event: React.MouseEvent<HTMLButtonElement>) => {
-                    this.commonEventHandler('onCancel', [event]);
+                    this.commonEventHandler('onCancel', {
+                        event: event
+                    });
                 }
             }, React.createElement(Button, buttonProps, text));    
         } else {
@@ -170,7 +178,9 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
             }
             
             buttonProps.onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-                this.commonEventHandler('onClick', [event]);
+                this.commonEventHandler('onClick', {
+                    event: event
+                });
             };
 
             children = React.createElement(Button, buttonProps, text); 
