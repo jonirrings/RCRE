@@ -36,7 +36,9 @@ export function createChild<T extends BasicContainerPropsInterface>(item: BasicC
             $setData: childProps.$setData!,
             model: childProps.model!,
             key: childProps.key!,
-            dataCustomer: childProps.dataCustomer!
+            dataCustomer: childProps.dataCustomer!,
+            $index: childProps.$index,
+            $item: childProps.$item,
         }, children);
     }
     

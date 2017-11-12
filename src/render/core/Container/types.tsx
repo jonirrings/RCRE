@@ -205,7 +205,7 @@ export function getRuntimeContext(props: BasicContainerPropsInterface, context: 
         runtime.$item = props.$item.toJS();
     }
 
-    if (props.$index) {
+    if (!_.isNil(props.$index)) {
         runtime.$index = props.$index;
     }
 
@@ -261,6 +261,8 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
             dataCustomer: this.props.dataCustomer,
             $setData: this.props.$setData,
             eventHandle: this.props.eventHandle,
+            $index: this.props.$index,
+            $item: this.props.$item,
             key: key
         };
     }

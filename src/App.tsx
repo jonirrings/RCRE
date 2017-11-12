@@ -40,7 +40,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(tabsConfig)
+            code: jsonformat(tableConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);

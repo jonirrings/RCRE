@@ -1,4 +1,4 @@
-import {runInContext, safePointer, parseExpressString, compileValueExpress} from './vm';
+import {compileValueExpress, parseExpressString, runInContext, safePointer} from './vm';
 
 describe('runInContext', () => {
     it('1 + 1 == 2', () => {
@@ -165,6 +165,12 @@ describe('parseExpressString', () => {
         let context = {};
         let ret = parseExpressString('#ES{1}es', context);
         expect(ret).toBe('1es');
+    });
+
+    it('dataIndex_#ES{0}', () => {
+        let context = {};
+        let ret = parseExpressString('dataIndex_#ES{0}', context);
+        expect(ret).toBe('dataIndex_0');
     });
 
     it('#ES{1 + 1}es', () => {
@@ -362,7 +368,6 @@ describe('compileValueExpress', () => {
             result: '#ES{$data}',
             data: '#ES{$data}'
         }, context);
-
 
         expect(JSON.stringify(ret)).toBe(JSON.stringify({result: context.$data, data: context.$data}));
     });
