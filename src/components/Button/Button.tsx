@@ -144,10 +144,10 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
         
         let buttonProps: ButtonProps = {
             onMouseUp: (event: React.MouseEvent<HTMLButtonElement>) => {
-                this.commonEventHandler('onMouseUp', event);
+                this.commonEventHandler('onMouseUp', [event]);
             },
             onMouseDown: (event: React.MouseEvent<HTMLButtonElement>) => {
-                this.commonEventHandler('onMouseDown', event);
+                this.commonEventHandler('onMouseDown', [event]);
             },
             ...mappedProps
         };
@@ -158,10 +158,10 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
                 okText: info.confirm!.okText,
                 cancelText: info.confirm!.cancelText,
                 onConfirm: (event: React.MouseEvent<HTMLButtonElement>) => {
-                    this.commonEventHandler('onConfirm', event);
+                    this.commonEventHandler('onConfirm', [event]);
                 },
                 onCancel: (event: React.MouseEvent<HTMLButtonElement>) => {
-                    this.commonEventHandler('onCancel', event);
+                    this.commonEventHandler('onCancel', [event]);
                 }
             }, React.createElement(Button, buttonProps, text));    
         } else {
@@ -170,21 +170,13 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
             }
             
             buttonProps.onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-                this.commonEventHandler('onClick', event);
+                this.commonEventHandler('onClick', [event]);
             };
 
             children = React.createElement(Button, buttonProps, text); 
         }
         
         return this.renderChildren(info, children);
-    }
-
-    private commonEventHandler(eventName: string, event: React.MouseEvent<HTMLButtonElement>) {
-        if (this.props.eventHandle) {
-            this.props.eventHandle(eventName, [event]);
-        } else {
-            console.error('Event System only can work with container component');
-        }
     }
 }
 

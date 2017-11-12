@@ -113,8 +113,7 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
     }
 
     shouldComponentUpdate(nextProps: TriggerProps, nextState: {}) {
-        // return this.props.$trigger !== nextProps.$trigger;
-        return false;
+        return this.props.$data !== nextProps.$data;
     }
 
     render() {

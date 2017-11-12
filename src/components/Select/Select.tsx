@@ -251,14 +251,6 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
             ...selectOptions
         }, Options);
     }
-    
-    private commonEventHandler(eventName: string, args: any[], mute: boolean = false) {
-        if (this.props.eventHandle) {
-            this.props.eventHandle(eventName, args);
-        } else if (!mute) {
-            console.error('Event System only can work with container component');
-        }
-    }
 }
 
 componentLoader.addComponent('select', AbstractSelect, SelectPropsInterface);

@@ -252,4 +252,28 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
 
         return children;
     }
+    
+    public getChildProps(info: BasicConfig, key: string) {
+        return {
+            info: info,
+            $data: this.props.$data,
+            model: this.props.model,
+            dataCustomer: this.props.dataCustomer,
+            $setData: this.props.$setData,
+            eventHandle: this.props.eventHandle,
+            key: key
+        };
+    }
+
+    public commonEventHandler(eventName: string, event: any[], mute: boolean = true) {
+        if (this.props.eventHandle) {
+            this.props.eventHandle(eventName, event);
+        } else if (!mute) {
+            if (this.props.$data) {
+                console.error('If you want to handle event, you need to at trigger property');   
+            } else {
+                console.error('Event System can only work with Container Component');
+            }
+        }
+    }
 }

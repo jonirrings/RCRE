@@ -26,6 +26,7 @@ let cascaderConfig = require('./demo/basic/cascader.json');
 let iconConfig = require('./demo/basic/icon.json');
 let modalConfig = require('./demo/basic/modal.json');
 let submitConfig = require('./demo/basic/submit.json');
+let tabsConfig = require('./demo/basic/tabs.json');
 
 let onlineDemo1 = require('./demo/online/demo1.json');
 let product = require('./demo/online/product.json');
@@ -39,7 +40,7 @@ class App extends React.Component<{}, AppStateInterface> {
         super();
 
         this.state = {
-            code: jsonformat(submitConfig)
+            code: jsonformat(tabsConfig)
         };
 
         this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
@@ -93,7 +94,9 @@ class App extends React.Component<{}, AppStateInterface> {
             ['table', tableConfig],
             ['cascader', cascaderConfig],
             ['icon', iconConfig],
-            ['modal', modalConfig]
+            ['modal', modalConfig],
+            ['tabs', tabsConfig],
+            ['submit', submitConfig]
         ];
         
         let onlineConfig = [

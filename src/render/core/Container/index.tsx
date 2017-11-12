@@ -21,8 +21,8 @@ export class Container extends BasicContainer<ContainerProps, {}> {
     static WrappedComponent: string;
     static displayName: string;
 
-    dataProvider: DataProvider;
-    dataCustomer: DataCustomer;
+    private dataProvider: DataProvider;
+    private dataCustomer: DataCustomer;
 
     constructor() {
         super();
