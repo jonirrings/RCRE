@@ -3,7 +3,7 @@
     "version": "0.10.25",
     "main": "./build/plugin/plugin.js",
     "repository": "ssh://dongtiancheng@icode.baidu.com:8235/baidu/native-ads/gaea-aop",
-    "homepage": "http://miskit.baidu.com",
+    "homepage": "/",
     "files": [
         "build"
     ],
