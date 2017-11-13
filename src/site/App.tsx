@@ -7,6 +7,8 @@ import {parse} from 'marked';
 import './App.css';
 import {Link, RouteComponentProps} from 'react-router-dom';
 import {ComponentPreview} from './ComponentPreview';
+import docList from '../components/doc';
+import * as _ from 'lodash';
 
 const {
     Sider,
@@ -88,8 +90,15 @@ class App extends React.Component<RouteComponentProps<AppProps>, AppStateInterfa
                             <Item key="LayoutSystem"><Link to={'/guide/LayoutSystem'}/>布局系统</Item>
                         </SubMenu>
                         <SubMenu key="component" title={<span><Icon type="appstore-o"/>组件</span>}>
-                            <Item key="button"><Link to={'/component/button'}>Button</Link></Item>
-                            <Item key="cascader"><Link to={'/component/cascader'}>Cascader</Link></Item>
+                            {
+                                _.map(docList, (info, name) => {
+                                    return <Item key={name}>
+                                        <Link to={`/component/${name}`}>
+                                            {name.substring(0, 1).toUpperCase() + name.substring(1)}
+                                        </Link>
+                                    </Item>;
+                                })
+                            }
                         </SubMenu>
                     </Menu>
                 </Sider>
