@@ -14,15 +14,15 @@ RCRE设计了一套可靠的JSON配置规则, 可以很好的抽象页面的布�
 
 ## 教程
 
-1. [Helloworld](doc/guide/Helloworld.md)
-2. [持有数据的组件](doc/guide/持有数据的组件.md)
-3. [Expression String](doc/guide/Expression%20String.md)
-4. [DataProvider](doc/guide/DataProvider.md)
-5. [嵌套的Container组件](doc/guide/嵌套的Container组件.md)
-6. [布局系统](doc/guide/布局系统.md)
+1. [Helloworld](src/guide/Helloworld.md)
+2. [持有数据的组件](src/guide/ContainerComponent.md)
+3. [Expression String](src/guide/ExpressionString.md)
+4. [DataProvider](src/guide/DataProvider.md)
+5. [嵌套的Container组件](src/guide/NestContainer.md)
+6. [布局系统](src/guide/LayoutSystem.md)
 
 ## 组件文档
-1. [Button](src/components/Button/button.md)
+1. [Button](src/components/Button/Button.md)
 
 ## 起源
 RCRE借鉴了Redux单一对象状态管理的思想, 如果你有redux开发经验, 那么理解RCRE的json配置将变得跟打开你的mac一样简单.

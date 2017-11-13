@@ -166,6 +166,7 @@ module.exports = {
                     /\.bmp$/,
                     /\.gif$/,
                     /\.jpe?g$/,
+                    /\.md$/,
                     /\.png$/
                 ],
                 loader: require.resolve('file-loader'),

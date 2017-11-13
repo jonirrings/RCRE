@@ -1,5 +1,4 @@
-# Button
-RCRE Button 组件使用文档
+# Button 按钮
 
 ## 基础使用
 
