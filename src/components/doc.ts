@@ -8,5 +8,11 @@ export default {
             disabled: require('raw-loader!./Button/demo/disabled.md'),
             loading: require('raw-loader!./Button/demo/loading.md')
         }
+    },
+    cascader: {
+        index: require('raw-loader!./Cascader/Cascader.md'),
+        demo: {
+            basic: require('raw-loader!./Cascader/demo/basic.md')
+        }
     }
 };

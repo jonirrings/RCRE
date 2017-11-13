@@ -89,6 +89,7 @@ class App extends React.Component<RouteComponentProps<AppProps>, AppStateInterfa
                         </SubMenu>
                         <SubMenu key="component" title={<span><Icon type="appstore-o"/>组件</span>}>
                             <Item key="button"><Link to={'/component/button'}>Button</Link></Item>
+                            <Item key="cascader"><Link to={'/component/cascader'}>Cascader</Link></Item>
                         </SubMenu>
                     </Menu>
                 </Sider>
