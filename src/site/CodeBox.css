@@ -1,0 +1,58 @@
+.codebox {
+    border: 1px solid #e9e9e9;
+    border-radius: 4px;
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    margin: 0 0 16px;
+    -webkit-transition: all .2s;
+    transition: all .2s;
+}
+
+.codebox-demo {
+    border-bottom: 1px solid #e9e9e9;
+    padding: 42px 20px 50px;
+}
+
+.codebox-markdown {
+    position: relative;
+    padding: 17px 16px 15px 20px;
+    border-radius: 0 0 4px 4px;
+    -webkit-transition: background-color .4s;
+    transition: background-color .4s;
+    width: 100%;
+    font-size: 12px;
+}
+
+.codebox-title {
+    position: absolute;
+    top: -9px;
+    padding: 1px 8px;
+    margin-left: -8px;
+    color: #777;
+    border-radius: 4px 4px 0 0;
+    background: #fff;
+    -webkit-transition: background-color .4s;
+    transition: background-color .4s;
+}
+
+.expand-icon {
+    position: absolute;
+    right: 16px;
+    top: 17px;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+}
+
+.expand-icon img {
+    width: 100%;
+    height: 100%;
+}
+
+.codeblock-wrapper {
+    padding: 0 20px;
+    background: #fff;
+}

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './App';
+import App from './site/App';
 import './index.css';
 import {BrowserRouter, Route, Redirect} from 'react-router-dom';
 import {Layout, Menu} from 'antd';
@@ -21,7 +21,7 @@ const Index = (
     <BrowserRouter>
         <Layout>
             <Header className="header">
-                <div className="logo"/>
+                <div className="logo">RCRE</div>
                 <Menu
                     theme="dark"
                     mode="horizontal"

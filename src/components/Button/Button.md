@@ -1,16 +1,12 @@
 # Button 按钮
 
-## 基础使用
-
-```json
-{
-    "type": "button",
-    "text": "helloworld"
-}
-```
-
 主要的属性都是基于Ant.design的Button组件来实现的, 并做了一些简单的整合. 关于每个字段的详细使用方式, 可以参考: https://ant.design/components/button-cn/
 
+## 代码演示
+
+{{demo}}
+
+-----
 ## API
 
 |         属性          |                说明                |                    类型                    |   默认值   |
