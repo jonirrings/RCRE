@@ -1,12 +1,11 @@
 import * as React from 'react';
 import './CodeBox.css';
 import {Render} from '../render/index';
-let unExpand = require('./img/unExpand.svg');
-let expanded = require('./img/expanded.svg');
-import * as hightlight from 'highlight.js';
 import {Tooltip} from 'antd';
 
-import 'highlight.js/styles/xcode.css';
+let unExpand = require('./img/unExpand.svg');
+let expanded = require('./img/expanded.svg');
+let Highlight = require('react-highlight');
 
 interface CodeBoxPropsInterface {
     title: string;
@@ -36,10 +35,6 @@ export class CodeBox extends React.Component<CodeBoxPropsInterface, CodeBoxState
         });
     }
     
-    componentDidMount() {
-        hightlight.initHighlightingOnLoad();
-    }
-    
     render() {
         return (
             <div className="codebox">
@@ -60,7 +55,9 @@ export class CodeBox extends React.Component<CodeBoxPropsInterface, CodeBoxState
                     </span>
                 </div>
                 <div style={{display: this.state.expand ? 'block' : 'none'}} className="codeblock-wrapper">
-                    <pre><code className="json">{this.props.code.trim()}</code></pre>
+                    <Highlight className="json">
+                        {this.props.code.trim()}
+                    </Highlight>
                 </div>
             </div>
         );        

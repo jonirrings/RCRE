@@ -31,7 +31,9 @@
 
 这个例子里面, `data`属性使用了一个Expression String字符串. 它运行位于`#ES{}`内部的`1 + 1`. 并计算出最终结果为2.
 
-我们可以在Redux DevTools中看到最终运行的结果![QQ20171018-221000](https://ws3.sinaimg.cn/large/006tKfTcly1fkne074t6yj30vs0ax0t9.jpg)
+我们可以在Redux DevTools中看到最终运行的结果
+
+![QQ20171018-221000](https://ws3.sinaimg.cn/large/006tKfTcly1fkne074t6yj30vs0ax0t9.jpg)
 
 
 

@@ -2,7 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './site/App';
 import './index.css';
-import {BrowserRouter, Route, Redirect} from 'react-router-dom';
+import 'highlight.js/styles/xcode.css';
+import {BrowserRouter, Redirect, Route} from 'react-router-dom';
 import {Layout, Menu} from 'antd';
 
 const {
