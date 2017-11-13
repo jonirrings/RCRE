@@ -25,9 +25,7 @@ if (fs.existsSync(tsconfigPath)) {
             compilerConfig = tsconfig.compilerOptions;
         }
     }
-    catch (e) {
-
-    }
+    catch (e) {}
 }
 
 module.exports = {
