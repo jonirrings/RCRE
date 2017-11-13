@@ -22,8 +22,7 @@ const pageConfig = {
     'ExpressionString': require('raw-loader!../guide/ExpressionString.md'),
     'DataProvider': require('raw-loader!../guide/DataProvider.md'),
     'NestContainer': require('raw-loader!../guide/NestContainer.md'),
-    'LayoutSystem': require('raw-loader!../guide/LayoutSystem.md'),
-    'button': require('raw-loader!../components/Button/Button.md')
+    'LayoutSystem': require('raw-loader!../guide/LayoutSystem.md')
 };
 
 interface AppStateInterface {
@@ -52,18 +51,19 @@ class App extends React.Component<RouteComponentProps<AppProps>, AppStateInterfa
         let activeKey = params.activeKey || 'HelloWorld';
         let group = params.group;
 
-        let html = pageConfig[activeKey];
-
-        if (!html) {
-            console.error('invalid activeKey');
-        }
-
         let content = <div/>;
 
         if (group === 'guide') {
+            let html = pageConfig[activeKey];
+
+            if (!html) {
+                console.error('invalid activeKey');
+                return <div />;
+            }
+            
             content = <div className="markdown" dangerouslySetInnerHTML={{__html: parse(html)}}/>;
         } else if (group === 'component') {
-            content = <ComponentPreview md={html} activeKey={activeKey}/>;
+            content = <ComponentPreview activeKey={activeKey}/>;
         }
 
         return (

@@ -6,8 +6,6 @@ import {CodeBox} from './CodeBox';
 import {Col} from 'antd';
 
 export interface ComponentPreviewPropsInterface {
-    md: string;
-
     activeKey: string;
 }
 
@@ -118,7 +116,7 @@ export class ComponentPreview extends React.Component<ComponentPreviewPropsInter
         return (
             <div className="preview-container">
                 <div className="markdown" dangerouslySetInnerHTML={{__html: parse(title)}}/>
-                <Col span={12}>
+                <Col span={12} style={{padding: '0 15px'}}>
                     {
                         leftGroup.map((demo, index) => {
                             return (

@@ -182,6 +182,10 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
                     event: event
                 });
             };
+            
+            buttonProps.style = {
+                margin: '0 5px'
+            };
 
             children = React.createElement(Button, buttonProps, text); 
         }

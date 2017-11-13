@@ -12,7 +12,7 @@
 |         属性          |                说明                |                    类型                    |   默认值   |
 | :-----------------: | :------------------------------: | :--------------------------------------: | :-----: |
 |        text         |               按钮文字               |                  string                  |    -    |
-|      antd.type      |               按钮类型               | 'primary' 'dashed' 'danger' 'ghost' |    -    |
+|      antd.type      |               按钮类型               |   'primary' 'dashed' 'danger' 'ghost'    |    -    |
 |      htmlType       |            按钮的HTML类型             | 设置 `button` 原生的 `type` 值，可选值请参考 [HTML 标准](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type) | button  |
 |       confirm       |            点击之后弹一个确认框            |                  object                  |    -    |
 |    confirm.title    |              确定框的标题              |                  string                  |    -    |
@@ -26,3 +26,12 @@
 |      disabled       |               禁用按钮               |                 boolean                  |  false  |
 |      className      |           按钮的CSS class           |                  string                  |    -    |
 |        style        |             内联CSS属性              |                  object                  |    -    |
+
+## 事件
+
+|   事件名称    |           描述           |                  参数                   |
+| :-------: | :--------------------: | :-----------------------------------: |
+|  onClick  |          点击事件          | React.MouseEvent |
+| onConfirm | 确定框点击确认, 添加`confirm`有效 | React.MouseEvent |
+| onCancel  | 确认框点击取消,添加`confirm`有效  | React.MouseEvent |
+

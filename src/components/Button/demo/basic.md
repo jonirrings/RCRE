@@ -8,6 +8,26 @@
         {
             "type": "button",
             "text": "helloworld"
+        },
+        {
+            "type": "button",
+            "text": "blue",
+            "antd.type": "primary"
+        },
+        {
+            "type": "button",
+            "text": "ghost",
+            "antd.type": "ghost"
+        },
+        {
+            "type": "button",
+            "text": "dashed",
+            "antd.type": "dashed"
+        },
+        {
+            "type": "button",
+            "text": "danger",
+            "antd.type": "danger"
         }
     ]
 }
