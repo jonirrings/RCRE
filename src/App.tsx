@@ -11,45 +11,15 @@ import 'font-awesome/css/font-awesome.css';
 import {Layout, Menu, Icon} from 'antd';
 import {parse} from 'marked';
 import './App.css';
-
-// let buttonMarked = require('raw-loader!./components/Button/Button.md');
-
-// let helloworldGuide = 
-// let dataComponentGuide = 
-// let expressionStringGuide = require('raw-loader!./guide/ExpressionString.md');
-// let dataProviderGuide = require('raw-loader!./guide/DataProvider.md');
-// let nestContainerGuide = require('raw-loader!./guide/NestContainer.md');
-// let layoutSystemGuide = require('raw-loader!./guide/LayoutSystem.md');
+import {Link, RouteComponentProps} from 'react-router-dom';
 
 const {
-    Header,
-    Footer,
     Sider,
     Content
 } = Layout;
 
 const SubMenu = Menu.SubMenu;
-
-// let basicContainerConfig = require('./demo/basic/basic.json');
-// let buttonConfig = require('./demo/basic/button.json');
-// let nestContainerConfig = require('./demo/basic/nestContainer.json');
-// let dataProviderConfig = require('./demo/basic/provider.json');
-// let layoutConfig = require('./demo/basic/layout.json');
-// let inputConfig = require('./demo/basic/input.json');
-// let lineChartConfig = require('./demo/basic/linechart.json');
-// let checkboxConfig = require('./demo/basic/checkbox.json');
-// let selectConfig = require('./demo/basic/select.json');
-// let radioConfig = require('./demo/basic/radio.json');
-// let datePickerConfig = require('./demo/basic/datepicker.json');
-// let tableConfig = require('./demo/basic/table.json');
-// let cascaderConfig = require('./demo/basic/cascader.json');
-// let iconConfig = require('./demo/basic/icon.json');
-// let modalConfig = require('./demo/basic/modal.json');
-// let submitConfig = require('./demo/basic/submit.json');
-// let tabsConfig = require('./demo/basic/tabs.json');
-//
-// let onlineDemo1 = require('./demo/online/demo1.json');
-// let product = require('./demo/online/product.json');
+const Item = Menu.Item;
 
 const pageConfig = {
     'HelloWorld': require('raw-loader!./guide/Helloworld.md'),
@@ -57,17 +27,21 @@ const pageConfig = {
     'ExpressionString': require('raw-loader!./guide/ExpressionString.md'),
     'DataProvider': require('raw-loader!./guide/DataProvider.md'),
     'NestContainer': require('raw-loader!./guide/NestContainer.md'),
-    'LayoutSystem': require('raw-loader!./guide/LayoutSystem.md')
+    'LayoutSystem': require('raw-loader!./guide/LayoutSystem.md'),
+    'button': require('raw-loader!./components/Button/Button.md')
 };
-
-console.log(pageConfig);
 
 interface AppStateInterface {
     activeMenu: string;
     activeKey: string;
 }
 
-class App extends React.Component<{}, AppStateInterface> {
+interface AppProps {
+    activeKey: string;
+    group: string;
+}
+
+class App extends React.Component<RouteComponentProps<AppProps>, AppStateInterface> {
     constructor() {
         super();
 
@@ -76,24 +50,7 @@ class App extends React.Component<{}, AppStateInterface> {
             activeMenu: '',
             activeKey: 'HelloWorld'
         };
-
-        // this.onJSONEditorChange = this.onJSONEditorChange.bind(this);
-        // this.changeConfig = this.changeConfig.bind(this);
     }
-
-    // onJSONEditorChange(code: string) {
-    //     this.setState({
-    //         code
-    //     });
-    // }
-
-    // changeConfig(config: Object) {
-    //     return () => {
-    //         this.setState({
-    //             code: jsonformat(config)
-    //         });
-    //     };
-    // }
 
     render() {
         // // 这样每次保存就能重新完整渲染render
@@ -176,57 +133,44 @@ class App extends React.Component<{}, AppStateInterface> {
         //     </div>
         // );
         
-        let html = pageConfig[this.state.activeKey];
+        let match = this.props.match;
+        let params = match.params;
+        let activeKey = params.activeKey || 'HelloWorld';
+        let group = params.group;
+
+        console.log(params);
         
+        let html = pageConfig[activeKey];
+
         if (!html) {
             console.error('invalid activeKey');
         }
         
         return (
-            <Layout>
-                <Header className="header">
-                    <div className="logo" />
+            <Layout style={{ padding: '24px 0', background: '#fff' }}>
+                <Sider width={200} style={{ background: '#fff' }}>
                     <Menu
-                        theme="dark"
-                        mode="horizontal"
-                        defaultSelectedKeys={['1']}
-                        style={{ lineHeight: '64px' }}
+                        mode="inline"
+                        selectedKeys={[activeKey]}
+                        defaultOpenKeys={[group]}
+                        style={{ height: '100%' }}
                     >
-                        <Menu.Item key="1">文档与教程</Menu.Item>
+                        <SubMenu key="guide" title={<span><Icon type="book" />教程</span>}>
+                            <Item key="HelloWorld"><Link to={'/guide/HelloWorld'}>HelloWorld</Link></Item>
+                            <Item key="ContainerComponent"><Link to={'/guide/ContainerComponent'}>持有数据的组件</Link></Item>
+                            <Item key="ExpressionString"><Link to={'/guide/ExpressionString'}>Expression String</Link></Item>
+                            <Item key="DataProvider"><Link to={'/guide/DataProvider'}>DataProvider</Link></Item>
+                            <Item key="NestContainer"><Link to={'/guide/NestContainer'}>嵌套的Container组件</Link></Item>
+                            <Item key="LayoutSystem"><Link to={'/guide/LayoutSystem'}/>布局系统</Item>
+                        </SubMenu>
+                        <SubMenu key="component" title={<span><Icon type="appstore-o" />组件</span>}>
+                            <Item key="button"><Link to={'/component/button'}>Button</Link></Item>
+                        </SubMenu>
                     </Menu>
-                </Header>
-                <Content style={{ padding: '0 50px' }}>
-                    <Layout style={{ padding: '24px 0', background: '#fff' }}>
-                        <Sider width={200} style={{ background: '#fff' }}>
-                            <Menu
-                                mode="inline"
-                                defaultSelectedKeys={['HelloWorld']}
-                                defaultOpenKeys={['guide']}
-                                style={{ height: '100%' }}
-                                onSelect={param => {
-                                    this.setState({
-                                        activeKey: param.key
-                                    });
-                                }}
-                            >
-                                <SubMenu key="guide" title={<span><Icon type="book" />教程</span>}>
-                                    <Menu.Item key="HelloWorld">HelloWorld</Menu.Item>
-                                    <Menu.Item key="ContainerComponent">持有数据的组件</Menu.Item>
-                                    <Menu.Item key="ExpressionString">Expression String</Menu.Item>
-                                    <Menu.Item key="DataProvider">DataProvider</Menu.Item>
-                                    <Menu.Item key="NestContainer">嵌套的Container组件</Menu.Item>
-                                    <Menu.Item key="LayoutSystem">布局系统</Menu.Item>
-                                </SubMenu>
-                            </Menu>
-                        </Sider>
-                        <Content style={{ padding: '0 40px', minHeight: 280 }}>
-                            <div dangerouslySetInnerHTML={{__html: parse(html) }} />
-                        </Content>
-                    </Layout>
+                </Sider>
+                <Content style={{ padding: '0 40px', minHeight: 280 }}>
+                    <div className="markdown" dangerouslySetInnerHTML={{__html: parse(html) }} />
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>
-                    RCRE ©2017 Created by dongtiancheng@baidu.com
-                </Footer>
             </Layout>
         );
         
