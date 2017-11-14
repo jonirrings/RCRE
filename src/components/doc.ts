@@ -36,5 +36,11 @@ export default {
             placeholder: require('raw-loader!./Input/demo/placeholder.md'),
             readOnly: require('raw-loader!./Input/demo/readOnly.md')
         }
+    },
+    modal: {
+        index: require('raw-loader!./Modal/Modal.md'),
+        demo: {
+            basic: require('raw-loader!./Modal/demo/basic.md')
+        }
     }
 };

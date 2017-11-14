@@ -1,6 +1,4 @@
 // import * as React from 'react';
-//
-
 
 // import * as React from 'react';
 // import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
@@ -233,7 +231,7 @@
 //     }
 //
 //     private injectChildElement(validator: () => boolean) {
-//         this.formItemStatus.push(validator);
+//         this. formItemStatus.push(validator);
 //     }
 // }
 //

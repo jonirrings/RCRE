@@ -2,6 +2,8 @@
 
 通过键盘或者鼠标来输入内容，结合`FormItem`+`container`组件就能实现完整的表单验证功能
 
+组件基于 https://ant.design/components/input-cn/
+
 提示：
 推荐使用[Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?utm_source=chrome-ntp-icon)来实时查看当前输入框的数据模型数据。
 
