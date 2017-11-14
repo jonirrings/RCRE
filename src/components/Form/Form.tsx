@@ -1,4 +1,26 @@
+     
+
 // import * as React from 'react';
+// import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
+//
+// export class FormConfig extends BasicConfig {
+//
+// }
+//
+// export class FormPropsInterface extends BasicContainerPropsInterface {
+//
+// }
+//
+// export class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
+//     constructor() {
+//         super();
+//     }
+//
+//     render() {
+//        
+//     }
+// }
+
 // import {Map} from 'immutable';
 // import * as PropsTypes from 'prop-types';
 // import {BasicFormItemConfig} from './types';
