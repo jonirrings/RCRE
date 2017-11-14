@@ -1,8 +1,7 @@
 import 'reflect-metadata';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import Page, {PageProps} from './core/Page';
-import paramCheck from './util/paramCheck';
+import Page from './core/Page';
 import configureStore from './data/store';
 import {actionCreators} from './core/Container/action';
 import {Provider} from 'react-redux';
@@ -22,7 +21,7 @@ interface RenderPropsInterface {
     global?: globalOptions;
 }
 
-export const store = configureStore();
+export let store = configureStore();
 
 export class Render extends React.Component<RenderPropsInterface, {}> {
     static defaultProps = {
@@ -35,23 +34,11 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
     }
 
     shouldComponentUpdate(nextProps: RenderPropsInterface, nextState: {}) {
-        try {
-            JSON.parse(nextProps.code);
-            return true;
-        } catch (e) {
-            // TODO Error Report
-            return false;
-        }
+        return this.props.code !== nextProps.code;
     }
 
     componentWillUnmount() {
         store.dispatch(actionCreators.clearData());
-    }
-
-    componentWillReceiveProps(nextProps: RenderPropsInterface) {
-        if (this.props.code !== nextProps.code) {
-            store.dispatch(actionCreators.clearData());   
-        }
     }
 
     render() {
@@ -66,24 +53,20 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
             return <h1>JSON 解析异常</h1>;
         }
 
-        let ret = paramCheck(info, PageProps);
-        if (ret.length > 0) {
-            console.error(ret);
-            // TODO json property error log
+        // 保证每次render的数据模型都很纯净， 所以要每次渲染新的code
+        // 之前要全部清空， 重新来一遍
+        class UpdatePage extends Page {
         }
-
-        // TODO: 每次JSON更新都会整体重渲染, 性能很烂
+        
         return (
-            <div className="rcre-render">
-                <Provider store={store}>
-                    <Page
-                        title={info.title}
-                        body={info.body}
-                        theme={info.theme}
-                        global={this.props.global}
-                    />
-                </Provider>
-            </div>
+            <Provider store={store}>
+                <UpdatePage
+                    title={info.title}
+                    body={info.body}
+                    theme={info.theme}
+                    global={this.props.global}
+                />
+            </Provider>
         );
     }
 }

@@ -24,5 +24,17 @@ export default {
             dataSourceMapping: require('raw-loader!./Table/demo/dataSourceMapping.md'),
             tableDrill: require('raw-loader!./Table/demo/tableDrill.md')
         }
+    },
+    input: {
+        index: require('raw-loader!./Input/Input.md'),
+        demo: {
+            basic: require('raw-loader!./Input/demo/basic.md'),
+            password: require('raw-loader!./Input/demo/password.md'),
+            addonInput: require('raw-loader!./Input/demo/addonInput.md'),
+            sync: require('raw-loader!./Input/demo/sync.md'),
+            disabled: require('raw-loader!./Input/demo/disabled.md'),
+            placeholder: require('raw-loader!./Input/demo/placeholder.md'),
+            readOnly: require('raw-loader!./Input/demo/readOnly.md')
+        }
     }
 };
