@@ -11,6 +11,7 @@ import {ContainerConfig} from '../../../components/Container/Container';
 import {compileValueExpress} from '../../util/vm';
 import {TriggerEventItem} from '../Trigger/Trigger';
 import {DataCustomer} from '../DataCustomer/Controller';
+import {FormStateItem} from '../../../components/Form/Form';
 
 export type rawJSONType = string | number | null | boolean | Object;
 export type originJSONType = rawJSONType | rawJSONType[];
@@ -67,6 +68,11 @@ export class BasicConfig {
      * 事件触发
      */
     trigger?: TriggerEventItem[];
+
+    /**
+     * 是否作为表单输入元素
+     */
+    formItem?: boolean;
 }
 
 export type onContainerItemChange = (value: any, event?: React.ChangeEvent<HTMLElement>) => void;
@@ -123,6 +129,16 @@ export class BasicContainerPropsInterface {
      * 父级的数据模型Key
      */
     model?: string;
+
+    /**
+     * 当前表单的数据模型
+     */
+    $form?: Map<string, any>;
+
+    /**
+     * 表单给FormItem组件提供的验证注册器
+     */
+    injectChildElement?: (validator: (value?: any) => FormStateItem) => void;
 }
 
 export class ContainerProps extends BasicContainerPropsInterface {
@@ -252,8 +268,8 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
 
         return children;
     }
-    
-    public getChildProps(info: BasicConfig, key: string) {
+
+    public getChildProps(info: BasicConfig, childProps: Object) {
         return {
             info: info,
             $data: this.props.$data,
@@ -263,7 +279,7 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
             eventHandle: this.props.eventHandle,
             $index: this.props.$index,
             $item: this.props.$item,
-            key: key
+            ...childProps
         };
     }
 

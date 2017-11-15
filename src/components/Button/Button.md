@@ -12,7 +12,7 @@
 |         属性          |                说明                |                    类型                    |   默认值   |
 | :-----------------: | :------------------------------: | :--------------------------------------: | :-----: |
 |        text         |               按钮文字               |                  string                  |    -    |
-|      antd.type      |               按钮类型               |   'primary' 'dashed' 'danger' 'ghost'    |    -    |
+|      buttonType      |               按钮类型               |   'primary' 'dashed' 'danger' 'ghost'    |    -    |
 |      htmlType       |            按钮的HTML类型             | 设置 `button` 原生的 `type` 值，可选值请参考 [HTML 标准](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type) | button  |
 |       confirm       |            点击之后弹一个确认框            |                  object                  |    -    |
 |    confirm.title    |              确定框的标题              |                  string                  |    -    |

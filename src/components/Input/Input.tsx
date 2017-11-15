@@ -3,12 +3,7 @@ import {CSSProperties} from 'react';
 import {IsBoolean, IsDefined, IsString, Validate} from 'class-validator';
 import {IsValidEnums} from '../../render/util/validators';
 import {Icon, Input} from 'antd';
-import {
-    BasicConfig,
-    BasicContainer,
-    BasicContainerPropsInterface,
-    onContainerItemChange
-} from '../../render/core/Container/types';
+import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import componentLoader from '../../render/util/componentLoader';
 import {InputProps} from 'antd/lib/input/Input';
 
@@ -117,9 +112,6 @@ export class InputConfig extends BasicConfig {
 
 export class InputPropsInterface extends BasicContainerPropsInterface {
     info: InputConfig;
-    value: string;
-
-    onSearch: onContainerItemChange;
 }
 
 interface InputStateInterface {
@@ -177,7 +169,7 @@ class AbstractInput extends BasicContainer<InputPropsInterface, InputStateInterf
         let value = $data.get(info.name);
 
         let inputProps = this.mapOptions(info);
-        return React.createElement(Input, {
+        let inputElement = React.createElement(Input, {
             value: value,
             onChange: this.handleChange,
             // TODO: Add Trigger interface
@@ -208,6 +200,12 @@ class AbstractInput extends BasicContainer<InputPropsInterface, InputStateInterf
             },
             ...inputProps
         });
+
+        return (
+            <div className="ant-form-item-control">
+                {inputElement}
+            </div>
+        );
     }
 }
 

@@ -42,5 +42,11 @@ export default {
         demo: {
             basic: require('raw-loader!./Modal/demo/basic.md')
         }
+    },
+    form: {
+        index: require('raw-loader!./Form/Form.md'),
+        demo: {
+            basic: require('raw-loader!./Form/demo/basic.md')
+        }
     }
 };

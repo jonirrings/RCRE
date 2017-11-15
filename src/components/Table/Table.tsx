@@ -297,7 +297,9 @@ export class AbstractTable extends BasicContainer<TablePropsInterface, TableStat
             let childElement;
             if (columnConfig.controls) {
                 childElement = columnConfig.controls.map(childInfo => {
-                    let defaultProps = this.getChildProps(childInfo, `table_column_${index}`);
+                    let defaultProps = this.getChildProps(childInfo, {
+                        key: `table_column_${index}`
+                    });
                     return createChild(childInfo, {
                         ...defaultProps,
                         $item: Map(record),

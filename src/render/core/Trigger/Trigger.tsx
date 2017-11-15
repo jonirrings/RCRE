@@ -169,7 +169,7 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
             let params = info.params || {};
             let runTime = this.getRuntimeContext(this.props, this.context);
             let output = compileValueExpress(params, {
-                args: args,
+                $args: args,
                 ...runTime
             });
 

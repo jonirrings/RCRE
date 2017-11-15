@@ -14,7 +14,7 @@
             "type": "button",
             "icon": "search",
             "shape": "circle",
-            "antd.type": "primary"
+            "buttonType": "primary"
         }
     ]
 }

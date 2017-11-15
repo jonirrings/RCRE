@@ -27,6 +27,7 @@
         "@types/react-router-dom": "^4.0.7",
         "@types/redux": "^3.6.31",
         "@types/stringify-object": "^3.1.1",
+        "@types/validator": "^6.3.0",
         "acorn": "^5.1.2",
         "antd": "^2.13.8",
         "axios": "^0.16.2",
@@ -57,7 +58,8 @@
         "redux": "^3.7.2",
         "redux-thunk": "^2.2.0",
         "reflect-metadata": "^0.1.10",
-        "stringify-object": "^3.2.0"
+        "stringify-object": "^3.2.0",
+        "validator": "^9.1.1"
     },
     "devDependencies": {
         "@types/cors": "^2.8.1",

@@ -54,9 +54,7 @@ app.post('/submit', (req, res) => {
     res.json({
         errno: 0,
         errmsg: 'ok',
-        data: {
-            name: 1
-        }
+        data: req.body
     });
 });
 

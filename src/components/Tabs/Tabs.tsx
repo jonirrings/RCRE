@@ -104,10 +104,14 @@ export class AbstractTabs extends BasicContainer<TabsPropsInterface, {}> {
             let childElements = null;
 
             if (!(children instanceof Array)) {
-                childElements = createChild(children, this.getChildProps(info, `tab_${title}`));
+                childElements = createChild(children, this.getChildProps(info, {
+                    key: `tab_${title}`
+                }));
             } else {
                 childElements = children.map((child, index) =>
-                    createChild(child, this.getChildProps(child, `tab_${title}_${index}`))
+                    createChild(child, this.getChildProps(child, {
+                        key: `tab_${title}_${index}`
+                    }))
                 );
             }
 

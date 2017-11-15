@@ -12,22 +12,22 @@
         {
             "type": "button",
             "text": "blue",
-            "antd.type": "primary"
+            "buttonType": "primary"
         },
         {
             "type": "button",
             "text": "ghost",
-            "antd.type": "ghost"
+            "buttonType": "ghost"
         },
         {
             "type": "button",
             "text": "dashed",
-            "antd.type": "dashed"
+            "buttonType": "dashed"
         },
         {
             "type": "button",
             "text": "danger",
-            "antd.type": "danger"
+            "buttonType": "danger"
         }
     ]
 }

@@ -136,9 +136,7 @@ export class Container extends BasicContainer<ContainerProps, {}> {
             });
         });
 
-        const containerStyle = {
-            
-        };
+        const containerStyle = {};
         
         return (
             <div className="rcre-container" style={containerStyle}>

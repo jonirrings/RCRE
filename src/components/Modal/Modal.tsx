@@ -107,13 +107,17 @@ export class AbstractModal extends BasicContainer<ModalPropsInterface, {}> {
         let footer = null;
         if (info.footer) {
             footer = info.footer.map((fo, index) => {
-                return createChild(fo, this.getChildProps(fo, `${this.props.model}_footer_${index}`));
+                return createChild(fo, this.getChildProps(fo, {
+                    key: `${this.props.model}_footer_${index}`
+                }));
             });
         }
 
         let modalProps = this.mapModalOptions(info);
         let children = info.children.map((child, index) => {
-            return createChild(child, this.getChildProps(child, `${this.props.model}_${index}`));
+            return createChild(child, this.getChildProps(child, {
+                key: `${this.props.model}_${index}`
+            }));
         });
 
         modalProps.visible = info.visible;

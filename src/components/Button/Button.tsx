@@ -21,7 +21,7 @@ export class ButtonConfig extends BasicConfig {
      * @public
      */
     @IsString()
-    'antd.type'?: 'primary' | 'dashed' | 'danger' | 'ghost' | undefined;
+    buttonType?: 'primary' | 'dashed' | 'danger' | 'ghost' | undefined;
 
     /**
      * 按钮的HTML类型 https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type
@@ -122,7 +122,7 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
     
     private mapButtonOptions(info: ButtonConfig): ButtonProps {
         return {
-            type: info['antd.type'],
+            type: info.buttonType,
             htmlType: info.htmlType,
             icon: info.icon,
             shape: info.shape,

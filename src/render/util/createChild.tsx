@@ -4,6 +4,7 @@ import {BasicConfig, BasicContainerPropsInterface} from '../core/Container/types
 import componentLoader from '../util/componentLoader';
 import createElement from './createElement';
 import Trigger from '../core/Trigger/Trigger';
+import FormItem from '../../components/Form/FormItem';
 import '../../components/index';
 import '../core/Layout/Row/Row';
 
@@ -39,6 +40,20 @@ export function createChild<T extends BasicContainerPropsInterface>(item: BasicC
             dataCustomer: childProps.dataCustomer!,
             $index: childProps.$index,
             $item: childProps.$item,
+        }, children);
+    }
+
+    if (item.formItem) {
+        return React.createElement(FormItem, {
+            info: childProps.info!,
+            $data: childProps.$data!,
+            $setData: childProps.$setData!,
+            model: childProps.model!,
+            key: childProps.key!,
+            dataCustomer: childProps.dataCustomer!,
+            $index: childProps.$index,
+            $item: childProps.$item,
+            injectChildElement: childProps.injectChildElement
         }, children);
     }
     
