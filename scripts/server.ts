@@ -11,10 +11,10 @@ import * as path from 'path';
 const app = express();
 
 app.use(cors());
-app.use(express.static(path.join(__dirname, './')))
+app.use(express.static(path.join(process.cwd(), './build/website')));
 
 app.get('*', (req, res, next) => {
-    let indexFile = fs.createReadStream(path.join(__dirname, './index.html'));
+    let indexFile = fs.createReadStream(path.join(process.cwd(), './build/website/index.html'));
     indexFile.pipe(res);
 });
 

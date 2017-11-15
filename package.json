@@ -124,6 +124,8 @@
         "start": "npm run proxyServer & node scripts/bin/react-scripts-ts start",
         "remoteDebug": "REMOTE_DEBUG=true node scripts/bin/react-scripts-ts start",
         "build": "node scripts/bin/react-scripts-ts build",
+        "websiteServer": "ts-node scripts/server.ts",
+        "website": "node scripts/bin/react-scripts-ts website",
         "plugin": "node scripts/bin/react-scripts-ts plugin",
         "test": "node scripts/bin/react-scripts-ts test --env=jsdom --notify",
         "testCoverage": "node scripts/bin/react-scripts-ts test --env=jsdom --coverage --coveragePathIgnorePatterns=.d.ts$",
