@@ -1,6 +1,6 @@
 // import * as React from 'react';
 // import {DatePicker} from 'antd';
-// import {DatePickerConfig, DatePickerPropsInterface} from '../../../../components/Datepicker/Datepicker';
+// import {DatePickerConfig, DatePickerPropsInterface} from '../../../../components/DatePicker/DatePicker';
 // import {DatePickerProps} from 'antd/es/date-picker';
 // import * as moment from 'moment';
 //

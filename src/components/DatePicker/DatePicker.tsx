@@ -9,7 +9,7 @@ import * as moment from 'moment';
 
 export class DatePickerConfig extends BasicConfig {
     /**
-     * Select的数据模型Key
+     * Datepicker的数据模型Key
      */
     @IsDefined()
     name: string;
@@ -86,7 +86,7 @@ export class DatePickerConfig extends BasicConfig {
     /**
      * 输入框高度
      */
-    size: 'large' | 'smalll';
+    size: 'large' | 'small';
 }
 
 export class DatePickerPropsInterface extends BasicContainerPropsInterface {

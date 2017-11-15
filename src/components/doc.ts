@@ -48,5 +48,19 @@ export default {
         demo: {
             basic: require('raw-loader!./Form/demo/basic.md')
         }
+    },
+    text: {
+        index: require('raw-loader!./Text/Text.md'),
+        demo: {
+            basic: require('raw-loader!./Text/demo/basic.md'),
+            link: require('raw-loader!./Text/demo/link.md'),
+            thousand: require('raw-loader!./Text/demo/thousand.md')
+        }
+    },
+    datePicker: {
+        index: require('raw-loader!./DatePicker/DatePicker.md'),
+        demo: {
+            basic: require('raw-loader!./DatePicker/demo/basic.md')
+        }
     }
 };

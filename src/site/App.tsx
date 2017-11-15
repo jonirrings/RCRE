@@ -2,12 +2,13 @@
 /// <reference path="../types/echarts.d.ts" />
 
 import * as React from 'react';
-import {Layout, Menu, Icon} from 'antd';
+import {Icon, Layout, Menu} from 'antd';
 import {parse} from 'marked';
 import './App.css';
 import {Link, RouteComponentProps} from 'react-router-dom';
 import {ComponentPreview} from './ComponentPreview';
 import docList from '../components/doc';
+import demoList from '../demo/index';
 import * as _ from 'lodash';
 
 const {
@@ -65,7 +66,9 @@ class App extends React.Component<RouteComponentProps<AppProps>, AppStateInterfa
             
             content = <div className="markdown" dangerouslySetInnerHTML={{__html: parse(html)}}/>;
         } else if (group === 'component') {
-            content = <ComponentPreview activeKey={activeKey}/>;
+            content = <ComponentPreview map={docList} activeKey={activeKey}/>;
+        } else if (group === 'demo') {
+            content = <ComponentPreview map={demoList} activeKey={activeKey}/>;
         }
 
         return (
@@ -95,6 +98,17 @@ class App extends React.Component<RouteComponentProps<AppProps>, AppStateInterfa
                                     return <Item key={name}>
                                         <Link to={`/component/${name}`}>
                                             {name.substring(0, 1).toUpperCase() + name.substring(1)}
+                                        </Link>
+                                    </Item>;
+                                })
+                            }
+                        </SubMenu>
+                        <SubMenu key="demo" title={<span><Icon type="solution"/>样例</span>}>
+                            {
+                                _.map(demoList, (info, name) => {
+                                    return <Item key={name}>
+                                        <Link to={`/demo/${name}`}>
+                                            {name}
                                         </Link>
                                     </Item>;
                                 })

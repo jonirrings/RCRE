@@ -22,6 +22,11 @@ export class TextConfig extends BasicConfig {
     href?: string;
 
     /**
+     * 添加千分位符
+     */
+    thousands?: boolean;
+
+    /**
      * 内联属性
      */
     @IsJSON()
@@ -53,6 +58,26 @@ class Text extends BasicContainer<TextPropsInterface, {}> {
         
         if (typeof text === 'boolean') {
             text = String(text);
+        }
+
+        if (info.thousands && /^\d+$/.test(text)) {
+            text = String(text);
+            let group = text.split('').reverse();
+            let ret = '';
+
+            for (let i = 1; i <= group.length; i++) {
+                if (i % 3 !== 0) {
+                    ret = group[i - 1] + ret;
+                } else {
+                    ret = ',' + group[i - 1] + ret;
+                }
+            }
+
+            if (ret[0] === ',') {
+                ret = ret.substring(1);
+            }
+
+            text = ret;
         }
         
         switch (info.textType) {

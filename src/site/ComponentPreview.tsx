@@ -1,12 +1,12 @@
 import * as React from 'react';
-import docMap from '../components/doc';
-import {parse, lexer} from 'marked';
+import {lexer, parse} from 'marked';
 import * as _ from 'lodash';
 import {CodeBox} from './CodeBox';
 import {Col} from 'antd';
 
 export interface ComponentPreviewPropsInterface {
     activeKey: string;
+    map: any;
 }
 
 export type DemoItem = {
@@ -83,12 +83,12 @@ export class ComponentPreview extends React.Component<ComponentPreviewPropsInter
 
     render() {
         let activeKey = this.props.activeKey;
-        if (!docMap) {
+        if (!this.props.map) {
             console.error('can not find matched doc from activeKey', activeKey);
             return <div/>;
         }
 
-        let info = docMap[activeKey];
+        let info = this.props.map[activeKey];
         let homeDoc: string = info.index;
 
         let {
