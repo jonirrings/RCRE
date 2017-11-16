@@ -62,5 +62,13 @@ export default {
         demo: {
             basic: require('raw-loader!./DatePicker/demo/basic.md')
         }
+    },
+    tabs: {
+        index: require('raw-loader!./Tabs/Tabs.md'),
+        demo: {
+            basic: require('raw-loader!./Tabs/demo/basic.md'),
+            animated: require('raw-loader!./Tabs/demo/noAnimate.md'),
+            tabType: require('raw-loader!./Tabs/demo/tabType.md')
+        }
     }
 };

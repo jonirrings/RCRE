@@ -58,7 +58,7 @@ export class TabsConfig extends BasicConfig {
     /**
      * 页签的基本样式，可选 line、card editable-card 类型
      */
-    'antd.type': 'line' | 'card';
+    'tabType': 'line' | 'card';
 }
 
 export class TabsPropsInterface extends BasicContainerPropsInterface {
@@ -76,7 +76,7 @@ export class AbstractTabs extends BasicContainer<TabsPropsInterface, {}> {
     private mapTabsOptions(info: TabsConfig): TabsProps {
         return {
             tabBarStyle: info.tabBarStyle,
-            type: info['antd.type'],
+            type: info.tabType,
             tabPosition: info.tabPosition,
             size: info.size,
             style: info.style,
@@ -91,6 +91,10 @@ export class AbstractTabs extends BasicContainer<TabsPropsInterface, {}> {
         let underContainerControl = !!this.props.$data;
 
         let tabs = info.tabs;
+        
+        if (underContainerControl && !info.name) {
+            return <div>If you put tabs component under container component, you should provider name property</div>;
+        }
 
         if (!(tabs instanceof Array)) {
             return <div>Tabs property should be array</div>;
