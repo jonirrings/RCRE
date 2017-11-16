@@ -135,11 +135,19 @@ export class AbstractCascader extends BasicContainer<CascaderPropsInterface, {}>
         }
 
         if (!this.props.$data) {
-            return <div>Cascader Element is out of RCRE control, please put it inside container component</div>;
+            if (this.context.debug) {
+                return <div>Cascader Element is out of RCRE control, please put it inside container component</div>;
+            } else {
+                return <div/>;
+            }
         }
         
         if (!info.options) {
-            return <div>options props is required for Cascader Element</div>;
+            if (this.context.debug) {
+                return <div>options props is required for Cascader Element</div>;
+            } else {
+                return <div/>;
+            }
         }
 
         let $data = this.props.$data;

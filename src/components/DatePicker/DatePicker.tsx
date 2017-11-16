@@ -160,7 +160,7 @@ export default class AbstractDatepicker extends BasicContainer<DatePickerPropsIn
             onOpenChange: (status: boolean) => {
                 this.commonEventHandler('onOpenChange', {
                     status: status
-                }, false);
+                });
             },
             ...datePickerOptions
         });

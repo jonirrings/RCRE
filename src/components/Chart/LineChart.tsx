@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsArray, IsBoolean, IsString, Validate} from 'class-validator';
 import {IsArrayString} from '../../render/util/validators';
@@ -6,7 +7,6 @@ import * as echarts from 'echarts';
 import {chartTypes} from './types';
 import componentLoader from '../../render/util/componentLoader';
 import {Set} from 'immutable';
-import {CSSProperties} from 'react';
 
 export class LineChartConfig extends BasicConfig {
     /**
@@ -55,14 +55,6 @@ export class LineChartConfig extends BasicConfig {
      */
     @IsBoolean()
     toolbox: boolean;
-
-    /**
-     * x轴数据
-     * @public
-     * @default [];
-     */
-    @Validate(IsArrayString)
-    xAxisData: string[];
 
     /**
      * 是否支持缩放
@@ -131,8 +123,7 @@ export default class LineChart extends BasicContainer<LineChartPropsInterface, {
         grid: {
             left: '3%',
             right: '4%',
-            bottom: '3%',
-            containLabel: true
+            bottom: '3%'
         },
         xAxis: {
             type: 'category',

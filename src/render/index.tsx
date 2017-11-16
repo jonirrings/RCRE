@@ -63,7 +63,7 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
                 <UpdatePage
                     title={info.title}
                     body={info.body}
-                    theme={info.theme}
+                    debug={info.debug}
                     global={this.props.global}
                 />
             </Provider>

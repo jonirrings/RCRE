@@ -109,6 +109,10 @@ export class ButtonConfig extends BasicConfig {
      */
     style?: CSSProperties;
 
+    /**
+     * 跳转链接
+     */
+    href?: string;
 }
 
 export class ButtonPropsInterface extends BasicContainerPropsInterface {
@@ -141,6 +145,13 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
         let text = info.text;
         let mappedProps = this.mapButtonOptions(info);
         let children;
+        let childElement;
+
+        if (info.href) {
+            childElement = <a href={info.href}>{text}</a>;
+        } else {
+            childElement = text;
+        }
         
         let buttonProps: ButtonProps = {
             onMouseUp: (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -171,7 +182,7 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
                         event: event
                     });
                 }
-            }, React.createElement(Button, buttonProps, text));    
+            }, React.createElement(Button, buttonProps, childElement));    
         } else {
             if (info.confirm) {
                 console.error('Button confirm props should be plain Object');
@@ -187,7 +198,7 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
                 margin: '0 5px'
             };
 
-            children = React.createElement(Button, buttonProps, text); 
+            children = React.createElement(Button, buttonProps, childElement); 
         }
         
         return this.renderChildren(info, children);

@@ -6,7 +6,8 @@ export default {
             confirm: require('raw-loader!./Button/demo/confirm.md'),
             icon: require('raw-loader!./Button/demo/icon.md'),
             disabled: require('raw-loader!./Button/demo/disabled.md'),
-            loading: require('raw-loader!./Button/demo/loading.md')
+            loading: require('raw-loader!./Button/demo/loading.md'),
+            href: require('raw-loader!./Button/demo/href.md')
         }
     },
     cascader: {
@@ -60,7 +61,8 @@ export default {
     datePicker: {
         index: require('raw-loader!./DatePicker/DatePicker.md'),
         demo: {
-            basic: require('raw-loader!./DatePicker/demo/basic.md')
+            basic: require('raw-loader!./DatePicker/demo/basic.md'),
+            startTime: require('raw-loader!./DatePicker/demo/startTime.md')
         }
     },
     tabs: {
@@ -69,6 +71,12 @@ export default {
             basic: require('raw-loader!./Tabs/demo/basic.md'),
             animated: require('raw-loader!./Tabs/demo/noAnimate.md'),
             tabType: require('raw-loader!./Tabs/demo/tabType.md')
+        }
+    },
+    lineChart: {
+        index: require('raw-loader!./Chart/LineChart.md'),
+        demo: {
+            basic: require('raw-loader!./Chart/demo/basic.md')
         }
     }
 };

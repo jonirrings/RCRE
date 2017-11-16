@@ -7,6 +7,14 @@
     "files": [
         "build"
     ],
+    "proxy": {
+        "/proxy": {
+            "target": "http://localhost:8800"
+        },
+        "/api": {
+            "target": "http://localhost:8800"
+        }
+    },
     "dependencies": {
         "@types/acorn": "^4.0.2",
         "@types/antd": "^1.0.0",

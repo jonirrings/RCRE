@@ -195,7 +195,8 @@ export const BasicContextTypes = {
     $store: PropTypes.object,
     $global: PropTypes.object,
     $location: PropTypes.object,
-    $query: PropTypes.object
+    $query: PropTypes.object,
+    debug: PropTypes.bool
 };
 
 export type runTimeType = {
@@ -206,11 +207,13 @@ export type runTimeType = {
     $trigger?: Object;
     $index?: number;
     $now?: moment.Moment;
+    $moment: typeof moment
 };
 
 export function getRuntimeContext(props: BasicContainerPropsInterface, context: any) {
     let runtime: runTimeType = {
-        $now: moment()
+        $now: moment(),
+        $moment: moment
     };
 
     if (props.$data) {
