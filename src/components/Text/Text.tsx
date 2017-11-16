@@ -13,7 +13,7 @@ export class TextConfig extends BasicConfig {
      * 文本类型
      */
     @Validate(IsValidEnums, ['text', 'link', 'strong'])
-    textType: 'text' | 'link' | 'strong';
+    textType?: 'text' | 'link' | 'strong';
 
     /**
      * 跳转链接
@@ -42,7 +42,7 @@ export class TextPropsInterface extends BasicContainerPropsInterface {
     info: TextConfig;
 }
 
-class Text extends BasicContainer<TextPropsInterface, {}> {
+export class Text extends BasicContainer<TextPropsInterface, {}> {
     constructor() {
         super();
     }

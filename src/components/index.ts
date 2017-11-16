@@ -15,3 +15,4 @@ import './Affix/Affix';
 import './Modal/Modal';
 import './Tabs/Tabs';
 import './Form/Form';
+import './Trend/Trend';

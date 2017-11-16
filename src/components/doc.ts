@@ -78,5 +78,11 @@ export default {
         demo: {
             basic: require('raw-loader!./Chart/demo/basic.md')
         }
+    },
+    trend: {
+        index: require('raw-loader!./Trend/Trend.md'),
+        demo: {
+            basic: require('raw-loader!./Trend/demo/basic.md')
+        }
     }
 };
