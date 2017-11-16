@@ -252,7 +252,6 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
     }
 
     public getPropsInfo<InfoType>(info: InfoType, props?: T, blackList?: string[], isDeep?: boolean) {
-        info = _.cloneDeep(info);
         info = compileValueExpress(info, this.getRuntimeContext(props), blackList, isDeep);
         return info;
     }
