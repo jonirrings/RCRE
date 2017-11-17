@@ -7,7 +7,6 @@ import componentLoader from '../../render/util/componentLoader';
 import {compileValueExpress} from '../../render/util/vm';
 import {Select} from 'antd';
 import {OptionProps, SelectProps, SelectValue} from 'antd/lib/select';
-import * as _ from 'lodash';
 
 const Option = Select.Option;
 export class SelectConfig extends BasicConfig {
@@ -223,11 +222,11 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
         let value = this.props.$data.get(info.name);
         
         // 当前的数据模型中的值在列表中已经不存在的时候, 就清空当前选择框的值
-        if (!_.isNil(value) &&
-            !_.find(options, o => o.value === value)
-        ) {
-            value = null;
-        }
+        // if (!_.isNil(value) &&
+        //     !_.find(options, o => o.value === value)
+        // ) {
+        //     value = null;
+        // }
         
         return React.createElement(Select, {
             onChange: this.handleChange,

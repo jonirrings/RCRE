@@ -85,5 +85,11 @@ export default {
         demo: {
             basic: require('raw-loader!./Trend/demo/basic.md')
         }
+    },
+    select: {
+        index: require('raw-loader!./Select/Select.md'),
+        demo: {
+            basic: require('raw-loader!./Select/demo/basic.md')
+        }
     }
 };
