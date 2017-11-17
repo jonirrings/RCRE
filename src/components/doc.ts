@@ -70,7 +70,8 @@ export default {
         demo: {
             basic: require('raw-loader!./Tabs/demo/basic.md'),
             animated: require('raw-loader!./Tabs/demo/noAnimate.md'),
-            tabType: require('raw-loader!./Tabs/demo/tabType.md')
+            tabType: require('raw-loader!./Tabs/demo/tabType.md'),
+            tabContainer: require('raw-loader!./Tabs/demo/tabContainer.md')
         }
     },
     lineChart: {

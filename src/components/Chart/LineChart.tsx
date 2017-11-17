@@ -93,7 +93,7 @@ export class LineChartPropsInterface extends BasicContainerPropsInterface {
 }
 
 export default class LineChart extends BasicContainer<LineChartPropsInterface, {}> {
-    domID: string = 'echarts-rcrelinechart';
+    DOMElement: any;
     chart: EChartSpace.ECharts;
     chartOptions: chartTypes = {
         title: {
@@ -147,8 +147,7 @@ export default class LineChart extends BasicContainer<LineChartPropsInterface, {
     };
 
     componentDidMount() {
-        let dom: any = document.getElementById(this.domID);
-        this.chart = echarts.init(dom);
+        this.chart = echarts.init(this.DOMElement);
         let info = this.getPropsInfo(this.props.info);
         this.overRideChartOptions(info);
         this.chart.setOption(this.chartOptions);
@@ -215,8 +214,14 @@ export default class LineChart extends BasicContainer<LineChartPropsInterface, {
             ...info.style
         };
 
+        const refCallback = (ref: any) => {
+            if (ref) {
+                this.DOMElement = ref;
+            }
+        };
+        
         return (
-            <div id={this.domID} className={info.className} style={style}/>
+            <div ref={refCallback} className={info.className} style={style}/>
         );
     }
 }
