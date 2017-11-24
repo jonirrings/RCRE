@@ -5,12 +5,13 @@ import {IsBoolean} from 'class-validator';
 import componentLoader from '../../render/util/componentLoader';
 import {Slider} from 'antd';
 import {SliderProps} from 'antd/lib/slider';
+import {parseExpressString} from '../../render/util/vm';
 
 export class SliderConfig extends BasicConfig {
     /**
-     * 初始值
+     * Slider组件的数据模型Key
      */
-    defaultValue: number | [number, number] | undefined;
+    name: string;
 
     /**
      * 是否禁用 默认false
@@ -51,10 +52,15 @@ export class SliderConfig extends BasicConfig {
     @IsBoolean()
     range?: boolean;
 
-    /*
+    /**
      * Slider 会把当前值传给 tipFormatter，并在 Tooltip 中显示 tipFormatter 的返回值
      */
     step: number | void;
+
+    /**
+     * 使用ExpressString来格式化显示的值
+     */
+    tipFormat: string;
 
     /**
      * 设置当前取值.
@@ -84,11 +90,12 @@ export class SliderStateInterface {
 export class AbstractSlider extends BasicContainer<SliderPropsInterface, SliderStateInterface> {
     constructor() {
         super();
+        
+        this.handleChange = this.handleChange.bind(this);
     }
 
     private mapSliderProps(info: SliderConfig): SliderProps {
         return {
-            defaultValue: info.defaultValue,
             disabled: info.disabled,
             dots: info.dots,
             included: info.included,
@@ -101,27 +108,72 @@ export class AbstractSlider extends BasicContainer<SliderPropsInterface, SliderS
         };
     }
 
+    /**
+     * 对于onChange事件，要进行直接同步值到数据模型中
+     * @param {number} value
+     * @return {void}
+     */
+    private handleChange(value: number) {
+        // 写入值到数据模型
+        if (this.props.$setData) {
+            this.props.$setData(this.props.info.name, value);
+        }
+    }
+
     render() {
-        let info = this.getPropsInfo(this.props.info);
-
+        // 注意这里要把tipFormat给忽略掉，tipFormat要用自定义的方式来处理
+        let info = this.getPropsInfo(this.props.info, this.props, ['tipFormat']);
         let sliderProps = this.mapSliderProps(info);
-
+        
+        // slider组件涉及到数据更改，有onChange回调，所以就需要name属性来设置数据模型Key
+        if (!info.name) {
+            const msg = 'name property is required for Slider Component';
+            if (this.context.debug) {
+                return <div>{msg}</div>;
+            } else {
+                console.error(msg);
+            }
+            return <div />;
+        }
+        
+        // 数据模型是从container组件那里来的
+        if (!this.props.$data) {
+            const msg = 'slider component should be under container component';
+            if (this.context.debug) {
+                return <div>{msg}</div>;
+            } else {
+                console.error(msg);
+            }
+            return <div />;
+        }
+        
+        // 从数据模型获取当前组件的值
+        let storeValue = this.props.$data.get(info.name);
+        
+        // 使用Expression String来格式化输出
+        if (info.tipFormat) {
+            sliderProps.tipFormatter = (value: number) => {
+                let runTime = this.getRuntimeContext();
+                return parseExpressString(info.tipFormat, {
+                    ...runTime,
+                    $value: value
+                });
+            }; 
+        }
+        
         return (
             <Slider
                 {...sliderProps}
+                value={storeValue}
                 onAfterChange={(value: number) => {
                     this.commonEventHandler('onAfterChange', {
                         value: value
                     });
                 }}
-                onChange={(value: number) => {
-                    this.commonEventHandler('onChange', {
-                        value: value
-                    });
-                }}
+                onChange={this.handleChange}
             />
         );
     }
 }
 
-componentLoader.addComponent('Slider', AbstractSlider, SliderPropsInterface);
+componentLoader.addComponent('slider', AbstractSlider, SliderPropsInterface);
