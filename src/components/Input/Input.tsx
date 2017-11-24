@@ -1,14 +1,11 @@
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import {IsBoolean, IsDefined, IsString, Validate} from 'class-validator';
 import {IsValidEnums} from '../../render/util/validators';
-import {Input, Icon} from 'antd';
-import {
-    BasicConfig, BasicContainer, BasicContainerPropsInterface,
-    onContainerItemChange
-} from '../../render/core/Container/types';
+import {Icon, Input} from 'antd';
+import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import componentLoader from '../../render/util/componentLoader';
 import {InputProps} from 'antd/lib/input/Input';
-import {CSSProperties} from 'react';
 
 export class InputConfig extends BasicConfig {
     /**
@@ -115,9 +112,6 @@ export class InputConfig extends BasicConfig {
 
 export class InputPropsInterface extends BasicContainerPropsInterface {
     info: InputConfig;
-    value: string;
-
-    onSearch: onContainerItemChange;
 }
 
 interface InputStateInterface {
@@ -175,17 +169,43 @@ class AbstractInput extends BasicContainer<InputPropsInterface, InputStateInterf
         let value = $data.get(info.name);
 
         let inputProps = this.mapOptions(info);
-        return React.createElement(Input, {
+        let inputElement = React.createElement(Input, {
             value: value,
             onChange: this.handleChange,
             // TODO: Add Trigger interface
-            onPressEnter: () => {},
-            onKeyDown: () => {},
-            onClick: () => {},
-            onFocus: () => {},
-            onBlur: () => {},
+            onPressEnter: (event: React.KeyboardEvent<HTMLInputElement>) => {
+                this.commonEventHandler('onPressEnter', {
+                    event: event
+                });
+            },
+            onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => {
+                this.commonEventHandler('onKeyDown', {
+                    event: event
+                });
+            },
+            onClick: (event: React.MouseEvent<HTMLInputElement>) => {
+                this.commonEventHandler('onClick', {
+                    event: event
+                });
+            },
+            onFocus: (event: React.MouseEvent<HTMLInputElement>) => {
+                this.commonEventHandler('onFocus', {
+                    event: event
+                });
+            },
+            onBlur: (event: React.MouseEvent<HTMLInputElement>) => {
+                this.commonEventHandler('onBlur', {
+                    event: event
+                });
+            },
             ...inputProps
         });
+
+        return (
+            <div className="ant-form-item-control">
+                {inputElement}
+            </div>
+        );
     }
 }
 

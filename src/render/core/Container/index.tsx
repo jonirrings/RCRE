@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
-import {BasicContainer, ContainerProps} from './types';
+import {BasicContainer, ContainerProps, getRuntimeContext} from './types';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {actionCreators, IContainerAction} from './action';
@@ -21,8 +21,8 @@ export class Container extends BasicContainer<ContainerProps, {}> {
     static WrappedComponent: string;
     static displayName: string;
 
-    dataProvider: DataProvider;
-    dataCustomer: DataCustomer;
+    private dataProvider: DataProvider;
+    private dataCustomer: DataCustomer;
 
     constructor() {
         super();
@@ -31,20 +31,21 @@ export class Container extends BasicContainer<ContainerProps, {}> {
     }
 
     async componentWillMount() {
-        if (this.props.info.model) {
-            if (_.isEmpty(this.props.info.data)) {
-                this.props.info.data = {
+        let info = this.getPropsInfo(this.props.info, this.props, ['children', 'data', 'dataCustomer', 'dataProvider']);
+        if (info.model) {
+            if (_.isEmpty(info.data)) {
+                info.data = {
                     $loading: false
                 };
             }
 
-            if (this.props.info.dataCustomer) {
-                this.dataCustomer.initCustomerConfig(this.props.info.dataCustomer);
+            if (info.dataCustomer) {
+                this.dataCustomer.initCustomerConfig(info.dataCustomer);
             }
             
             // to keep it safe, this.props.info should be readonly
             Object.freeze(this.props.info);
-            
+
             const providerActions = {
                 setDataList: this.props.setDataList,
                 asyncLoadDataProgress: this.props.asyncLoadDataProgress,
@@ -57,17 +58,18 @@ export class Container extends BasicContainer<ContainerProps, {}> {
             // 用于初始化的内置Provider
             const initProvider = {
                 mode: 'init',
-                config: this.props.info.data,
+                config: info.data,
                 __previousConfig: null
             };
 
-            await this.dataProvider.requestForData(initProvider, providerActions, this.props, this.context);
+            await this.dataProvider.requestForData(initProvider, providerActions, info, this.props, this.context);
         } else {
             console.error('Container Component Should have model property');
         }
     }
 
     async componentWillReceiveProps(nextProps: ContainerProps) {
+        let info = this.getPropsInfo(this.props.info, this.props, ['children', 'data', 'dataCustomer', 'dataProvider']);
         const providerActions = {
             setDataList: this.props.setDataList,
             asyncLoadDataProgress: this.props.asyncLoadDataProgress,
@@ -79,18 +81,19 @@ export class Container extends BasicContainer<ContainerProps, {}> {
 
         if (Array.isArray(this.props.info.dataProvider)) {
             for (let provider of this.props.info.dataProvider) {
-                this.dataProvider.requestForData(provider, providerActions, nextProps, this.context);
+                this.dataProvider.requestForData(provider, providerActions, info, nextProps, this.context);
             }
         } else if (_.isPlainObject(this.props.info.dataProvider)) {
             let provider = this.props.info.dataProvider;
-            await this.dataProvider.requestForData(provider!, providerActions, nextProps, this.context);
+            await this.dataProvider.requestForData(provider!, providerActions, info, nextProps, this.context);
         }
     }
 
     componentWillUnmount() {
-        if (this.props.info.model) {
+        let info = this.getPropsInfo(this.props.info, this.props, ['children', 'data', 'dataCustomer', 'dataProvider']);
+        if (info.model) {
             this.props.removeData({
-                model: this.props.info.model
+                model: info.model
             });
         }
     }
@@ -101,7 +104,7 @@ export class Container extends BasicContainer<ContainerProps, {}> {
     }
 
     render() {
-        let info = _.cloneDeep(this.props.info);
+        let info = this.getPropsInfo(this.props.info, this.props, ['children', 'data', 'dataCustomer', 'dataProvider']);
 
         if (!info.model) {
             return <div className="err-text">model should defined in container like components</div>;
@@ -118,22 +121,22 @@ export class Container extends BasicContainer<ContainerProps, {}> {
                 this.props.setData({
                     type: name,
                     newValue: value
-                }, this.props.info.model);
+                }, info.model);
             };
             
             return createChild(child, {
                 info: child,
-                model: this.props.info.model,
+                model: info.model,
                 $data: this.props.$data,
                 dataCustomer: this.dataCustomer,
+                $index: this.props.$index,
+                $item: this.props.$item,
                 $setData: setData,
                 key: `${child.type}_${index}`
             });
         });
 
-        const containerStyle = {
-            
-        };
+        const containerStyle = {};
         
         return (
             <div className="rcre-container" style={containerStyle}>
@@ -144,8 +147,12 @@ export class Container extends BasicContainer<ContainerProps, {}> {
 }
 
 const mapStateToProps = (state: RootState, ownProps: ContainerPropsInterface) => {
+    let runTime = getRuntimeContext(ownProps, {});
+    // direct compile
+    let info = compileValueExpress(ownProps.info, runTime, ['children', 'data', 'dataCustomer', 'dataProvider'], false);
+    
     return {
-        $data: state.container.get(ownProps.info.model) || Map({})
+        $data: state.container.get(info.model) || Map({})
     };
 };
 

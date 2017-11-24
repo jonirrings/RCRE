@@ -1,44 +1,229 @@
 {
+    "debug": true,
     "body": [
         {
             "type": "container",
             "model": "product",
             "data": {
-                
+                "date": "#ES{$now}",
+                "product": "all",
+                "client": "all",
+                "os": "all",
+                "page": "all",
+                "hiddenLineChart": false,
+                "lineChartSelected": "charge"
             },
             "dataProvider": [
                 {
                     "mode": "ajax",
+                    "namespace": "productFilter",
                     "config": {
-                        "url": "http://cp01-rdqa-dev420-dongtiancheng-new.epc.baidu.com:8093/commongd/api/gd/gdProductList",
-                        "method": "GET"
-                    },
-                    "namespace": "productList"
+                        "url": "/data/api/keyReport/productFilter",
+                        "method": "GET",
+                        "data": {
+                            "client": "#ES{$data.client}",
+                            "os": "#ES{$data.os}",
+                            "page": "#ES{$data.page}",
+                            "product": "#ES{$data.product}"
+                        }
+                    }
                 }
             ],
-            "debug": true,
+            "dataCustomer": {
+                "customers": [
+                    {
+                        "mode": "pass",
+                        "name": "toggleLineChart",
+                        "config": {
+                            "model": "product",
+                            "assign": {
+                                "hiddenLineChart": "#ES{$trigger.toggleLineChart.hidden}"
+                            }
+                        }
+                    }
+                ]
+            },
             "children": [
                 {
                     "type": "row",
+                    "minHeight": 40,
                     "children": [
                         {
                             "type": "text",
                             "text": "日期",
-                            "gridCount": 0.5
+                            "gridCount": 0.8,
+                            "gridWidth": 50
                         },
                         {
                             "type": "datePicker",
                             "name": "date",
-                            "gridCount": 1
+                            "gridCount": 2,
+                            "gridWidth": 150
                         }
                     ]
                 },
                 {
                     "type": "row",
+                    "minHeight": 40,
                     "children": [
                         {
                             "type": "text",
-                            "text": "产品线"
+                            "text": "产品线",
+                            "gridCount": 1,
+                            "gridWidth": 70
+                        },
+                        {
+                            "type": "select",
+                            "name": "product",
+                            "gridCount": 1.5,
+                            "gridWidth": 150,
+                            "options": "#ES{$data.productFilter.base[0].list}",
+                            "optionsMapping": {
+                                "key": "#ES{$iterator.Vname}"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "text": "端",
+                            "gridCount": 0.4,
+                            "gridPosition": "middle-center"
+                        },
+                        {
+                            "type": "select",
+                            "name": "client",
+                            "gridCount": 1,
+                            "options": "#ES{$data.productFilter.base[1].list}",
+                            "optionsMapping": {
+                                "key": "#ES{$iterator.Vname}"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "text": "操作系统",
+                            "gridCount": 0.8,
+                            "gridPosition": "middle-center"
+                        },
+                        {
+                            "type": "select",
+                            "name": "os",
+                            "gridCount": 1,
+                            "options": "#ES{$data.productFilter.base[2].list}",
+                            "optionsMapping": {
+                                "key": "#ES{$iterator.Vname}"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "text": "页面",
+                            "gridCount": 0.5,
+                            "gridPosition": "middle-center"
+                        },
+                        {
+                            "type": "select",
+                            "name": "page",
+                            "gridCount": 1,
+                            "options": "#ES{$data.productFilter.base[3].list}",
+                            "optionsMapping": {
+                                "key": "#ES{$iterator.Vname}"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "row",
+                    "minHeight": 40,
+                    "children": [
+                        {
+                            "type": "button",
+                            "antd.type": "primary",
+                            "size": "large",
+                            "text": "查询",
+                            "gridCount": 0.6,
+                            "gridLeft": 5
+                        },
+                        {
+                            "type": "button",
+                            "antd.type": "primary",
+                            "size": "large",
+                            "text": "导出",
+                            "gridCount": 0.6
+                        },
+                        {
+                            "type": "text",
+                            "text": "隐藏趋势图",
+                            "gridCount": 1,
+                            "hidden": "#ES{$data.hiddenLineChart}",
+                            "trigger": [
+                                {
+                                    "event": "onClick",
+                                    "targetCustomer": "toggleLineChart",
+                                    "params": {
+                                        "hidden": true
+                                    }
+                                }
+                            ],
+                            "style": {
+                                "color": "#1ca8dd",
+                                "fontSize": 12,
+                                "cursor": "pointer"
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "text": "显示趋势图",
+                            "gridCount": 1,
+                            "hidden": "#ES{!$data.hiddenLineChart}",
+                            "trigger": [
+                                {
+                                    "event": "onClick",
+                                    "targetCustomer": "toggleLineChart",
+                                    "params": {
+                                        "hidden": false
+                                    }
+                                }
+                            ],
+                            "style": {
+                                "color": "#1ca8dd",
+                                "fontSize": 12,
+                                "cursor": "pointer"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "row",
+                    "hidden": "#ES{$data.hiddenLineChart}",
+                    "children": [
+                        {
+                            "type": "row",
+                            "children": [
+                                {
+                                    "type": "text",
+                                    "text": "趋势图指标",
+                                    "gridCount": 0.7
+                                },
+                                {
+                                    "type": "select",
+                                    "name": "lineChartSelected",
+                                    "gridCount": 1,
+                                    "options": "#ES{$data.productFilter.table[0].list.concat($data.productFilter.table[1].list)}",
+                                    "optionsMapping": {
+                                        "key": "#ES{$iterator.Vname}"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "row",
+                    "hidden": "#ES{$data.hiddenLineChart}",
+                    "children": [
+                        {
+                            "type": "lineChart",
+                            "gridCount": 12,
+                            "categories": "#ES{$data.category}",
+                            "series": "#ES{$data.series}"
                         }
                     ]
                 }

@@ -58,6 +58,7 @@ module.exports = {
     appPath: resolveApp('.'),
     appBuild: resolveApp('build/full'),
     pluginBuild: resolveApp('build/plugin'),
+    websiteBuild: resolveApp('build/website'),
     appPublic: resolveApp('public'),
     appHtml: resolveApp('public/index.html'),
     appIndexJs: resolveApp('src/index.tsx'),

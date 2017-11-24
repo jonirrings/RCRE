@@ -1,9 +1,11 @@
 import {customerLoaderInstance} from './loader';
 import {PassCustomers} from './customers/pass';
+import {SubmitCustomer} from './customers/submit';
 import {Map} from 'immutable';
 import {runTimeType} from '../Container/types';
 
 customerLoaderInstance.registerCustomer('pass', new PassCustomers());
+customerLoaderInstance.registerCustomer('submit', new SubmitCustomer());
 
 export class CustomerSourceConfig {
     /**
@@ -64,7 +66,7 @@ export interface CustomerSourceConfig {
 }
 
 export interface BasicCustomerInstance {
-    exec(config: any, runTime: runTimeType): Promise<void>;
+    exec(config: any, runTime: runTimeType, model: string, customer: string): Promise<any>;
 }
 
 /**
@@ -93,16 +95,42 @@ export class DataCustomer {
         }
     }
 
+    public getGroups() {
+        return this.groups;
+    }
+
+    public async execCustomer(customer: string, runTime: runTimeType, model: string) {
+        if (!this.customers.has(customer)) {
+            console.error(`customer: ${customer} is not defined`);
+            return;
+        }
+
+        let instance = this.customers.get(customer).instance;
+        let config = this.customers.get(customer).config;
+
+        await instance.exec(config, runTime, model, customer);
+    }
+
     private initCustomer(info: CustomerSourceConfig) {
-        let customerList = info.customers;
+        let customers = info.customers;
         let groups = info.groups;
-        
-        if (!(customerList instanceof Array)) {
+
+        if (!(customers instanceof Array)) {
             console.error('customers should be array');
             return;
         }
 
-        customerList.forEach(customer => {
+        customers.forEach(customer => {
+            if (!customer.mode) {
+                console.error('mode property is required for single customer');
+                return;
+            }
+
+            if (!customer.name) {
+                console.error('name property is required for single customer');
+                return;
+            }
+            
             let mode = customer.mode;
             let name = customer.name;
             let config = customer.config;
@@ -122,39 +150,21 @@ export class DataCustomer {
         
         if (groups instanceof Array) {
             groups.forEach(group => {
+                if (!group.name) {
+                    console.error('name property is required for group');
+                    return;
+                }
+
+                if (!group.steps || !Array.isArray(group.steps)) {
+                    console.error('steps property is required and it\'s an array type');
+                    return;
+                }
+                
                 let name = group.name;
                 let steps = group.steps;
 
                 this.groups = this.groups.set(name, steps);
             });   
-        }
-    }
-
-    public async execCustomer(customer: string, runTime: runTimeType) {
-        if (!this.customers.has(customer)) {
-            console.error(`customer: ${customer} is not defined`);
-            return;
-        }
-        
-        if (!this.groups.has(customer)) {
-            let instance = this.customers.get(customer).instance;
-            let config = this.customers.get(customer).config;
-            
-            await instance.exec(config, runTime);
-        } else {
-            let groups = this.groups.get(customer);
-            
-            for (let name of groups) {
-                if (!this.customers.has(name)) {
-                    console.log(`customer: ${name} is not defined`);
-                    continue;
-                }
-                
-                let instance = this.customers.get(name).instance;
-                let config = this.customers.get(name).config;
-                
-                await instance.exec(config, runTime);
-            }
         }
     }
 }

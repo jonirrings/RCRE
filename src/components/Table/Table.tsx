@@ -1,8 +1,8 @@
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsBoolean} from 'class-validator';
 import {TableProps} from 'antd/lib/table/Table';
-import {CSSProperties} from 'react';
 import {Table} from 'antd';
 import componentLoader from '../../render/util/componentLoader';
 import {Map} from 'immutable';
@@ -31,11 +31,6 @@ export class TableColumnsItem {
     className?: string;
 
     /**
-     * 使用RCRE来进行自定义渲染
-     */
-    controls?: BasicConfig[];
-
-    /**
      * 自定义渲染函数, 由组件自生成
      */
     render?: (text: any, record: DataSource, index: number) => React.ReactNode;
@@ -44,6 +39,28 @@ export class TableColumnsItem {
      * 列是否固定，可选 true(等效于 left) 'left' 'right'
      */
     fixed?: boolean | ('left' | 'right');
+}
+
+export class TableCustomerColumnControlItem {
+    /**
+     * 列数据在数据项中对应的Key
+     */
+    dataIndex: string;
+
+    /**
+     * 使用RCRE来进行自定义渲染
+     */
+    controls?: BasicConfig[];
+
+    /**
+     * 自定义渲染最外容器的className
+     */
+    className: string;
+
+    /**
+     * 自定义渲染最外层的内联CSS
+     */
+    style: CSSProperties;
 }
 
 export class TableConfig extends BasicConfig {
@@ -130,7 +147,27 @@ export class TableConfig extends BasicConfig {
     /**
      * 列属性映射
      */
-    columnsMapping?: TableColumnsItem; 
+    columnsMapping?: TableColumnsItem;
+
+    /**
+     * 值属性映射
+     */
+    dataSourceMapping?: DataSource;
+
+    /**
+     * 表格扩展列
+     */
+    extendColumns?: TableColumnsItem[];
+
+    /**
+     * 指定对一些列进行自定义渲染
+     */
+    customerColumnControls?: TableCustomerColumnControlItem[];
+
+    /**
+     * 选取column的字段作为整行的表格行key
+     */
+    rowKey?: string;
 }
 
 export class TablePropsInterface extends BasicContainerPropsInterface {
@@ -172,35 +209,8 @@ export class AbstractTable extends BasicContainer<TablePropsInterface, TableStat
         };
     }
 
-    private renderColumnItem(columns: TableColumnsItem[]) {
-        columns = columns.map(co => {
-            if (co.controls) {
-                co.render = ((text: any, record: DataSource, index: number) => {
-                    let childElements = co.controls!.map(childInfo => {
-                        return createChild(childInfo, {
-                            key: `${childInfo.type}_${index}`,
-                            info: childInfo,
-                            $data: this.props.$data,
-                            $item: Map(record),
-                            $index: index
-                        });
-                    });
-                    return (
-                        <div className={co.className} key={index}>
-                            {childElements}
-                        </div>
-                    );
-                });
-            }
-
-            return co;
-        });
-
-        return columns;
-    }
-
     render() {
-        let info = this.getPropsInfo(this.props.info, this.props, ['columnsMapping']);
+        let info = this.getPropsInfo(this.props.info, this.props, ['columnsMapping', 'dataSourceMapping']);
         let dataSource: DataSource[] = [];
         let columns: TableColumnsItem[] = [];
 
@@ -211,7 +221,7 @@ export class AbstractTable extends BasicContainer<TablePropsInterface, TableStat
         if (Array.isArray(info.dataSource)) {
             dataSource = info.dataSource;
         }
-        
+
         if (_.isPlainObject(info.columnsMapping)) {
             columns = columns.map(co => {
                 let runTime = this.getRuntimeContext(this.props, this.context);
@@ -219,29 +229,93 @@ export class AbstractTable extends BasicContainer<TablePropsInterface, TableStat
                     ...runTime,
                     $item: co
                 })!;
-                
+
                 return Object.assign(co, newObj);
             });
         }
-        
-        columns = this.renderColumnItem(columns);
+
+        if (_.isPlainObject(info.dataSourceMapping)) {
+            dataSource = dataSource.map(source => {
+                let runTime = this.getRuntimeContext(this.props, this.context);
+                let newObj = compileValueExpress(info.dataSourceMapping, {
+                    ...runTime,
+                    $item: source
+                });
+
+                return Object.assign(source, newObj);
+            });
+        }
+
+        if (info.extendColumns instanceof Array) {
+            columns = columns.concat(info.extendColumns);
+        }
+
+        if (info.customerColumnControls instanceof Array && columns.length > 0) {
+            info.customerColumnControls.forEach(item => {
+                this.renderCustomerColumnItems(columns, item);
+            });
+        }
 
         let tableProps = this.mapTableOptions(info);
-        
+
         const tableStyle = {
             width: '100%',
             ...info.style
         };
-        
+
         return (
             <TableDriver
                 {...tableProps}
-                rowKey={'test'}
+                rowKey={record => {
+                    if (info.rowKey) {
+                        return record[info.rowKey];
+                    } else {
+                        return `row_key_${Math.random()}`;
+                    }
+                }}
                 columns={columns}
                 dataSource={dataSource}
                 style={tableStyle}
             />
         );
+    }
+
+    private renderCustomerColumnItems(columns: TableColumnsItem[], columnConfig: TableCustomerColumnControlItem) {
+        if (!columnConfig.dataIndex) {
+            console.error('invalid customerColumnItems');
+            return;
+        }
+
+        let targetColumn = _.find(columns, co => co.dataIndex === columnConfig.dataIndex);
+
+        if (!targetColumn) {
+            console.error('can not find matched column');
+            return;
+        }
+
+        targetColumn.render = ((text: any, record: DataSource, index: number) => {
+            let childElement;
+            if (columnConfig.controls) {
+                childElement = columnConfig.controls.map(childInfo => {
+                    let defaultProps = this.getChildProps(childInfo, {
+                        key: `table_column_${index}`
+                    });
+                    return createChild(childInfo, {
+                        ...defaultProps,
+                        $item: Map(record),
+                        $index: index
+                    });
+                });
+            } else {
+                childElement = text;
+            }
+
+            return (
+                <div className={columnConfig.className} style={columnConfig.style} key={index}>
+                    {childElement}
+                </div>
+            );
+        });
     }
 }
 

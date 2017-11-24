@@ -1,39 +1,38 @@
 # RCRE
 
-RCRE 是一个JSON配置, 可灵活扩展的前端组件渲染引擎
+> 有了RCRE，以后写后台页面再也不用去求前端了。
 
-通过RCRE, 你可以使用简洁,灵活的JSON配置文件, 来生成你所想要的页面.
+RCRE是一个使用JSON来生成单页应用程序的渲染引擎。
 
-RCRE设计了一套可靠的JSON配置规则, 可以很好的抽象页面的布局样式, 让你轻松使用JSON来进行搭建页面.
+它不光是仅仅使用JSON来生成用户想要的页面结构，它最大的不同之处在于用户可以直接使用JSON来配置整个页面的交互和数据操作。
 
-不过RCRE最独特的设计在于其对数据流的抽象. 写JSON配置一样可以像写redux一样, 控制每个组件的数据模型,
-可以对用户的各个响应进行操作, 并赋予组件不同的行为和传递数据的方式. 
+现在，只要有了RCRE，一个非前端专业的工程师，也能在一天之内配置出一个专业前端工程师要耗费一周才能制作出来的CMS系统。
 
-有了RCRE渲染引擎, 写了页面仅仅是写个JSON一样简单, 无需再像前端工程师一样去关心构建工具, 前端开发框架等问题. 
-
+## 特性
+1. 简单好用的布局系统
+2. 提供基于Ant.design的组件库，功能完善，能应对大部分常见需求
+3. 能直接使用JSON来配置出组件的数据获取，数据操作，以及数据提交功能
+4. 支持事件捕获，能直接配置出用户触发鼠标键盘操作后的一系列行为
+5. 可灵活扩展，可使用自定义React组件
+6. 方便调试，可使用React Devtools和Redux Devtools来进行调试
+7. 方便的表单功能，10分钟写出复杂的提交表单不是梦
 
 ## 教程
 
-1. [Helloworld](doc/guide/Helloworld.md)
-2. [持有数据的组件](doc/guide/持有数据的组件.md)
-3. [Expression String](doc/guide/Expression%20String.md)
-4. [DataProvider](doc/guide/DataProvider.md)
-5. [嵌套的Container组件](doc/guide/嵌套的Container组件.md)
-6. [布局系统](doc/guide/布局系统.md)
+1. [Helloworld](src/guide/Helloworld.md)
+2. [持有数据的组件](src/guide/ContainerComponent.md)
+3. [Expression String](src/guide/ExpressionString.md)
+4. [DataProvider](src/guide/DataProvider.md)
+5. [嵌套的Container组件](src/guide/NestContainer.md)
+6. [布局系统](src/guide/LayoutSystem.md)
 
 ## 组件文档
-1. [Button](doc/components/button.md)
+1. [Button](src/components/Button/Button.md)
 
-## 起源
-RCRE借鉴了Redux单一对象状态管理的思想, 如果你有redux开发经验, 那么理解RCRE的json配置将变得跟打开你的mac一样简单.
+## 如何贡献
 
-## 安装
-最简单的安装方式, 就是通过npm. 目前rcre 发布在公司内pnpm镜像源上, 需要预先对npm进行配置
-
+### 运行此项目
 ```bash
-npm config set @miskit:registry http://pnpm.baidu.com
-```
-然后再安装即可
-```bash
-npm install @miskit/rcre-core --save
+npm install
+npm start
 ```

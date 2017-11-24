@@ -11,6 +11,7 @@ import {ContainerConfig} from '../../../components/Container/Container';
 import {compileValueExpress} from '../../util/vm';
 import {TriggerEventItem} from '../Trigger/Trigger';
 import {DataCustomer} from '../DataCustomer/Controller';
+import {FormStateItem} from '../../../components/Form/Form';
 
 export type rawJSONType = string | number | null | boolean | Object;
 export type originJSONType = rawJSONType | rawJSONType[];
@@ -67,6 +68,11 @@ export class BasicConfig {
      * 事件触发
      */
     trigger?: TriggerEventItem[];
+
+    /**
+     * 是否作为表单输入元素
+     */
+    formItem?: boolean;
 }
 
 export type onContainerItemChange = (value: any, event?: React.ChangeEvent<HTMLElement>) => void;
@@ -112,7 +118,7 @@ export class BasicContainerPropsInterface {
     /**
      * Trigger注入的通用事件处理函数, 所有事件处理都走这里
      */
-    eventHandle?: (eventName: string, args: any[]) => void;
+    eventHandle?: (eventName: string, args: Object) => void;
 
     /**
      * 来自Container的数据消耗者实例
@@ -123,6 +129,16 @@ export class BasicContainerPropsInterface {
      * 父级的数据模型Key
      */
     model?: string;
+
+    /**
+     * 当前表单的数据模型
+     */
+    $form?: Map<string, any>;
+
+    /**
+     * 表单给FormItem组件提供的验证注册器
+     */
+    injectChildElement?: (validator: (value?: any) => FormStateItem) => void;
 }
 
 export class ContainerProps extends BasicContainerPropsInterface {
@@ -179,18 +195,53 @@ export const BasicContextTypes = {
     $store: PropTypes.object,
     $global: PropTypes.object,
     $location: PropTypes.object,
-    $query: PropTypes.object
+    $query: PropTypes.object,
+    debug: PropTypes.bool
 };
 
 export type runTimeType = {
     $data?: Object;
     $query?: Object;
-    $global?: Object;
+    $global?: any;
     $item?: Object;
     $trigger?: Object;
     $index?: number;
     $now?: moment.Moment;
+    $moment: typeof moment
 };
+
+export function getRuntimeContext(props: BasicContainerPropsInterface, context: any) {
+    let runtime: runTimeType = {
+        $now: moment(),
+        $moment: moment
+    };
+
+    if (props.$data) {
+        runtime.$data = props.$data.toJS();
+    }
+
+    if (props.$item) {
+        runtime.$item = props.$item.toJS();
+    }
+
+    if (!_.isNil(props.$index)) {
+        runtime.$index = props.$index;
+    }
+
+    if (props.$trigger) {
+        runtime.$trigger = props.$trigger.toJS();
+    }
+
+    if (context.$query) {
+        runtime.$query = context.$query;
+    }
+
+    if (context.$global) {
+        runtime.$global = context.$global;
+    }
+
+    return runtime;
+}
 
 export class BasicContainer<T extends BasicContainerPropsInterface, P> extends React.Component<T, P> {
     static contextTypes = BasicContextTypes;
@@ -200,39 +251,10 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
     }
 
     public getRuntimeContext(props: T = this.props, context: any = this.context) {
-        let runtime: runTimeType = {
-            $now: moment()
-        };
-
-        if (props.$data) {
-            runtime.$data = props.$data.toObject();
-        }
-
-        if (props.$item) {
-            runtime.$item = props.$item.toObject();
-        }
-
-        if (props.$index) {
-            runtime.$index = props.$index;
-        }
-        
-        if (props.$trigger) {
-            runtime.$trigger = props.$trigger.toObject();
-        }
-
-        if (context.$query) {
-            runtime.$query = context.$query;
-        }
-
-        if (context.$global) {
-            runtime.$global = context.$global;
-        }
-
-        return runtime;
+        return getRuntimeContext(props, context);
     }
 
     public getPropsInfo<InfoType>(info: InfoType, props?: T, blackList?: string[], isDeep?: boolean) {
-        info = _.cloneDeep(info);
         info = compileValueExpress(info, this.getRuntimeContext(props), blackList, isDeep);
         return info;
     }
@@ -247,5 +269,33 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
         }
 
         return children;
+    }
+
+    public getChildProps(info: BasicConfig, childProps: Object) {
+        return {
+            info: info,
+            $data: this.props.$data,
+            model: this.props.model,
+            dataCustomer: this.props.dataCustomer,
+            $setData: this.props.$setData,
+            eventHandle: this.props.eventHandle,
+            $index: this.props.$index,
+            $item: this.props.$item,
+            ...childProps
+        };
+    }
+
+    public commonEventHandler(eventName: string, args: {
+        [s: string]: any
+    }, mute: boolean = true) {
+        if (this.props.eventHandle) {
+            this.props.eventHandle(eventName, args);
+        } else if (!mute) {
+            if (this.props.$data) {
+                console.error('If you want to handle event, you need to at trigger property');
+            } else {
+                console.error('Event System can only work with Container Component');
+            }
+        }
     }
 }

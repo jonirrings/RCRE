@@ -1,5 +1,5 @@
 import {actionCreators} from '../Container/action';
-import {ContainerProps} from '../Container/types';
+import {BasicConfig, ContainerProps} from '../Container/types';
 import {AjaxDataProvider} from './providers/ajax';
 import {providerLoaderInstance} from './loader';
 import {InitDataProvider} from './providers/init';
@@ -119,7 +119,8 @@ export class DataProvider {
     
     public async requestForData(
         providerConfig: ProviderSourceConfig,
-        actions: ProviderActions, 
+        actions: ProviderActions,
+        info: BasicConfig,
         props: ContainerProps,
         context: any
     ): Promise<void> {
@@ -153,7 +154,7 @@ export class DataProvider {
         
         if (isAsync) {
             actions.asyncLoadDataProgress({
-                model: props.info.model!,
+                model: info.model!,
                 providerMode: providerConfig.mode
             });
             
@@ -164,7 +165,7 @@ export class DataProvider {
                 });   
             } catch (e) {
                 actions.asyncLoadDataFail({
-                    model: props.info.model!,
+                    model: info.model!,
                     providerMode: providerConfig.mode,
                     error: e.message
                 });
@@ -177,9 +178,9 @@ export class DataProvider {
             
             if (!isRetValid) {
                 actions.asyncLoadDataFail({
-                    model: props.info.model!,
+                    model: info.model!,
                     providerMode: providerConfig.mode,
-                    error: `model: ${props.info.model} mode: ${providerConfig.mode} data is not valid`
+                    error: `model: ${info.model} mode: ${providerConfig.mode} data is not valid`
                 });
             } else {
                 let response;
@@ -192,7 +193,7 @@ export class DataProvider {
                 }
                 
                 actions.asyncLoadDataSuccess({
-                    model: props.info.model!,
+                    model: info.model!,
                     providerMode: providerConfig.mode,
                     data: response
                 });
@@ -203,7 +204,7 @@ export class DataProvider {
                 ret = await provider.run(parsedConfig);
             } catch (e) {
                 actions.syncLoadDataFail({
-                    model: props.info.model!,
+                    model: info.model!,
                     providerMode: providerConfig.mode,
                     error: e.message
                 });
@@ -224,15 +225,15 @@ export class DataProvider {
                 }
                 
                 actions.syncLoadDataSuccess({
-                    model: props.info.model!,
+                    model: info.model!,
                     providerMode: providerConfig.mode,
                     data: response
                 });
             } else {
                 actions.syncLoadDataFail({
-                    model: props.info.model!,
+                    model: info.model!,
                     providerMode: providerConfig.mode,
-                    error: `model: ${props.info.model} mode: ${providerConfig.mode} data is not valid`
+                    error: `model: ${info.model} mode: ${providerConfig.mode} data is not valid`
                 });
             }
         }

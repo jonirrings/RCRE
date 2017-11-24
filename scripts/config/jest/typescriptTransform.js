@@ -26,7 +26,8 @@ if (fs.existsSync(tsconfigPath)) {
         }
     }
     catch (e) {
-
+        // do nothing
+        console.error('invalid tsconfig');
     }
 }
 

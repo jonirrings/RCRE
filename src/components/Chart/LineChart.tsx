@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsArray, IsBoolean, IsString, Validate} from 'class-validator';
 import {IsArrayString} from '../../render/util/validators';
@@ -6,7 +7,6 @@ import * as echarts from 'echarts';
 import {chartTypes} from './types';
 import componentLoader from '../../render/util/componentLoader';
 import {Set} from 'immutable';
-import {CSSProperties} from 'react';
 
 export class LineChartConfig extends BasicConfig {
     /**
@@ -82,7 +82,7 @@ export class LineChartConfig extends BasicConfig {
         name: string;
         data: string[] | number[]
     }[];
-    
+
     /**
      * CSS class
      */
@@ -101,7 +101,7 @@ export class LineChartPropsInterface extends BasicContainerPropsInterface {
 }
 
 export default class LineChart extends BasicContainer<LineChartPropsInterface, {}> {
-    domID: string = 'echarts-rcrelinechart';
+    DOMElement: any;
     chart: EChartSpace.ECharts;
     chartOptions: chartTypes = {
         title: {
@@ -156,8 +156,7 @@ export default class LineChart extends BasicContainer<LineChartPropsInterface, {
     };
 
     componentDidMount() {
-        let dom: any = document.getElementById(this.domID);
-        this.chart = echarts.init(dom);
+        this.chart = echarts.init(this.DOMElement);
         let info = this.getPropsInfo(this.props.info);
         this.overRideChartOptions(info);
         this.chart.setOption(this.chartOptions);
@@ -224,8 +223,14 @@ export default class LineChart extends BasicContainer<LineChartPropsInterface, {
             ...info.style
         };
 
+        const refCallback = (ref: any) => {
+            if (ref) {
+                this.DOMElement = ref;
+            }
+        };
+        
         return (
-            <div id={this.domID} className={info.className} style={style}/>
+            <div ref={refCallback} className={info.className} style={style}/>
         );
     }
 }

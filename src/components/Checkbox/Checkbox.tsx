@@ -1,10 +1,10 @@
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsBoolean, IsDefined, IsString} from 'class-validator';
 import componentLoader from '../../render/util/componentLoader';
 import {Checkbox} from 'antd';
 import {CheckboxProps} from 'antd/lib/checkbox/Checkbox';
-import {CSSProperties} from 'react';
 
 export class CheckboxConfig extends BasicConfig {
     /**
@@ -91,8 +91,7 @@ export default class AbstractCheckbox extends BasicContainer<CheckboxPropsInterf
         }
 
         if (!this.props.$data) {
-            console.log('Checkbox Element is out of RCRE control, please put it inside container component');
-            return <Checkbox/>;
+            return <div>Checkbox Element is out of RCRE control, please put it inside container component</div>;
         }
 
         let $data = this.props.$data;
@@ -102,9 +101,16 @@ export default class AbstractCheckbox extends BasicContainer<CheckboxPropsInterf
         return React.createElement(Checkbox, {
             checked: value,
             onChange: this.handleChange,
-            // TODO Trigger Interface inject
-            onMouseEnter: () => {},
-            onMouseLeave: () => {},
+            onMouseEnter: (event: React.MouseEvent<HTMLInputElement>) => {
+                this.commonEventHandler('onMouseEnter', {
+                    event: event
+                });
+            },
+            onMouseLeave: (event: React.MouseEvent<HTMLInputElement>) => {
+                this.commonEventHandler('onMouseLeave', {
+                    event: event
+                });
+            },
             ...checkboxProps
         }, info.text);
     }

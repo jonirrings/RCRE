@@ -6,7 +6,7 @@ import {compileValueExpress} from '../../util/vm';
 import {connect} from 'react-redux';
 import {RootState} from '../../data/reducers';
 import {bindActionCreators, Dispatch} from 'redux';
-import {actionCreators, ITriggerAction} from './actions';
+import {actionCreators, ITriggerAction, TRIGGER_SET_DATA_PAYLOAD} from './actions';
 import {DataCustomer} from '../DataCustomer/Controller';
 
 export class TriggerEventItem {
@@ -105,11 +105,15 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
     async componentWillReceiveProps(nextProps: TriggerProps) {
         if (this.props.$trigger !== nextProps.$trigger && this.taskQueue.length > 0) {
             while (this.taskQueue.length > 0) {
-                let task = this.taskQueue.pop();
+                let task = this.taskQueue.shift();
                 let runTime = this.getRuntimeContext(nextProps, this.context);
-                await this.props.dataCustomer.execCustomer(task, runTime);
+                await this.props.dataCustomer.execCustomer(task, runTime, this.props.model);
             }
         }
+    }
+
+    shouldComponentUpdate(nextProps: TriggerProps, nextState: {}) {
+        return this.props.$data !== nextProps.$data;
     }
 
     render() {
@@ -133,7 +137,7 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
         );
     }
 
-    private async eventHandle(eventName: string, args: any[]) {
+    private async eventHandle(eventName: string, args: Object) {
         let isExist = this.callbackController.hasCallback(eventName);
 
         if (!isExist) {
@@ -149,24 +153,49 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
         await this.execCallbackInfo(callbackInfo, args);
     }
 
-    private async execCallbackInfo(callbackInfo: callbackItem[], args: any[]) {
-        let items = callbackInfo.map(info => {
-            let params = info.params;
+    private async execCallbackInfo(callbackInfo: callbackItem[], args: Object = {}) {
+        callbackInfo = callbackInfo.filter(info => {
+            if (!info.targetCustomer) {
+                console.error('you should provider an targetCustomer props');
+                return false;
+            }
+
+            return true;
+        });
+
+        let items: TRIGGER_SET_DATA_PAYLOAD[] = [];
+
+        for (let info of callbackInfo) {
+            let params = info.params || {};
             let runTime = this.getRuntimeContext(this.props, this.context);
             let output = compileValueExpress(params, {
-                args: args,
+                $args: args,
                 ...runTime
             });
 
-            this.taskQueue.push(info.targetCustomer);
+            let customerGroups = this.props.dataCustomer.getGroups();
 
-            return {
-                model: this.props.model,
-                customer: info.targetCustomer,
-                data: output
-            };
-        });
+            if (customerGroups.has(info.targetCustomer)) {
+                let customers = customerGroups.get(info.targetCustomer);
+                customers.forEach(customer => {
+                    this.taskQueue.push(customer);
 
+                    items.push({
+                        model: this.props.model,
+                        customer: customer,
+                        data: output
+                    });
+                });
+            } else {
+                this.taskQueue.push(info.targetCustomer);
+                items.push({
+                    model: this.props.model,
+                    customer: info.targetCustomer,
+                    data: output
+                });
+            }
+        }
+        
         this.props.triggerSetData(items);
     }
 }

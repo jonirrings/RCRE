@@ -1,5 +1,5 @@
 import {BasicSyncProviderInterface, ProviderGlobalOptions, ProviderSourceConfig} from '../Controller';
-import {ContainerProps} from '../../Container/types';
+import {ContainerProps, getRuntimeContext} from '../../Container/types';
 import {compileValueExpress, filterExpressionData} from '../../../util/vm';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -12,9 +12,10 @@ export class InitDataProvider implements BasicSyncProviderInterface {
 
     parse(provider: ProviderSourceConfig, props: ContainerProps, context: any) {
         let data = provider.config;
-        let config = compileValueExpress(data, {
-            $data: filterExpressionData(_.cloneDeep(data))
-        });
+        let runtime = getRuntimeContext(props, context);
+        runtime.$data = filterExpressionData(_.cloneDeep(data));
+
+        let config = compileValueExpress(data, runtime);
         
         _.each(config, (val, name) => {
             if (/^\d+$/.test(val) && !/^\d{13}$/.test(val)) {
@@ -22,8 +23,8 @@ export class InitDataProvider implements BasicSyncProviderInterface {
             }
             
             let date = moment(val);
-            
-            if (date.isValid()) {
+
+            if (_.isString(date) && date.isValid()) {
                 config[name] = date;
             }
         });

@@ -14,6 +14,7 @@ export class GridItem extends BasicConfig {
     gridPosition?: gridPositionItems;
     gridLeft?: number;
     gridTop?: number;
+    gridWidth?: number | string;
 }
 
 type alignCenterItems =
@@ -97,6 +98,11 @@ export class RowConfig extends BasicConfig {
     minHeight?: string;
 
     /**
+     * 宽度
+     */
+    width: number | string;
+
+    /**
      * 测试使用, 显示网格
      */
     showBorder?: boolean;
@@ -153,6 +159,7 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
         const defaultGridCount = this.getDefaultGridCount(children);
 
         let childElements = children.map((childInfo, index) => {
+            childInfo = this.getPropsInfo(childInfo);
             let gridCount = childInfo.gridCount || defaultGridCount;
             let positionStyle = getCssCombo(childInfo.gridPosition);
             const gridStyles = {
@@ -163,28 +170,10 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
             const innerGridStyle = {
                 marginTop: `${childInfo.gridTop || 0}px`,
                 marginLeft: `${childInfo.gridLeft || 0}px`,
-                width: '100%',
+                width: childInfo.gridWidth || '100%',
                 display: 'flex',
                 ...positionStyle
             };
-
-            // if (childInfo.trigger
-            //     && this.props.$data
-            //     && this.props.$setData 
-            //     && this.props.dataCustomer
-            //     && this.props.model
-            // ) {
-            //     return (
-            //         <Trigger
-            //             info={childInfo}
-            //             $data={this.props.$data}
-            //             $setData={this.props.$setData}
-            //             dataCustomer={this.props.dataCustomer}
-            //             model={this.props.model}
-            //             key={index}
-            //         />
-            //     );
-            // }
 
             let child = createChild(childInfo, {
                 info: childInfo,
@@ -193,28 +182,33 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
                 dataCustomer: this.props.dataCustomer,
                 model: this.props.model
             });
-            return (
+
+            let childElement = (
                 <div key={`grid_${childInfo.type}_${index}`} style={gridStyles}>
                     <div style={innerGridStyle}>
                         {child}
                     </div>
                 </div>
             );
+
+            return this.renderChildren(childInfo, childElement);
         });
 
         const rowStyles = {
             display: 'flex',
-            width: '100%',
+            width: info.width || '100%',
             minHeight: info.minHeight || '30px',
             border: info.showBorder ? '1px dashed #333' : '',
             ...info.style
         };
 
-        return (
-            <div style={rowStyles} className={info.className}>
+        let rowElement = (
+            <div style={rowStyles} className={info.className} key={'row'}>
                 {childElements}
             </div>
         );
+
+        return this.renderChildren(info, rowElement);
     }
 }
 

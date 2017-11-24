@@ -1,10 +1,10 @@
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsBoolean, IsDefined, IsJSON, IsString} from 'class-validator';
 import componentLoader from '../../render/util/componentLoader';
 import {Radio} from 'antd';
 import {RadioProps} from 'antd/lib/radio/radio';
-import {CSSProperties} from 'react';
 import {RadioGroupProps} from 'antd/lib/radio/group';
 
 const RadioGroup = Radio.Group;
@@ -143,8 +143,16 @@ export class AbstractRadio extends BasicContainer<RadioPropsInterface, {}> {
             return React.createElement(RadioGroup, {
                 value: value,
                 onChange: this.handleRadioGroupChange,
-                onMouseEnter: () => {},
-                onMouseLeave: () => {},
+                onMouseEnter: (event: React.MouseEvent<HTMLInputElement>) => {
+                    this.commonEventHandler('onMouseEnter', {
+                        event: event
+                    });
+                },
+                onMouseLeave: (event: React.MouseEvent<HTMLInputElement>) => {
+                    this.commonEventHandler('onMouseLeave', {
+                        event: event
+                    });
+                },
                 options: info.options,
                 ...radioGroupProps
             });
@@ -153,9 +161,16 @@ export class AbstractRadio extends BasicContainer<RadioPropsInterface, {}> {
             return React.createElement(Radio, {
                 checked: value,
                 onChange: this.handleChange,
-                // TODO Trigger Interface inject
-                onMouseEnter: () => {},
-                onMouseLeave: () => {},
+                onMouseEnter: (event: React.MouseEvent<HTMLInputElement>) => {
+                    this.commonEventHandler('onMouseEnter', {
+                        event: event
+                    });
+                },
+                onMouseLeave: (event: React.MouseEvent<HTMLInputElement>) => {
+                    this.commonEventHandler('onMouseLeave', {
+                        event: event
+                    });
+                },
                 ...radioProps
             }, info.text);   
         }

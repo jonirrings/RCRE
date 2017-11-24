@@ -19,6 +19,14 @@
                     }
                 }
             ],
+            "dataCustomer": {
+                "customers": [
+                    {
+                        "mode": "pass",
+                        "name": "set"
+                    }
+                ]
+            },
             "children": [
                 {
                     "type": "table",
@@ -28,9 +36,86 @@
                         "title": "#ES{$item.value}",
                         "key": "#ES{$item.key}"
                     },
-                    "dataSource": [
+                    "dataSource": "#ES{$data.table.data.body}",
+                    "customerColumnControls": [
                         {
-                            "test": "1"
+                            "dataIndex": "stdatetime",
+                            "style": {
+                                "color": "red"
+                            }
+                        },
+                        {
+                            "dataIndex": "day2day",
+                            "style": {
+                            },
+                            "controls": [
+                                {
+                                    "type": "container",
+                                    "model": "table_item_#ES{$index}",
+                                    "data": {
+                                        "visible": false,
+                                        "index": "#ES{$index}"
+                                    },
+                                    "dataCustomer": {
+                                        "customers": [
+                                            {
+                                                "mode": "pass",
+                                                "name": "showModal",
+                                                "config": {
+                                                    "model": "table_item_#ES{$index}",
+                                                    "assign": {
+                                                        "visible": "#ES{$trigger.showModal.visible}"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "parentMapping": {
+                                        "visible": "#ES{$data.visible}"
+                                    },
+                                    "children": [
+                                        {
+                                            "type": "button",
+                                            "text": "showModal",
+                                            "trigger": [
+                                                {
+                                                    "event": "onClick",
+                                                    "targetCustomer": "showModal",
+                                                    "params": {
+                                                        "visible": "#ES{!$data.visible}"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "modal",
+                                            "visible": "#ES{$data.visible}",
+                                            "children": [
+                                                {
+                                                    "type": "text",
+                                                    "text": "index: #ES{$data.index}"
+                                                }
+                                            ],
+                                            "trigger": [
+                                                {
+                                                    "event": "onOk",
+                                                    "targetCustomer": "showModal",
+                                                    "params": {
+                                                        "visible": "#ES{!$data.visible}"
+                                                    }
+                                                },
+                                                {
+                                                    "event": "onCancel",
+                                                    "targetCustomer": "showModal",
+                                                    "params": {
+                                                        "visible": "#ES{!$data.visible}"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 }

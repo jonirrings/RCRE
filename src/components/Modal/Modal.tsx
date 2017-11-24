@@ -107,39 +107,42 @@ export class AbstractModal extends BasicContainer<ModalPropsInterface, {}> {
         let footer = null;
         if (info.footer) {
             footer = info.footer.map((fo, index) => {
-                return createChild(fo, {
-                    info: fo,
-                    $data: this.props.$data,
-                    $setData: this.props.$setData,
-                    model: this.props.model,
-                    dataCustomer: this.props.dataCustomer,
-                    key: index,
-                    eventHandle: this.props.eventHandle
-                });
+                return createChild(fo, this.getChildProps(fo, {
+                    key: `${this.props.model}_footer_${index}`
+                }));
             });
         }
 
         let modalProps = this.mapModalOptions(info);
         let children = info.children.map((child, index) => {
-            return createChild(child, {
-                info: child,
-                $data: this.props.$data,
-                $setData: this.props.$setData,
-                model: this.props.model,
-                key: index,
-                dataCustomer: this.props.dataCustomer,
-                eventHandle: this.props.eventHandle
-            });
+            return createChild(child, this.getChildProps(child, {
+                key: `${this.props.model}_${index}`
+            }));
         });
-        
+
+        modalProps.visible = info.visible;
+        modalProps.onOk = (event: React.MouseEvent<HTMLDivElement>) => {
+            this.commonEventHandler('onOk', {
+                event: event
+            });
+        };
+        modalProps.onCancel = (event: React.MouseEvent<HTMLDivElement>) => {
+            this.commonEventHandler('onCancel', {
+                event: event
+            });
+        };
+
+        if (footer) {
+            modalProps.footer = footer;
+        }
+
         return (
             <Modal
                 {...modalProps}
-                visible={info.visible}
-                footer={footer}
             >
                 {children}
             </Modal>
+
         );
     }
 }

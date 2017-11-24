@@ -119,7 +119,7 @@ export function compileValueExpress<Config, Source>(props: Config,
                                                     pair: compilePairType<Source>,
                                                     blackList: string[] = [],
                                                     isDeep: boolean = false): Config {
-    let copy = _.cloneDeep(props);
+    let copy = _.clone(props);
 
     function parseExpression(reference: Object) {
         _.each(reference, (item, key) => {

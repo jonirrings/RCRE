@@ -13,13 +13,18 @@ export class TextConfig extends BasicConfig {
      * 文本类型
      */
     @Validate(IsValidEnums, ['text', 'link', 'strong'])
-    textType: 'text' | 'link' | 'strong';
+    textType?: 'text' | 'link' | 'strong';
 
     /**
      * 跳转链接
      */
     @IsUrl()
     href?: string;
+
+    /**
+     * 添加千分位符
+     */
+    thousands?: boolean;
 
     /**
      * 内联属性
@@ -37,7 +42,7 @@ export class TextPropsInterface extends BasicContainerPropsInterface {
     info: TextConfig;
 }
 
-class Text extends BasicContainer<TextPropsInterface, {}> {
+export class Text extends BasicContainer<TextPropsInterface, {}> {
     constructor() {
         super();
     }
@@ -54,6 +59,26 @@ class Text extends BasicContainer<TextPropsInterface, {}> {
         if (typeof text === 'boolean') {
             text = String(text);
         }
+
+        if (info.thousands && /^\d+$/.test(text)) {
+            text = String(text);
+            let group = text.split('').reverse();
+            let ret = '';
+
+            for (let i = 1; i <= group.length; i++) {
+                if (i % 3 !== 0) {
+                    ret = group[i - 1] + ret;
+                } else {
+                    ret = ',' + group[i - 1] + ret;
+                }
+            }
+
+            if (ret[0] === ',') {
+                ret = ret.substring(1);
+            }
+
+            text = ret;
+        }
         
         switch (info.textType) {
             case 'link':
@@ -61,6 +86,11 @@ class Text extends BasicContainer<TextPropsInterface, {}> {
                     <a
                         style={Object.assign(defaultTextStyle, info.style)}
                         href={info.href}
+                        onClick={(event: React.MouseEvent<HTMLSpanElement>) => {
+                            this.commonEventHandler('onClick', {
+                                event: event
+                            });
+                        }}
                     >
                         {text}
                     </a>
@@ -71,6 +101,11 @@ class Text extends BasicContainer<TextPropsInterface, {}> {
                 children = (
                     <span
                         style={Object.assign(defaultTextStyle, info.style)}
+                        onClick={(event: React.MouseEvent<HTMLSpanElement>) => {
+                            this.commonEventHandler('onClick', {
+                                event: event
+                            });
+                        }}
                     >
                         {text}
                     </span>

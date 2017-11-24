@@ -1,0 +1,66 @@
+{
+    "body": [
+        {
+            "type": "container",
+            "model": "tabs",
+            "children": [
+                {
+                    "type": "tabs",
+                    "name": "tabsPanel",
+                    "tabs": [
+                        {
+                            "title": "A",
+                            "children": [
+                                {
+                                    "type": "text",
+                                    "text": "helloworld"
+                                }
+                            ]
+                        },
+                        {
+                            "title": "B",
+                            "children": [
+                                {
+                                    "type": "text",
+                                    "text": "B"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "container",
+            "model": "tabCard",
+            "children": [
+                {
+                    "type": "tabs",
+                    "name": "tabsPanel",
+                    "antd.type": "card",
+                    "animated": false,
+                    "tabs": [
+                        {
+                            "title": "A",
+                            "children": [
+                                {
+                                    "type": "text",
+                                    "text": "helloworld"
+                                }
+                            ]
+                        },
+                        {
+                            "title": "B",
+                            "children": [
+                                {
+                                    "type": "text",
+                                    "text": "B"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

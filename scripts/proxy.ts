@@ -8,6 +8,8 @@ import * as request from 'request';
 import {CoreOptions} from 'request';
 import * as cors from 'cors';
 
+let linechart = require('./mock/linechart.json');
+
 const app = express();
 
 app.use(cors());
@@ -48,6 +50,18 @@ app.get('/proxy', (req, res) => {
     }
     
     return request(url, options).pipe(res);
+});
+
+app.get('/api/mock/linechart', (req, res) => {
+    return res.json(linechart);
+});
+
+app.post('/submit', (req, res) => {
+    res.json({
+        errno: 0,
+        errmsg: 'ok',
+        data: req.body
+    });
 });
 
 // // catch 404 and forward to error handler

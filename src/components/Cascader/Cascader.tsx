@@ -1,9 +1,9 @@
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import componentLoader from '../../render/util/componentLoader';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsBoolean, IsDefined, IsString} from 'class-validator';
-import {CSSProperties} from 'react';
-import {CascaderProps, CascaderOptionType} from 'antd/lib/cascader';
+import {CascaderOptionType, CascaderProps} from 'antd/lib/cascader';
 import {Cascader} from 'antd';
 import {compileValueExpress} from '../../render/util/vm';
 import * as _ from 'lodash';
@@ -135,11 +135,19 @@ export class AbstractCascader extends BasicContainer<CascaderPropsInterface, {}>
         }
 
         if (!this.props.$data) {
-            return <div>Cascader Element is out of RCRE control, please put it inside container component</div>;
+            if (this.context.debug) {
+                return <div>Cascader Element is out of RCRE control, please put it inside container component</div>;
+            } else {
+                return <div/>;
+            }
         }
         
         if (!info.options) {
-            return <div>options props is required for Cascader Element</div>;
+            if (this.context.debug) {
+                return <div>options props is required for Cascader Element</div>;
+            } else {
+                return <div/>;
+            }
         }
 
         let $data = this.props.$data;
@@ -156,7 +164,12 @@ export class AbstractCascader extends BasicContainer<CascaderPropsInterface, {}>
             ...cascaderOptions,
             options: options,
             value: value,
-            onChange: this.handleChange 
+            onChange: this.handleChange,
+            onPopupVisibleChange: (popupVisible: boolean) => {
+                this.commonEventHandler('onPopupVisibleChange', {
+                    popupVisible: popupVisible
+                });
+            }
         });
     }
 }

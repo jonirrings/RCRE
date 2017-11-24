@@ -21,7 +21,7 @@ export class ButtonConfig extends BasicConfig {
      * @public
      */
     @IsString()
-    'antd.type'?: 'primary' | 'dashed' | 'danger' | 'ghost' | undefined;
+    buttonType?: 'primary' | 'dashed' | 'danger' | 'ghost' | undefined;
 
     /**
      * 按钮的HTML类型 https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type
@@ -109,6 +109,10 @@ export class ButtonConfig extends BasicConfig {
      */
     style?: CSSProperties;
 
+    /**
+     * 跳转链接
+     */
+    href?: string;
 }
 
 export class ButtonPropsInterface extends BasicContainerPropsInterface {
@@ -120,9 +124,73 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
         super();
     }
     
+    render() {
+        let info = this.getPropsInfo(this.props.info);
+        let text = info.text;
+        let mappedProps = this.mapButtonOptions(info);
+        let children;
+        let childElement;
+
+        if (info.href) {
+            childElement = <a href={info.href}>{text}</a>;
+        } else {
+            childElement = text;
+        }
+        
+        let buttonProps: ButtonProps = {
+            onMouseUp: (event: React.MouseEvent<HTMLButtonElement>) => {
+                this.commonEventHandler('onMouseUp', {
+                    event: event
+                });
+            },
+            onMouseDown: (event: React.MouseEvent<HTMLButtonElement>) => {
+                this.commonEventHandler('onMouseDown', {
+                    event: event
+                });
+            },
+            ...mappedProps
+        };
+        
+        if (_.isPlainObject(info.confirm)) {
+            children = React.createElement(Popconfirm, {
+                title: info.confirm!.title,
+                okText: info.confirm!.okText,
+                cancelText: info.confirm!.cancelText,
+                onConfirm: (event: React.MouseEvent<HTMLButtonElement>) => {
+                    this.commonEventHandler('onConfirm', {
+                        event: event
+                    });
+                },
+                onCancel: (event: React.MouseEvent<HTMLButtonElement>) => {
+                    this.commonEventHandler('onCancel', {
+                        event: event
+                    });
+                }
+            }, React.createElement(Button, buttonProps, childElement));    
+        } else {
+            if (info.confirm) {
+                console.error('Button confirm props should be plain Object');
+            }
+            
+            buttonProps.onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+                this.commonEventHandler('onClick', {
+                    event: event
+                });
+            };
+
+            buttonProps.style = {
+                margin: '0 5px'
+            };
+
+            children = React.createElement(Button, buttonProps, childElement); 
+        }
+        
+        return this.renderChildren(info, children);
+    }
+
     private mapButtonOptions(info: ButtonConfig): ButtonProps {
         return {
-            type: info['antd.type'],
+            type: info.buttonType,
             htmlType: info.htmlType,
             icon: info.icon,
             shape: info.shape,
@@ -134,57 +202,6 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
             className: info.className,
             ghost: info.ghost,
         };
-    }
-
-    render() {
-        let info = this.getPropsInfo(this.props.info);
-        let text = info.text;
-        let mappedProps = this.mapButtonOptions(info);
-        let children;
-        
-        let buttonProps: ButtonProps = {
-            onMouseUp: (event: React.MouseEvent<HTMLButtonElement>) => {
-                this.commonEventHandler('onMouseUp', event);
-            },
-            onMouseDown: (event: React.MouseEvent<HTMLButtonElement>) => {
-                this.commonEventHandler('onMouseDown', event);
-            },
-            ...mappedProps
-        };
-        
-        if (_.isPlainObject(info.confirm)) {
-            children = React.createElement(Popconfirm, {
-                title: info.confirm!.title,
-                okText: info.confirm!.okText,
-                cancelText: info.confirm!.cancelText,
-                onConfirm: (event: React.MouseEvent<HTMLButtonElement>) => {
-                    this.commonEventHandler('onConfirm', event);
-                },
-                onCancel: (event: React.MouseEvent<HTMLButtonElement>) => {
-                    this.commonEventHandler('onCancel', event);
-                }
-            }, React.createElement(Button, buttonProps, text));    
-        } else {
-            if (info.confirm) {
-                console.error('Button confirm props should be plain Object');
-            }
-            
-            buttonProps.onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-                this.commonEventHandler('onClick', event);
-            };
-
-            children = React.createElement(Button, buttonProps, text); 
-        }
-        
-        return this.renderChildren(info, children);
-    }
-
-    private commonEventHandler(eventName: string, event: React.MouseEvent<HTMLButtonElement>) {
-        if (this.props.eventHandle) {
-            this.props.eventHandle(eventName, [event]);
-        } else {
-            console.error('Event System only can work with container component');
-        }
     }
 }
 
