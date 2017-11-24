@@ -91,5 +91,17 @@ export default {
         demo: {
             basic: require('raw-loader!./Select/demo/basic.md')
         }
+    },
+    pagination: {
+        index: require('raw-loader!./Pagination/Pagination.md'),
+        demo: {
+            basic: require('raw-loader!./Pagination/demo/basic.md')
+        }
+    },
+    slider: {
+        index: require('raw-loader!./Slider/Slider.md'),
+        demo: {
+            basic: require('raw-loader!./Slider/demo/basic.md')
+        }
     }
 };
