@@ -14,6 +14,11 @@ export class SliderConfig extends BasicConfig {
     name: string;
 
     /**
+     * 初始化默认值
+     */
+    defaultValue: number | [number, number];
+
+    /**
      * 是否禁用 默认false
      */
     @IsBoolean()
@@ -92,6 +97,15 @@ export class AbstractSlider extends BasicContainer<SliderPropsInterface, SliderS
         super();
         
         this.handleChange = this.handleChange.bind(this);
+    }
+    
+    componentDidMount() {
+        if (this.props.info.defaultValue && this.props.$setData) {
+            const $setData = this.props.$setData;
+            setTimeout(() => {
+                $setData(this.props.info.name, this.props.info.defaultValue); 
+            });
+        }
     }
 
     private mapSliderProps(info: SliderConfig): SliderProps {

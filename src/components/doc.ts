@@ -102,7 +102,8 @@ export default {
         index: require('raw-loader!./Slider/Slider.md'),
         demo: {
             basic: require('raw-loader!./Slider/demo/basic.md'),
-            customerFormat: require('raw-loader!./Slider/demo/customerFormat.md')
+            customerFormat: require('raw-loader!./Slider/demo/customerFormat.md'),
+            defaultValue: require('raw-loader!./Slider/demo/defaultValue.md')
         }
     }
 };
