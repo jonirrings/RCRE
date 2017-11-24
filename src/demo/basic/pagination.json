@@ -1,8 +1,19 @@
 {
     "body": [
         {
-            "type": "pagination",
-            "text": "helloworld"
+            "type": "container",
+            "model": "pagination",
+            "data": {
+            },
+            "children":[
+                {
+                    "type": "pagination",
+                    "total": 100,
+                    "defaultPageSize": 10,
+                    "pageSize": 10,
+                    "defaultCurrent": 1
+                }
+            ]
         }
     ]
 }

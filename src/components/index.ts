@@ -13,4 +13,5 @@ import './Cascader/Cascader';
 import './Icon/Icon';
 import './Affix/Affix';
 import './Modal/Modal';
-import './Pagnination/Pagination';
+import './Pagination/Pagination';
+import './Slider/Slider';
