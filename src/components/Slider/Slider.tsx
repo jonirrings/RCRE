@@ -1,19 +1,16 @@
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsBoolean} from 'class-validator';
 import componentLoader from '../../render/util/componentLoader';
 import {Slider} from 'antd';
 import {SliderProps} from 'antd/lib/slider';
-import {CSSProperties} from 'react';
-
-
 
 export class SliderConfig extends BasicConfig {
     /**
      * 初始值
      */
     defaultValue: number | [number, number] | undefined;
-
 
     /**
      * 是否禁用 默认false
@@ -57,7 +54,7 @@ export class SliderConfig extends BasicConfig {
     /*
      * Slider 会把当前值传给 tipFormatter，并在 Tooltip 中显示 tipFormatter 的返回值
      */
-    step: number | null;
+    step: number | void;
 
     /**
      * 设置当前取值.
@@ -107,25 +104,23 @@ export class AbstractSlider extends BasicContainer<SliderPropsInterface, SliderS
     render() {
         let info = this.getPropsInfo(this.props.info);
 
-        let SliderProps = this.mapSliderProps(info);
+        let sliderProps = this.mapSliderProps(info);
 
-        return <Slider
-            {...SliderProps}
-            onAfterChange={(value: number) => {
-                this.commonEventHandler('onAfterChange', [value]);
-            }}
-            onChange={(value: number) => {
-                this.commonEventHandler('onChange', [value]);
-            }}
-        />;
-    }
-
-    private commonEventHandler(eventName: string, params: number[]) {
-        if (this.props.eventHandle) {
-            this.props.eventHandle(eventName, params);
-        } else {
-            console.error('Event System only can work with container component');
-        }
+        return (
+            <Slider
+                {...sliderProps}
+                onAfterChange={(value: number) => {
+                    this.commonEventHandler('onAfterChange', {
+                        value: value
+                    });
+                }}
+                onChange={(value: number) => {
+                    this.commonEventHandler('onChange', {
+                        value: value
+                    });
+                }}
+            />
+        );
     }
 }
 

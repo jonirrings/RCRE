@@ -1,13 +1,10 @@
 import * as React from 'react';
+import {CSSProperties} from 'react';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import componentLoader from '../../render/util/componentLoader';
 import {Pagination} from 'antd';
 import {PaginationProps} from 'antd/lib/pagination';
-import {IsBoolean, IsString, IsNumber} from 'class-validator';
-import {CSSProperties} from 'react';
-
-
-
+import {IsBoolean, IsNumber, IsString} from 'class-validator';
 
 export class PaginationConfig extends BasicConfig {
 
@@ -105,24 +102,24 @@ export class AbstractPagination extends BasicContainer<PaginationPropsInterface,
         let info = this.getPropsInfo(this.props.info);
 
         let paginationProps = this.mapPaginationProps(info);
-        
-        return <Pagination 
-            {...paginationProps}
-            onShowSizeChange={(current: number, size: number) => {
-                this.commonEventHandler('onShowSizeChange', [current, size]);
-            }}
-            onChange={(page: number, pageSize: number) => {
-                this.commonEventHandler('onChange', [page, pageSize]);
-            }}
-        />;
-    }
 
-    private commonEventHandler(eventName: string, params: number[]) {
-        if (this.props.eventHandle) {
-            this.props.eventHandle(eventName, params);
-        } else {
-            console.error('Event System only can work with container component');
-        }
+        return (
+            <Pagination
+                {...paginationProps}
+                onShowSizeChange={(current: number, size: number) => {
+                    this.commonEventHandler('onShowSizeChange', {
+                        current: current,
+                        size: size
+                    });
+                }}
+                onChange={(page: number, pageSize: number) => {
+                    this.commonEventHandler('onChange', {
+                        page: page,
+                        pageSize: pageSize
+                    });
+                }}
+            />
+        );
     }
 }
 
