@@ -1,10 +1,16 @@
+/**
+ * @file Container组件的Reducer
+ * @author dongtiancheng
+ */
+
 import {Map} from 'immutable';
 import {Reducer} from 'redux';
 import {
     ASYNC_LOAD_DATA_FAIL,
     ASYNC_LOAD_DATA_PROGRESS,
     ASYNC_LOAD_DATA_SUCCESS,
-    CLEAR_DATA, DATA_CUSTOMER_PASS,
+    CLEAR_DATA,
+    DATA_CUSTOMER_PASS,
     IContainerAction,
     REMOVE_DATA,
     SET_DATA,
@@ -25,9 +31,9 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
                 console.error(`can not find model of name: ${actions.model}`);
                 return state;
             }
-            
+
             return state
-                .set(actions.model, 
+                .set(actions.model,
                     state.get(actions.model).set(actions.payload.type, actions.payload.newValue)
                 );
         case SET_DATA_LIST:
@@ -38,100 +44,94 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
                 dataObj[keyName] = item.newValue;
             });
             return state.set(actions.model, Map(dataObj));
-            
-        case ASYNC_LOAD_DATA_PROGRESS:
-        {
+
+        case ASYNC_LOAD_DATA_PROGRESS: {
             let payload = actions.payload;
             let model = payload.model;
-            
+
             if (!state.has(model)) {
                 return state.set(model, Map({
                     $loading: true
                 }));
             }
-            
+
             let existState = state.get(model);
-            
+
             existState = existState.set('$loading', true);
-            
+
             return state.set(model, existState);
         }
-        case ASYNC_LOAD_DATA_SUCCESS:
-        {
+        case ASYNC_LOAD_DATA_SUCCESS: {
             let payload = actions.payload;
             let model = payload.model;
             let data = payload.data;
-            
+
             if (!state.has(model)) {
                 state = state.set(model, Map({}));
             }
-            
+
             let existState = state.get(model);
-            
+
             existState = existState.set('$loading', false);
             existState = existState.merge(Map(data));
-            
+
             return state.set(model, existState);
         }
-        case ASYNC_LOAD_DATA_FAIL:
-        {
+        case ASYNC_LOAD_DATA_FAIL: {
             let payload = actions.payload;
             let model = payload.model;
             let error = payload.error;
-            
+
             if (!state.has(model)) {
                 state = state.set(model, Map({}));
             }
-            
+
             let existState = state.get(model);
-            
+
             existState = existState.set('$loading', false);
             existState = existState.set('$error', error);
-            
+
             return state.set(model, existState);
         }
-        case SYNC_LOAD_DATA_SUCCESS:
-        {
+        case SYNC_LOAD_DATA_SUCCESS: {
             let payload = actions.payload;
             let model = payload.model;
             let data = payload.data;
-            
+
             if (!state.has(model)) {
                 state = state.set(model, Map({}));
             }
-            
+
             let existState = state.get(model);
-            
+
             existState = existState.merge(Map(data));
-            
+
             return state.set(model, existState);
         }
-        case SYNC_LOAD_DATA_FAIL:
-        {
+        case SYNC_LOAD_DATA_FAIL: {
             let payload = actions.payload;
             let model = payload.model;
             let error = payload.error;
-            
+
             if (!state.has(model)) {
                 state = state.set(model, Map({}));
             }
-            
+
             let existState = state.get(model);
-            
+
             existState = existState.set('$error', error);
             return state.set(model, existState);
         }
-        case DATA_CUSTOMER_PASS:
-        {
+        case DATA_CUSTOMER_PASS: {
             let payload = actions.payload;
             let model = payload.model;
             let data = payload.data;
-            
+
             if (!state.has(model)) {
                 console.error(`model: ${model} is not exist`);
                 return state;
             }
-            
+
             let exist = state.get(model);
             exist = exist.merge(data);
             return state.set(model, exist);

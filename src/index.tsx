@@ -1,3 +1,8 @@
+/**
+ * @file 网站入口
+ * @author dongtiancheng
+ */
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './site/App';

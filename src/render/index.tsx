@@ -64,6 +64,7 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
                     title={info.title}
                     body={info.body}
                     debug={info.debug}
+                    lang={info.lang}
                     global={this.props.global}
                 />
             </Provider>

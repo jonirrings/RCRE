@@ -1,3 +1,8 @@
+/**
+ * @file 引擎入口
+ * @author dongtiancheng
+ */
+
 import * as React from 'react';
 import {BasicConfig} from './Container/types';
 import {IsDefined, IsString} from 'class-validator';
@@ -18,20 +23,25 @@ export class PageProps {
 
     // 调试模式
     debug: boolean;
+
+    // 报错的信息语言
+    lang: string;
 }
 
 class Page extends React.Component<PageProps, {}> {
     static defaultProps = {
         title: '',
         debug: false,
-        global: {}
+        global: {},
+        lang: 'zh_CN'
     };
 
     static childContextTypes = {
         $global: PropsTypes.object,
         $location: PropsTypes.object,
         $query: PropsTypes.object,
-        debug: PropsTypes.bool
+        debug: PropsTypes.bool,
+        lang: PropsTypes.string
     };
 
     static getLocationService() {
@@ -79,7 +89,7 @@ class Page extends React.Component<PageProps, {}> {
                 key: index
             });
         });
-        
+
         let pageHeader = this.props.title ? (
             <div className="page-header">
                 <h1>{this.props.title}</h1>

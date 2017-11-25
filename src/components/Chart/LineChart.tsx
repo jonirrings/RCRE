@@ -57,6 +57,14 @@ export class LineChartConfig extends BasicConfig {
     toolbox: boolean;
 
     /**
+     * x轴数据
+     * @public
+     * @default [];
+     */
+    @Validate(IsArrayString)
+    xAxisData: string[];
+
+    /**
      * 是否支持缩放
      * @public
      * @default true
@@ -123,7 +131,8 @@ export default class LineChart extends BasicContainer<LineChartPropsInterface, {
         grid: {
             left: '3%',
             right: '4%',
-            bottom: '3%'
+            bottom: '3%',
+            containLabel: true
         },
         xAxis: {
             type: 'category',

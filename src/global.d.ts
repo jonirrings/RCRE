@@ -1,3 +1,7 @@
+/**
+ * @file 全局定义文件
+ * @author dongtiancheng
+ */
 declare interface Window {
     __REDUX_DEVTOOLS_EXTENSION__: any;
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any;

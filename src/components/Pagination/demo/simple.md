@@ -1,6 +1,6 @@
-## 基础使用
+## 简单分页
 
-显示分页器
+添加`simple`属性就可以变成简单分页模式
 
 ```json
 {
@@ -8,16 +8,15 @@
     "body": [
         {
             "type": "container",
-            "model": "pagination",
+            "model": "simple",
             "data": {
             },
             "children":[
                 {
                     "type": "pagination",
-                    "name": "pages",
+                    "name": "simplepage",
                     "total": 50,
-                    "defaultCurrent": 3,
-                    "pageSize": 4
+                    "simple": true
                 }
             ]
         }

@@ -1,3 +1,8 @@
+/**
+ * @file 给普通组件提供的基础类，基础函数
+ * @author dongtiancheng
+ */
+
 import {IsString, Validate} from 'class-validator';
 import {IsPageInfo} from '../../util/validators';
 import {actionCreators} from './action';
@@ -196,7 +201,8 @@ export const BasicContextTypes = {
     $global: PropTypes.object,
     $location: PropTypes.object,
     $query: PropTypes.object,
-    debug: PropTypes.bool
+    debug: PropTypes.bool,
+    lang: PropTypes.string
 };
 
 export type runTimeType = {
@@ -210,6 +216,12 @@ export type runTimeType = {
     $moment: typeof moment
 };
 
+/**
+ * 获取ExpressionString 嵌入的上下文
+ * @param {BasicContainerPropsInterface} props
+ * @param context
+ * @return {runTimeType}
+ */
 export function getRuntimeContext(props: BasicContainerPropsInterface, context: any) {
     let runtime: runTimeType = {
         $now: moment(),
@@ -243,6 +255,9 @@ export function getRuntimeContext(props: BasicContainerPropsInterface, context: 
     return runtime;
 }
 
+/**
+ * 所有子级组件的基类
+ */
 export class BasicContainer<T extends BasicContainerPropsInterface, P> extends React.Component<T, P> {
     static contextTypes = BasicContextTypes;
 

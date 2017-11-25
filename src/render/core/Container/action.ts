@@ -1,3 +1,8 @@
+/**
+ * @file Container组件的Action
+ * @author dongtiancheng
+ */
+
 export const SET_DATA = 'SET_DATA';
 export const SET_DATA_LIST = 'SET_DATA_LIST';
 export const CLEAR_DATA = 'CLEAR_DATA';
@@ -46,7 +51,7 @@ export type DATA_CUSTOMER_PASS_PAYLOAD = {
 };
 
 export type IActions = {
-    SET_DATA: { 
+    SET_DATA: {
         type: typeof SET_DATA,
         payload: SET_DATA_PAYLOAD,
         model: string;

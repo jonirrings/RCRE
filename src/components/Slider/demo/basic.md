@@ -13,6 +13,10 @@
                 {
                     "type": "slider",
                     "name": "demo"
+                },
+                {
+                    "type": "text",
+                    "text": "#ES{$data.demo}" 
                 }
             ]
         }
