@@ -21,66 +21,6 @@ export class ComponentPreview extends React.Component<ComponentPreviewPropsInter
         super();
     }
 
-    private getHomeChunks(homeDoc: string) {
-        const matchRegex = /{{demo}}/;
-
-        if (!matchRegex.test(homeDoc)) {
-            return {
-                title: homeDoc,
-                api: ''
-            };
-        }
-
-        const homeChunks = homeDoc.split(matchRegex);
-
-        return {
-            title: homeChunks[0],
-            api: homeChunks[1]
-        };
-    }
-
-    private parseDemo(demoDoc: string): DemoItem {
-        let tokens = lexer(demoDoc, {});
-        let title = '';
-        let desc = '';
-        let code = '';
-        let language = '';
-        const codeBlockRegex = /```(\w+)([\s\S]+)```/;
-
-        tokens.map(token => {
-            switch (token.type) {
-                case 'heading': {
-                    title = token.text;
-                    break;
-                }
-                case 'paragraph': {
-                    let text = token.text;
-                    if (codeBlockRegex.test(text)) {
-                        let pattern = codeBlockRegex.exec(text);
-
-                        if (pattern) {
-                            language = pattern[1];
-                            code = pattern[2];
-                        }
-                    } else {
-                        desc += parse(token.text);
-                    }
-
-                    break;
-                }
-                default:
-                    break;
-            }
-        });
-
-        return {
-            title: title,
-            desc: desc,
-            code: code,
-            language: language
-        };
-    }
-
     render() {
         let activeKey = this.props.activeKey;
         if (!this.props.map) {
@@ -149,5 +89,65 @@ export class ComponentPreview extends React.Component<ComponentPreviewPropsInter
                 <div className="markdown" dangerouslySetInnerHTML={{__html: parse(api)}}/>
             </div>
         );
+    }
+
+    private getHomeChunks(homeDoc: string) {
+        const matchRegex = /{{demo}}/;
+
+        if (!matchRegex.test(homeDoc)) {
+            return {
+                title: homeDoc,
+                api: ''
+            };
+        }
+
+        const homeChunks = homeDoc.split(matchRegex);
+
+        return {
+            title: homeChunks[0],
+            api: homeChunks[1]
+        };
+    }
+
+    private parseDemo(demoDoc: string): DemoItem {
+        let tokens = lexer(demoDoc, {});
+        let title = '';
+        let desc = '';
+        let code = '';
+        let language = '';
+        const codeBlockRegex = /```(\w+)([\s\S]+)```/;
+
+        tokens.map(token => {
+            switch (token.type) {
+                case 'heading': {
+                    title = token.text;
+                    break;
+                }
+                case 'paragraph': {
+                    let text = token.text;
+                    if (codeBlockRegex.test(text)) {
+                        let pattern = codeBlockRegex.exec(text);
+
+                        if (pattern) {
+                            language = pattern[1];
+                            code = pattern[2];
+                        }
+                    } else {
+                        desc += parse(token.text);
+                    }
+
+                    break;
+                }
+                default:
+                    break;
+            }
+        });
+
+        return {
+            title: title,
+            desc: desc,
+            code: code,
+            language: language
+        };
     }
 }

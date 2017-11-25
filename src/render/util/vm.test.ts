@@ -253,7 +253,7 @@ describe('parseExpressString', () => {
             });
             return series;
         })($data.list)}`, context);
-        
+
         expect(ret.length).toBe(6);
     });
 

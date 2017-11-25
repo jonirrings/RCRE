@@ -24,7 +24,7 @@ export class TabsConfig extends BasicConfig {
      * Tabs数据模型的Key
      */
     name: string;
-    
+
     /**
      * 当前激活 tab 面板的 key
      */
@@ -73,25 +73,13 @@ export class AbstractTabs extends BasicContainer<TabsPropsInterface, {}> {
         super();
     }
 
-    private mapTabsOptions(info: TabsConfig): TabsProps {
-        return {
-            tabBarStyle: info.tabBarStyle,
-            type: info.tabType,
-            tabPosition: info.tabPosition,
-            size: info.size,
-            style: info.style,
-            className: info.className,
-            animated: info.animated
-        };
-    }
-
     render() {
         let info = this.getPropsInfo(this.props.info);
         let tabsOptions = this.mapTabsOptions(info);
         let underContainerControl = !!this.props.$data;
 
         let tabs = info.tabs;
-        
+
         if (underContainerControl && !info.name) {
             return <div>If you put tabs component under container component, you should provider name property</div>;
         }
@@ -99,7 +87,7 @@ export class AbstractTabs extends BasicContainer<TabsPropsInterface, {}> {
         if (!(tabs instanceof Array)) {
             return <div>Tabs property should be array</div>;
         } else if (tabs.length === 0) {
-            return <Tabs />;
+            return <Tabs/>;
         }
 
         let tabElements = tabs.map((tab) => {
@@ -144,12 +132,24 @@ export class AbstractTabs extends BasicContainer<TabsPropsInterface, {}> {
                 this.commonEventHandler('onTabClick', []);
             }
         };
-        
+
         if (this.props.$data) {
             tabsProps.activeKey = this.props.$data.get(info.name) || tabs[0].title;
         }
-        
+
         return React.createElement(Tabs, tabsProps, tabElements);
+    }
+
+    private mapTabsOptions(info: TabsConfig): TabsProps {
+        return {
+            tabBarStyle: info.tabBarStyle,
+            type: info.tabType,
+            tabPosition: info.tabPosition,
+            size: info.size,
+            style: info.style,
+            className: info.className,
+            animated: info.animated
+        };
     }
 }
 

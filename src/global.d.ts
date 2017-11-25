@@ -1,3 +1,7 @@
+/**
+ * @file 全局定义文件
+ * @author dongtiancheng
+ */
 declare interface Window {
     __REDUX_DEVTOOLS_EXTENSION__: any;
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any;
@@ -7,6 +11,10 @@ declare interface Window {
     RCRE_VERSION: any;
     React: any;
     ReactDOM: any;
+    RCRE_BasicContainer: any;
+    RCRE_providerLoader: any;
+    RCRE_customerLoader: any;
+    RCRE_componentDriver: any;
 }
 
 declare var __VERSION__: any;

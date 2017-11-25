@@ -91,5 +91,23 @@ export default {
         demo: {
             basic: require('raw-loader!./Select/demo/basic.md')
         }
+    },
+    pagination: {
+        index: require('raw-loader!./Pagination/Pagination.md'),
+        demo: {
+            basic: require('raw-loader!./Pagination/demo/basic.md'),
+            quickJump: require('raw-loader!./Pagination/demo/showQuickJumper.md'),
+            size: require('raw-loader!./Pagination/demo/showSizeChanger.md'),
+            showTotal: require('raw-loader!./Pagination/demo/showTotal.md'),
+            simple: require('raw-loader!./Pagination/demo/simple.md')
+        }
+    },
+    slider: {
+        index: require('raw-loader!./Slider/Slider.md'),
+        demo: {
+            basic: require('raw-loader!./Slider/demo/basic.md'),
+            customerFormat: require('raw-loader!./Slider/demo/customerFormat.md'),
+            defaultValue: require('raw-loader!./Slider/demo/defaultValue.md')
+        }
     }
 };

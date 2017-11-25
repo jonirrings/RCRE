@@ -61,9 +61,9 @@ class App extends React.Component<RouteComponentProps<AppProps>, AppStateInterfa
 
             if (!html) {
                 console.error('invalid activeKey');
-                return <div />;
+                return <div/>;
             }
-            
+
             content = <div className="markdown" dangerouslySetInnerHTML={{__html: parse(html)}}/>;
         } else if (group === 'component') {
             content = <ComponentPreview map={docList} activeKey={activeKey}/>;

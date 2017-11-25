@@ -124,22 +124,6 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
         super();
     }
     
-    private mapButtonOptions(info: ButtonConfig): ButtonProps {
-        return {
-            type: info.buttonType,
-            htmlType: info.htmlType,
-            icon: info.icon,
-            shape: info.shape,
-            size: info.size,
-            loading: info.loading,
-            disabled: info.disabled,
-            style: info.style,
-            prefixCls: info.prefixCls,
-            className: info.className,
-            ghost: info.ghost,
-        };
-    }
-
     render() {
         let info = this.getPropsInfo(this.props.info);
         let text = info.text;
@@ -193,7 +177,7 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
                     event: event
                 });
             };
-            
+
             buttonProps.style = {
                 margin: '0 5px'
             };
@@ -202,6 +186,22 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
         }
         
         return this.renderChildren(info, children);
+    }
+
+    private mapButtonOptions(info: ButtonConfig): ButtonProps {
+        return {
+            type: info.buttonType,
+            htmlType: info.htmlType,
+            icon: info.icon,
+            shape: info.shape,
+            size: info.size,
+            loading: info.loading,
+            disabled: info.disabled,
+            style: info.style,
+            prefixCls: info.prefixCls,
+            className: info.className,
+            ghost: info.ghost,
+        };
     }
 }
 

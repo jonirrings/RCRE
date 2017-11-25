@@ -25,25 +25,25 @@ export class AbstractTrend extends BasicContainer<TrendPropsInterface, {}> {
     constructor() {
         super();
     }
-    
+
     render() {
         let info = this.getPropsInfo(this.props.info);
-        
+
         let icon;
-        
+
         if (info.flag === 'up') {
-            icon = <Icon type="caret-up" style={{color: '#f5222d'}} />;
+            icon = <Icon type="caret-up" style={{color: '#f5222d'}}/>;
         } else {
-            icon = <Icon type="caret-down" style={{color: '#52c41a'}} />;
+            icon = <Icon type="caret-down" style={{color: '#52c41a'}}/>;
         }
-        
+
         const trendStyle = {
             height: '25px',
             lineHeight: '25px'
         };
         return (
             <div className="rcre-trend" style={trendStyle}>
-                <Text info={info} />
+                <Text info={info}/>
                 {icon}
             </div>
         );

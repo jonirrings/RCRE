@@ -151,47 +151,6 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
         this.handleChange = this.handleChange.bind(this);
     }
 
-    private handleChange(value: SelectValue) {
-        if (this.props.$setData) {
-            this.props.$setData(this.props.info.name, value);
-        }
-    }
-
-    private applyMapping<T>(data: T, mappingConfig: T, index: number): T {
-        let context = {
-            $iterator: data,
-            $index: index,
-            $data: {}
-        };
-
-        if (this.props.$data) {
-            context.$data = this.props.$data.toObject();
-        }
-
-        let newObj = compileValueExpress(mappingConfig, context);
-        return Object.assign(data, newObj);
-    }
-
-    private mapSelectOptions(info: SelectConfig): SelectProps {
-        return {
-            mode: info.mode,
-            optionLabelProp: info.optionLabelProp,
-            dropdownMatchSelectWidth: info.dropdownMatchSelectWidth,
-            optionFilterProp: info.optionFilterProp,
-            defaultActiveFirstOption: info.defaultActiveFirstOption,
-            labelInValue: info.labelInValue,
-            tokenSeparators: info.tokenSeparators,
-            className: info.className
-        };
-    }
-
-    private mapOptionOptions(op: OptionConfig): OptionProps {
-        return {
-            disabled: op.disabled,
-            value: op.value
-        };
-    }
-
     render() {
         let info = this.getPropsInfo(this.props.info);
 
@@ -218,9 +177,9 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
         });
         
         let selectOptions = this.mapSelectOptions(info);
-        
+
         let value = this.props.$data.get(info.name);
-        
+
         // 当前的数据模型中的值在列表中已经不存在的时候, 就清空当前选择框的值
         // if (!_.isNil(value) &&
         //     !_.find(options, o => o.value === value)
@@ -254,6 +213,47 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
             },
             ...selectOptions
         }, Options);
+    }
+
+    private handleChange(value: SelectValue) {
+        if (this.props.$setData) {
+            this.props.$setData(this.props.info.name, value);
+        }
+    }
+
+    private mapSelectOptions(info: SelectConfig): SelectProps {
+        return {
+            mode: info.mode,
+            optionLabelProp: info.optionLabelProp,
+            dropdownMatchSelectWidth: info.dropdownMatchSelectWidth,
+            optionFilterProp: info.optionFilterProp,
+            defaultActiveFirstOption: info.defaultActiveFirstOption,
+            labelInValue: info.labelInValue,
+            tokenSeparators: info.tokenSeparators,
+            className: info.className
+        };
+    }
+
+    private mapOptionOptions(op: OptionConfig): OptionProps {
+        return {
+            disabled: op.disabled,
+            value: op.value
+        };
+    }
+
+    private applyMapping<T>(data: T, mappingConfig: T, index: number): T {
+        let context = {
+            $iterator: data,
+            $index: index,
+            $data: {}
+        };
+
+        if (this.props.$data) {
+            context.$data = this.props.$data.toObject();
+        }
+
+        let newObj = compileValueExpress(mappingConfig, context);
+        return Object.assign(data, newObj);
     }
 }
 
