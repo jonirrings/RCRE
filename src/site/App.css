@@ -22,16 +22,16 @@
 .markdown {
     color: rgba(0, 0, 0, .65);
     font-size: 14px;
-    line-height: 1.8
+    line-height: 1.8;
 }
 
 .highlight {
-    line-height: 1.5
+    line-height: 1.5;
 }
 
 .markdown img {
     vertical-align: middle;
-    max-width: 100%
+    max-width: 100%;
 }
 
 .markdown h1 {
@@ -40,7 +40,7 @@
     line-height: 40px;
     margin-bottom: 24px;
     margin-top: 8px;
-    font-family: Lato, Helvetica Neue For Number, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif
+    font-family: Lato, Helvetica Neue For Number, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 .markdown h1 .subtitle {
@@ -49,12 +49,16 @@
     margin-left: 12px
 }
 
-.markdown h2, .markdown h3, .markdown h4, .markdown h5, .markdown h6 {
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
     color: rgba(0, 0, 0, .85);
     font-family: Lato, Helvetica Neue For Number, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif;
     margin: 1.6em 0 .6em;
     font-weight: 500;
-    clear: both
+    clear: both;
 }
 
 .markdown h1 {
@@ -89,7 +93,8 @@
     clear: both
 }
 
-.markdown p, .markdown pre {
+.markdown p,
+.markdown pre {
     margin: 1em 0
 }
 
@@ -109,7 +114,8 @@
     padding-left: 4px
 }
 
-.markdown ol > li > p, .markdown ul > li > p {
+.markdown ol > li > p,
+.markdown ul > li > p {
     margin: .2em 0
 }
 
@@ -125,7 +131,7 @@
 .markdown pre {
     border-radius: 4px;
     background: #f7f7f7;
-    font-family: Lucida Console, Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace
+    font-family: Lucida Console, Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
 }
 
 .markdown pre code {
@@ -138,7 +144,8 @@
     overflow: auto
 }
 
-.markdown b, .markdown strong {
+.markdown b,
+.markdown strong {
     font-weight: 600
 }
 
@@ -157,7 +164,8 @@
     font-weight: 600
 }
 
-.markdown > table td, .markdown > table th {
+.markdown > table td,
+.markdown > table th {
     border: 1px solid #e9e9e9;
     padding: 8px 16px;
     text-align: left
@@ -212,12 +220,18 @@
     font-size: 16px
 }
 
-.markdown h1:hover .anchor, .markdown h2:hover .anchor, .markdown h3:hover .anchor, .markdown h4:hover .anchor, .markdown h5:hover .anchor, .markdown h6:hover .anchor {
+.markdown h1:hover .anchor,
+.markdown h2:hover .anchor,
+.markdown h3:hover .anchor,
+.markdown h4:hover .anchor,
+.markdown h5:hover .anchor,
+.markdown h6:hover .anchor {
     opacity: 1;
     display: inline-block
 }
 
-.markdown > br, .markdown > p > br {
+.markdown > br,
+.markdown > p > br {
     clear: both
 }
 
@@ -229,17 +243,17 @@
     background: #fcfcfc;
     font-weight: 500;
     width: 20%;
-    font-family: Lucida Console, Consolas, Menlo, Courier, monospace
+    font-family: Lucida Console, Consolas, Menlo, Courier, monospace;
 }
 
 .markdown.api-container table td:nth-child(3) {
     width: 22%;
     font-size: 12px;
-    font-family: Lucida Console, Consolas, Menlo, Courier, monospace
+    font-family: Lucida Console, Consolas, Menlo, Courier, monospace;
 }
 
 .markdown.api-container table td:last-child {
     width: 13%;
     font-size: 12px;
-    font-family: Lucida Console, Consolas, Menlo, Courier, monospace
+    font-family: Lucida Console, Consolas, Menlo, Courier, monospace;
 }
