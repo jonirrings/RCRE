@@ -20,3 +20,4 @@
 | dataZoom | 是否支持缩放 | boolean | false | true |
 | className | CSS Class | string | false | -
 | style | 内联CSS属性  | CSSProperties | false | -
+| loading | 是否在加载 | boolean | false | false | 
