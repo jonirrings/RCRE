@@ -57,7 +57,7 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
         // 之前要全部清空， 重新来一遍
         class UpdatePage extends Page {
         }
-        
+
         return (
             <Provider store={store}>
                 <UpdatePage
@@ -78,3 +78,7 @@ window.ReactDOM = ReactDOM;
 window.RCRE = Render;
 window.RCRE_React = React;
 window.RCRE_ReactDOM = ReactDOM;
+window.RCRE_componentDriver = componentDriver;
+window.RCRE_BasicContainer = BasicContainer;
+window.RCRE_providerLoader = providerLoader;
+window.RCRE_customerLoader = customerLoader;

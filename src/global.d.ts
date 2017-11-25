@@ -7,6 +7,10 @@ declare interface Window {
     RCRE_VERSION: any;
     React: any;
     ReactDOM: any;
+    RCRE_BasicContainer: any;
+    RCRE_providerLoader: any;
+    RCRE_customerLoader: any;
+    RCRE_componentDriver: any;
 }
 
 declare var __VERSION__: any;

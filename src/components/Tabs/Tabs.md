@@ -10,9 +10,17 @@ Tab 卡片切换组件
 
 | 属性        | 说明     | 类型               | 是否必须  | 默认值   |
 | --------- | ------ | ---------------- | ----- | ----- |
-| text      | 显示的文本  | string           | true  | -     |
-| textType  | 文本类型   | text,link,strong | false | text  |
-| href      | 跳转链接   | string           | false | -     |
-| thousands | 添加千分位符 | boolean          | false | false | 
-|style | CSS内联属性 | CSSProperties | false |-|
-|className | class Class | string | false | -|
+| tabs | 标签页列表 | TabItem[] | true | -| 
+| tabType | 标签类型 | line,card | false | line |
+| name | Tabs数据模型的Key | string | false | -
+| animated | 是否使用动画切换 Tabs | boolean | false | true
+| size | 大小，提供 default 和 small 两种大小 | default,small | false | default
+| tabBarStyle | tab bar 的样式对象 | CSSProperties | false | -
+| tabPosition | 页签位置 | left,top,bottom,right | false | top
+
+
+## 单个标签页属性(TabItem)
+| 属性        | 说明     | 类型               | 是否必须  | 默认值   |
+| --------- | ------ | ---------------- | ----- | ----- |
+| title | 标签页标题 | string | true | -
+| children | 标签页内容 | BasicConfig | true | -

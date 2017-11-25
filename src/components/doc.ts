@@ -70,7 +70,8 @@ export default {
         demo: {
             basic: require('raw-loader!./Tabs/demo/basic.md'),
             animated: require('raw-loader!./Tabs/demo/noAnimate.md'),
-            tabType: require('raw-loader!./Tabs/demo/tabType.md')
+            tabType: require('raw-loader!./Tabs/demo/tabType.md'),
+            tabContainer: require('raw-loader!./Tabs/demo/tabContainer.md')
         }
     },
     lineChart: {
@@ -83,6 +84,26 @@ export default {
         index: require('raw-loader!./Trend/Trend.md'),
         demo: {
             basic: require('raw-loader!./Trend/demo/basic.md')
+        }
+    },
+    select: {
+        index: require('raw-loader!./Select/Select.md'),
+        demo: {
+            basic: require('raw-loader!./Select/demo/basic.md')
+        }
+    },
+    pagination: {
+        index: require('raw-loader!./Pagination/Pagination.md'),
+        demo: {
+            basic: require('raw-loader!./Pagination/demo/basic.md')
+        }
+    },
+    slider: {
+        index: require('raw-loader!./Slider/Slider.md'),
+        demo: {
+            basic: require('raw-loader!./Slider/demo/basic.md'),
+            customerFormat: require('raw-loader!./Slider/demo/customerFormat.md'),
+            defaultValue: require('raw-loader!./Slider/demo/defaultValue.md')
         }
     }
 };

@@ -52,7 +52,7 @@ type seriesTypes = {
     type?: string;
     stack?: string;
     label?: {
-        normal: {
+        normal?: {
             show?: boolean;
             position?: string;
         }

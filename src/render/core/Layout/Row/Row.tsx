@@ -182,7 +182,7 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
                 dataCustomer: this.props.dataCustomer,
                 model: this.props.model
             });
-            
+
             let childElement = (
                 <div key={`grid_${childInfo.type}_${index}`} style={gridStyles}>
                     <div style={innerGridStyle}>
@@ -190,7 +190,7 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
                     </div>
                 </div>
             );
-            
+
             return this.renderChildren(childInfo, childElement);
         });
 
@@ -207,7 +207,7 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
                 {childElements}
             </div>
         );
-        
+
         return this.renderChildren(info, rowElement);
     }
 }

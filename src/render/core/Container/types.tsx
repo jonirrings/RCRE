@@ -249,7 +249,7 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
     constructor() {
         super();
     }
-    
+
     public getRuntimeContext(props: T = this.props, context: any = this.context) {
         return getRuntimeContext(props, context);
     }
@@ -292,7 +292,7 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
             this.props.eventHandle(eventName, args);
         } else if (!mute) {
             if (this.props.$data) {
-                console.error('If you want to handle event, you need to at trigger property');   
+                console.error('If you want to handle event, you need to at trigger property');
             } else {
                 console.error('Event System can only work with Container Component');
             }

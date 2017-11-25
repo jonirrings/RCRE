@@ -21,36 +21,30 @@ interface CodeBoxStateInterface {
 export class CodeBox extends React.Component<CodeBoxPropsInterface, CodeBoxStateInterface> {
     constructor() {
         super();
-        
+
         this.state = {
             expand: false
         };
-        
+
         this.handleClick = this.handleClick.bind(this);
     }
-    
-    private handleClick() {
-        this.setState({
-            expand: !this.state.expand
-        });
-    }
-    
+
     render() {
         return (
             <div className="codebox">
                 <div className="codebox-demo">
-                    <Render code={this.props.code} />    
+                    <Render code={this.props.code}/>
                 </div>
-                
+
                 <div className="codebox-markdown">
                     <div className="codebox-title">{this.props.title}</div>
-                    <div className="codebox-content" dangerouslySetInnerHTML={{__html: this.props.desc}} />
+                    <div className="codebox-content" dangerouslySetInnerHTML={{__html: this.props.desc}}/>
                     <span className="expand-icon" onClick={this.handleClick}>
                         <Tooltip title="show code">
-                            <img style={{display: !this.state.expand ? 'block' : 'none'}} src={unExpand} />
+                            <img style={{display: !this.state.expand ? 'block' : 'none'}} src={unExpand}/>
                         </Tooltip>
                         <Tooltip title="hide code">
-                            <img style={{display: this.state.expand ? 'block' : 'none'}} src={expanded} />
+                            <img style={{display: this.state.expand ? 'block' : 'none'}} src={expanded}/>
                         </Tooltip>
                     </span>
                 </div>
@@ -60,6 +54,12 @@ export class CodeBox extends React.Component<CodeBoxPropsInterface, CodeBoxState
                     </Highlight>
                 </div>
             </div>
-        );        
+        );
+    }
+
+    private handleClick() {
+        this.setState({
+            expand: !this.state.expand
+        });
     }
 }

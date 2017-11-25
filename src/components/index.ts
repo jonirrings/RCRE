@@ -16,3 +16,5 @@ import './Modal/Modal';
 import './Tabs/Tabs';
 import './Form/Form';
 import './Trend/Trend';
+import './Pagination/Pagination';
+import './Slider/Slider';
