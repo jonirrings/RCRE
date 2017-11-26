@@ -237,7 +237,7 @@ export default class LineChart extends BasicContainer<LineChartPropsInterface, {
         };
         
         return (
-            <Spin spinning={info.loading || false} className="rcre-echart-spin">
+            <Spin spinning={info.loading || false} wrapperClassName="rcre-echart-spin">
                 <div ref={refCallback} className={info.className} style={style}/>
             </Spin>
         );
