@@ -7,6 +7,7 @@ import * as echarts from 'echarts';
 import {chartTypes} from './types';
 import componentLoader from '../../render/util/componentLoader';
 import {Set} from 'immutable';
+import {Spin} from 'antd';
 
 export class LineChartConfig extends BasicConfig {
     /**
@@ -94,6 +95,10 @@ export class LineChartConfig extends BasicConfig {
      */
     style?: CSSProperties;
 
+    /**
+     * 是否在加载
+     */
+    loading?: boolean;
 }
 
 export class LineChartPropsInterface extends BasicContainerPropsInterface {
@@ -230,7 +235,9 @@ export default class LineChart extends BasicContainer<LineChartPropsInterface, {
         };
         
         return (
-            <div ref={refCallback} className={info.className} style={style}/>
+            <Spin spinning={info.loading || false}>
+                <div ref={refCallback} className={info.className} style={style}/>
+            </Spin>
         );
     }
 }

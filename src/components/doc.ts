@@ -77,7 +77,8 @@ export default {
     lineChart: {
         index: require('raw-loader!./Chart/LineChart.md'),
         demo: {
-            basic: require('raw-loader!./Chart/demo/basic.md')
+            basic: require('raw-loader!./Chart/demo/basic.md'),
+            loading: require('raw-loader!./Chart/demo/loading.md')
         }
     },
     trend: {
