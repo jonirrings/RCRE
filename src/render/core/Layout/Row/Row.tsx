@@ -163,7 +163,7 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
             let gridCount = childInfo.gridCount || defaultGridCount;
             let positionStyle = getCssCombo(childInfo.gridPosition);
             const gridStyles = {
-                width: `${100 / 12 * gridCount}%`,
+                width: childInfo.gridWidth || `${100 / 12 * gridCount}%`,
                 display: 'flex',
                 border: info.showBorder ? `1px dashed blue` : ''
             };
