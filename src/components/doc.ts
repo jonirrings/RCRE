@@ -114,5 +114,11 @@ export default {
             customerFormat: require('raw-loader!./Slider/demo/customerFormat.md'),
             defaultValue: require('raw-loader!./Slider/demo/defaultValue.md')
         }
-    }
+    },
+    row: {
+        index: require('raw-loader!./Row/Row.md'),
+        demo: {
+            basic: require('raw-loader!./Row/demo/basic.md')
+        }
+    },
 };
