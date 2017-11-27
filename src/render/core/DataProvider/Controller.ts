@@ -38,6 +38,11 @@ export interface ProviderSourceConfig {
      * 返回值检查Expression String
      */
     retCheckPattern?: string;
+
+    /**
+     * 错误弹出的错误提示
+     */
+    retErrMsg?: string;
     
     __previousConfig?: ProviderSourceConfig | null;
 }
@@ -180,7 +185,8 @@ export class DataProvider {
             ret = provider.retParse(ret, providerConfig, props, context);
             
             if (!isRetValid) {
-                const errmsg = `model: ${info.model} mode: ${providerConfig.mode} data is not valid`;
+                const errmsg = providerConfig.retErrMsg 
+                    || `model: ${info.model} mode: ${providerConfig.mode} data is not valid`;
                 message.error(errmsg);
                 actions.asyncLoadDataFail({
                     model: info.model!,
