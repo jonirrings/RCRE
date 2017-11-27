@@ -56,6 +56,25 @@ app.get('/api/mock/linechart', (req, res) => {
     return res.json(linechart);
 });
 
+app.get('/api/mock/select', (req, res) => {
+    setTimeout(() => {
+        return res.json({
+            errno: 0,
+            errmsg: 'ok',
+            data: [
+                {
+                    key: 'A',
+                    value: 'a'
+                },
+                {
+                    key: 'B',
+                    value: 'b'
+                }
+            ]
+        });
+    }, 3000);
+});
+
 app.post('/submit', (req, res) => {
     res.json({
         errno: 0,

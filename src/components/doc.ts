@@ -90,7 +90,9 @@ export default {
     select: {
         index: require('raw-loader!./Select/Select.md'),
         demo: {
-            basic: require('raw-loader!./Select/demo/basic.md')
+            basic: require('raw-loader!./Select/demo/basic.md'),
+            disabled: require('raw-loader!./Select/demo/disabled.md'),
+            loading: require('raw-loader!./Select/demo/loading.md')
         }
     },
     pagination: {
