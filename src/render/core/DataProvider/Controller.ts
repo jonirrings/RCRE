@@ -6,7 +6,7 @@ import {InitDataProvider} from './providers/init';
 import * as _ from 'lodash';
 
 // TODO universal error report
-import {message} from 'antd';
+import {notification} from 'antd';
 
 providerLoaderInstance.registerProvider('ajax', new AjaxDataProvider(), true);
 providerLoaderInstance.registerProvider('init', new InitDataProvider(), false);
@@ -187,7 +187,10 @@ export class DataProvider {
             if (!isRetValid) {
                 const errmsg = providerConfig.retErrMsg 
                     || `model: ${info.model} mode: ${providerConfig.mode} data is not valid`;
-                message.error(errmsg);
+                notification.error({
+                    message: '数据获取失败',
+                    description: errmsg
+                });
                 actions.asyncLoadDataFail({
                     model: info.model!,
                     providerMode: providerConfig.mode,
