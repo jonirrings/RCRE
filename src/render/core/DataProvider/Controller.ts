@@ -5,6 +5,9 @@ import {providerLoaderInstance} from './loader';
 import {InitDataProvider} from './providers/init';
 import * as _ from 'lodash';
 
+// TODO universal error report
+import {message} from 'antd';
+
 providerLoaderInstance.registerProvider('ajax', new AjaxDataProvider(), true);
 providerLoaderInstance.registerProvider('init', new InitDataProvider(), false);
 
@@ -177,10 +180,12 @@ export class DataProvider {
             ret = provider.retParse(ret, providerConfig, props, context);
             
             if (!isRetValid) {
+                const errmsg = `model: ${info.model} mode: ${providerConfig.mode} data is not valid`;
+                message.error(errmsg);
                 actions.asyncLoadDataFail({
                     model: info.model!,
                     providerMode: providerConfig.mode,
-                    error: `model: ${info.model} mode: ${providerConfig.mode} data is not valid`
+                    error: errmsg
                 });
             } else {
                 let response;

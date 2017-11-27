@@ -182,9 +182,11 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
             return <div>Select Element is out of RCRE control, please put it inside container component</div>;
         }
         
+        let $loading = this.props.$data.get('$loading') || false;
+        
         if (_.isEmpty(info.options)) {
             return (
-                <Spin spinning={info.loading}>
+                <Spin spinning={$loading || false} wrapperClassName="rcre-spin">
                     <Select 
                         style={
                             {
@@ -250,7 +252,7 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
         }, Options);
         
         return (
-            <Spin spinning={info.loading || false}>
+            <Spin spinning={$loading} wrapperClassName="rcre-spin">
                 {selectElement}
             </Spin>
         );

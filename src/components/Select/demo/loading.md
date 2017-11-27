@@ -1,6 +1,6 @@
 ## 加载中
 
-添加`loading`属性就能加载中。
+可以结合container组件的DataProvider来动态加载数据
 
 ```json
 {
@@ -23,7 +23,6 @@
                     "type": "select",
                     "name": "loadingSelect",
                     "options": "#ES{$data.select.data}",
-                    "loading": "#ES{$data.$loading}",
                     "defaultValue": "a"
                 }
             ]

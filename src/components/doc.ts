@@ -13,7 +13,9 @@ export default {
     cascader: {
         index: require('raw-loader!./Cascader/Cascader.md'),
         demo: {
-            basic: require('raw-loader!./Cascader/demo/basic.md')
+            basic: require('raw-loader!./Cascader/demo/basic.md'),
+            defaultValue: require('raw-loader!./Cascader/demo/defaultValue.md'),
+            loading: require('raw-loader!./Cascader/demo/loading.md')
         }
     },
     table: {

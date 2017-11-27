@@ -236,8 +236,16 @@ export default class LineChart extends BasicContainer<LineChartPropsInterface, {
             }
         };
         
+        let $loading;
+        
+        if (this.props.$data) {
+            $loading = this.props.$data.get('$loading') || false;
+        } else {
+            $loading = info.loading;
+        }
+        
         return (
-            <Spin spinning={info.loading || false} wrapperClassName="rcre-echart-spin">
+            <Spin spinning={$loading} wrapperClassName="rcre-spin">
                 <div ref={refCallback} className={info.className} style={style}/>
             </Spin>
         );

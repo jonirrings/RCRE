@@ -9,6 +9,7 @@ import {CoreOptions} from 'request';
 import * as cors from 'cors';
 
 let linechart = require('./mock/linechart.json');
+let cascader = require('./mock/cascader.json');
 
 const app = express();
 
@@ -73,6 +74,12 @@ app.get('/api/mock/select', (req, res) => {
             ]
         });
     }, 3000);
+});
+
+app.get('/api/mock/cascader', (req, res) => {
+    setTimeout(() => {
+        return res.json(cascader);
+    }, 1500);
 });
 
 app.post('/submit', (req, res) => {

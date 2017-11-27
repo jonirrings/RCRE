@@ -14,3 +14,4 @@
 | placeholder | 输入框默认文字 | string | false | - |
 | size | 选择框大小 | default,small,large | false | default |
 | disabled | 是否禁用 | boolean | false | false |
+| defaultValue | 初始数据 | string | false | - |
