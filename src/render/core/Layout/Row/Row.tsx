@@ -151,6 +151,7 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
     render() {
         let info = this.getPropsInfo(this.props.info);
         let children = info.children;
+        let showBorder = info.showBorder || this.context.debug;
 
         if (!_.isArray(children)) {
             return <div>children props is required in Row Component</div>;
@@ -165,7 +166,7 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
             const gridStyles = {
                 width: childInfo.gridWidth || `${100 / 12 * gridCount}%`,
                 display: 'flex',
-                border: info.showBorder ? `1px dashed blue` : ''
+                border: showBorder ? `1px dashed blue` : ''
             };
             const innerGridStyle = {
                 marginTop: `${childInfo.gridTop || 0}px`,
@@ -198,7 +199,7 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
             display: 'flex',
             width: info.width || '100%',
             minHeight: info.minHeight || '30px',
-            border: info.showBorder ? '1px dashed #333' : '',
+            border: showBorder ? '1px dashed #333' : '',
             ...info.style
         };
 

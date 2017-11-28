@@ -222,6 +222,12 @@ export class AbstractTable extends BasicContainer<TablePropsInterface, TableStat
             dataSource = info.dataSource;
         }
 
+        let $loading = info.loading;
+
+        if (this.props.$data) {
+            $loading = this.props.$data.get('$loading') || false;
+        }
+
         if (_.isPlainObject(info.columnsMapping)) {
             columns = columns.map(co => {
                 let runTime = this.getRuntimeContext(this.props, this.context);
@@ -262,6 +268,8 @@ export class AbstractTable extends BasicContainer<TablePropsInterface, TableStat
             width: '100%',
             ...info.style
         };
+
+        tableProps.loading = $loading;
 
         return (
             <TableDriver

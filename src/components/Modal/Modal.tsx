@@ -7,9 +7,9 @@ import componentLoader from '../../render/util/componentLoader';
 
 export class ModalConfig extends BasicConfig {
     /**
-     * 对话框是否可见
+     * Modal的数据模型Key
      */
-    visible?: boolean;
+    name: string;
 
     /**
      * 确定按钮 loading
@@ -79,11 +79,33 @@ export class ModalPropsInterface extends BasicContainerPropsInterface {
 export class AbstractModal extends BasicContainer<ModalPropsInterface, {}> {
     constructor() {
         super();
+
+        this.handleOk = this.handleOk.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
     }
 
+    handleOk() {
+        if (this.props.$setData) {
+            this.props.$setData(this.props.info.name, false);
+        }
+
+        this.commonEventHandler('onOk', {
+            event: event
+        });
+    }
+
+    handleCancel() {
+        if (this.props.$setData) {
+            this.props.$setData(this.props.info.name, false);
+        }
+
+        this.commonEventHandler('onCancel', {
+            event: event
+        });
+    }
+    
     private mapModalOptions(info: ModalConfig): ModalProps {
         return {
-            visible: info.visible,
             confirmLoading: info.confirmLoading,
             title: info.title,
             closable: info.closable,
@@ -101,8 +123,15 @@ export class AbstractModal extends BasicContainer<ModalPropsInterface, {}> {
         let info = this.getPropsInfo(this.props.info, this.props, ['children', 'footer']);
 
         if (!this.props.$data) {
-            return <div>Modal Element is out of RCRE control, please put it inside container component</div>;
+            return this.errorReport('Modal Element is out of RCRE control, please put it inside container component',
+                'div');
         }
+
+        if (!info.name) {
+            return this.errorReport('name property is required of modal component', 'div');
+        }
+
+        let visible = this.props.$data.get(info.name) || false;
 
         let footer = null;
         if (info.footer) {
@@ -120,17 +149,9 @@ export class AbstractModal extends BasicContainer<ModalPropsInterface, {}> {
             }));
         });
 
-        modalProps.visible = info.visible;
-        modalProps.onOk = (event: React.MouseEvent<HTMLDivElement>) => {
-            this.commonEventHandler('onOk', {
-                event: event
-            });
-        };
-        modalProps.onCancel = (event: React.MouseEvent<HTMLDivElement>) => {
-            this.commonEventHandler('onCancel', {
-                event: event
-            });
-        };
+        modalProps.visible = visible;
+        modalProps.onOk = this.handleOk;
+        modalProps.onCancel = this.handleCancel;
 
         if (footer) {
             modalProps.footer = footer;

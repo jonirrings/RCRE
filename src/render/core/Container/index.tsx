@@ -43,9 +43,24 @@ export class Container extends BasicContainer<ContainerProps, {}> {
                 };
             }
 
+            const defaultCustomer = {
+                mode: 'pass',
+                name: '$SELF_PASS_CUSTOMER',
+                config: {
+                    model: this.props.info.model,
+                    assign: {}
+                }
+            };
+            
             if (info.dataCustomer) {
-                this.dataCustomer.initCustomerConfig(info.dataCustomer);
+                info.dataCustomer.customers.unshift(defaultCustomer);
+            } else {
+                info.dataCustomer = {
+                    customers: [defaultCustomer],
+                    groups: []
+                };
             }
+            this.dataCustomer.initCustomerConfig(info.dataCustomer);
 
             // to keep it safe, this.props.info should be readonly
             Object.freeze(this.props.info);

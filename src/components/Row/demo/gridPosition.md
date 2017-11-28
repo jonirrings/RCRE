@@ -1,33 +1,39 @@
-## 基础布局
+## 相对定位
 
-使用`gridWidth`可以固定容器的宽度
-使用`gridCount`可以相对父级容器进行动态适配
+在容器内部，可以使用`gridPosition`属性来让内部元素相对容器进行定位
 
 ```json
 {
-    "debug": true,
     "body": [
         {
             "type": "row",
+            "minHeight": 100,
+            "showBorder": true,
             "children": [
                 {
                     "type": "text",
-                    "gridWidth": 40,
+                    "gridPosition": "top-left",
                     "text": "A"
                 },
                 {
                     "type": "text",
-                    "gridCount": 2,
+                    "gridPosition": "top-right",
                     "text": "B"
                 },
                 {
                     "type": "text",
-                    "gridWidth": 30,
+                    "gridPosition": "middle-center",
                     "text": "C"
                 },
                 {
                     "type": "text",
+                    "gridPosition": "bottom-left",
                     "text": "D"
+                },
+                {
+                    "type": "text",
+                    "gridPosition": "bottom-right",
+                    "text": "E"
                 }
             ]
         }

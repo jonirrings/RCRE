@@ -210,7 +210,9 @@ export type runTimeType = {
     $query?: Object;
     $global?: any;
     $item?: Object;
-    $trigger?: Object;
+    $trigger?: {
+        $SELF_PASS_CUSTOMER?: Object;
+    };
     $index?: number;
     $now?: moment.Moment;
     $moment: typeof moment
@@ -272,6 +274,15 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
     public getPropsInfo<InfoType>(info: InfoType, props?: T, blackList?: string[], isDeep?: boolean) {
         info = compileValueExpress(info, this.getRuntimeContext(props), blackList, isDeep);
         return info;
+    }
+
+    public errorReport(msg: string, extendElement: any) {
+        if (this.context.debug) {
+            return React.createElement(extendElement, {}, msg);
+        } else {
+            console.error(msg);
+            return React.createElement(extendElement);
+        }
     }
 
     public renderChildren<Type>(info: BasicConfig, children: React.ReactElement<Type>) {

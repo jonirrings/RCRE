@@ -118,7 +118,10 @@ export default {
     row: {
         index: require('raw-loader!./Row/Row.md'),
         demo: {
-            basic: require('raw-loader!./Row/demo/basic.md')
+            basic: require('raw-loader!./Row/demo/basic.md'),
+            gridPosition: require('raw-loader!./Row/demo/gridPosition.md'),
+            width: require('raw-loader!./Row/demo/width.md'),
+            left: require('raw-loader!./Row/demo/gridLeftRight.md')
         }
     },
 };

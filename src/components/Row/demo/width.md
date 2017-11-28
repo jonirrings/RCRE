@@ -1,14 +1,17 @@
-## 基础布局
+## 容器总宽度
 
-使用`gridWidth`可以固定容器的宽度
-使用`gridCount`可以相对父级容器进行动态适配
+在默认情况下，Row组件会自动保持和父级一样的宽度，
+这样也会引起在不同的屏幕尺寸在Row组件的宽度不一致，使得使用gridCount的组件的宽度无法固定。
+
+所以可以使用`width`属性来给`row`组件指定一个固定的宽度
 
 ```json
 {
     "debug": true,
     "body": [
-        {
+        {  
             "type": "row",
+            "width": 500,
             "children": [
                 {
                     "type": "text",
