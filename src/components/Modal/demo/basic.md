@@ -8,9 +8,6 @@
         {
             "type": "container",
             "model": "modalState",
-            "data": {
-                "visible": false
-            },
             "children": [
                 {
                     "type": "button",

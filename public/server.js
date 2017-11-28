@@ -1,13 +1,12 @@
-"use strict";
 /**
  * @file 测试代理服务器
  * @author dongtiancheng@baidu.com
  */
 exports.__esModule = true;
-var express = require("express");
-var cors = require("cors");
-var fs = require("fs");
-var path = require("path");
+var express = require('express');
+var cors = require('cors');
+var fs = require('fs');
+var path = require('path');
 var app = express();
 app.use(cors());
 app.use(express.static(path.join(__dirname, '../build/website')));
