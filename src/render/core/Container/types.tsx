@@ -1,3 +1,8 @@
+/**
+ * @file 给普通组件提供的基础类，基础函数
+ * @author dongtiancheng
+ */
+
 import {IsString, Validate} from 'class-validator';
 import {IsPageInfo} from '../../util/validators';
 import {actionCreators} from './action';
@@ -196,7 +201,8 @@ export const BasicContextTypes = {
     $global: PropTypes.object,
     $location: PropTypes.object,
     $query: PropTypes.object,
-    debug: PropTypes.bool
+    debug: PropTypes.bool,
+    lang: PropTypes.string
 };
 
 export type runTimeType = {
@@ -204,12 +210,20 @@ export type runTimeType = {
     $query?: Object;
     $global?: any;
     $item?: Object;
-    $trigger?: Object;
+    $trigger?: {
+        $SELF_PASS_CUSTOMER?: Object;
+    };
     $index?: number;
     $now?: moment.Moment;
     $moment: typeof moment
 };
 
+/**
+ * 获取ExpressionString 嵌入的上下文
+ * @param {BasicContainerPropsInterface} props
+ * @param context
+ * @return {runTimeType}
+ */
 export function getRuntimeContext(props: BasicContainerPropsInterface, context: any) {
     let runtime: runTimeType = {
         $now: moment(),
@@ -243,13 +257,16 @@ export function getRuntimeContext(props: BasicContainerPropsInterface, context: 
     return runtime;
 }
 
+/**
+ * 所有子级组件的基类
+ */
 export class BasicContainer<T extends BasicContainerPropsInterface, P> extends React.Component<T, P> {
     static contextTypes = BasicContextTypes;
 
     constructor() {
         super();
     }
-    
+
     public getRuntimeContext(props: T = this.props, context: any = this.context) {
         return getRuntimeContext(props, context);
     }
@@ -257,6 +274,15 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
     public getPropsInfo<InfoType>(info: InfoType, props?: T, blackList?: string[], isDeep?: boolean) {
         info = compileValueExpress(info, this.getRuntimeContext(props), blackList, isDeep);
         return info;
+    }
+
+    public errorReport(msg: string, extendElement: any) {
+        if (this.context.debug) {
+            return React.createElement(extendElement, {}, msg);
+        } else {
+            console.error(msg);
+            return React.createElement(extendElement);
+        }
     }
 
     public renderChildren<Type>(info: BasicConfig, children: React.ReactElement<Type>) {
@@ -292,7 +318,7 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
             this.props.eventHandle(eventName, args);
         } else if (!mute) {
             if (this.props.$data) {
-                console.error('If you want to handle event, you need to at trigger property');   
+                console.error('If you want to handle event, you need to at trigger property');
             } else {
                 console.error('Event System can only work with Container Component');
             }

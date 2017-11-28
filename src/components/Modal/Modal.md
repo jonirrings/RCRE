@@ -20,6 +20,7 @@ Modal组件需要配合`container`才能正常工作。需要依靠`container`�
 |         属性          |                说明                |                    类型                    |  是否必须 | 默认值   |
 | :-----------------: | :------------------------------: | :--------------------------------------: | :-----: | :-----: | 
 | visible | 对话框是否可见 | boolean | true | false
+| name | Modal的数据模型Key，可以用来取代visible属性 | string | false | - |
 | children | 模态框内部的内容 | BasicConfig[] | true | -
 | confirmLoading | 确定按钮 loading | boolean | false | false
 | title | 标题 | string | false | -

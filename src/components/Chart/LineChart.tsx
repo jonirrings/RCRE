@@ -7,6 +7,9 @@ import * as echarts from 'echarts';
 import {chartTypes} from './types';
 import componentLoader from '../../render/util/componentLoader';
 import {Set} from 'immutable';
+import {Spin} from 'antd';
+
+import './LineChart.css';
 
 export class LineChartConfig extends BasicConfig {
     /**
@@ -57,6 +60,14 @@ export class LineChartConfig extends BasicConfig {
     toolbox: boolean;
 
     /**
+     * x轴数据
+     * @public
+     * @default [];
+     */
+    @Validate(IsArrayString)
+    xAxisData: string[];
+
+    /**
      * 是否支持缩放
      * @public
      * @default true
@@ -74,7 +85,7 @@ export class LineChartConfig extends BasicConfig {
         name: string;
         data: string[] | number[]
     }[];
-    
+
     /**
      * CSS class
      */
@@ -86,6 +97,10 @@ export class LineChartConfig extends BasicConfig {
      */
     style?: CSSProperties;
 
+    /**
+     * 是否在加载
+     */
+    loading?: boolean;
 }
 
 export class LineChartPropsInterface extends BasicContainerPropsInterface {
@@ -93,7 +108,7 @@ export class LineChartPropsInterface extends BasicContainerPropsInterface {
 }
 
 export default class LineChart extends BasicContainer<LineChartPropsInterface, {}> {
-    domID: string = 'echarts-rcrelinechart';
+    DOMElement: any;
     chart: EChartSpace.ECharts;
     chartOptions: chartTypes = {
         title: {
@@ -123,7 +138,8 @@ export default class LineChart extends BasicContainer<LineChartPropsInterface, {
         grid: {
             left: '3%',
             right: '4%',
-            bottom: '3%'
+            bottom: '3%',
+            containLabel: true
         },
         xAxis: {
             type: 'category',
@@ -147,8 +163,7 @@ export default class LineChart extends BasicContainer<LineChartPropsInterface, {
     };
 
     componentDidMount() {
-        let dom: any = document.getElementById(this.domID);
-        this.chart = echarts.init(dom);
+        this.chart = echarts.init(this.DOMElement);
         let info = this.getPropsInfo(this.props.info);
         this.overRideChartOptions(info);
         this.chart.setOption(this.chartOptions);
@@ -215,8 +230,24 @@ export default class LineChart extends BasicContainer<LineChartPropsInterface, {
             ...info.style
         };
 
+        const refCallback = (ref: any) => {
+            if (ref) {
+                this.DOMElement = ref;
+            }
+        };
+        
+        let $loading;
+        
+        if (this.props.$data) {
+            $loading = this.props.$data.get('$loading') || false;
+        } else {
+            $loading = info.loading;
+        }
+        
         return (
-            <div id={this.domID} className={info.className} style={style}/>
+            <Spin spinning={$loading} wrapperClassName="rcre-spin">
+                <div ref={refCallback} className={info.className} style={style}/>
+            </Spin>
         );
     }
 }

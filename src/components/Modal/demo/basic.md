@@ -8,23 +8,6 @@
         {
             "type": "container",
             "model": "modalState",
-            "dataCustomer": {
-                "customers": [
-                    {
-                        "mode": "pass",
-                        "name": "setData",
-                        "config": {
-                            "model": "modalState",
-                            "assign": {
-                                "visible": "#ES{$trigger.setData.visible}"
-                            }
-                        }
-                    }
-                ]
-            },
-            "data": {
-                "visible": false
-            },
             "children": [
                 {
                     "type": "button",
@@ -32,36 +15,20 @@
                     "trigger": [
                         {
                             "event": "onClick",
-                            "targetCustomer": "setData",
+                            "targetCustomer": "$this",
                             "params": {
-                                "visible": true
+                                "modalVisible": true
                             }
                         }
                     ]
                 },
                 {
                     "type": "modal",
-                    "visible": "#ES{$data.visible}",
+                    "name": "modalVisible",
                     "children": [
                         {
                             "type": "text",
                             "text": "this is content"
-                        }
-                    ],
-                    "trigger": [
-                        {
-                            "event": "onOk",
-                            "targetCustomer": "setData",
-                            "params": {
-                                "visible": false
-                            }
-                        },
-                        {
-                            "event": "onCancel",
-                            "targetCustomer": "setData",
-                            "params": {
-                                "visible": false
-                            }
                         }
                     ]
                 }

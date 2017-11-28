@@ -61,9 +61,9 @@ class App extends React.Component<RouteComponentProps<AppProps>, AppStateInterfa
 
             if (!html) {
                 console.error('invalid activeKey');
-                return <div />;
+                return <div/>;
             }
-            
+
             content = <div className="markdown" dangerouslySetInnerHTML={{__html: parse(html)}}/>;
         } else if (group === 'component') {
             content = <ComponentPreview map={docList} activeKey={activeKey}/>;
@@ -77,7 +77,7 @@ class App extends React.Component<RouteComponentProps<AppProps>, AppStateInterfa
                     <Menu
                         mode="inline"
                         selectedKeys={[activeKey]}
-                        defaultOpenKeys={[group]}
+                        defaultOpenKeys={['guide', 'component', 'demo']}
                         style={{height: '100%'}}
                     >
                         <SubMenu key="guide" title={<span><Icon type="book"/>教程</span>}>

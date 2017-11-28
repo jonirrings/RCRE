@@ -5,6 +5,9 @@ import {providerLoaderInstance} from './loader';
 import {InitDataProvider} from './providers/init';
 import * as _ from 'lodash';
 
+// TODO universal error report
+import {notification} from 'antd';
+
 providerLoaderInstance.registerProvider('ajax', new AjaxDataProvider(), true);
 providerLoaderInstance.registerProvider('init', new InitDataProvider(), false);
 
@@ -35,6 +38,11 @@ export interface ProviderSourceConfig {
      * 返回值检查Expression String
      */
     retCheckPattern?: string;
+
+    /**
+     * 错误弹出的错误提示
+     */
+    retErrMsg?: string;
     
     __previousConfig?: ProviderSourceConfig | null;
 }
@@ -177,10 +185,16 @@ export class DataProvider {
             ret = provider.retParse(ret, providerConfig, props, context);
             
             if (!isRetValid) {
+                const errmsg = providerConfig.retErrMsg 
+                    || `model: ${info.model} mode: ${providerConfig.mode} data is not valid`;
+                notification.error({
+                    message: '数据获取失败',
+                    description: errmsg
+                });
                 actions.asyncLoadDataFail({
                     model: info.model!,
                     providerMode: providerConfig.mode,
-                    error: `model: ${info.model} mode: ${providerConfig.mode} data is not valid`
+                    error: errmsg
                 });
             } else {
                 let response;

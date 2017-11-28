@@ -25,7 +25,10 @@ if (fs.existsSync(tsconfigPath)) {
             compilerConfig = tsconfig.compilerOptions;
         }
     }
-    catch (e) {}
+    catch (e) {
+        // do nothing
+        console.error('invalid tsconfig');
+    }
 }
 
 module.exports = {

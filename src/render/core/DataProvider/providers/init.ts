@@ -14,7 +14,7 @@ export class InitDataProvider implements BasicSyncProviderInterface {
         let data = provider.config;
         let runtime = getRuntimeContext(props, context);
         runtime.$data = filterExpressionData(_.cloneDeep(data));
-        
+
         let config = compileValueExpress(data, runtime);
         
         _.each(config, (val, name) => {
@@ -23,7 +23,7 @@ export class InitDataProvider implements BasicSyncProviderInterface {
             }
             
             let date = moment(val);
-            
+
             if (_.isString(date) && date.isValid()) {
                 config[name] = date;
             }

@@ -1,3 +1,7 @@
+/**
+ * @file Container组件
+ * @author dongtiancheng
+ */
 import * as React from 'react';
 import * as _ from 'lodash';
 import {BasicContainer, ContainerProps, getRuntimeContext} from './types';
@@ -39,10 +43,25 @@ export class Container extends BasicContainer<ContainerProps, {}> {
                 };
             }
 
-            if (info.dataCustomer) {
-                this.dataCustomer.initCustomerConfig(info.dataCustomer);
-            }
+            const defaultCustomer = {
+                mode: 'pass',
+                name: '$SELF_PASS_CUSTOMER',
+                config: {
+                    model: this.props.info.model,
+                    assign: {}
+                }
+            };
             
+            if (info.dataCustomer) {
+                info.dataCustomer.customers.unshift(defaultCustomer);
+            } else {
+                info.dataCustomer = {
+                    customers: [defaultCustomer],
+                    groups: []
+                };
+            }
+            this.dataCustomer.initCustomerConfig(info.dataCustomer);
+
             // to keep it safe, this.props.info should be readonly
             Object.freeze(this.props.info);
 
@@ -54,7 +73,7 @@ export class Container extends BasicContainer<ContainerProps, {}> {
                 syncLoadDataSuccess: this.props.syncLoadDataSuccess,
                 syncLoadDataFail: this.props.syncLoadDataFail
             };
-            
+
             // 用于初始化的内置Provider
             const initProvider = {
                 mode: 'init',
@@ -97,7 +116,7 @@ export class Container extends BasicContainer<ContainerProps, {}> {
             });
         }
     }
-    
+
     shouldComponentUpdate(nextProps: ContainerProps) {
         // 判断Container数据是否有更新.
         return this.props.$data !== nextProps.$data;
@@ -123,7 +142,7 @@ export class Container extends BasicContainer<ContainerProps, {}> {
                     newValue: value
                 }, info.model);
             };
-            
+
             return createChild(child, {
                 info: child,
                 model: info.model,
@@ -137,7 +156,7 @@ export class Container extends BasicContainer<ContainerProps, {}> {
         });
 
         const containerStyle = {};
-        
+
         return (
             <div className="rcre-container" style={containerStyle}>
                 {childElements}
@@ -150,7 +169,7 @@ const mapStateToProps = (state: RootState, ownProps: ContainerPropsInterface) =>
     let runTime = getRuntimeContext(ownProps, {});
     // direct compile
     let info = compileValueExpress(ownProps.info, runTime, ['children', 'data', 'dataCustomer', 'dataProvider'], false);
-    
+
     return {
         $data: state.container.get(info.model) || Map({})
     };
@@ -167,29 +186,29 @@ const mapDispatchToProps = (dispatch: Dispatch<IContainerAction>) => bindActionC
     syncLoadDataFail: actionCreators.syncLoadDataFail
 }, dispatch);
 
-export const mergeProps = 
+export const mergeProps =
     (stateProps: {
         $data: Map<string, any>
     }, dispatchProps: ContainerProps, ownProps: ContainerPropsInterface): ContainerProps => {
-    let parentProps = ownProps.$data || Map({});
-    let stateData = stateProps.$data;
-        
-    if (_.isObject(ownProps.info.parentMapping)) {
-        let parentMappingRet = compileValueExpress(ownProps.info.parentMapping, {
-            $parent: parentProps.toObject(),
-            $data: stateProps.$data.toObject()
-        });
-        
-        if (parentMappingRet) {
-            stateData = stateData.merge(Map(parentMappingRet));   
+        let parentProps = ownProps.$data || Map({});
+        let stateData = stateProps.$data;
+
+        if (_.isObject(ownProps.info.parentMapping)) {
+            let parentMappingRet = compileValueExpress(ownProps.info.parentMapping, {
+                $parent: parentProps.toObject(),
+                $data: stateProps.$data.toObject()
+            });
+
+            if (parentMappingRet) {
+                stateData = stateData.merge(Map(parentMappingRet));
+            }
+        } else {
+            stateData = stateData.merge(parentProps);
         }
-    } else {
-        stateData = stateData.merge(parentProps);   
-    }
-    
-    return Object.assign({}, ownProps, stateProps, dispatchProps, {
-        $data: stateData
-    });
+
+        return Object.assign({}, ownProps, stateProps, dispatchProps, {
+            $data: stateData
+        });
 };
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Container);

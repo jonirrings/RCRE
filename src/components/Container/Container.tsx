@@ -28,7 +28,7 @@ export class ContainerConfig extends BasicConfig {
     /**
      * dataCustomer配置
      */
-    dataCustomer?: CustomerSourceConfig[] | CustomerSourceConfig;
+    dataCustomer?: CustomerSourceConfig;
 }
 
 export class ContainerPropsInterface extends BasicContainerPropsInterface {

@@ -46,7 +46,7 @@ export class Text extends BasicContainer<TextPropsInterface, {}> {
     constructor() {
         super();
     }
-    
+
     render() {
         let info = this.getPropsInfo<TextConfig>(this.props.info);
         const defaultTextStyle = {

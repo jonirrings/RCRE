@@ -13,7 +13,9 @@ export default {
     cascader: {
         index: require('raw-loader!./Cascader/Cascader.md'),
         demo: {
-            basic: require('raw-loader!./Cascader/demo/basic.md')
+            basic: require('raw-loader!./Cascader/demo/basic.md'),
+            defaultValue: require('raw-loader!./Cascader/demo/defaultValue.md'),
+            loading: require('raw-loader!./Cascader/demo/loading.md')
         }
     },
     table: {
@@ -70,13 +72,15 @@ export default {
         demo: {
             basic: require('raw-loader!./Tabs/demo/basic.md'),
             animated: require('raw-loader!./Tabs/demo/noAnimate.md'),
-            tabType: require('raw-loader!./Tabs/demo/tabType.md')
+            tabType: require('raw-loader!./Tabs/demo/tabType.md'),
+            tabContainer: require('raw-loader!./Tabs/demo/tabContainer.md')
         }
     },
     lineChart: {
         index: require('raw-loader!./Chart/LineChart.md'),
         demo: {
-            basic: require('raw-loader!./Chart/demo/basic.md')
+            basic: require('raw-loader!./Chart/demo/basic.md'),
+            loading: require('raw-loader!./Chart/demo/loading.md')
         }
     },
     trend: {
@@ -84,5 +88,40 @@ export default {
         demo: {
             basic: require('raw-loader!./Trend/demo/basic.md')
         }
-    }
+    },
+    select: {
+        index: require('raw-loader!./Select/Select.md'),
+        demo: {
+            basic: require('raw-loader!./Select/demo/basic.md'),
+            disabled: require('raw-loader!./Select/demo/disabled.md'),
+            loading: require('raw-loader!./Select/demo/loading.md')
+        }
+    },
+    pagination: {
+        index: require('raw-loader!./Pagination/Pagination.md'),
+        demo: {
+            basic: require('raw-loader!./Pagination/demo/basic.md'),
+            quickJump: require('raw-loader!./Pagination/demo/showQuickJumper.md'),
+            size: require('raw-loader!./Pagination/demo/showSizeChanger.md'),
+            showTotal: require('raw-loader!./Pagination/demo/showTotal.md'),
+            simple: require('raw-loader!./Pagination/demo/simple.md')
+        }
+    },
+    slider: {
+        index: require('raw-loader!./Slider/Slider.md'),
+        demo: {
+            basic: require('raw-loader!./Slider/demo/basic.md'),
+            customerFormat: require('raw-loader!./Slider/demo/customerFormat.md'),
+            defaultValue: require('raw-loader!./Slider/demo/defaultValue.md')
+        }
+    },
+    row: {
+        index: require('raw-loader!./Row/Row.md'),
+        demo: {
+            basic: require('raw-loader!./Row/demo/basic.md'),
+            gridPosition: require('raw-loader!./Row/demo/gridPosition.md'),
+            width: require('raw-loader!./Row/demo/width.md'),
+            left: require('raw-loader!./Row/demo/gridLeftRight.md')
+        }
+    },
 };

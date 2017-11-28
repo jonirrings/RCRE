@@ -111,6 +111,9 @@ export default class AbstractDatepicker extends BasicContainer<DatePickerPropsIn
     }
    
     private handleChange(date: moment.Moment, dateString: string) {
+        if (!date) {
+            return;
+        }
         if (this.props.$setData) {
             this.props.$setData(this.props.info.name, moment(date));
         }
