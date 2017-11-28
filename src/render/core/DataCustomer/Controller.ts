@@ -7,23 +7,6 @@ import {runTimeType} from '../Container/types';
 customerLoaderInstance.registerCustomer('pass', new PassCustomers());
 customerLoaderInstance.registerCustomer('submit', new SubmitCustomer());
 
-export class CustomerSourceConfig {
-    /**
-     * customer类型
-     */
-    mode: string;
-
-    /**
-     * 不同customer需要的配置数据
-     */
-    config: any;
-
-    /**
-     * customer的
-     */
-    name: string;
-}
-
 export interface CustomerItem {
     /**
      * customer执行模式
@@ -87,12 +70,8 @@ export class DataCustomer {
         this.groups = Map({});
     }
 
-    public initCustomerConfig(info: CustomerSourceConfig | CustomerSourceConfig[]) {
-        if (info instanceof Array) {
-            info.forEach(item => this.initCustomer(item));
-        } else if (info && info.customers) {
-            this.initCustomer(info);
-        }
+    public initCustomerConfig(info: CustomerSourceConfig) {
+        this.initCustomer(info);
     }
 
     public getGroups() {
@@ -107,6 +86,11 @@ export class DataCustomer {
 
         let instance = this.customers.get(customer).instance;
         let config = this.customers.get(customer).config;
+
+        // 处理$this的内置customer
+        if (customer === '$SELF_PASS_CUSTOMER' && runTime.$trigger && runTime.$trigger.$SELF_PASS_CUSTOMER) {
+            config.assign = runTime.$trigger.$SELF_PASS_CUSTOMER;
+        }
 
         await instance.exec(config, runTime, model, customer);
     }

@@ -5,8 +5,9 @@ import {IsArray, IsBoolean, IsDefined, IsString, Validate} from 'class-validator
 import {IsValidEnums} from '../../render/util/validators';
 import componentLoader from '../../render/util/componentLoader';
 import {compileValueExpress} from '../../render/util/vm';
-import {Select} from 'antd';
+import {Select, Spin} from 'antd';
 import {OptionProps, SelectProps, SelectValue} from 'antd/lib/select';
+import * as _ from 'lodash';
 
 const Option = Select.Option;
 export class SelectConfig extends BasicConfig {
@@ -15,6 +16,16 @@ export class SelectConfig extends BasicConfig {
      */
     @IsDefined()
     name: string;
+
+    /**
+     * 初始化默认值
+     */
+    defaultValue?: string;
+
+    /**
+     * 加载中
+     */
+    loading?: boolean;
     
     /**
      * 下拉框模式
@@ -151,6 +162,15 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
         this.handleChange = this.handleChange.bind(this);
     }
 
+    componentDidMount() {
+        if (this.props.info.defaultValue && this.props.$setData) {
+            const $setData = this.props.$setData;
+            setTimeout(() => {
+                $setData(this.props.info.name, this.props.info.defaultValue);
+            });
+        }
+    }
+
     render() {
         let info = this.getPropsInfo(this.props.info);
 
@@ -162,8 +182,25 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
             return <div>Select Element is out of RCRE control, please put it inside container component</div>;
         }
         
+        let $loading = this.props.$data.get('$loading') || false;
+        
+        if (_.isEmpty(info.options)) {
+            return (
+                <Spin spinning={$loading || false} wrapperClassName="rcre-spin">
+                    <Select 
+                        style={
+                            {
+                                width: '100%',
+                                ...info.style
+                            }
+                        }
+                    />
+                </Spin>
+            );
+        }
+        
         let options: OptionConfig[] = info.options || [];
-        if (info.optionsMapping && Array.isArray(info.options)) {
+        if (info.optionsMapping && !_.isEmpty(info.options)) {
             options = info.options.map((item, index) => this.applyMapping(item, info.optionsMapping, index)!);
         }
         
@@ -187,7 +224,7 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
         //     value = null;
         // }
         
-        return React.createElement(Select, {
+        let selectElement = React.createElement(Select, {
             onChange: this.handleChange,
             value: value,
             style: {
@@ -213,6 +250,12 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
             },
             ...selectOptions
         }, Options);
+        
+        return (
+            <Spin spinning={$loading} wrapperClassName="rcre-spin">
+                {selectElement}
+            </Spin>
+        );
     }
 
     private handleChange(value: SelectValue) {
@@ -230,7 +273,8 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
             defaultActiveFirstOption: info.defaultActiveFirstOption,
             labelInValue: info.labelInValue,
             tokenSeparators: info.tokenSeparators,
-            className: info.className
+            className: info.className,
+            disabled: info.disabled
         };
     }
 
@@ -242,17 +286,16 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
     }
 
     private applyMapping<T>(data: T, mappingConfig: T, index: number): T {
-        let context = {
-            $iterator: data,
+        let runtime = this.getRuntimeContext();
+
+        let newObj = compileValueExpress(mappingConfig, {
+            ...runtime,
+            $item: data,
             $index: index,
-            $data: {}
-        };
-
-        if (this.props.$data) {
-            context.$data = this.props.$data.toObject();
-        }
-
-        let newObj = compileValueExpress(mappingConfig, context);
+            // 与旧版本保持兼容
+            $iterator: data
+        });
+        
         return Object.assign(data, newObj);
     }
 }

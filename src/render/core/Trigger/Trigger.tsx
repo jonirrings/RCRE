@@ -174,9 +174,15 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
             });
 
             let customerGroups = this.props.dataCustomer.getGroups();
+            let targetCustomer = info.targetCustomer;
 
-            if (customerGroups.has(info.targetCustomer)) {
-                let customers = customerGroups.get(info.targetCustomer);
+            // $this 自动指向内置的$SELF_PASS_CUSTOMER
+            if (targetCustomer === '$this') {
+                targetCustomer = '$SELF_PASS_CUSTOMER';
+            }
+
+            if (customerGroups.has(targetCustomer)) {
+                let customers = customerGroups.get(targetCustomer);
                 customers.forEach(customer => {
                     this.taskQueue.push(customer);
 
@@ -187,10 +193,10 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
                     });
                 });
             } else {
-                this.taskQueue.push(info.targetCustomer);
+                this.taskQueue.push(targetCustomer);
                 items.push({
                     model: this.props.model,
-                    customer: info.targetCustomer,
+                    customer: targetCustomer,
                     data: output
                 });
             }

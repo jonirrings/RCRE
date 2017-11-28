@@ -13,7 +13,9 @@ export default {
     cascader: {
         index: require('raw-loader!./Cascader/Cascader.md'),
         demo: {
-            basic: require('raw-loader!./Cascader/demo/basic.md')
+            basic: require('raw-loader!./Cascader/demo/basic.md'),
+            defaultValue: require('raw-loader!./Cascader/demo/defaultValue.md'),
+            loading: require('raw-loader!./Cascader/demo/loading.md')
         }
     },
     table: {
@@ -90,7 +92,9 @@ export default {
     select: {
         index: require('raw-loader!./Select/Select.md'),
         demo: {
-            basic: require('raw-loader!./Select/demo/basic.md')
+            basic: require('raw-loader!./Select/demo/basic.md'),
+            disabled: require('raw-loader!./Select/demo/disabled.md'),
+            loading: require('raw-loader!./Select/demo/loading.md')
         }
     },
     pagination: {
@@ -110,5 +114,14 @@ export default {
             customerFormat: require('raw-loader!./Slider/demo/customerFormat.md'),
             defaultValue: require('raw-loader!./Slider/demo/defaultValue.md')
         }
-    }
+    },
+    row: {
+        index: require('raw-loader!./Row/Row.md'),
+        demo: {
+            basic: require('raw-loader!./Row/demo/basic.md'),
+            gridPosition: require('raw-loader!./Row/demo/gridPosition.md'),
+            width: require('raw-loader!./Row/demo/width.md'),
+            left: require('raw-loader!./Row/demo/gridLeftRight.md')
+        }
+    },
 };

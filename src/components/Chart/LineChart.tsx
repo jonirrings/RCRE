@@ -9,6 +9,8 @@ import componentLoader from '../../render/util/componentLoader';
 import {Set} from 'immutable';
 import {Spin} from 'antd';
 
+import './LineChart.css';
+
 export class LineChartConfig extends BasicConfig {
     /**
      * 图表宽度
@@ -234,8 +236,16 @@ export default class LineChart extends BasicContainer<LineChartPropsInterface, {
             }
         };
         
+        let $loading;
+        
+        if (this.props.$data) {
+            $loading = this.props.$data.get('$loading') || false;
+        } else {
+            $loading = info.loading;
+        }
+        
         return (
-            <Spin spinning={info.loading || false}>
+            <Spin spinning={$loading} wrapperClassName="rcre-spin">
                 <div ref={refCallback} className={info.className} style={style}/>
             </Spin>
         );

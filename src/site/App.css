@@ -230,7 +230,7 @@
     display: inline-block
 }
 
-.markdown > br,
+.markdown > br, 
 .markdown > p > br {
     clear: both
 }

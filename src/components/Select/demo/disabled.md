@@ -1,15 +1,15 @@
-## 基础使用
+## 禁用
 
-传入options属性就可以使用了
+添加`disabled`属性就能让select组件禁用
 
 ```json
 {
     "body": [
         {
             "type": "container",
-            "model": "selectModal",
+            "model": "disabledSelect",
             "data": {
-                "options": [
+                 "options": [
                     {
                         "key": "A",
                         "value": "a"
@@ -23,13 +23,9 @@
             "children": [
                 {
                     "type": "select",
-                    "name": "list",
-                    "options": "#ES{$data.options}",
-                    "defaultValue": "a"
-                },
-                {
-                    "type": "text",
-                    "text": "select value: #ES{$data.list}"
+                    "name": "disabled",
+                    "disabled": true,
+                    "options": "#ES{$data.options}"
                 }
             ]
         }
