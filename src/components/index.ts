@@ -18,3 +18,5 @@ import './Form/Form';
 import './Trend/Trend';
 import './Pagination/Pagination';
 import './Slider/Slider';
+import './Popover/Popover';
+import './RangePicker/RangePicker';

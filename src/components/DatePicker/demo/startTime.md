@@ -16,20 +16,29 @@
                         {
                             "type": "text",
                             "text": "请输入时间间隔",
-                            "gridCount": 4
+                            "gridWidth": 120
                         },
                         {
                             "type": "input",
                             "name": "range",
-                            "inputType": "number",
-                            "gridCount": 3
+                            "inputType": "number"
                         }
                     ]
                 },
                 {
-                    "type": "datePicker",
-                    "name": "time",
-                    "startTime": "#ES{$data.time.subtract(10, 'days')}"
+                    "type": "row",
+                    "width": 400,
+                    "children": [
+                            {
+                                "type": "text",
+                                "text": "选择日期",
+                                "gridWidth": 120
+                            },
+                            {
+                                "type": "datePicker",
+                                "name": "time"
+                            }
+                    ]
                 }
             ]
         }
