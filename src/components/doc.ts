@@ -139,5 +139,12 @@ export default {
         demo: {
             basic: require('raw-loader!./RangePicker/demo/basic.md')
         }
+    },
+    radio: {
+        index: require('raw-loader!./Radio/Radio.md'),
+        demo: {
+            basic: require('raw-loader!./Radio/demo/basic.md'),
+            group: require('raw-loader!./Radio/demo/radioGroup.md')
+        }
     }
 };
