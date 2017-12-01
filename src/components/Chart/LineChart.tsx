@@ -4,7 +4,7 @@ import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../r
 import {IsArray, IsBoolean, IsString, Validate} from 'class-validator';
 import {IsArrayString} from '../../render/util/validators';
 import * as echarts from 'echarts';
-import {chartTypes} from './types';
+import {chartTypes, seriesTypes} from './types';
 import componentLoader from '../../render/util/componentLoader';
 import {Set} from 'immutable';
 import {Spin} from 'antd';
@@ -101,6 +101,11 @@ export class LineChartConfig extends BasicConfig {
      * 是否在加载
      */
     loading?: boolean;
+
+    /**
+     * 是否在图标上显示数值
+     */
+    chartLabel?: boolean;
 }
 
 export class LineChartPropsInterface extends BasicContainerPropsInterface {
@@ -199,22 +204,24 @@ export default class LineChart extends BasicContainer<LineChartPropsInterface, {
         if (Array.isArray(info.series)) {
             let legends = Set<string>();
             this.chartOptions.series = info.series.map(item => {
-                let ret = {
+                let ret: seriesTypes = {
                     name: item.name,
                     type: 'line',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'top'
-                        }
-                    },
                     data: item.data
                 };
+                
+                if (info.chartLabel) {
+                    ret.label = {
+                        normal: {
+                            show: true,
+                                position: 'top'
+                        }
+                    }; 
+                }
+                
                 legends = legends.add(item.name);
 
                 return ret;
-
-                // areaStyle: {normal: {}},
             });
 
             this.chartOptions.legend.data = legends.toArray();

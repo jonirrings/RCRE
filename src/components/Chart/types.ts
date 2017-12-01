@@ -47,7 +47,7 @@ type dataZoomTypes = {
     filterMode: string;
 };
 
-type seriesTypes = {
+export type seriesTypes = {
     name: string;
     type?: string;
     stack?: string;

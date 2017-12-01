@@ -10,6 +10,7 @@ import {OptionProps, SelectProps, SelectValue} from 'antd/lib/select';
 import * as _ from 'lodash';
 
 const Option = Select.Option;
+const OptionGroup = Select.OptGroup;
 export class SelectConfig extends BasicConfig {
     /**
      * Select的数据模型Key
@@ -123,6 +124,23 @@ export class SelectConfig extends BasicConfig {
      * 下拉框字段重写
      */
     optionsMapping?: OptionConfig;
+
+    /**
+     * 带有组别的下拉框
+     */
+    optionsGroup?: OptionGroupConfig[]; 
+}
+
+export class OptionGroupConfig {
+    /**
+     * 组别标题
+     */
+    label: string;
+
+    /**
+     * 选项
+     */
+    options: OptionConfig[];
 }
 
 export class OptionConfig {
@@ -171,6 +189,15 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
         }
     }
 
+    private renderOption(op: OptionConfig) {
+        let opOptions = this.mapOptionOptions(op);
+
+        return React.createElement(Option, {
+            key: op.key,
+            ...opOptions
+        }, op.key);
+    }
+    
     render() {
         let info = this.getPropsInfo(this.props.info);
 
@@ -184,7 +211,7 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
         
         let $loading = this.props.$data.get('$loading') || false;
         
-        if (_.isEmpty(info.options)) {
+        if (_.isEmpty(info.options) && _.isEmpty(info.optionsGroup)) {
             return (
                 <Spin spinning={$loading || false} wrapperClassName="rcre-spin">
                     <Select 
@@ -204,14 +231,25 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
             options = info.options.map((item, index) => this.applyMapping(item, info.optionsMapping, index)!);
         }
         
-        let Options = options.map(op => {
-            let opOptions = this.mapOptionOptions(op);
-            
-            return React.createElement(Option, {
-                key: op.key,
-                ...opOptions
-            }, op.key);
-        });
+        let Options;
+        
+        let optionGroups: OptionGroupConfig[] = info.optionsGroup || [];
+        
+        if (!_.isEmpty(options)) {
+            Options = options.map(op => this.renderOption(op));   
+        } else if (!_.isEmpty(optionGroups)) {
+            Options = optionGroups.map(group => {
+                let label = group.label;
+                let ops: OptionConfig[] = group.options || [];
+                if (info.optionsMapping && !_.isEmpty(info.options)) {
+                    ops = ops.map((item, index) => this.applyMapping(item, info.optionsMapping, index)!);
+                }
+                
+                return React.createElement(OptionGroup, {
+                    label: label
+                }, ops.map(op => this.renderOption(op)));
+            });
+        }
         
         let selectOptions = this.mapSelectOptions(info);
 

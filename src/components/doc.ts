@@ -82,7 +82,8 @@ export default {
         index: require('raw-loader!./Chart/LineChart.md'),
         demo: {
             basic: require('raw-loader!./Chart/demo/basic.md'),
-            loading: require('raw-loader!./Chart/demo/loading.md')
+            loading: require('raw-loader!./Chart/demo/loading.md'),
+            label: require('raw-loader!./Chart/demo/label.md')
         }
     },
     trend: {
@@ -96,7 +97,9 @@ export default {
         demo: {
             basic: require('raw-loader!./Select/demo/basic.md'),
             disabled: require('raw-loader!./Select/demo/disabled.md'),
-            loading: require('raw-loader!./Select/demo/loading.md')
+            loading: require('raw-loader!./Select/demo/loading.md'),
+            group: require('raw-loader!./Select/demo/group.md'),
+            mapping: require('raw-loader!./Select/demo/mapping.md')
         }
     },
     pagination: {
