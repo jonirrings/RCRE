@@ -64,7 +64,9 @@ export default {
         index: require('raw-loader!./DatePicker/DatePicker.md'),
         demo: {
             basic: require('raw-loader!./DatePicker/demo/basic.md'),
-            startTime: require('raw-loader!./DatePicker/demo/startTime.md')
+            showToday: require('raw-loader!./DatePicker/demo/showToday.md'),
+            format: require('raw-loader!./DatePicker/demo/format.md'),
+            defaultValue: require('raw-loader!./DatePicker/demo/defaultValue.md')
         }
     },
     tabs: {
@@ -124,4 +126,18 @@ export default {
             left: require('raw-loader!./Row/demo/gridLeftRight.md')
         }
     },
+    popover: {
+        index: require('raw-loader!./Popover/Popover.md'),
+        demo: {
+            basic: require('raw-loader!./Popover/demo/basic.md'),
+            triggerType: require('raw-loader!./Popover/demo/triggerType.md'),
+            content: require('raw-loader!./Popover/demo/content.md')
+        }
+    },
+    rangePicker: {
+        index: require('raw-loader!./RangePicker/RangePicker.md'),
+        demo: {
+            basic: require('raw-loader!./RangePicker/demo/basic.md')
+        }
+    }
 };

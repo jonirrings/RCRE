@@ -7,9 +7,9 @@ import {DatePicker} from 'antd';
 import {DatePickerProps} from 'antd/lib/date-picker';
 import * as moment from 'moment';
 
-export class DatePickerConfig extends BasicConfig {
+export class DatePickerCommonConfig extends BasicConfig {
     /**
-     * Datepicker的数据模型Key
+     * 数据模型Key
      */
     @IsDefined()
     name: string;
@@ -38,7 +38,17 @@ export class DatePickerConfig extends BasicConfig {
      */
     @IsString()
     className?: string;
-    
+
+    /**
+     * 输入框提示文字
+     * @public
+     * @default ''
+     */
+    @IsString()
+    placeholder?: string;
+}
+
+export class DatePickerConfig extends DatePickerCommonConfig {
     /**
      * 开始时间
      * @public
@@ -55,15 +65,7 @@ export class DatePickerConfig extends BasicConfig {
      */
     @IsString()
     @IsNumber()
-    endTime?: string | number; 
-
-    /**
-     * 输入框提示文字
-     * @public
-     * @default ''
-     */
-    @IsString()
-    placeholder?: string;
+    endTime?: string | number;
 
     /**
      * 展示的日期格式，配置参考 moment.js
@@ -78,6 +80,11 @@ export class DatePickerConfig extends BasicConfig {
     showToday?: boolean;
 
     /**
+     * 选择的日期可以被清除
+     */
+    clearAble?: boolean;
+    
+    /**
      * 增加时间选择功能
      */
     @IsBoolean()
@@ -87,6 +94,11 @@ export class DatePickerConfig extends BasicConfig {
      * 输入框高度
      */
     size: 'large' | 'small';
+
+    /**
+     * 初始默认值
+     */
+    defaultValue?: string;
 }
 
 export class DatePickerPropsInterface extends BasicContainerPropsInterface {
@@ -101,22 +113,68 @@ export default class AbstractDatepicker extends BasicContainer<DatePickerPropsIn
         this.disabledDate = this.disabledDate.bind(this);
     }
 
+    componentDidMount() {
+        if (this.props.info.name && this.props.$setData && this.props.info.defaultValue) {
+            const $setData = this.props.$setData;
+            let info = this.getPropsInfo(this.props.info);
+            const value = info.defaultValue;
+            let data: moment.Moment | string = moment(value);
+
+            if (info.format) {
+                data = data.format(info.format);
+            }
+
+            setTimeout(() => {
+                $setData(this.props.info.name, data);
+            }, 0);
+        }
+    }
+
+    render() {
+        let info = this.getPropsInfo(this.props.info);
+
+        if (!info.name) {
+            return <div>name property is required for DatePicker Element</div>;
+        }
+
+        if (!this.props.$data) {
+            return <div>DatePicker Element is out of RCRE control, please put it inside container component</div>;
+        }
+
+        let value = this.props.$data.get(info.name);
+
+        let date;
+        if (value) {
+            date = moment(value);
+
+            if (!date.isValid()) {
+                return this.errorReport('invalid date time value: ' + value, 'div');
+            }
+        }
+
+        let datePickerOptions = this.mapDatePickerOptions(info);
+
+        return React.createElement(DatePicker, {
+            value: date,
+            onChange: this.handleChange,
+            disabledDate: this.disabledDate(info),
+            onOpenChange: (status: boolean) => {
+                this.commonEventHandler('onOpenChange', {
+                    status: status
+                });
+            },
+            ...datePickerOptions
+        });
+    }
+   
     private mapDatePickerOptions(info: DatePickerConfig): DatePickerProps {
         return {
             className: info.className,
             showTime: info.showTime,
             showToday: info.showToday,
             placeholder: info.placeholder,
+            format: info.format
         };
-    }
-   
-    private handleChange(date: moment.Moment, dateString: string) {
-        if (!date) {
-            return;
-        }
-        if (this.props.$setData) {
-            this.props.$setData(this.props.info.name, moment(date));
-        }
     }
     
     private disabledDate(info: DatePickerConfig) {
@@ -136,37 +194,15 @@ export default class AbstractDatepicker extends BasicContainer<DatePickerPropsIn
             return flag;
         };
     }
-    
-    render() {
-        let info = this.getPropsInfo(this.props.info);
-        
-        if (!info.name) {
-            return <div>name property is required for DatePicker Element</div>;
+
+    private handleChange(date: moment.Moment, dateString: string) {
+        if (!this.props.info.clearAble && !date) {
+            return;
         }
 
-        if (!this.props.$data) {
-            return <div>DatePicker Element is out of RCRE control, please put it inside container component</div>;
+        if (this.props.$setData) {
+            this.props.$setData(this.props.info.name, dateString);
         }
-
-        let value = this.props.$data.get(info.name);
-        
-        if (typeof value === 'string' || typeof value === 'number') {
-            value = moment(value);
-        }
-        
-        let datePickerOptions = this.mapDatePickerOptions(info);
-        
-        return React.createElement(DatePicker, {
-            value: value,
-            onChange: this.handleChange,
-            disabledDate: this.disabledDate(info),
-            onOpenChange: (status: boolean) => {
-                this.commonEventHandler('onOpenChange', {
-                    status: status
-                });
-            },
-            ...datePickerOptions
-        });
     }
 }
 
