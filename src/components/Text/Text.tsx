@@ -86,7 +86,9 @@ export class Text extends BasicContainer<TextPropsInterface, {}> {
                     <a
                         style={Object.assign(defaultTextStyle, info.style)}
                         href={info.href}
-                        onClick={() => {
+                        onClick={(event: React.MouseEvent<HTMLAnchorElement>) => {
+                            event.stopPropagation();
+                            event.preventDefault();
                             if (info.href) {
                                 window.location.href = info.href;    
                             }
