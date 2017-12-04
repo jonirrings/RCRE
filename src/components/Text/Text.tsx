@@ -86,10 +86,10 @@ export class Text extends BasicContainer<TextPropsInterface, {}> {
                     <a
                         style={Object.assign(defaultTextStyle, info.style)}
                         href={info.href}
-                        onClick={(event: React.MouseEvent<HTMLSpanElement>) => {
-                            this.commonEventHandler('onClick', {
-                                event: event
-                            });
+                        onClick={() => {
+                            if (info.href) {
+                                window.location.href = info.href;    
+                            }
                         }}
                     >
                         {text}

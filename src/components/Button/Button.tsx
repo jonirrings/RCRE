@@ -132,7 +132,10 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
         let childElement;
 
         if (info.href) {
-            childElement = <a href={info.href}>{text}</a>;
+            const jump = () => {
+                window.location.href = info.href!;
+            };
+            childElement = <a href={info.href} onClick={jump}>{text}</a>;
         } else {
             childElement = text;
         }
