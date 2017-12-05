@@ -184,7 +184,7 @@ export default class AbstractDatepicker extends BasicContainer<DatePickerPropsIn
             let flag = false;
             
             if (!startValue) {
-                startValue = moment();
+                startValue = moment().startOf('day');
             }
             
             if (startTime) {

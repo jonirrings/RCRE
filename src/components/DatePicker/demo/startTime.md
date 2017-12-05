@@ -17,7 +17,7 @@
                                 "type": "datePicker",
                                 "name": "time",
                                 "startTime": "2017-12-04",
-                                "endTime": "2017-12-12"
+                                "defaultValue": "2017-12-04"
                             }
                     ]
                 }
