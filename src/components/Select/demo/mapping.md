@@ -7,7 +7,7 @@
     "body": [
         {
             "type": "container",
-            "model": "selectModal",
+            "model": "mapping",
             "data": {
                 "options": [
                     {

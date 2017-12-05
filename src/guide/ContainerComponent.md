@@ -4,7 +4,7 @@
 
 ## 组件的概念
 
-在理解持有数据的组件之前， 需要理解在RCRE中， 什么是一个组件。
+在理解持有数据的组件之前， 需要理解在RCRE中，什么是一个组件。
 
 例如上一个章节的helloworld代码。
 
@@ -29,8 +29,12 @@ JSON结构中的一个对象， 就称作是一个组件。
 
 ```json
 {
-    "type": "text",
-    "text": "this is a simple demo"
+    "body": [
+        {
+            "type": "text",
+            "text": "this is a simple demo"
+        }   
+    ]
 }
 ```
 
@@ -40,16 +44,11 @@ JSON结构中的一个对象， 就称作是一个组件。
 
 Text组件提供一个`text`属性， 通过`text`属性， 就能直接让Text组件展示`text`属性值的内容。
 
-所以上面这个JSON结构就会得到下面的运行结果。
-
-![QQ20171017-202250](https://ws1.sinaimg.cn/large/006tKfTcly1fklijfc134j304a01kgli.jpg)
-
 ## Container组件
 
 RCRE中提供一个特殊的组件 —— `container`组件。  
 
 `container`组件就是整个RCRE中的组件数据源， 它可以为字级的所有组件提供数据源， 同时`container`组件可以给`container`组件提供数据源。 `container`组件也可以通过一种可扩展的机制来扩容获取数据的方式。 后续的章节， 将会初步围绕`container`组件来为读者依依介绍。
-
 
 ### 数据源Key
 
@@ -59,8 +58,21 @@ RCRE中会有很多个`container`组件， 同时RCRE会持有每个`container`�
 
 ```json
 {
-    "type": "container",
-    "model": "demo"
+    "body": [
+        {
+            "type": "container",
+            "model": "keyDemo",
+            "data": {
+                "name": "andycall"
+            },
+            "children": [
+                {
+                    "type": "text",
+                    "text": "请打开Redux DevTools查看当前container的数据模型, 可以看到名称微keyDemo的对象下面有个name属性，值为andycall"
+                }
+            ]
+        }   
+    ]
 }
 ```
 
@@ -72,17 +84,21 @@ RCRE中会有很多个`container`组件， 同时RCRE会持有每个`container`�
 
 ```json
 {
-    "type": "container",
-    "model": "demo",
-    "children": [
+    "body": [
         {
-            "type": "text",
-            "text": "helloworld"
-        },
-        {
-            "type": "text",
-            "text": "another text"
-        }
+            "type": "container",
+            "model": "childElement",
+            "children": [
+                {
+                    "type": "text",
+                    "text": "helloworld"
+                },
+                {
+                    "type": "text",
+                    "text": "another text"
+                }
+            ]
+        }   
     ]
 }
 ```
@@ -95,21 +111,25 @@ RCRE中会有很多个`container`组件， 同时RCRE会持有每个`container`�
 
 ```json
 {
-    "type": "container",
-    "model": "demo",
-    "data": {
-        "name": "andycall",
-        "age": 21
-    },
-    "children": [
+    "body": [
         {
-            "type": "text",
-            "text": "helloworld"
-        },
-        {
-            "type": "text",
-            "text": "another text"
-        }
+            "type": "container",
+            "model": "initData",
+            "data": {
+                "name": "andycall",
+                "age": 21
+            },
+            "children": [
+                {
+                    "type": "text",
+                    "text": "helloworld"
+                },
+                {
+                    "type": "text",
+                    "text": "another text"
+                }
+            ]
+        }   
     ]
 }
 ```

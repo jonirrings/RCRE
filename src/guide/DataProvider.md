@@ -12,28 +12,32 @@ DataProvider是`container`组件的一个扩展功能。
 
 ```json
 {
-    "type": "container",
-    "model": "demo",
-    "data": {
-        "name": "andycall",
-        "age": "#ES{$data.name} + ' and andylaw'"
-    },
-    "children": [
+    "body": [
         {
-            "type": "text",
-            "text": "#ES{$data.name}"
-        },
-        {
-            "type": "text",
-            "text": "#ES{$data.age}"
-        }
+            "type": "container",
+            "model": "demo",
+            "data": {
+                "name": "andycall",
+                "age": "#ES{$data.name} + ' and andylaw'"
+            },
+            "children": [
+                {
+                    "type": "text",
+                    "text": "#ES{$data.name}"
+                },
+                {
+                    "type": "text",
+                    "text": "#ES{$data.age}"
+                }
+            ]
+        }   
     ]
 }
 ```
 
 我想再通过接口获取一些值, 并通过Text组件展示出来。
 
-接口: http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8899/
+接口: https://api.github.com/search/repositories?q=apollo
 
 ### STEP 1. 配置AjaxDataProvider
 
@@ -41,7 +45,7 @@ DataProvider支持获取各种来源的数据, 在这里例子里, 我们是需�
 
 首先, 我们需要在JSON中使用`dataProvider`这个字段来声明这个`container`组件需要哪些扩展组件。
 
-```json
+```text
 {
   "type": "container",
   // ...
@@ -73,14 +77,14 @@ DataProvider支持获取各种来源的数据, 在这里例子里, 我们是需�
 | retCheckPattern | Expression String | 使用Expression String验证数据返回是否合法         |
 | retMapping      | Object            | 使用一个普通对象来对返回值进行数据映射                   |
 
-```json
+```text
 {
     "mode": "ajax",
     "config": {
-        "url": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8899/",
+        "url": "https://api.github.com/search/repositories",
         "method": "GET",
       	"data": {
-         	"name": "#ES{$data.name}"
+         	"q": "#ES{$data.search}"
         }
     }
 }
@@ -92,43 +96,41 @@ Expression String一样可以应用在请求发送之前, 这样就可以在发�
 
 ```json
 {
-    "type": "container",
-    "model": "demo",
-    "data": {
-      "name": "andycall"
-    },
-    "dataProvider": [
+    "body": [
         {
-            "mode": "ajax",
-            "config": {
-                "url": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8899/",
-                "method": "GET",
-              	"data": {
-                  	"name": "#ES{$data.name}"
-              	}
-            }
-        }
-    ],
-    "children": [
-        {
-            "type": "text",
-            "text": "loading errno: #ES{$data.errno}"
-        },
-        {
-            "type": "text",
-            "text": "loading status: #ES{$data.errmsg}"
-        }
+            "type": "container",
+            "model": "search",
+            "data": {
+              "q": "apollo"
+            },
+            "dataProvider": [
+                {
+                    "mode": "ajax",
+                    "config": {
+                        "url": "https://api.github.com/search/repositories",
+                        "method": "GET",
+                      	"data": {
+                          	"q": "#ES{$data.q}"
+                      	}
+                    }
+                }
+            ],
+            "children": [
+                {
+                    "type": "text",
+                    "text": "total count: #ES{$data.total_count}"
+                }
+            ]
+        }   
     ]
 }
 ```
 
-每一次刷新页面, 浏览器都会向这个接口发送一个GET请求, 并带有一个参数: name: andycall。
+如果打开Chrome开发者工具，使用Network选项，就可以看到， 每一次刷新页面, 浏览器都会向配置的接口发送一个GET请求, 并带有一个参数: q: apollo。
 
-![QQ20171021-192234](https://ws1.sinaimg.cn/large/006tKfTcly1fkqb5ubugjj30e4021glr.jpg)
+运行之后, 就能发现浏览器已经成功发送了请求, 接口返回的值的所有字段也都写入到了`search`这个数据模型之中。
 
-运行之后, 就能发现浏览器已经成功发送了请求, 接口返回的值的所有字段也都写入到了`demo`这个数据模型之中。
-
-![QQ20171021-165019@2x](https://ws1.sinaimg.cn/large/006tKfTcly1fkpyu4segbj31bm0nwjtm.jpg)
+![QQ20171205-185727@2x](https://ws3.sinaimg.cn/large/006tNc79ly1fm63ux6g0oj316o0gswg6.jpg)
 
 ### STEP 2.把接口获取的值传递到子级组件
 
@@ -194,18 +196,18 @@ Expression String一样可以应用在请求发送之前, 这样就可以在发�
     "body": [
         {
             "type": "container",
-            "model": "demo",
+            "model": "loading",
             "data": {
-                "name": "andycall"
+                "q": "apollo"
             },
             "dataProvider": [
                 {
                     "mode": "ajax",
                     "config": {
-                        "url": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8899/",
+                        "url": "https://api.github.com/search/repositories",
                         "method": "GET",
                         "data": {
-                            "name": "#ES{$data.name}"
+                            "q": "#ES{$data.q}"
                         }
                     }
                 }
@@ -219,12 +221,7 @@ Expression String一样可以应用在请求发送之前, 这样就可以在发�
                 {
                     "type": "text",
                     "hidden": "#ES{$data.$loading === true}",
-                    "text": "errno: #ES{$data.errno}"
-                },
-                {
-                    "type": "text",
-                    "hidden": "#ES{$data.$loading === true}",
-                    "text": "status: #ES{$data.errmsg}"
+                    "text": "total count: #ES{$data.total_count}"
                 }
             ]
         }
@@ -246,33 +243,63 @@ Expression String一样可以应用在请求发送之前, 这样就可以在发�
 
 ```json
 {
-    "mode": "ajax",
-    "namespace": "table",
-    "config": {
-        "url": "http://cp01-ebg-nativeads-50.cp01.baidu.com:8088/realtime/channel/table",
-        "method": "GET",
-        "data": {
-            "date": "20171026",
-            "fields": "pv",
-            "product": "8",
-            "placeId": "1504243449802"
-        }
-    }
+    "body": [
+        {
+            "type": "container",
+            "model": "nameSpaceDemo",
+            "dataProvider": [
+                {
+                    "mode": "ajax",
+                    "namespace": "github",
+                    "config": {
+                        "url": "https://api.github.com/search/users",
+                        "method": "GET",
+                        "data": {
+                            "q": "andycall"
+                        }
+                    }
+                }       
+            ],
+            "children": [
+                {
+                    "type": "text",
+                    "text": "total count: #ES{$data.github.total_count}"
+                },
+                {
+                    "type": "table",
+                    "columns": [
+                        {
+                            "dataIndex": "id",
+                            "title": "ID"
+                        },
+                        {
+                            "dataIndex": "login",
+                            "title": "Name"
+                        },
+                        {
+                            "dataIndex": "url",
+                            "title": "URL"
+                        }
+                    ],
+                    "dataSource": "#ES{$data.github.items}"
+                }
+            ]
+        }   
+    ]
 }
 ```
 
 配置了`namespace`之后, 我们再看下Redux的state中, 就可以发现
 
-![QQ20171103-170201@2x](https://ws1.sinaimg.cn/large/006tNc79ly1fl509htdjwj31ba0kwwgh.jpg)
+![QQ20171205-192311@2x](https://ws4.sinaimg.cn/large/006tNc79ly1fm6443zmoxj31080msdiu.jpg)
 
-接口中所有的数据都会保存在`demo.table`下面。
+接口中所有的数据都会保存在`nameSpaceDemo.github`下面。
 
 不过需要注意一点的是, 在container组件的其他地方, 对接口的数据进行获取的时候, 就需要使用
 
 `#ES{$data.table}`来进行获取。
 
 例如在这个例子中, 获取`errmsg`的Expression String是这样的`#ES{$data.table.errmsg}`
-
 
 
 ## 返回值校验
@@ -301,7 +328,7 @@ Expression String一样可以应用在请求发送之前, 这样就可以在发�
 
 > 添加`retErrMsg`属性可以自定义接口错误弹出的提示信息
 
-```json
+```text
 "dataProvider": [
     {
         "mode": "ajax",
@@ -332,27 +359,42 @@ DataProvider获取的值是没必要都写入到数据模型中的, 数据字段
 例如:
 
 ```json
-"dataProvider": [
-    {
-        "mode": "ajax",
-        "config": {
-            "url": "http://cp01-rdqa-dev420-dongtiancheng.epc.baidu.com:8899/",
-            "method": "GET",
+{
+    "body": [
+        {
+            "type": "container",
+            "model": "retMapping",
             "data": {
-                "name": "#ES{$data.name}"
-            }
-        },
-        "retCheckPattern": "#ES{$output.errno === 0}",
-        "retMapping": {
-            "errno": "#ES{$output.errno}",
-            "errmsg": "#ES{$output.errmsg}",
-            "externalName": "#ES{$data.name}",
-            "data": "#ES{$output.data}"
+                "q": "andycall"
+            },
+            "dataProvider": [
+                {
+                    "mode": "ajax",
+                    "config": {
+                        "url": "https://api.github.com/search/users",
+                        "method": "GET",
+                        "data": {
+                            "q": "#ES{$data.q}"
+                        }
+                    },
+                    "retCheckPattern": "#ES{$output.total_count > 0}",
+                    "retMapping": {
+                        "count": "#ES{$output.total_count}",
+                        "lists": "#ES{$output.items}"
+                    }
+                }            
+            ],
+            "children": [
+                {
+                    "type": "text",
+                    "text": "total count: #ES{$data.count}"
+                }
+            ]
         }
-    }
-]
+    ]
+}
 ```
 
-这个例子中, RCRE会解析Expression String, 并写入数据`errno`, `errmsg'`, `externalName`和`data`到数据模型中。
+这个例子中, RCRE会解析Expression String, 并写入数据`count`, `lists'`到数据模型中。
 
-![QQ20171022-104206@2x](https://ws2.sinaimg.cn/large/006tKfTcly1fkqttau5otj31by0ieq4y.jpg)
+![QQ20171205-192747@2x](https://ws4.sinaimg.cn/large/006tNc79ly1fm649abv48j30rc0lqwh3.jpg)

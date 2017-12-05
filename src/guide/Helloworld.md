@@ -2,15 +2,19 @@
 
 > RCRE是一个灵活组件表述引擎。 它内置一个JSON风格的结构表述语言。 可以让你使用非常简单的语法和结构, 来构建你的网页应用程序。
 
-
-
-这里有一些资料可以让你来快速入门
-
-
-
-+ 尝试RCRE
-
-
+@RCRE
+@title: 渲染一个helloworld
+@desc: 使用RCRE来渲染一段文字
+```json
+{
+    "body": [
+        {
+            "type": "text",
+            "text": "helloworld"
+        }
+    ]
+}
+```
 
 ## 尝试RCRE
 

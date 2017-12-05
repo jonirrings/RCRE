@@ -238,7 +238,7 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
         if (!_.isEmpty(options)) {
             Options = options.map(op => this.renderOption(op));   
         } else if (!_.isEmpty(optionGroups)) {
-            Options = optionGroups.map(group => {
+            Options = optionGroups.map((group, i) => {
                 let label = group.label;
                 let ops: OptionConfig[] = group.options || [];
                 if (info.optionsMapping && !_.isEmpty(info.options)) {
@@ -246,7 +246,8 @@ export default class AbstractSelect extends BasicContainer<SelectPropsInterface,
                 }
                 
                 return React.createElement(OptionGroup, {
-                    label: label
+                    label: label,
+                    key: i
                 }, ops.map(op => this.renderOption(op)));
             });
         }

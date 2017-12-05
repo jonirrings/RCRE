@@ -10,21 +10,25 @@
 
 ```json
 {
-    "type": "container",
-    "model": "demo",
-    "data": {
-        "name": "andycall",
-        "age": "#ES{1 + 1}"
-    },
-    "children": [
+    "body": [
         {
-            "type": "text",
-            "text": "helloworld"
-        },
-        {
-            "type": "text",
-            "text": "another text"
-        }
+            "type": "container",
+            "model": "demo",
+            "data": {
+                "name": "andycall",
+                "age": "#ES{1 + 1}"
+            },
+            "children": [
+                {
+                    "type": "text",
+                    "text": "helloworld"
+                },
+                {
+                    "type": "text",
+                    "text": "another text"
+                }
+            ]
+        }   
     ]
 }
 ```
@@ -47,7 +51,7 @@
 
 ### 基础运算
 
-```
+```text
 #ES{1 + 1}  ==> 2
 #ES{1 + 2 + 3} ==> 5
 #ES{'1' + 1}  ==> '11' JS独特的特性
@@ -61,7 +65,7 @@
 
 Expression String 一样也能当作是字符串模板来使用。  这在使用变量来拼接一个字符串是非常有效的方式
 
-```
+```text
 you are the #ES{1 + 1}th ==> you are the 2th
 ```
 
@@ -71,7 +75,7 @@ you are the #ES{1 + 1}th ==> you are the 2th
 
 Expression String还可以内嵌匿名函数进行运算, 这在一些特殊的场景下是非常有效的。
 
-```
+```text
 #ES{1 + (function(){function add(a, b) {return a + b;}return add(1, 2) + add(3, 4)})()} ==> 11
 ```
 
@@ -83,7 +87,7 @@ Expression String还可以内嵌匿名函数进行运算, 这在一些特殊的�
 
 Expression String一样可以操作javaScript对象。
 
-```
+```text
 #ES{Object.keys({name: 1, age: 2})} ==> ['name', 'age']
 #ES{#ES{{arr:[{name: 1},{name: 2}]}["arr"].length}} ==> 2
 ```
@@ -98,26 +102,30 @@ RCRE提供了一些内置的变量, 来方便开发者在Expression String中对
 
 ```json
 {
-    "type": "container",
-    "model": "demo",
-    "data": {
-        "name": "andycall",
-        "age": "#ES{$data.name} + ' and andylaw'"
-    },
-    "children": [
+    "body": [
         {
-            "type": "text",
-            "text": "helloworld"
-        },
-        {
-            "type": "text",
-            "text": "another text"
-        }
+            "type": "container",
+            "model": "demo",
+            "data": {
+                "name": "andycall",
+                "age": "#ES{$data.name} + ' and andylaw'"
+            },
+            "children": [
+                {
+                    "type": "text",
+                    "text": "helloworld"
+                },
+                {
+                    "type": "text",
+                    "text": "another text"
+                }
+            ]
+        }   
     ]
 }
 ```
 这个例子中, `container`组件会在初始化时候, 对`data`属性中的字段进行Expression String解析。 并在执行环境中嵌入`$data`属性。 执行过程中`$data`中是一个含有非Expression String的值的常规对象。 所以执行`#ES{$data。name} + ' and andylaw'`的时候, `$data`的值为
-```json
+```text
 {"name": "andycall"}
 ```
 > 而含有`#ES{}`这样的字符串会在初始化的时候临时忽略掉, 所以目前功能还不支持`$data`递归调用自身。
@@ -136,21 +144,25 @@ RCRE提供了一些内置的变量, 来方便开发者在Expression String中对
 我想使用2个Text组件把数据模型中的`name`和`age`都展现出来。
 ```json
 {
-    "type": "container",
-    "model": "demo",
-    "data": {
-        "name": "andycall",
-        "age": "#ES{$data.name} + ' and andylaw'"
-    },
-    "children": [
+    "body": [
         {
-            "type": "text",
-            "text": "#ES{$data.name}"
-        },
-        {
-            "type": "text",
-            "text": "#ES{$data.age}"
-        }
+            "type": "container",
+            "model": "demo",
+            "data": {
+                "name": "andycall",
+                "age": "#ES{$data.name} + ' and andylaw'"
+            },
+            "children": [
+                {
+                    "type": "text",
+                    "text": "#ES{$data.name}"
+                },
+                {
+                    "type": "text",
+                    "text": "#ES{$data.age}"
+                }
+            ]
+        }   
     ]
 }
 ```

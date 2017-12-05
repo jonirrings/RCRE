@@ -128,7 +128,7 @@ export function compileValueExpress<Config, Source>(props: Config,
                 return;
             }
 
-            if (isExpression(item)) {
+            if (typeof item === 'string' && isExpression(item)) {
                 reference[key] = parseExpressString(item, pair);
             }
 
@@ -143,7 +143,7 @@ export function compileValueExpress<Config, Source>(props: Config,
     return copy;
 }
 
-export function isExpression(str: any) {
+export function isExpression(str: string) {
     const ESPattern = /#ES\{([^#]+)\}/g;
     return ESPattern.test(str);
 }
@@ -153,7 +153,7 @@ export function filterExpressionData(obj: Object) {
 
     function walker(o: Object) {
         _.each(o, (val, name) => {
-            if (isExpression(val)) {
+            if (typeof val === 'string' && isExpression(val)) {
                 delete o[name];
             }
 
@@ -173,7 +173,7 @@ export function keepExpressionData(obj: Object) {
 
     function walker(o: Object) {
         _.each(o, (val, name) => {
-            if (!isExpression(val)) {
+            if (typeof val === 'string' && !isExpression(val)) {
                 delete o[name];
             }
 

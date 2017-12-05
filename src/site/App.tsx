@@ -3,10 +3,11 @@
 
 import * as React from 'react';
 import {Icon, Layout, Menu} from 'antd';
-import {parse} from 'marked';
 import './App.css';
 import {Link, RouteComponentProps} from 'react-router-dom';
 import {ComponentPreview} from './ComponentPreview';
+import {GuidePreview} from './GuidePreview';
+import guideList from '../guide/index';
 import docList from '../components/doc';
 import demoList from '../demo/index';
 import * as _ from 'lodash';
@@ -18,15 +19,6 @@ const {
 
 const SubMenu = Menu.SubMenu;
 const Item = Menu.Item;
-
-const pageConfig = {
-    'HelloWorld': require('raw-loader!../guide/Helloworld.md'),
-    'ContainerComponent': require('raw-loader!../guide/ContainerComponent.md'),
-    'ExpressionString': require('raw-loader!../guide/ExpressionString.md'),
-    'DataProvider': require('raw-loader!../guide/DataProvider.md'),
-    'NestContainer': require('raw-loader!../guide/NestContainer.md'),
-    'LayoutSystem': require('raw-loader!../guide/LayoutSystem.md')
-};
 
 interface AppStateInterface {
     activeMenu: string;
@@ -57,14 +49,15 @@ class App extends React.Component<RouteComponentProps<AppProps>, AppStateInterfa
         let content = <div/>;
 
         if (group === 'guide') {
-            let html = pageConfig[activeKey];
-
+            let html = guideList[activeKey];
+            
             if (!html) {
                 console.error('invalid activeKey');
                 return <div/>;
             }
 
-            content = <div className="markdown" dangerouslySetInnerHTML={{__html: parse(html)}}/>;
+            let markdown = html.md;
+            content = <GuidePreview md={markdown} />;
         } else if (group === 'component') {
             content = <ComponentPreview map={docList} activeKey={activeKey}/>;
         } else if (group === 'demo') {
@@ -81,16 +74,15 @@ class App extends React.Component<RouteComponentProps<AppProps>, AppStateInterfa
                         style={{height: '100%'}}
                     >
                         <SubMenu key="guide" title={<span><Icon type="book"/>教程</span>}>
-                            <Item key="HelloWorld"><Link to={'/guide/HelloWorld'}>HelloWorld</Link></Item>
-                            <Item key="ContainerComponent"><Link to={'/guide/ContainerComponent'}>持有数据的组件</Link></Item>
-                            <Item key="ExpressionString">
-                                <Link to={'/guide/ExpressionString'}>
-                                    Expression String
-                                </Link>
-                            </Item>
-                            <Item key="DataProvider"><Link to={'/guide/DataProvider'}>DataProvider</Link></Item>
-                            <Item key="NestContainer"><Link to={'/guide/NestContainer'}>嵌套的Container组件</Link></Item>
-                            <Item key="LayoutSystem"><Link to={'/guide/LayoutSystem'}/>布局系统</Item>
+                            {
+                                _.map(guideList, (info, name) => {
+                                    return <Item key={name}>
+                                        <Link to={`/guide/${name}`}>
+                                            {info.title}
+                                        </Link>
+                                    </Item>;
+                                })
+                            }
                         </SubMenu>
                         <SubMenu key="component" title={<span><Icon type="appstore-o"/>组件</span>}>
                             {

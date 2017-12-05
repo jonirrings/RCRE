@@ -60,7 +60,7 @@ export class SliderConfig extends BasicConfig {
     /**
      * Slider 会把当前值传给 tipFormatter，并在 Tooltip 中显示 tipFormatter 的返回值
      */
-    step: number | void;
+    step: number | null;
 
     /**
      * 使用ExpressString来格式化显示的值

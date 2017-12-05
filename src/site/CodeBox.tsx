@@ -1,7 +1,10 @@
 import * as React from 'react';
 import './CodeBox.css';
 import {Render} from '../render/index';
-import {Tooltip} from 'antd';
+import {Tooltip, Tabs} from 'antd';
+import classNames from 'classnames';
+
+const TabPane = Tabs.TabPane;
 
 let unExpand = require('./img/unExpand.svg');
 let expanded = require('./img/expanded.svg');
@@ -12,6 +15,7 @@ interface CodeBoxPropsInterface {
     desc: string;
     code: string;
     language: string;
+    mode?: string;
 }
 
 interface CodeBoxStateInterface {
@@ -19,6 +23,10 @@ interface CodeBoxStateInterface {
 }
 
 export class CodeBox extends React.Component<CodeBoxPropsInterface, CodeBoxStateInterface> {
+    static defaultProps = {
+        mode: 'demo'
+    };
+    
     constructor() {
         super();
 
@@ -30,31 +38,80 @@ export class CodeBox extends React.Component<CodeBoxPropsInterface, CodeBoxState
     }
 
     render() {
-        return (
-            <div className="codebox">
-                <div className="codebox-demo">
-                    <Render code={this.props.code}/>
-                </div>
-
-                <div className="codebox-markdown">
-                    <div className="codebox-title">{this.props.title}</div>
-                    <div className="codebox-content" dangerouslySetInnerHTML={{__html: this.props.desc}}/>
-                    <span className="expand-icon" onClick={this.handleClick}>
-                        <Tooltip title="show code">
-                            <img style={{display: !this.state.expand ? 'block' : 'none'}} src={unExpand}/>
-                        </Tooltip>
-                        <Tooltip title="hide code">
-                            <img style={{display: this.state.expand ? 'block' : 'none'}} src={expanded}/>
-                        </Tooltip>
-                    </span>
-                </div>
-                <div style={{display: this.state.expand ? 'block' : 'none'}} className="codeblock-wrapper">
-                    <Highlight className="json">
-                        {this.props.code.trim()}
-                    </Highlight>
-                </div>
+        let mode = 'exec';
+        
+        if (this.props.language !== 'json') {
+            mode = 'preview';
+        }
+        let classText = classNames({
+            [this.props.language]: true,
+            'codeblock-wrapper': true
+        });
+        
+        if (mode === 'preview') {
+            return (
+                <Highlight className={this.props.language}>
+                    {this.props.code.trim()}
+                </Highlight>
+            );
+        }
+        
+        let extendBox = (
+            <div className="codebox-markdown">
+                {this.props.title && <div className="codebox-title">{this.props.title}</div>}
+                {
+                    this.props.desc &&
+                        <div className="codebox-content" dangerouslySetInnerHTML={{__html: this.props.desc}} />
+                }
+                <span className="expand-icon" onClick={this.handleClick}>
+                    <Tooltip title="show code">
+                        <img style={{display: !this.state.expand ? 'block' : 'none'}} src={unExpand}/>
+                    </Tooltip>
+                    <Tooltip title="hide code">
+                        <img style={{display: this.state.expand ? 'block' : 'none'}} src={expanded}/>
+                    </Tooltip>
+                </span>
             </div>
         );
+        
+        let renderZone;
+        
+        if (this.props.mode === 'content') {
+            renderZone = (
+                <div className={'codebox'}>
+                    <Tabs defaultActiveKey="1" animated={false}>
+                        <TabPane tab="渲染结果" key="1">
+                            <Render code={this.props.code}/>
+                        </TabPane>
+                        <TabPane tab="Code" key="2">
+                            <div className={'codeblock-wrapper'}>
+                                <Highlight className={classText}>
+                                    {this.props.code.trim()}
+                                </Highlight>
+                            </div>
+                        </TabPane>
+                    </Tabs>
+                </div>
+            );
+        } else {
+            renderZone = (
+                <div className="codebox">
+                    <div className={'codebox-' + this.props.mode}>
+                        <Render code={this.props.code}/>
+                    </div>
+                    {
+                        this.props.mode === 'demo' && extendBox
+                    }
+                    <div style={{display: this.state.expand ? 'block' : 'none'}} className="codeblock-wrapper">
+                        <Highlight className={this.props.language}>
+                            {this.props.code.trim()}
+                        </Highlight>
+                    </div>
+                </div>
+            );
+        }
+        
+        return renderZone;
     }
 
     private handleClick() {
