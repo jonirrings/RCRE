@@ -183,11 +183,15 @@ export default class AbstractDatepicker extends BasicContainer<DatePickerPropsIn
             let endTime = info.endTime;
             let flag = false;
             
-            if (info.startTime) {
+            if (!startValue) {
+                startValue = moment();
+            }
+            
+            if (startTime) {
                 flag = startValue.valueOf() < moment(startTime).valueOf();
             }
             
-            if (info.endTime && !flag) {
+            if (endTime && !flag) {
                 flag = startValue.valueOf() > moment(endTime).valueOf();
             }
             

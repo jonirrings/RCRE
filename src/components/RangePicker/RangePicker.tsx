@@ -39,8 +39,6 @@ export class AbstractRangePicker extends BasicContainer<RangePickerPropsInterfac
     }
 
     handleChange(dates: [moment.Moment, moment.Moment], dateStrings: [string, string]) {
-        console.log(dates, dateStrings);
-
         if (this.props.$setData && this.props.info) {
             this.props.$setData(this.props.info.name, dateStrings);
         }

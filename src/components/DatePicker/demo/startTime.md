@@ -13,30 +13,11 @@
                     "type": "row",
                     "width": 400,
                     "children": [
-                        {
-                            "type": "text",
-                            "text": "请输入时间间隔",
-                            "gridWidth": 120
-                        },
-                        {
-                            "type": "input",
-                            "name": "range",
-                            "inputType": "number"
-                        }
-                    ]
-                },
-                {
-                    "type": "row",
-                    "width": 400,
-                    "children": [
-                            {
-                                "type": "text",
-                                "text": "选择日期",
-                                "gridWidth": 120
-                            },
                             {
                                 "type": "datePicker",
-                                "name": "time"
+                                "name": "time",
+                                "startTime": "2017-12-04",
+                                "endTime": "2017-12-12"
                             }
                     ]
                 }

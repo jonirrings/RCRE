@@ -66,7 +66,8 @@ export default {
             basic: require('raw-loader!./DatePicker/demo/basic.md'),
             showToday: require('raw-loader!./DatePicker/demo/showToday.md'),
             format: require('raw-loader!./DatePicker/demo/format.md'),
-            defaultValue: require('raw-loader!./DatePicker/demo/defaultValue.md')
+            defaultValue: require('raw-loader!./DatePicker/demo/defaultValue.md'),
+            startTime: require('raw-loader!./DatePicker/demo/startTime.md')
         }
     },
     tabs: {
