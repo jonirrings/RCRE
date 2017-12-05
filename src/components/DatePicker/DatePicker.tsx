@@ -118,12 +118,10 @@ export default class AbstractDatepicker extends BasicContainer<DatePickerPropsIn
             const $setData = this.props.$setData;
             let info = this.getPropsInfo(this.props.info);
             const value = info.defaultValue;
-            let data: moment.Moment | string = moment(value);
-
-            if (info.format) {
-                data = data.format(info.format);
-            }
-
+            let format = info.format || 'YYYY-MM-DD';
+            
+            let data: string = moment(value).format(format);
+            
             setTimeout(() => {
                 $setData(this.props.info.name, data);
             }, 0);
@@ -141,7 +139,7 @@ export default class AbstractDatepicker extends BasicContainer<DatePickerPropsIn
             return <div>DatePicker Element is out of RCRE control, please put it inside container component</div>;
         }
 
-        let value = this.props.$data.get(info.name);
+        let value = this.getValueFromDataStore(info.name);
 
         let date;
         if (value) {

@@ -324,4 +324,26 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
             }
         }
     }
+    
+    public getValueFromDataStore(nameStr: string) {
+        if (!this.props.$data) {
+            return null;
+        }
+        
+        if (nameStr.indexOf('.') < 0) {
+            return this.props.$data.get(nameStr);
+        }
+        
+        let nameGroup = nameStr.split('.');
+        
+        return nameGroup.reduce(($data, next) => {
+            if ($data && $data.get) {
+                return $data.get(next);    
+            } else if ($data && $data[next]) {
+                return $data[next];  
+            } else {
+                return null;
+            }
+        }, this.props.$data);
+    }
 }

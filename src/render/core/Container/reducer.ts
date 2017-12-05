@@ -3,7 +3,7 @@
  * @author dongtiancheng
  */
 
-import {Map} from 'immutable';
+import {fromJS, Map} from 'immutable';
 import {Reducer} from 'redux';
 import {
     ASYNC_LOAD_DATA_FAIL,
@@ -32,10 +32,19 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
                 return state;
             }
 
-            return state
-                .set(actions.model,
-                    state.get(actions.model).set(actions.payload.type, actions.payload.newValue)
-                );
+            let name = actions.payload.type;
+            let newValue = actions.payload.newValue;
+            
+            if (name.indexOf('.') < 0) {
+                return state
+                    .set(actions.model, state.get(actions.model).set(name, newValue));
+            }
+            
+            let nameGroup = name.split('.');
+            
+            return state.set(actions.model, state.get(actions.model).updateIn(nameGroup, (val: any) => {
+                return newValue;
+            }));
         case SET_DATA_LIST:
             let payloadList = actions.payload;
             let dataObj = {};
@@ -73,7 +82,7 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
             let existState = state.get(model);
 
             existState = existState.set('$loading', false);
-            existState = existState.merge(Map(data));
+            existState = existState.merge(fromJS(data));
 
             return state.set(model, existState);
         }
@@ -104,7 +113,7 @@ export const reducer: Reducer<IState> = (state: IState = initialState, actions: 
 
             let existState = state.get(model);
 
-            existState = existState.merge(Map(data));
+            existState = existState.merge(fromJS(data));
 
             return state.set(model, existState);
         }

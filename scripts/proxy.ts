@@ -82,6 +82,17 @@ app.get('/api/mock/cascader', (req, res) => {
     }, 1500);
 });
 
+app.get('/api/mock/dateStartTime', (req, res) => {
+    res.json({
+        errno: 0,
+        errmsg: 'ok',
+        data: {
+            startTime: '2017-12-02',
+            endTime: '2018-01-22'
+        }
+    });
+});
+
 app.post('/submit', (req, res) => {
     res.json({
         errno: 0,

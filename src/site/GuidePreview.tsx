@@ -54,7 +54,7 @@ export class GuidePreview extends React.Component<GuidePreviewPropsInterface, {}
         let groupInfo = this.parseRcreCodeBlock(md);
         let raw = groupInfo.raw;
         let links = groupInfo.links;
-        let elements = raw.map((group: any) => {
+        let elements = raw.map((group: any, index: number) => {
             if (group.language && group.code) {
                 return (
                     <CodeBox 
@@ -62,12 +62,13 @@ export class GuidePreview extends React.Component<GuidePreviewPropsInterface, {}
                         desc={group.desc} 
                         code={group.code}
                         mode={'content'}
+                        key={index}
                         language={group.language}
                     />
                 );
             } else {
                 group.links = links;
-                return <div dangerouslySetInnerHTML={{__html: parser(group)}} />;
+                return <div key={index} dangerouslySetInnerHTML={{__html: parser(group)}} />;
             }
         });
         

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {lexer, parse} from 'marked';
+import {lexer, parse, parser} from 'marked';
 import * as _ from 'lodash';
 import {CodeBox} from './CodeBox';
 import {Col} from 'antd';
@@ -110,38 +110,38 @@ export class ComponentPreview extends React.Component<ComponentPreviewPropsInter
     }
 
     private parseDemo(demoDoc: string): DemoItem {
-        let tokens = lexer(demoDoc, {});
+        let tokens: any = lexer(demoDoc, {
+            gfm: true,
+            tables: true,
+            breaks: true,
+            pedantic: true
+        });
         let title = '';
         let desc = '';
         let code = '';
         let language = '';
-        const codeBlockRegex = /```(\w+)([\s\S]+)```/;
+        let otherTokens: any = [];
 
-        tokens.map(token => {
+        tokens.map((token: any) => {
             switch (token.type) {
                 case 'heading': {
                     title = token.text;
                     break;
                 }
-                case 'paragraph': {
-                    let text = token.text;
-                    if (codeBlockRegex.test(text)) {
-                        let pattern = codeBlockRegex.exec(text);
-
-                        if (pattern) {
-                            language = pattern[1];
-                            code = pattern[2];
-                        }
-                    } else {
-                        desc += parse(token.text);
-                    }
-
+                case 'code': {
+                    code = token.text;
+                    language = token.lang;
                     break;
                 }
                 default:
+                    otherTokens.push(token);
                     break;
             }
         });
+        
+        otherTokens.links = tokens.links;
+        
+        desc = parser(otherTokens);
 
         return {
             title: title,
