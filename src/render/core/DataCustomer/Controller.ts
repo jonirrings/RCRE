@@ -1,11 +1,13 @@
 import {customerLoaderInstance} from './loader';
 import {PassCustomers} from './customers/pass';
 import {SubmitCustomer} from './customers/submit';
+import {LocationCustomer} from './customers/location';
 import {Map} from 'immutable';
 import {runTimeType} from '../Container/types';
 
 customerLoaderInstance.registerCustomer('pass', new PassCustomers());
 customerLoaderInstance.registerCustomer('submit', new SubmitCustomer());
+customerLoaderInstance.registerCustomer('location', new LocationCustomer());
 
 export interface CustomerItem {
     /**

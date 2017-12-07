@@ -9,7 +9,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {actionCreators, IContainerAction} from './action';
 import {RootState} from '../../data/reducers';
-import {Map} from 'immutable';
+import {fromJS, Map} from 'immutable';
 import {DataProvider} from '../DataProvider/Controller';
 import {ContainerPropsInterface} from '../../../components/Container/Container';
 import {compileValueExpress} from '../../util/vm';
@@ -200,9 +200,13 @@ export const mergeProps =
             });
 
             if (parentMappingRet) {
-                stateData = stateData.merge(Map(parentMappingRet));
+                let originalData = stateProps.$data.toObject();
+                stateData = stateData.merge(fromJS(originalData));
             }
         } else {
+            // 屏蔽$loading属性
+            parentProps = parentProps.remove('$loading');
+            
             stateData = stateData.merge(parentProps);
         }
 

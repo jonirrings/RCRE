@@ -38,14 +38,6 @@ export class DatePickerCommonConfig extends BasicConfig {
      */
     @IsString()
     className?: string;
-
-    /**
-     * 输入框提示文字
-     * @public
-     * @default ''
-     */
-    @IsString()
-    placeholder?: string;
 }
 
 export class DatePickerConfig extends DatePickerCommonConfig {
@@ -99,6 +91,14 @@ export class DatePickerConfig extends DatePickerCommonConfig {
      * 初始默认值
      */
     defaultValue?: string;
+
+    /**
+     * 输入框提示文字
+     * @public
+     * @default ''
+     */
+    @IsString()
+    placeholder?: string;
 }
 
 export class DatePickerPropsInterface extends BasicContainerPropsInterface {

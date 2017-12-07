@@ -95,9 +95,16 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
         if (trigger instanceof Array) {
             trigger.forEach(tr => {
                 let event = tr.event;
-                let targetCustomer = tr.targetCustomer;
+                let customerList: string | string[] = tr.targetCustomer;
                 let params = tr.params;
-                this.callbackController.registerCallback(event, targetCustomer, params);
+                
+                if (typeof customerList === 'string') {
+                    customerList = [customerList];
+                }
+                
+                customerList.forEach(targetCustomer => {
+                    this.callbackController.registerCallback(event, targetCustomer, params); 
+                });
             });
         }
     }
@@ -174,32 +181,38 @@ class Trigger extends BasicContainer<TriggerProps, {}> {
             });
 
             let customerGroups = this.props.dataCustomer.getGroups();
-            let targetCustomer = info.targetCustomer;
-
-            // $this 自动指向内置的$SELF_PASS_CUSTOMER
-            if (targetCustomer === '$this') {
-                targetCustomer = '$SELF_PASS_CUSTOMER';
+            let customerList: string | string[] = info.targetCustomer;
+            
+            if (typeof customerList === 'string') {
+                customerList = [customerList];
             }
 
-            if (customerGroups.has(targetCustomer)) {
-                let customers = customerGroups.get(targetCustomer);
-                customers.forEach(customer => {
-                    this.taskQueue.push(customer);
+            customerList.forEach(targetCustomer => {
+                // $this 自动指向内置的$SELF_PASS_CUSTOMER
+                if (targetCustomer === '$this') {
+                    targetCustomer = '$SELF_PASS_CUSTOMER';
+                }
 
+                if (customerGroups.has(targetCustomer)) {
+                    let customers = customerGroups.get(targetCustomer);
+                    customers.forEach(customer => {
+                        this.taskQueue.push(customer);
+
+                        items.push({
+                            model: this.props.model,
+                            customer: customer,
+                            data: output
+                        });
+                    });
+                } else {
+                    this.taskQueue.push(targetCustomer);
                     items.push({
                         model: this.props.model,
-                        customer: customer,
+                        customer: targetCustomer,
                         data: output
                     });
-                });
-            } else {
-                this.taskQueue.push(targetCustomer);
-                items.push({
-                    model: this.props.model,
-                    customer: targetCustomer,
-                    data: output
-                });
-            }
+                } 
+            });
         }
         
         this.props.triggerSetData(items);

@@ -135,13 +135,16 @@ export default {
         demo: {
             basic: require('raw-loader!./Popover/demo/basic.md'),
             triggerType: require('raw-loader!./Popover/demo/triggerType.md'),
-            content: require('raw-loader!./Popover/demo/content.md')
+            content: require('raw-loader!./Popover/demo/content.md'),
+            time: require('raw-loader!./Popover/demo/time.md')
         }
     },
     rangePicker: {
         index: require('raw-loader!./RangePicker/RangePicker.md'),
         demo: {
-            basic: require('raw-loader!./RangePicker/demo/basic.md')
+            basic: require('raw-loader!./RangePicker/demo/basic.md'),
+            custom: require('raw-loader!./RangePicker/demo/custom.md'),
+            defaultValue: require('raw-loader!./RangePicker/demo/defaultValue.md')
         }
     },
     radio: {
@@ -149,6 +152,12 @@ export default {
         demo: {
             basic: require('raw-loader!./Radio/demo/basic.md'),
             group: require('raw-loader!./Radio/demo/radioGroup.md')
+        }
+    },
+    checkbox: {
+        index: require('raw-loader!./Checkbox/Checkbox.md'),
+        demo: {
+            basic: require('raw-loader!./Checkbox/demo/basic.md')
         }
     }
 };

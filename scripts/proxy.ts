@@ -6,7 +6,9 @@
 import * as express from 'express';
 import * as request from 'request';
 import {CoreOptions} from 'request';
+import * as path from 'path';
 import * as cors from 'cors';
+import * as fs from 'fs';
 
 let linechart = require('./mock/linechart.json');
 let cascader = require('./mock/cascader.json');
@@ -14,6 +16,7 @@ let cascader = require('./mock/cascader.json');
 const app = express();
 
 app.use(cors());
+app.use(express.static(path.join(__dirname, '../build/website')));
 
 app.use('/proxy', (req, res, next) => {
     console.log(`
@@ -101,6 +104,10 @@ app.post('/submit', (req, res) => {
     });
 });
 
+app.get('*', (req, res) => {
+    const indexFile = fs.createReadStream(path.join(__dirname, '../build/website/index.html'));
+    indexFile.pipe(res);
+});
 // // catch 404 and forward to error handler
 app.use((req, res, next) => {
     let err = new Error('Not Found');
