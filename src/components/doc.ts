@@ -26,7 +26,8 @@ export default {
             columnsMapping: require('raw-loader!./Table/demo/columnsMapping.md'),
             dataSourceMapping: require('raw-loader!./Table/demo/dataSourceMapping.md'),
             tableDrill: require('raw-loader!./Table/demo/tableDrill.md'),
-            colSpan: require('raw-loader!./Table/demo/colSpan.md')
+            width: require('raw-loader!./Table/demo/width.md'),
+            extendColumns: require('raw-loader!./Table/demo/extendColumns.md')
         }
     },
     input: {

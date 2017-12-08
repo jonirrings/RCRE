@@ -259,6 +259,7 @@ export class AbstractTable extends BasicContainer<TablePropsInterface, TableStat
 
         if (info.extendColumns instanceof Array) {
             columns = columns.concat(info.extendColumns);
+            console.log(columns);
         }
 
         if (info.customerColumnControls instanceof Array && columns.length > 0) {

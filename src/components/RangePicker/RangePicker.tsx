@@ -93,7 +93,7 @@ export class AbstractRangePicker extends BasicContainer<RangePickerPropsInterfac
             return (
                 <LowLevelRangePicker
                     showToday={false}
-                    showWeekNumber={true}
+                    showWeekNumber={false}
                     dateInputPlaceholder={['开始时间', '结束时间']}
                     locale={zhCN}
                     showOk={false}

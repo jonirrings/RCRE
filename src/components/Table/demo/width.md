@@ -9,7 +9,7 @@
     "body": [
         {
             "type": "container",
-            "model": "tableBasic",
+            "model": "width",
             "data": {
                 "columns": [
                     {
