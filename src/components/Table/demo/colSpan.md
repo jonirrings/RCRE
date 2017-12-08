@@ -1,11 +1,8 @@
-## 基础使用
+## 更改列的宽度
 
-渲染最简单的表格只需要配置`columns`和`dataSource`即可
+通过在columns配置里面添加width属性来设置列的宽度。
 
-Table组件需要依赖`container`组件来提供数据.
-
-1. columns, 配置表头, 以及每一列的数据字段
-2. dataSource. 结构化数据源
+如果columns是通过ExpressionString渲染得到的。那么也可以在customerColumnControls中添加
 
 ```json
 {
@@ -21,7 +18,8 @@ Table组件需要依赖`container`组件来提供数据.
                     },
                     {
                         "title": "年龄",
-                        "dataIndex": "age"
+                        "dataIndex": "age",
+                        "width": 40
                     },
                     {
                         "title": "公司",
@@ -45,7 +43,19 @@ Table组件需要依赖`container`组件来提供数据.
                 {
                     "type": "table",
                     "columns": "#ES{$data.columns}",
-                    "dataSource": "#ES{$data.dataSource}"
+                    "dataSource": "#ES{$data.dataSource}",
+                    "customerColumnControls": [
+                        {
+                            "dataIndex": "name",
+                            "width": 50,
+                            "controls": [
+                                {
+                                    "type": "text",
+                                    "text": "#ES{$item.name}"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }

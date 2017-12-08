@@ -39,6 +39,11 @@ export class TableColumnsItem {
      * 列是否固定，可选 true(等效于 left) 'left' 'right'
      */
     fixed?: boolean | ('left' | 'right');
+
+    /**
+     * 列宽度
+     */
+    width?: string | number;
 }
 
 export class TableCustomerColumnControlItem {
@@ -324,6 +329,8 @@ export class AbstractTable extends BasicContainer<TablePropsInterface, TableStat
                 </div>
             );
         });
+        
+        Object.assign(targetColumn, columnConfig);
     }
 }
 
