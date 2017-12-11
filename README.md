@@ -26,9 +26,6 @@ RCRE是一个使用JSON来生成单页应用程序的渲染引擎。
 5. [嵌套的Container组件](src/guide/NestContainer.md)
 6. [布局系统](src/guide/LayoutSystem.md)
 
-## 组件文档
-1. [Button](src/components/Button/Button.md)
-
 ## 如何贡献
 
 ### 运行此项目
