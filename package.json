@@ -2,7 +2,7 @@
     "name": "rcre-core",
     "version": "0.11.0",
     "main": "./build/plugin/plugin.js",
-    "repository": "ssh://dongtiancheng@icode.baidu.com:8235/baidu/native-ads/gaea-aop",
+    "repository": "https://github.com/andycall/RCRE",
     "homepage": "/",
     "files": [
         "build"
