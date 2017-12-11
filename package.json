@@ -1,5 +1,5 @@
 {
-    "name": "@miskit/rcre-core",
+    "name": "rcre-core",
     "version": "0.10.51",
     "main": "./build/plugin/plugin.js",
     "repository": "ssh://dongtiancheng@icode.baidu.com:8235/baidu/native-ads/gaea-aop",
@@ -139,5 +139,5 @@
         "testCoverage": "node scripts/bin/react-scripts-ts test --env=jsdom --coverage --coveragePathIgnorePatterns=.d.ts$",
         "proxyServer": "TS_NODE_PROJECT=`pwd`/scripts PORT=8800 ts-node scripts/proxy.ts"
     },
-    "license": "MIT"
+    "license": "Apache-2.0"
 }

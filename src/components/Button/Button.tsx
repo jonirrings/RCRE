@@ -130,7 +130,12 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
         let mappedProps = this.mapButtonOptions(info);
         let children;
         let childElement;
-
+        let loading = info.loading;
+        
+        if (this.props.$data) {
+            loading = this.props.$data.get('$loading');
+        }
+        
         if (info.href) {
             const jump = (event: React.MouseEvent<HTMLAnchorElement>) => {
                 event.stopPropagation();
@@ -153,6 +158,7 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
                     event: event
                 });
             },
+            loading: loading,
             ...mappedProps
         };
         
@@ -200,7 +206,6 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
             icon: info.icon,
             shape: info.shape,
             size: info.size,
-            loading: info.loading,
             disabled: info.disabled,
             style: info.style,
             prefixCls: info.prefixCls,
