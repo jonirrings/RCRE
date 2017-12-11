@@ -259,3 +259,7 @@
 .markdown img {
     max-width: 70%;
 }
+
+.ant-tabs-bar {
+    margin-bottom: 5px !important;
+}

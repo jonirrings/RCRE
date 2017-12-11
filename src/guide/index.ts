@@ -20,7 +20,11 @@ export default {
         md: require('raw-loader!./NestContainer.md')
     },
     'layout': {
-        title: '布局系统',
+        title: '布局',
         md: require('raw-loader!./LayoutSystem.md')
+    },
+    'event': {
+        title: '事件',
+        md: require('raw-loader!./Event.md')
     }
 };
