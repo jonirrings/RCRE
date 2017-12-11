@@ -1,6 +1,6 @@
 {
     "name": "rcre-core",
-    "version": "0.11.0",
+    "version": "0.11.1",
     "main": "./build/plugin/plugin.js",
     "repository": "https://github.com/andycall/RCRE",
     "homepage": "/",
