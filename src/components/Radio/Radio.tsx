@@ -4,8 +4,8 @@ import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../r
 import {IsBoolean, IsDefined, IsJSON, IsString} from 'class-validator';
 import componentLoader from '../../render/util/componentLoader';
 import {Radio} from 'antd';
-import {RadioProps} from 'antd/lib/radio/radio';
-import {RadioGroupProps} from 'antd/lib/radio/group';
+import {RadioGroupProps} from 'antd/lib/radio';
+import {RadioProps} from 'antd/es/radio';
 
 const RadioGroup = Radio.Group;
 
@@ -143,12 +143,12 @@ export class AbstractRadio extends BasicContainer<RadioPropsInterface, {}> {
             return React.createElement(RadioGroup, {
                 value: value,
                 onChange: this.handleRadioGroupChange,
-                onMouseEnter: (event: React.MouseEvent<HTMLInputElement>) => {
+                onMouseEnter: (event: React.MouseEvent<HTMLDivElement>) => {
                     this.commonEventHandler('onMouseEnter', {
                         event: event
                     });
                 },
-                onMouseLeave: (event: React.MouseEvent<HTMLInputElement>) => {
+                onMouseLeave: (event: React.MouseEvent<HTMLDivElement>) => {
                     this.commonEventHandler('onMouseLeave', {
                         event: event
                     });

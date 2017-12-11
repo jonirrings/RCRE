@@ -2,13 +2,14 @@ import * as React from 'react';
 import {CSSProperties} from 'react';
 import {BasicConfig, BasicContainer, BasicContainerPropsInterface} from '../../render/core/Container/types';
 import {IsBoolean} from 'class-validator';
-import {TableProps} from 'antd/lib/table/Table';
 import {Table} from 'antd';
 import componentLoader from '../../render/util/componentLoader';
 import {Map} from 'immutable';
 import * as _ from 'lodash';
 import {createChild} from '../../render/util/createChild';
 import {compileValueExpress} from '../../render/util/vm';
+import {TableProps} from 'antd/lib/table';
+import {PaginationProps} from 'antd/lib/pagination';
 
 interface DataSource {
     [s: string]: any;
@@ -108,7 +109,7 @@ export class TableConfig extends BasicConfig {
     /**
      * 是否含有分页
      */
-    pagination?: boolean;
+    pagination?: false | PaginationProps;
 
     /**
      * 表格大小
@@ -179,13 +180,13 @@ export class TablePropsInterface extends BasicContainerPropsInterface {
     info: TableConfig;
 }
 
-class TableDriver extends Table<DataSource> {
-
-}
-
 interface TableStateInterface {
     total: number;
     current: number;
+}
+
+export class TableDriver extends Table<DataSource> {
+    
 }
 
 export class AbstractTable extends BasicContainer<TablePropsInterface, TableStateInterface> {
@@ -276,7 +277,10 @@ export class AbstractTable extends BasicContainer<TablePropsInterface, TableStat
         };
 
         tableProps.loading = $loading;
+        
+        console.log(Table);
 
+        // return <div>hellowlrld</div>;
         return (
             <TableDriver
                 {...tableProps}

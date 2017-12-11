@@ -6,6 +6,7 @@ import {Button, Popconfirm} from 'antd';
 import componentLoader from '../../render/util/componentLoader';
 import {ButtonProps} from 'antd/lib/button/button';
 import * as _ from 'lodash';
+import {ButtonType} from 'antd/lib/button';
 
 export class ButtonConfig extends BasicConfig {
     /**
@@ -43,6 +44,11 @@ export class ButtonConfig extends BasicConfig {
          * 确认按钮文字
          */
         okText?: string;
+
+        /**
+         * 确认按钮类型
+         */
+        okType?: ButtonType;
 
         /**
          * 取消按钮文字
@@ -163,21 +169,26 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
         };
         
         if (_.isPlainObject(info.confirm)) {
-            children = React.createElement(Popconfirm, {
-                title: info.confirm!.title,
-                okText: info.confirm!.okText,
-                cancelText: info.confirm!.cancelText,
-                onConfirm: (event: React.MouseEvent<HTMLButtonElement>) => {
-                    this.commonEventHandler('onConfirm', {
-                        event: event
-                    });
-                },
-                onCancel: (event: React.MouseEvent<HTMLButtonElement>) => {
-                    this.commonEventHandler('onCancel', {
-                        event: event
-                    });
-                }
-            }, React.createElement(Button, buttonProps, childElement));    
+            children = (
+                <Popconfirm
+                    title={info.confirm!.title}
+                    okText={info.confirm!.okText}
+                    okType={info.confirm!.okType}
+                    cancelText={info.confirm!.cancelText}
+                    onConfirm={(event: React.MouseEvent<HTMLDivElement>) => {
+                        this.commonEventHandler('onConfirm', {
+                            event: event
+                        });
+                    }}
+                    onCancel={(event: React.MouseEvent<HTMLDivElement>) => {
+                        this.commonEventHandler('onCancel', {
+                            event: event
+                        });
+                    }}
+                >
+                    <Button {...buttonProps}>{childElement}</Button>
+                </Popconfirm>
+            );    
         } else {
             if (info.confirm) {
                 console.error('Button confirm props should be plain Object');

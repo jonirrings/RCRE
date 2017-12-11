@@ -48,7 +48,7 @@ class Page extends React.Component<PageProps, {}> {
         let $location = URL.parse(location.href);
         let $query = {};
 
-        if ($location.query) {
+        if ($location.query && typeof $location.query === 'string') {
             $query = querystring.parse($location.query);
         }
 

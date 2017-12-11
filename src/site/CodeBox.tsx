@@ -2,13 +2,13 @@ import * as React from 'react';
 import './CodeBox.css';
 import {Render} from '../render/index';
 import {Tooltip, Tabs} from 'antd';
+import {HighLight} from './HighLight';
 import classNames from 'classnames';
 
 const TabPane = Tabs.TabPane;
 
 let unExpand = require('./img/unExpand.svg');
 let expanded = require('./img/expanded.svg');
-let Highlight = require('react-highlight');
 
 interface CodeBoxPropsInterface {
     title: string;
@@ -50,9 +50,9 @@ export class CodeBox extends React.Component<CodeBoxPropsInterface, CodeBoxState
         
         if (mode === 'preview') {
             return (
-                <Highlight className={this.props.language}>
+                <HighLight className={this.props.language}>
                     {this.props.code.trim()}
-                </Highlight>
+                </HighLight>
             );
         }
         
@@ -85,9 +85,9 @@ export class CodeBox extends React.Component<CodeBoxPropsInterface, CodeBoxState
                         </TabPane>
                         <TabPane tab="Code" key="2">
                             <div className={'codeblock-wrapper'}>
-                                <Highlight className={classText}>
+                                <HighLight className={classText}>
                                     {this.props.code.trim()}
-                                </Highlight>
+                                </HighLight>
                             </div>
                         </TabPane>
                     </Tabs>
@@ -103,9 +103,9 @@ export class CodeBox extends React.Component<CodeBoxPropsInterface, CodeBoxState
                         this.props.mode === 'demo' && extendBox
                     }
                     <div style={{display: this.state.expand ? 'block' : 'none'}} className="codeblock-wrapper">
-                        <Highlight className={this.props.language}>
+                        <HighLight className={this.props.language}>
                             {this.props.code.trim()}
-                        </Highlight>
+                        </HighLight>
                     </div>
                 </div>
             );

@@ -26,3 +26,7 @@ declare module 'json-format' {
     }
     export = parse;
 }
+interface System {
+    import (request: string): Promise<any>;
+}
+declare var System: System;
