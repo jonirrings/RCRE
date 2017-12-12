@@ -12,21 +12,12 @@ export class ComponentLoader {
         this.cache = new Map();
     }
 
-    getAbstractComponent(type: string): ComponentLoaderMapVal | undefined {
+    getComponent(type: string): ComponentLoaderMapVal | undefined {
         if (type.indexOf('.') >= 0) {
             type = type.split('.').slice(-1)[0];
         }
         
         return this.cache.get(type);
-    }
-
-    getDriverComponent(name: string, theme: string) {
-        if (name.indexOf('.') >= 0) {
-            theme = name.split('.')[0];
-            name = name.split('.')[1];
-        }
-
-        return this.cache.get(`${theme}.${name}`);
     }
 
     addComponent(type: string, component: React.ComponentClass<any>, componentInterface: any) {

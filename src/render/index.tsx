@@ -73,7 +73,12 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
     }
 }
 
-export {componentDriver, BasicContainer, providerLoader, customerLoader};
+export {
+    BasicContainer,
+    componentDriver as componentLoader, 
+    providerLoader, 
+    customerLoader
+};
 
 window.React = React;
 window.ReactDOM = ReactDOM;

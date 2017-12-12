@@ -26,7 +26,7 @@ export function createChild<T extends BasicContainerPropsInterface>(item: BasicC
     let component: React.ComponentClass<any>;
     let componentInterface;
 
-    let componentInfo = componentLoader.getAbstractComponent(item.type);
+    let componentInfo = componentLoader.getComponent(item.type);
     
     if (!componentInfo || !componentInfo.component || !componentInfo.componentInterface) {
         return React.createElement('pre', {}, `can not find component of type ${item.type}`);
