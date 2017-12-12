@@ -6,7 +6,7 @@ import {actionCreators} from '../../Trigger/actions';
 import {store} from '../../../index';
 import * as _ from 'lodash';
 
-interface SubmitCustomerExecConfig {
+export interface SubmitCustomerExecConfig {
     /**
      * 提交的地址
      */

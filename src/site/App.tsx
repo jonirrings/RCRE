@@ -20,12 +20,12 @@ const {
 const SubMenu = Menu.SubMenu;
 const Item = Menu.Item;
 
-interface AppStateInterface {
+export interface AppStateInterface {
     activeMenu: string;
     activeKey: string;
 }
 
-interface AppProps {
+export interface AppProps {
     activeKey: string;
     group: string;
 }

@@ -5,12 +5,12 @@ import * as ReactDOM from 'react-dom';
 
 import './index.css';
 
-interface JSONEditorPropsInterface {
+export interface JSONEditorPropsInterface {
     code: string;
     onChange: (code: string) => void;
 }
 
-interface JSONEditorStateInterface {
+export interface JSONEditorStateInterface {
     code: string;
 }
 

@@ -11,7 +11,7 @@ import {compileValueExpress} from '../../render/util/vm';
 import {TableProps} from 'antd/lib/table';
 import {PaginationProps} from 'antd/lib/pagination';
 
-interface DataSource {
+export interface DataSource {
     [s: string]: any;
 }
 
@@ -180,7 +180,7 @@ export class TablePropsInterface extends BasicContainerPropsInterface {
     info: TableConfig;
 }
 
-interface TableStateInterface {
+export interface TableStateInterface {
     total: number;
     current: number;
 }
@@ -278,9 +278,6 @@ export class AbstractTable extends BasicContainer<TablePropsInterface, TableStat
 
         tableProps.loading = $loading;
         
-        console.log(Table);
-
-        // return <div>hellowlrld</div>;
         return (
             <TableDriver
                 {...tableProps}

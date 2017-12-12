@@ -2,7 +2,7 @@ import * as React from 'react';
 import {lexer, parser} from 'marked';
 import {CodeBox} from './CodeBox';
 
-interface GuidePreviewPropsInterface {
+export interface GuidePreviewPropsInterface {
     md: string;
 }
 

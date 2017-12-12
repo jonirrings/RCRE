@@ -80,12 +80,6 @@ export class BasicConfig {
     formItem?: boolean;
 }
 
-export type onContainerItemChange = (value: any, event?: React.ChangeEvent<HTMLElement>) => void;
-
-export class BasicTriggerEvent {
-    name: string;
-}
-
 export class BasicContainerPropsInterface {
     @Validate(IsPageInfo, [BasicConfig])
     info: BasicConfig;

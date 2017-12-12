@@ -3,7 +3,7 @@ import {Reducer} from 'redux';
 import {ITriggerAction, SUBMIT_SET_DATA, TRIGGER_SET_DATA} from './actions';
 import * as _ from 'lodash';
 
-type stateItem = Map<string, any>;
+export type stateItem = Map<string, any>;
 export type IState = Map<string, stateItem>;
 
 export const initialState: IState = Map<string, stateItem>({});

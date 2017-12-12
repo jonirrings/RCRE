@@ -4,7 +4,7 @@ import {stringify} from 'querystring';
 import {compileValueExpress} from '../../../util/vm';
 import * as _ from 'lodash';
 
-interface PassCustomerExecConfig {
+export interface PassCustomerExecConfig {
     /**
      * 跳转的地址
      */

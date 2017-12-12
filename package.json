@@ -82,6 +82,7 @@
         "copy-webpack-plugin": "^4.2.3",
         "cors": "^2.8.4",
         "css-loader": "0.28.1",
+        "declaration-bundler-webpack-plugin": "^1.0.3",
         "dotenv": "4.0.0",
         "enzyme": "^3.2.0",
         "express": "^4.16.2",
@@ -132,5 +133,6 @@
         "testCoverage": "node scripts/bin/react-scripts-ts test --env=jsdom --coverage --coveragePathIgnorePatterns=.d.ts$",
         "proxyServer": "TS_NODE_PROJECT=`pwd`/scripts PORT=8800 ts-node scripts/proxy.ts"
     },
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "typings": "render/index.d.ts"
 }

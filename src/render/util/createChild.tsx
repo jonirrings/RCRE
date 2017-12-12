@@ -1,4 +1,7 @@
 import * as React from 'react';
+import {
+    ComponentClass, ComponentElement, DetailedReactHTMLElement, ReactElement
+} from 'react';
 import * as _ from 'lodash';
 import {BasicConfig, BasicContainerPropsInterface} from '../core/Container/types';
 import componentLoader from '../util/componentLoader';
@@ -10,7 +13,11 @@ import '../core/Layout/Row/Row';
 
 export function createChild<T extends BasicContainerPropsInterface>(item: BasicConfig,
                             childProps: T,
-                            childElements: React.ReactNode = null) {
+                            childElements: React.ReactNode = null): 
+    DetailedReactHTMLElement<React.HTMLAttributes<HTMLElement>, HTMLElement> | 
+    ComponentClass<T> |
+    ReactElement<T> |
+    ComponentElement<BasicContainerPropsInterface, any> {
     if (!_.isPlainObject(item)) {
         console.error('invalid Item Object', item);
         return React.createElement('div', {}, 'invalid Item Object');

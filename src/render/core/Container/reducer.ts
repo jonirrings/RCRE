@@ -19,7 +19,7 @@ import {
     SYNC_LOAD_DATA_SUCCESS
 } from './action';
 
-type stateItem = Map<string, any>;
+export type stateItem = Map<string, any>;
 export type IState = Map<string, stateItem>;
 
 export const initialState: IState = Map<string, stateItem>({});

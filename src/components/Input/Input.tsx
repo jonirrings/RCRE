@@ -114,7 +114,7 @@ export class InputPropsInterface extends BasicContainerPropsInterface {
     info: InputConfig;
 }
 
-interface InputStateInterface {
+export interface InputStateInterface {
     hasError: boolean;
 }
 

@@ -8,19 +8,21 @@ import componentDriver from './util/componentLoader';
 import {BasicContainer} from './core/Container/types';
 import {providerLoaderInstance as providerLoader} from './core/DataProvider/loader';
 import {customerLoaderInstance as customerLoader} from './core/DataCustomer/loader';
+import {Store} from 'redux';
+import {RootState} from './data/reducers';
 
 import './index.css';
 
-type globalOptions = {
+export type globalOptions = {
     [s: string]: any
 };
 
-interface RenderPropsInterface {
+export interface RenderPropsInterface {
     code: string;
     global?: globalOptions;
 }
 
-export let store = configureStore();
+export let store: Store<RootState> = configureStore();
 
 export class Render extends React.Component<RenderPropsInterface, {}> {
     static defaultProps = {

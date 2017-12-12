@@ -10,7 +10,7 @@ const TabPane = Tabs.TabPane;
 let unExpand = require('./img/unExpand.svg');
 let expanded = require('./img/expanded.svg');
 
-interface CodeBoxPropsInterface {
+export interface CodeBoxPropsInterface {
     title: string;
     desc: string;
     code: string;
@@ -18,7 +18,7 @@ interface CodeBoxPropsInterface {
     mode?: string;
 }
 
-interface CodeBoxStateInterface {
+export interface CodeBoxStateInterface {
     expand: boolean;
 }
 

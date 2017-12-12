@@ -5,7 +5,7 @@ import {compileValueExpress, isExpression, parseExpressString} from '../../../ut
 import {store} from '../../../index';
 import * as _ from 'lodash';
 
-interface PassCustomerExecConfig {
+export interface PassCustomerExecConfig {
     /**
      * 目标container组件的key
      */

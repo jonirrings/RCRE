@@ -1,8 +1,8 @@
-type titleTypes = {
+export type titleTypes = {
     text: string;
 };
 
-type tooltipTypes = {
+export type tooltipTypes = {
     trigger: string;
     axisPointer?: {
         type: string;
@@ -12,12 +12,12 @@ type tooltipTypes = {
     }
 };
 
-type legendTypes = {
+export type legendTypes = {
     top: string | number;
     data: string[] | number[];
 };
 
-type toolboxTypes = {
+export type toolboxTypes = {
     itemSize: number;
     itemGap: number;
     right: number;
@@ -26,21 +26,21 @@ type toolboxTypes = {
     }
 };
 
-type gridTypes = {
+export type gridTypes = {
     [s: string]: string | number | boolean;
 };
 
-type xAxisTypes = {
+export type xAxisTypes = {
     type: 'category' | 'value' | 'log';
     boundaryGap: boolean;
     data: string[]
 };
 
-type yAxisTypes = {
+export type yAxisTypes = {
     type: 'category' | 'value' | 'log';
 };
 
-type dataZoomTypes = {
+export type dataZoomTypes = {
     id: string;
     type: string;
     xAxisIndex?: number[];

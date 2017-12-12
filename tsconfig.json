@@ -9,7 +9,7 @@
             "es7"
         ],
         "sourceMap": true,
-        "allowJs": true,
+        "allowJs": false,
         "moduleResolution": "node",
         "rootDir": "src",
         "forceConsistentCasingInFileNames": false,
@@ -22,7 +22,9 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "jsx": "react",
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "declarationDir": "./"
     },
     "exclude": [
         "node_modules",

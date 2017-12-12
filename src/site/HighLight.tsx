@@ -1,7 +1,7 @@
 import * as hljs from 'highlight.js';
 import * as React from 'react';
 
-interface HighLightPropsInterface {
+export interface HighLightPropsInterface {
     innerHTML?: string;
     className?: string;
 }
