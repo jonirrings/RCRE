@@ -5,7 +5,9 @@
     "repository": "https://github.com/andycall/RCRE",
     "homepage": "/",
     "files": [
-        "build"
+        "build",
+        "src",
+        "doc"
     ],
     "proxy": {
         "/proxy": {
@@ -134,5 +136,5 @@
         "proxyServer": "TS_NODE_PROJECT=`pwd`/scripts PORT=8800 ts-node scripts/proxy.ts"
     },
     "license": "Apache-2.0",
-    "typings": "render/index.d.ts"
+    "typings": "build/plugin/render/index.d.ts"
 }
