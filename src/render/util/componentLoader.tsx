@@ -12,16 +12,22 @@ export class ComponentLoader {
         this.cache = new Map();
     }
 
-    getComponent(type: string): ComponentLoaderMapVal | undefined {
+    getComponent(type: string): ComponentLoaderMapVal {
         if (type.indexOf('.') >= 0) {
             type = type.split('.').slice(-1)[0];
         }
         
-        return this.cache.get(type);
+        let info = this.cache.get(type);
+        
+        if (!info) {
+            throw new Error('can not find module of type' + type);
+        }
+        
+        return info;
     }
 
     addComponent(type: string, component: React.ComponentClass<any>, componentInterface: any) {
-        if (!componentInterface || !component) {
+        if (!component) {
             throw new Error('ComponentLoader: component of type is null type: ' + type);
         }
         

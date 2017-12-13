@@ -1,5 +1,5 @@
 # RCRE
-
+[![Build Status](https://travis-ci.org/andycall/RCRE.svg?branch=master)](https://travis-ci.org/andycall/RCRE)
 > 有了RCRE，以后写后台页面再也不用去求前端了。
 
 RCRE是一个使用JSON来生成单页应用程序的渲染引擎。
@@ -17,6 +17,36 @@ RCRE是一个使用JSON来生成单页应用程序的渲染引擎。
 6. 方便调试，可使用React Devtools和Redux Devtools来进行调试
 7. 方便的表单功能，10分钟写出复杂的提交表单不是梦
 
+## 快速使用
+
+**安装**
+```bash
+npm install rcre-core --save
+```
+
+**引入**
+```javascript
+import React from 'react';
+import {Render} from 'rcre-core';
+
+class Demo extends React.Component {
+    render() {
+        const config = {
+            body: [
+                {
+                    type: 'text',
+                    text: 'helloworld'
+                }
+            ]
+        };
+        
+        return <Render 
+            code={JSON.stringify(config)}
+        />
+    }
+}
+```
+
 ## 教程
 
 1. [Helloworld](src/guide/Helloworld.md)
@@ -26,9 +56,8 @@ RCRE是一个使用JSON来生成单页应用程序的渲染引擎。
 5. [嵌套的Container组件](src/guide/NestContainer.md)
 6. [布局系统](src/guide/LayoutSystem.md)
 
-## 如何贡献
-
 ### 运行此项目
+
 ```bash
 npm install
 npm start

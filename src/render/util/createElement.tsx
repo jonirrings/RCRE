@@ -1,11 +1,15 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import paramsCheck from './paramCheck';
+import {ValidationError} from 'class-validator';
 
 export default function createElement<T>(component: React.ComponentClass<T>,
-                                         componentInterFace: Object,
+                                         componentInterFace?: Object,
                                          props?: React.Attributes & T, children?: React.ReactNode) {
-    let validateResults = paramsCheck(props, componentInterFace);
+    let validateResults: ValidationError[] = [];
+    if (componentInterFace) {
+        validateResults = paramsCheck(props, componentInterFace);    
+    }
 
     if (validateResults.length > 0) {
         let errmsg = '';

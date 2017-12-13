@@ -8,6 +8,7 @@ import componentDriver from './util/componentLoader';
 import {BasicContainer} from './core/Container/types';
 import {providerLoaderInstance as providerLoader} from './core/DataProvider/loader';
 import {customerLoaderInstance as customerLoader} from './core/DataCustomer/loader';
+import {createChild} from './util/createChild';
 import {Store} from 'redux';
 import {RootState} from './data/reducers';
 
@@ -77,7 +78,8 @@ export {
     BasicContainer,
     componentDriver as componentLoader, 
     providerLoader, 
-    customerLoader
+    customerLoader,
+    createChild
 };
 
 window.React = React;
