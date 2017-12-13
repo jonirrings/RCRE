@@ -1,3 +1,4 @@
+import './Style/index';
 import './Container/Container';
 import './Text/Text';
 import './Button/Button';
@@ -20,3 +21,4 @@ import './Pagination/Pagination';
 import './Slider/Slider';
 import './Popover/Popover';
 import './RangePicker/RangePicker';
+import './Tree/Tree';

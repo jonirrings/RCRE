@@ -161,5 +161,14 @@ export default {
         demo: {
             basic: require('raw-loader!./Checkbox/demo/basic.md')
         }
+    },
+    tree: {
+        index: require('raw-loader!./Tree/Tree.md'),
+        demo: {
+            basic: require('raw-loader!./Tree/demo/basic.md'),
+            checkable: require('raw-loader!./Tree/demo/checkable.md'),
+            multiple: require('raw-loader!./Tree/demo/multiple.md'),
+            showLine: require('raw-loader!./Tree/demo/showLine.md')
+        }
     }
 };

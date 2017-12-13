@@ -162,6 +162,7 @@ module.exports = {
                     /\.(js|jsx)(\?.*)?$/,
                     /\.(ts|tsx)(\?.*)?$/,
                     /\.css$/,
+                    /\.less$/,
                     /\.json$/,
                     /\.bmp$/,
                     /\.gif$/,
@@ -190,7 +191,6 @@ module.exports = {
                 test: /\.(ts|tsx)$/,
                 include: paths.appSrc,
                 use: [
-                    require.resolve('babel-loader'),
                     require.resolve('ts-loader')
                 ]
                 // loader: require.resolve('ts-loader'),
@@ -228,6 +228,14 @@ module.exports = {
                             ]
                         }
                     }
+                ]
+            },
+            {
+                test: /\.less$/,
+                use: [
+                    require.resolve('style-loader'),
+                    require.resolve('css-loader'),
+                    require.resolve('less-loader')
                 ]
             }
             // ** STOP ** Are you adding a new loader?
