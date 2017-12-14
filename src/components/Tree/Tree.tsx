@@ -5,6 +5,7 @@ import {
 import {IsDefined, IsString} from 'class-validator';
 import componentLoader from '../../render/util/componentLoader';
 import {Tree} from 'antd';
+import * as _ from 'lodash';
 import {TreeProps} from 'antd/es/tree';
 
 const TreeNode = Tree.TreeNode;
@@ -116,7 +117,7 @@ export class AbstractTree extends BasicContainer<TreePropsInterface, {}> {
             let selectable = typeof op.selectable === 'boolean' ? op.selectable : true;
             let children;
             
-            if (op.children) {
+            if (_.isArray(op.children) && op.children.length > 0) {
                 children = this.renderTreeNode(op.children);
             }
             

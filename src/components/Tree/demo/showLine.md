@@ -46,13 +46,11 @@
                             "children": [
                                 {
                                     "title": "DDD",
-                                    "key": "ddd",
-                                    "isLeaf": true
+                                    "key": "ddd"
                                 },
                                 {
                                     "title": "EEE",
-                                    "key": "eee",
-                                    "isLeaf": true
+                                    "key": "eee"
                                 }
                             ]
                         }

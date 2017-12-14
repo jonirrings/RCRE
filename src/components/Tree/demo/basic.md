@@ -27,13 +27,12 @@ Tree组件需要在container组件的控制下才能运行。
                             "children": [
                                 {
                                     "title": "DDD",
-                                    "key": "ddd",
-                                    "isLeaf": true
+                                    "key": "ddd"
                                 },
                                 {
                                     "title": "EEE",
                                     "key": "eee",
-                                    "isLeaf": true
+                                    "children": []
                                 }
                             ]
                         }
