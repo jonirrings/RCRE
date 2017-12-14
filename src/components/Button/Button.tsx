@@ -123,6 +123,31 @@ export class ButtonConfig extends BasicConfig {
 
 export class ButtonPropsInterface extends BasicContainerPropsInterface {
     info: ButtonConfig;
+
+    /**
+     * 可扩展的点击回调函数，用于自定义回调参数
+     */
+    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => Object;
+
+    /**
+     * 可扩展的鼠标按下的回调函数，用于自定义回调参数
+     */
+    onMouseUp?: (event: React.MouseEvent<HTMLButtonElement>) => Object;
+
+    /**
+     * 可扩展的鼠标送气的回调函数，用于自定义回调参数
+     */
+    onMouseDown?: (event: React.MouseEvent<HTMLButtonElement>) => Object;
+
+    /**
+     * 使用confirm之后再次点击确认触发的回调函数，用于自定义回调参数
+     */
+    onConfirm?: (event: React.MouseEvent<HTMLButtonElement>) => Object;
+
+    /**
+     * 使用confirm之后点击取消触发的回调函数，用于自定义回调参数
+     */
+    onCancel?: (event: React.MouseEvent<HTMLButtonElement>) => Object;
 }
 
 class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
@@ -155,14 +180,12 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
         
         let buttonProps: ButtonProps = {
             onMouseUp: (event: React.MouseEvent<HTMLButtonElement>) => {
-                this.commonEventHandler('onMouseUp', {
-                    event: event
-                });
+                this.commonEventHandler('onMouseUp', 
+                    this.getExternalCallbackArgs([event], this.props.onMouseUp));
             },
             onMouseDown: (event: React.MouseEvent<HTMLButtonElement>) => {
-                this.commonEventHandler('onMouseDown', {
-                    event: event
-                });
+                this.commonEventHandler('onMouseDown', 
+                    this.getExternalCallbackArgs([event], this.props.onMouseDown));
             },
             loading: loading,
             ...mappedProps
@@ -176,14 +199,12 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
                     okType={info.confirm!.okType}
                     cancelText={info.confirm!.cancelText}
                     onConfirm={(event: React.MouseEvent<HTMLDivElement>) => {
-                        this.commonEventHandler('onConfirm', {
-                            event: event
-                        });
+                        this.commonEventHandler('onConfirm', 
+                            this.getExternalCallbackArgs([event], this.props.onConfirm));
                     }}
                     onCancel={(event: React.MouseEvent<HTMLDivElement>) => {
-                        this.commonEventHandler('onCancel', {
-                            event: event
-                        });
+                        this.commonEventHandler('onCancel', 
+                            this.getExternalCallbackArgs([event], this.props.onCancel));
                     }}
                 >
                     <Button {...buttonProps}>{childElement}</Button>
@@ -195,9 +216,8 @@ class AbstractButton extends BasicContainer<ButtonPropsInterface, {}> {
             }
             
             buttonProps.onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-                this.commonEventHandler('onClick', {
-                    event: event
-                });
+                this.commonEventHandler('onClick', 
+                    this.getExternalCallbackArgs([event], this.props.onClick));
             };
 
             buttonProps.style = {

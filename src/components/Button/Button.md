@@ -9,29 +9,54 @@
 -----
 ## API
 
-|         属性          |                说明                |                    类型                    |   默认值   |
-| :-----------------: | :------------------------------: | :--------------------------------------: | :-----: |
-|        text         |               按钮文字               |                  string                  |    -    |
-|      buttonType      |               按钮类型               |   'primary' 'dashed' 'danger' 'ghost'    |    -    |
-|      htmlType       |            按钮的HTML类型             | 设置 `button` 原生的 `type` 值，可选值请参考 [HTML 标准](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type) | button  |
-|       confirm       |            点击之后弹一个确认框            |                  object                  |    -    |
-|    confirm.title    |              确定框的标题              |                  string                  |    -    |
-|   confirm.okText    |              确认按钮文字              |                  string                  |   确认    |
-| confirm. cancelText |              取消按钮文字              |                  string                  |   取消    |
-|        icon         |             按钮的图标类型              |                  string                  |    -    |
-|        shape        |    设置按钮形状，可选值为 `circle` 或者不设     |                  string                  |    -    |
-|        size         | 设置按钮大小，可选值为 `small` `large` 或者不设 |                  string                  | default |
-|       loading       |             设置按钮载入状态             |                 boolean                  |  false  |
-|        ghost        |           幽灵属性，使按钮背景透明           |                 boolean                  |  false  |
-|      disabled       |               禁用按钮               |                 boolean                  |  false  |
-|      className      |           按钮的CSS class           |                  string                  |    -    |
-|        style        |             内联CSS属性              |                  object                  |    -    |
+|         属性          |                说明                |                    类型                    | 是否必须  |   默认值   |
+| :-----------------: | :------------------------------: | :--------------------------------------: | :---: | :-----: |
+|        text         |               按钮文字               |                  string                  | true  |  false  |
+|     buttonType      |               按钮类型               | 'primary','dashed','danger','ghost', 'default' | false | default |
+|      htmlType       |            按钮的HTML类型             | 设置 `button` 原生的 `type` 值，可选值请参考 [HTML 标准](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type) | false | button  |
+|       confirm       |            点击之后弹一个确认框            |                  object                  | false |    -    |
+|    confirm.title    |              确定框的标题              |                  string                  | false |    -    |
+|   confirm.okText    |              确认按钮文字              |                  string                  | false |   确认    |
+| confirm. cancelText |              取消按钮文字              |                  string                  | false |   取消    |
+|        icon         |             按钮的图标类型              |                  string                  | false |    -    |
+|        shape        |    设置按钮形状，可选值为 `circle` 或者不设     |                  string                  | false |    -    |
+|        size         | 设置按钮大小，可选值为 `small` `large` 或者不设 |                  string                  | false | default |
+|       loading       |             设置按钮载入状态             |                 boolean                  | false |  false  |
+|        ghost        |           幽灵属性，使按钮背景透明           |                 boolean                  | false |  false  |
+|      disabled       |               禁用按钮               |                 boolean                  | false |  false  |
+|      className      |           按钮的CSS class           |                  string                  | false |    -    |
+|        style        |             内联CSS属性              |                  object                  | false |    -    |
 
 ## 事件
 
-|   事件名称    |           描述           |                  参数                   |
-| :-------: | :--------------------: | :-----------------------------------: |
-|  onClick  |          点击事件          | React.MouseEvent |
-| onConfirm | 确定框点击确认, 添加`confirm`有效 | React.MouseEvent |
-| onCancel  | 确认框点击取消,添加`confirm`有效  | React.MouseEvent |
+#### onClick 鼠标点击
+鼠标点击之后触发
+
+默认情况下没有参数
+
+#### onMouseDown 鼠标按钮按下
+
+鼠标按下之后触发
+
+默认情况下没有参数
+
+#### onMouseUp 鼠标按钮松开
+
+鼠标松开之后触发
+
+默认情况下没有参数
+
+#### onConfirm 再次点击确认
+
+使用confirm属性之后点击确认按钮之后触发
+
+默认情况下没有参数
+
+#### onCancel 确认取消
+
+使用confirm属性之后点击取消按钮之后触发
+
+
+
+## 组件扩展
 

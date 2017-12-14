@@ -340,4 +340,12 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
             }
         }, this.props.$data);
     }
+    
+    public getExternalCallbackArgs(args: any[], callback?: (event: any) => Object): Object {
+        if (callback) {
+            return callback.apply(this, args) || {};
+        } else {
+            return {};
+        }
+    }
 }
