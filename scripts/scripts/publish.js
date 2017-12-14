@@ -1,5 +1,5 @@
 /**
- * @file 发布桥本
+ * @file 发布脚本
  * @author dongtiancheng
  */
 

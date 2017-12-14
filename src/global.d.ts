@@ -15,6 +15,7 @@ declare interface Window {
     RCRE_providerLoader: any;
     RCRE_customerLoader: any;
     RCRE_componentDriver: any;
+    RCRE_clearStore: any;
 }
 
 declare var __VERSION__: any;

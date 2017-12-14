@@ -44,6 +44,7 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
     }
 
     render() {
+        console.log('rerender');
         let info;
         try {
             info = JSON.parse(this.props.code);
@@ -74,6 +75,10 @@ export class Render extends React.Component<RenderPropsInterface, {}> {
     }
 }
 
+export function clearStore() {
+    store.dispatch(actionCreators.clearData());
+}
+
 export {
     BasicContainer,
     componentDriver as componentLoader, 
@@ -83,6 +88,7 @@ export {
 };
 
 window.React = React;
+window.RCRE_clearStore = clearStore;
 window.ReactDOM = ReactDOM;
 window.RCRE = Render;
 window.RCRE_React = React;

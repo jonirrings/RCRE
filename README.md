@@ -56,9 +56,6 @@ class Demo extends React.Component {
 5. [嵌套的Container组件](src/guide/NestContainer.md)
 6. [布局系统](src/guide/LayoutSystem.md)
 
-### 运行此项目
+## 如何贡献代码
 
-```bash
-npm install
-npm start
-```
+请看这里： [如何贡献代码](CONTRIBUTING.md)
