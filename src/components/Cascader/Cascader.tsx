@@ -81,6 +81,11 @@ export class CascaderConfig extends BasicConfig {
      * 组件加载初始值
      */
     defaultValue: (string | number)[];
+
+    /**
+     * 选择即改变
+     */
+    changeOnSelect?: boolean;
 }
 
 export class CascaderPropsInterface extends BasicContainerPropsInterface {
@@ -115,6 +120,7 @@ export class AbstractCascader extends BasicContainer<CascaderPropsInterface, {}>
             allowClear: info.allowClear,
             expandTrigger: info.expandTrigger,
             showSearch: info.showSearch,
+            changeOnSelect: info.changeOnSelect,
             options: []
         };
     }

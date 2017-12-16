@@ -15,7 +15,9 @@ export default {
         demo: {
             basic: require('raw-loader!./Cascader/demo/basic.md'),
             defaultValue: require('raw-loader!./Cascader/demo/defaultValue.md'),
-            loading: require('raw-loader!./Cascader/demo/loading.md')
+            loading: require('raw-loader!./Cascader/demo/loading.md'),
+            expandTrigger: require('raw-loader!./Cascader/demo/expandTrigger.md'),
+            changeOnSelect: require('raw-loader!./Cascader/demo/changeOnSelect.md')
         }
     },
     table: {

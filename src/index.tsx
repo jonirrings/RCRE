@@ -3,6 +3,8 @@
  * @author dongtiancheng
  */
 
+// 引擎入口在 ./render/index.tsx
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './site/App';
