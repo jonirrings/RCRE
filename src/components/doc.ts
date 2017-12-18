@@ -7,7 +7,8 @@ export default {
             icon: require('raw-loader!./Button/demo/icon.md'),
             disabled: require('raw-loader!./Button/demo/disabled.md'),
             loading: require('raw-loader!./Button/demo/loading.md'),
-            href: require('raw-loader!./Button/demo/href.md')
+            href: require('raw-loader!./Button/demo/href.md'),
+            filter: require('raw-loader!./Button/demo/filter.md')
         }
     },
     cascader: {
@@ -71,7 +72,8 @@ export default {
             showToday: require('raw-loader!./DatePicker/demo/showToday.md'),
             format: require('raw-loader!./DatePicker/demo/format.md'),
             defaultValue: require('raw-loader!./DatePicker/demo/defaultValue.md'),
-            startTime: require('raw-loader!./DatePicker/demo/startTime.md')
+            startTime: require('raw-loader!./DatePicker/demo/startTime.md'),
+            dynamicDateRange: require('raw-loader!./DatePicker/demo/dynamicDateRange.md')
         }
     },
     tabs: {

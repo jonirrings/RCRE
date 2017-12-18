@@ -32,3 +32,21 @@
 | label | 选项显示出来的名称 | string | true | -
 | disabled | 是否禁用 | boolean | false | -
 | children | 字级选项 | CascaderOptionType | false | -
+
+## 事件
+
+| 事件名称        | 触发条件   | 参数   |
+| ----------- | ------ | ---- |
+| onPopupVisibleChange     | 当标签页展开   | popupVisible: boolean|
+| onChange | 当数据更新 | value: string[], selectedOptions?: CascaderOptionType[] |
+
+**CascaderOptionType**
+```typescript
+export interface CascaderOptionType {
+    value: string;
+    label: React.ReactNode;
+    disabled?: boolean;
+    children?: Array<CascaderOptionType>;
+    __IS_FILTERED_OPTION?: boolean;
+}
+```

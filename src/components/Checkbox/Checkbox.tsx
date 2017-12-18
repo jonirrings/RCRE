@@ -57,6 +57,21 @@ export class CheckboxConfig extends BasicConfig {
 
 export class CheckboxPropsInterface extends BasicContainerPropsInterface {
     info: CheckboxConfig;
+
+    /**
+     * 当鼠标移入的回调
+     */
+    onMouseEnter?: (event: React.MouseEvent<HTMLInputElement>) => Object;
+
+    /**
+     * 当鼠标移开的回调
+     */
+    onMouseLeave?: (event: React.MouseEvent<HTMLInputElement>) => Object;
+
+    /**
+     * 当数据更新的回调
+     */
+    onChange?: (event: React.MouseEvent<HTMLInputElement>) => Object;
 }
 
 export default class AbstractCheckbox extends BasicContainer<CheckboxPropsInterface, {}> {
@@ -71,6 +86,8 @@ export default class AbstractCheckbox extends BasicContainer<CheckboxPropsInterf
         if (this.props.$setData) {
             this.props.$setData(this.props.info.name, checked);
         }
+        
+        this.commonEventHandler('onChange', this.getExternalCallbackArgs([event], this.props.onChange));
     }
 
     private mapOptions(info: CheckboxConfig): CheckboxProps {
@@ -102,14 +119,10 @@ export default class AbstractCheckbox extends BasicContainer<CheckboxPropsInterf
             checked: value,
             onChange: this.handleChange,
             onMouseEnter: (event: React.MouseEvent<HTMLInputElement>) => {
-                this.commonEventHandler('onMouseEnter', {
-                    event: event
-                });
+                this.commonEventHandler('onMouseEnter', this.getExternalCallbackArgs([event], this.props.onMouseEnter));
             },
             onMouseLeave: (event: React.MouseEvent<HTMLInputElement>) => {
-                this.commonEventHandler('onMouseLeave', {
-                    event: event
-                });
+                this.commonEventHandler('onMouseLeave', this.getExternalCallbackArgs([event], this.props.onMouseLeave));
             },
             ...checkboxProps
         }, info.text);

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 import {CSSProperties} from 'react';
 import {IsBoolean, IsDefined, IsString, Validate} from 'class-validator';
 import {IsValidEnums} from '../../render/util/validators';
@@ -13,6 +14,11 @@ export class InputConfig extends BasicConfig {
      */
     @IsDefined()
     name: string;
+
+    /**
+     * 默认值
+     */
+    defaultValue?: string | number;
 
     /**
      * 输入框类型
@@ -124,10 +130,25 @@ class AbstractInput extends BasicContainer<InputPropsInterface, InputStateInterf
 
         this.handleChange = this.handleChange.bind(this);
     }
+    
+    componentDidMount() {
+        let info = this.props.info;
+        if (this.props.$setData && info.name && !_.isNil(info.defaultValue)) {
+            const $setData = this.props.$setData;
+            
+            setTimeout(() => {
+                $setData(info.name, info.defaultValue);
+            }, 0);
+        }
+    }
 
     private handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-        let value = event.target.value;
+        let value: string | number = event.target.value;
         if (this.props.$setData) {
+            if (this.props.info.inputType === 'number') {
+                value = Number(value);
+            }
+            
             this.props.$setData(this.props.info.name, value);
         }
     }

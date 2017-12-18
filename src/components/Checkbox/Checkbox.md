@@ -14,3 +14,11 @@
 | text | 显示的文字 | string | false | - |
 | className | CSS class | string | false | - |
 | style | 内联CSS属性 | CSSProperties | false | - |
+
+## 事件
+
+| 事件名称        | 触发条件   | 参数   |
+| ----------- | ------ | ---- |
+| onChange | 当数据更新 | 无 |
+| onMouseEnter | 当鼠标按下 | 无 |
+| onMouseLeave | 当鼠标松开 | 无 |

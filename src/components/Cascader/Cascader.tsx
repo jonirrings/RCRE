@@ -90,6 +90,16 @@ export class CascaderConfig extends BasicConfig {
 
 export class CascaderPropsInterface extends BasicContainerPropsInterface {
     info: CascaderConfig;
+
+    /**
+     * 当标签页展开，用于自定义扩展
+     */
+    onPopupVisibleChange?: (popupVisible: boolean) => Object;
+
+    /**
+     * 当数据更新
+     */
+    onChange?: (value: string[], selectedOptions?: CascaderOptionType[]) => Object;
 }
 
 export class AbstractCascader extends BasicContainer<CascaderPropsInterface, {}> {
@@ -129,6 +139,11 @@ export class AbstractCascader extends BasicContainer<CascaderPropsInterface, {}>
         if (this.props.$setData) {
             this.props.$setData(this.props.info.name, value);
         }
+        
+        this.commonEventHandler('onChange', {
+            value, 
+            selectedOptions
+        });
     }
 
     private mapOptions(options: CascaderOptionType[], optionsMapping: CascaderOptionType) {
@@ -164,7 +179,7 @@ export class AbstractCascader extends BasicContainer<CascaderPropsInterface, {}>
 
         let $loading = this.props.$data.get('$loading') || false;
 
-        if (!info.options) {
+        if (!Array.isArray(info.options)) {
             if (this.context.debug) {
                 return <div>options props is required for Cascader Element</div>;
             } else {
@@ -200,7 +215,7 @@ export class AbstractCascader extends BasicContainer<CascaderPropsInterface, {}>
             onChange: this.handleChange,
             onPopupVisibleChange: (popupVisible: boolean) => {
                 this.commonEventHandler('onPopupVisibleChange', {
-                    popupVisible: popupVisible
+                    popupVisible
                 });
             }
         });

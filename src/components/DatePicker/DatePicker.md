@@ -19,3 +19,10 @@
 | showToday | 是否展示“今天”按钮 | boolean | false | true | 
 | size | 输入框大小 | large, small | false | -
 | defaultValue | 初始日期 | ExpressionString | false | - |
+
+## 事件
+
+| 事件名称        | 触发条件   | 参数   |
+| ----------- | ------ | ---- |
+| onOpenChange     | 当日历展开或者收起  | status: boolean    |
+| onChange | 当日期改变 | dateString: string    |

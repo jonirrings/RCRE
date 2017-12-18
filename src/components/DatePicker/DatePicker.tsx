@@ -171,6 +171,7 @@ export default class AbstractDatepicker extends BasicContainer<DatePickerPropsIn
             showTime: info.showTime,
             showToday: info.showToday,
             placeholder: info.placeholder,
+            allowClear: info.allowClear || false,
             format: info.format
         };
     }
@@ -205,6 +206,10 @@ export default class AbstractDatepicker extends BasicContainer<DatePickerPropsIn
         if (this.props.$setData) {
             this.props.$setData(this.props.info.name, dateString);
         }
+        
+        this.commonEventHandler('onChange', {
+            dateString
+        });
     }
 }
 

@@ -340,7 +340,13 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
             }
         }, this.props.$data);
     }
-    
+
+    /**
+     * 当使用扩展组件来使用的时候才提供参数，正常不提供参数
+     * @param {any[]} args
+     * @param {(event: any) => Object} callback
+     * @returns {Object}
+     */
     public getExternalCallbackArgs(args: any[], callback?: (event: any) => Object): Object {
         if (callback) {
             return callback.apply(this, args) || {};

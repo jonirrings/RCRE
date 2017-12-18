@@ -37,7 +37,8 @@
                         {
                             "type": "datePicker",
                             "name": "filter.time",
-                            "startTime": "2017-12-04"
+                            "startTime": "#ES{$data.filter.startTime}",
+                            "endTime": "#ES{$data.filter.endTime}"
                         }
                     ]
                 }
