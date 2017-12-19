@@ -1,6 +1,6 @@
 ## 基本使用
 
-表单验证
+使用formGroup组件，就可以让表单元素按照规整的布局进行排版。
 
 ```json
 {
@@ -26,23 +26,26 @@
             "children": [
                 {
                     "type": "form",
-                    "name": "basicForm",
                     "trigger": [
                         {
                             "event": "onSubmit",
                             "targetCustomer": "formSubmit",
                             "params": {
-                                "name": "#ES{$args.data.name}"
+                                "name": "#ES{$args.name}"
                             }
                         }
                     ],
                     "children": [
                         {
-                            "type": "input",
-                            "name": "name",
-                            "errmsg": "请输入姓名",
-                            "required": true,
-                            "formItem": true
+                            "type": "formGroup",
+                            "label": "姓名",
+                            "control": {
+                                "type": "input",
+                                "name": "name",
+                                "errmsg": "请输入姓名",
+                                "placeholder": "请输入姓名",
+                                "required": true  
+                            }
                         },
                         {
                             "type": "button",

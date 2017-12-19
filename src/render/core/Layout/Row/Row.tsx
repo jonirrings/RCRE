@@ -15,6 +15,7 @@ export class GridItem extends BasicConfig {
     gridLeft?: number;
     gridTop?: number;
     gridWidth?: number | string;
+    gridHeight?: number | string;
 }
 
 type alignCenterItems =
@@ -100,7 +101,12 @@ export class RowConfig extends BasicConfig {
     /**
      * 宽度
      */
-    width: number | string;
+    width?: number | string;
+
+    /**
+     * 高度
+     */
+    height?: number | string;
 
     /**
      * 测试使用, 显示网格
@@ -117,6 +123,9 @@ export class RowConfig extends BasicConfig {
      */
     style?: CSSProperties;
 
+    /**
+     * 子级元素
+     */
     children: GridItem[];
 }
 
@@ -165,6 +174,7 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
             let positionStyle = getCssCombo(childInfo.gridPosition);
             const gridStyles = {
                 width: childInfo.gridWidth || `${100 / 12 * gridCount}%`,
+                height: childInfo.gridHeight || 'auto',
                 display: 'flex',
                 border: showBorder ? `1px dashed blue` : ''
             };
@@ -172,17 +182,15 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
                 marginTop: `${childInfo.gridTop || 0}px`,
                 marginLeft: `${childInfo.gridLeft || 0}px`,
                 width: childInfo.gridWidth || '100%',
+                height: childInfo.gridHeight || 'auto',
                 display: 'flex',
                 ...positionStyle
             };
-
+            
             let child = createChild(childInfo, {
-                info: childInfo,
-                $data: this.props.$data,
-                $setData: this.props.$setData,
-                dataCustomer: this.props.dataCustomer,
-                model: this.props.model
-            });
+                ...this.props,
+                info: childInfo
+            }, this.props.children);
 
             let childElement = (
                 <div key={`grid_${childInfo.type}_${index}`} style={gridStyles}>
@@ -198,6 +206,7 @@ export default class Row extends BasicContainer<RowPropsInterface, {}> {
         const rowStyles = {
             display: 'flex',
             width: info.width || '100%',
+            height: info.height || 'auto',
             minHeight: info.minHeight || '30px',
             border: showBorder ? '1px dashed #333' : '',
             ...info.style

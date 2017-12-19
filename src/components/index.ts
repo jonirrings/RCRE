@@ -16,6 +16,7 @@ import './Affix/Affix';
 import './Modal/Modal';
 import './Tabs/Tabs';
 import './Form/Form';
+import './Form/FormGroup';
 import './Trend/Trend';
 import './Pagination/Pagination';
 import './Slider/Slider';

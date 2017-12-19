@@ -54,7 +54,8 @@ export default {
     form: {
         index: require('raw-loader!./Form/Form.md'),
         demo: {
-            basic: require('raw-loader!./Form/demo/basic.md')
+            basic: require('raw-loader!./Form/demo/basic.md'),
+            dynamicForm: require('raw-loader!./Form/demo/dynamicForm.md')
         }
     },
     text: {

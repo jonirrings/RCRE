@@ -16,6 +16,11 @@ export class TextConfig extends BasicConfig {
     textType?: 'text' | 'link' | 'strong';
 
     /**
+     * HTML标签
+     */
+    htmlType?: keyof HTMLElementTagNameMap;
+
+    /**
      * 跳转链接
      */
     @IsUrl()
@@ -40,11 +45,36 @@ export class TextConfig extends BasicConfig {
 
 export class TextPropsInterface extends BasicContainerPropsInterface {
     info: TextConfig;
+
+    /**
+     * 可扩展的onClick函数
+     */
+    onClick?: (event: React.MouseEvent<any>) => Object;
 }
 
 export class Text extends BasicContainer<TextPropsInterface, {}> {
     constructor() {
         super();
+    }
+    
+    private parseThousand(text: string) {
+        text = String(text);
+        let group = text.split('').reverse();
+        let ret = '';
+
+        for (let i = 1; i <= group.length; i++) {
+            if (i % 3 !== 0) {
+                ret = group[i - 1] + ret;
+            } else {
+                ret = ',' + group[i - 1] + ret;
+            }
+        }
+
+        if (ret[0] === ',') {
+            ret = ret.substring(1);
+        }
+
+        return ret;
     }
 
     render() {
@@ -61,23 +91,7 @@ export class Text extends BasicContainer<TextPropsInterface, {}> {
         }
 
         if (info.thousands && /^\d+$/.test(text)) {
-            text = String(text);
-            let group = text.split('').reverse();
-            let ret = '';
-
-            for (let i = 1; i <= group.length; i++) {
-                if (i % 3 !== 0) {
-                    ret = group[i - 1] + ret;
-                } else {
-                    ret = ',' + group[i - 1] + ret;
-                }
-            }
-
-            if (ret[0] === ',') {
-                ret = ret.substring(1);
-            }
-
-            text = ret;
+            text = this.parseThousand(text);
         }
         
         switch (info.textType) {
@@ -100,18 +114,16 @@ export class Text extends BasicContainer<TextPropsInterface, {}> {
                 break;
 
             default:
-                children = (
-                    <span
-                        style={Object.assign(defaultTextStyle, info.style)}
-                        onClick={(event: React.MouseEvent<HTMLSpanElement>) => {
-                            this.commonEventHandler('onClick', {
-                                event: event
-                            });
-                        }}
-                    >
-                        {text}
-                    </span>
-                );
+                let tag = info.htmlType || 'span';
+                
+                children = React.createElement(tag, {
+                    style: Object.assign(defaultTextStyle, info.style),
+                    onClick: (event: React.MouseEvent<HTMLSpanElement>) => {
+                        this.commonEventHandler('onClick', 
+                            this.getExternalCallbackArgs([event], this.props.onClick));
+                    },
+                    className: info.className
+                }, text);
         }
 
         return this.renderChildren(info, children);

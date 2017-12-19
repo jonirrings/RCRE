@@ -78,6 +78,8 @@ export class BasicConfig {
      * 是否作为表单输入元素
      */
     formItem?: boolean;
+    
+    [s: string]: any;
 }
 
 export class BasicContainerPropsInterface {
@@ -254,23 +256,23 @@ export function getRuntimeContext(props: BasicContainerPropsInterface, context: 
 /**
  * 所有子级组件的基类
  */
-export class BasicContainer<T extends BasicContainerPropsInterface, P> extends React.Component<T, P> {
+export abstract class BasicContainer<T extends BasicContainerPropsInterface, P> extends React.Component<T, P> {
     static contextTypes = BasicContextTypes;
 
     constructor() {
         super();
     }
 
-    public getRuntimeContext(props: T = this.props, context: any = this.context) {
+    protected getRuntimeContext(props: T = this.props, context: any = this.context) {
         return getRuntimeContext(props, context);
     }
 
-    public getPropsInfo<InfoType>(info: InfoType, props?: T, blackList?: string[], isDeep?: boolean) {
+    protected getPropsInfo<InfoType>(info: InfoType, props?: T, blackList?: string[], isDeep?: boolean) {
         info = compileValueExpress(info, this.getRuntimeContext(props), blackList, isDeep);
         return info;
     }
 
-    public errorReport(msg: string, extendElement: any) {
+    protected errorReport(msg: string, extendElement: any) {
         if (this.context.debug) {
             return React.createElement(extendElement, {}, msg);
         } else {
@@ -279,7 +281,7 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
         }
     }
 
-    public renderChildren<Type>(info: BasicConfig, children: React.ReactElement<Type>) {
+    protected renderChildren<Type>(info: BasicConfig, children: React.ReactElement<Type>) {
         if (info.hidden) {
             return React.createElement('div', {
                 style: {
@@ -291,7 +293,7 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
         return children;
     }
 
-    public getChildProps(info: BasicConfig, childProps: Object) {
+    protected getChildProps(info: BasicConfig, childProps: Object) {
         return {
             info: info,
             $data: this.props.$data,
@@ -305,7 +307,7 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
         };
     }
 
-    public commonEventHandler(eventName: string, args: {
+    protected commonEventHandler(eventName: string, args: {
         [s: string]: any
     }, mute: boolean = true) {
         if (this.props.eventHandle) {
@@ -319,7 +321,7 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
         }
     }
     
-    public getValueFromDataStore(nameStr: string) {
+    protected getValueFromDataStore(nameStr: string) {
         if (!this.props.$data) {
             return null;
         }
@@ -347,7 +349,7 @@ export class BasicContainer<T extends BasicContainerPropsInterface, P> extends R
      * @param {(event: any) => Object} callback
      * @returns {Object}
      */
-    public getExternalCallbackArgs(args: any[], callback?: (event: any) => Object): Object {
+    protected getExternalCallbackArgs(args: any[], callback?: (event: any) => Object): Object {
         if (callback) {
             return callback.apply(this, args) || {};
         } else {

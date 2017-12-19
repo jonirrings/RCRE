@@ -38,30 +38,31 @@ export function createChild<T extends BasicContainerPropsInterface>(item: BasicC
     let children = createElement<T>(component, componentInterface, childProps, childElements);
     
     if (item.trigger) {
-        return React.createElement(Trigger, {
-            info: childProps.info!,
-            $data: childProps.$data!,
-            $setData: childProps.$setData!,
-            model: childProps.model!,
-            key: childProps.key!,
-            dataCustomer: childProps.dataCustomer!,
-            $index: childProps.$index,
-            $item: childProps.$item,
-        }, children);
+        return (
+            <Trigger
+                {...childProps}
+                info={childProps.info!}
+                $data={childProps.$data!}
+                $setData={childProps.$setData!}
+                model={childProps.model!}
+                dataCustomer={childProps.dataCustomer!}
+                key={childProps.key!}
+            >
+                {children}
+            </Trigger>
+        );
     }
 
     if (item.formItem) {
-        return React.createElement(FormItem, {
-            info: childProps.info!,
-            $data: childProps.$data!,
-            $setData: childProps.$setData!,
-            model: childProps.model!,
-            key: childProps.key!,
-            dataCustomer: childProps.dataCustomer!,
-            $index: childProps.$index,
-            $item: childProps.$item,
-            injectChildElement: childProps.injectChildElement
-        }, children);
+        return (
+            <FormItem
+                {...childProps}
+                info={childProps.info!}
+                $data={childProps.$data!}
+            >
+                {children}
+            </FormItem>
+        );
     }
     
     return children;

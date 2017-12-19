@@ -29,12 +29,9 @@ export class RadioConfig extends BasicConfig {
     name: string;
 
     /**
-     * 初始是否选中
-     * @public
-     * @default false
+     * 初始的值
      */
-    @IsBoolean()
-    defaultChecked?: boolean;
+    defaultValue?: string;
 
     /**
      * 是否禁用
@@ -91,6 +88,17 @@ export class AbstractRadio extends BasicContainer<RadioPropsInterface, {}> {
         
         this.handleChange = this.handleChange.bind(this);
         this.handleRadioGroupChange = this.handleRadioGroupChange.bind(this);
+    }
+    
+    componentDidMount() {
+        const info = this.getPropsInfo(this.props.info);
+        if (this.props.$setData && info.name && info.defaultValue) {
+            const $setData = this.props.$setData;
+            
+            setTimeout(() => {
+                $setData(info.name, info.defaultValue);
+            }, 0);
+        }
     }
 
     private mapOptions(info: RadioConfig): RadioProps {

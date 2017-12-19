@@ -38,6 +38,11 @@ export class FormItemPropsInterface extends BasicContainerPropsInterface {
      * 当前Container的数据模型对象
      */
     $data: Map<string, any>;
+
+    /**
+     * 额外的错误处理函数
+     */
+    onFormStateChange?: (state: boolean, errmsg?: string) => void;
 }
 
 export type FormItemError = {
@@ -72,7 +77,7 @@ export default class AbstractFormItem extends BasicContainer<FormItemPropsInterf
 
     render() {
         let info = this.getPropsInfo(this.props.info);
-
+        
         if (!this.props.injectChildElement) {
             return <div>FormItem component should be under Form component</div>;
         }
@@ -83,32 +88,26 @@ export default class AbstractFormItem extends BasicContainer<FormItemPropsInterf
 
         let children = React.Children.map(this.props.children, (child: React.ReactElement<any>) => {
             return React.cloneElement(child, {
+                ...this.props,
                 info: info,
-                $data: this.props.$data,
                 $setData: this.setDataProxy,
-                dataCustomer: this.props.dataCustomer,
-                eventHandle: this.props.eventHandle,
-                model: this.props.model
+                eventHandle: this.props.eventHandle
             });
         });
-
-        if (this.state.$error.error) {
-            let wrapperClass = classNames({
-                'ant-form-item': true,
-                'has-error': this.state.$error.error
-            });
-
-            return (
-                <div className={wrapperClass}>
-                    {children}
-                    <div className="ant-form-explain">{this.state.$error.errmsg}</div>
-                </div>
-            );
-        }
-
+        
+        let wrapperClass = classNames({
+            'ant-form-item-with-help': this.state.$error.error, 
+            'has-error': this.state.$error.error
+        });
+        
+        const wrapperStyle = {
+            width: '100%'
+        };
+        
         return (
-            <div className="ant-form-item">
+            <div className={wrapperClass} style={wrapperStyle}>
                 {children}
+                <div className="ant-form-explain">{this.state.$error.errmsg}</div>
             </div>
         );
     }
@@ -118,12 +117,16 @@ export default class AbstractFormItem extends BasicContainer<FormItemPropsInterf
         let $data = this.props.$data;
 
         let value = val || $data.get(info.name!);
-
+        
         if (info.required && !value) {
+            const errmsg = info.errmsg || `${info.name} is required`;
+            if (this.props.onFormStateChange) {
+                this.props.onFormStateChange(true, errmsg);
+            }
             this.setState({
                 $error: {
                     error: true,
-                    errmsg: info.errmsg || `${info.name} is required`
+                    errmsg: errmsg
                 }
             });
             return {
@@ -137,10 +140,14 @@ export default class AbstractFormItem extends BasicContainer<FormItemPropsInterf
             let regex = new RegExp(info.pattern);
 
             if (!regex.test(value)) {
+                const errmsg = info.errmsg || `${info.name} is not match pattern`;
+                if (this.props.onFormStateChange) {
+                    this.props.onFormStateChange(true, errmsg);
+                }
                 this.setState({
                     $error: {
                         error: true,
-                        errmsg: info.errmsg || `${info.name} is not match pattern`
+                        errmsg: errmsg
                     }
                 });
                 return {
@@ -151,6 +158,9 @@ export default class AbstractFormItem extends BasicContainer<FormItemPropsInterf
             }
         }
 
+        if (this.props.onFormStateChange) {
+            this.props.onFormStateChange(false);
+        }
         this.setState({
             $error: {
                 error: false,

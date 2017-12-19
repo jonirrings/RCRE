@@ -6,11 +6,6 @@ import {Form} from 'antd';
 
 export class FormConfig extends BasicConfig {
     /**
-     * 表单的数据模型Key
-     */
-    name: string;
-
-    /**
      * 子级组件
      */
     children: BasicConfig[];
@@ -21,8 +16,19 @@ export class FormPropsInterface extends BasicContainerPropsInterface {
 }
 
 export class FormStateItem {
+    /**
+     * 表单状态
+     */
     status: boolean;
+
+    /**
+     * 表单数据
+     */
     data: string | number | boolean;
+
+    /**
+     * 表单元素的数据模型Key
+     */
     name: string;
 }
 
@@ -39,10 +45,6 @@ export class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
 
     render() {
         let info = this.getPropsInfo(this.props.info, this.props, ['children']);
-
-        if (!info.name) {
-            return <div>form component need name props for store key</div>;
-        }
 
         if (!this.props.$data) {
             return <div>form component should be under container component</div>;
@@ -72,7 +74,7 @@ export class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
         this.formItemStatus.push(validator);
     }
 
-    private handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    public handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -92,10 +94,7 @@ export class AbstractForm extends BasicContainer<FormPropsInterface, {}> {
         });
 
         if (isValid) {
-            this.commonEventHandler('onSubmit', {
-                event: event,
-                data: data
-            });
+            this.commonEventHandler('onSubmit', data);
         }
     }
 }
