@@ -48,7 +48,7 @@ Text组件提供一个`text`属性， 通过`text`属性， 就能直接让Text�
 
 RCRE中提供一个特殊的组件 —— `container`组件。  
 
-`container`组件就是整个RCRE中的组件数据源， 它可以为字级的所有组件提供数据源， 同时`container`组件可以给`container`组件提供数据源。 `container`组件也可以通过一种可扩展的机制来扩容获取数据的方式。 后续的章节， 将会初步围绕`container`组件来为读者依依介绍。
+`container`组件就是整个RCRE中的组件数据源， 它可以为子级的所有组件提供数据源， 同时`container`组件可以给`container`组件提供数据源。 `container`组件也可以通过一种可扩展的机制来扩容获取数据的方式。 后续的章节， 将会初步围绕`container`组件来为读者依依介绍。
 
 ### 数据源Key
 
@@ -76,9 +76,9 @@ RCRE中会有很多个`container`组件， 同时RCRE会持有每个`container`�
 }
 ```
 
-### 字级组件
+### 子级组件
 
-空的`container`组件不会在页面上有任何效果。 而且还会报一个`children props must be specific in Container Component`这样的异常。 `container`组件在设计上就是为其他组件提供数据操作能力的。 因此它必定会有自己的字级组件。
+空的`container`组件不会在页面上有任何效果。 而且还会报一个`children props must be specific in Container Component`这样的异常。 `container`组件在设计上就是为其他组件提供数据操作能力的。 因此它必定会有自己的子级组件。
 
 通过`children`属性， 就可以在`container`组件内部， 放置一些其他类型的组件。
 

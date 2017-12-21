@@ -11,7 +11,7 @@ import {CustomerSourceConfig} from '../../render/core/DataCustomer/Controller';
 
 export class ContainerConfig extends BasicConfig {
     /**
-     * 字级组件
+     * 子级组件
      */
     children: BasicConfig[];
 
